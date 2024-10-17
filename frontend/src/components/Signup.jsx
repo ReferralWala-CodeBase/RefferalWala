@@ -10,7 +10,9 @@ function Signup() {
     mobileNumber: "",
     password: "",
   });
+  const [otp, setOtp] = useState("");
   const [success, setSuccess] = useState("");
+  const [showOtpModal, setShowOtpModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,24 +22,59 @@ function Signup() {
     }));
   };
 
+  const handleOtpChange = (e) => {
+    setOtp(e.target.value); // Update OTP state
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://referralwala-deployment.vercel.app/user/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess("Registration successful! Please log in.");
-        toast.success("Registration successful! Please log in.");
+        setSuccess("Registration successful! Please verify OTP.");
+        toast.success("Registration successful! OTP sent.");
+        setShowOtpModal(true); // Open OTP modal
       } else {
         toast.error(data.message || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+  };
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        "https://referralwala-deployment.vercel.app/user/verify-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: formData.email, otp }), // Email from formData and OTP entered
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("OTP verified successfully! You can now log in.");
+        setShowOtpModal(false); // Close modal after successful verification
+      } else {
+        toast.error(data.message || "OTP verification failed. Try again.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -146,6 +183,47 @@ function Signup() {
           </div>
         </div>
       </div>
+
+      {/* OTP Modal */}
+      {showOtpModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Verify OTP</h3>
+            <form onSubmit={handleOtpSubmit}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  readOnly
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  OTP
+                </label>
+                <input
+                  type="text"
+                  value={otp}
+                  onChange={handleOtpChange}
+                  required
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500"
+              >
+                Verify OTP
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </section>
   );
