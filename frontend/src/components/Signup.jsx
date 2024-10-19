@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,6 +13,7 @@ function Signup() {
   const [otp, setOtp] = useState("");
   const [success, setSuccess] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +65,7 @@ function Signup() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: formData.email, otp }), // Email from formData and OTP entered
+          body: JSON.stringify({ email: formData.email, otp }),
         }
       );
 
@@ -72,7 +73,8 @@ function Signup() {
 
       if (response.ok) {
         toast.success("OTP verified successfully! You can now log in.");
-        setShowOtpModal(false); // Close modal after successful verification
+        setShowOtpModal(false);
+        navigate("/user-login");
       } else {
         toast.error(data.message || "OTP verification failed. Try again.");
       }

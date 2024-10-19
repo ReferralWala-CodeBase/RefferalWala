@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,13 +23,11 @@ function Login() {
 
       const { token, isOTPVerified, userId } = response.data;
 
-      // Store the token and userId in localStorage or sessionStorage
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
 
-      // If OTP is verified, navigate to the homepage
       if (isOTPVerified) {
-        navigate("/home"); // Redirect to /home
+        navigate("/home");
       } else {
         setError("OTP verification is pending.");
       }
@@ -119,12 +117,12 @@ function Login() {
                 </div>
 
                 <div className="text-sm leading-6">
-                  <a
-                    href="##"
+                  <Link
+                    to="/forgot-password"
                     className="font-semibold text-blue-600 hover:text-blue-500"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
 

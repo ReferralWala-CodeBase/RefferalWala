@@ -7,6 +7,7 @@ import TermsConditionsPage from "./pages/TermsConditionsPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
+import ForgotPage from "./pages/ForgotPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SignupPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/forgot-password" element={<ForgotPage />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/user-login" element={<LoginPage />} />
         <Route path="/profile-user" element={<ProfilePage />} />
