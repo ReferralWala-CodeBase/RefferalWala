@@ -10,7 +10,7 @@ const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-const sendEmail = async (recipient, otp, subject = 'OTP for Registration') => {
+const sendEmail = async (recipient, otp, subject = 'OTP for Verification') => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -23,7 +23,7 @@ const sendEmail = async (recipient, otp, subject = 'OTP for Registration') => {
     from: process.env.GMAIL_EMAIL,
     to: recipient,
     subject,
-    text: `Your OTP is: ${otp}`,
+    text: `Your OTP for Verification is: ${otp} . It's valid for 30 minutes`,
   };
 
   await transporter.sendMail(mailOptions);
@@ -94,10 +94,42 @@ exports.verifyOTP = async (req, res) => {
     }
 
     user.isOTPVerified = true;
-    user.otp = null; 
+    user.otp = null; // Clear the OTP after verification
     await user.save();
 
     res.json({ message: 'OTP verified successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.verifyCompanyEmail = async (req, res) => {
+  try {
+    const { email, otp } = req.body; // Company email & OTP in the body
+
+    // Find the user with the given company email
+    const user = await User.findOne({ 'presentCompany.companyEmail': email });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found with this company email' });
+    }
+
+    // Check if the company email has already been verified
+    if (user.presentCompany.CompanyEmailVerified) {
+      return res.status(400).json({ error: 'Company email already verified' });
+    }
+
+    // Check if OTP matches
+    if (user.presentCompany.otp !== otp) {
+      return res.status(400).json({ error: 'Invalid OTP' });
+    }
+
+    // Verify company email
+    user.presentCompany.CompanyEmailVerified = true;
+    user.presentCompany.otp = null; // Clear OTP after verification
+    await user.save();
+
+    res.status(200).json({ message: 'Company email verified successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -215,12 +247,42 @@ exports.resendOTP = async (req, res) => {
     user.otp = otp;
     await user.save();
 
-    res.json({ message: 'New OTP sent to your email.' });
+    res.json({ message: 'OTP sent to your email.' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+
+exports.sendOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Find the user with the given company email
+    const user = await User.findOne({ 'presentCompany.companyEmail': email });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found with this company email' });
+    }
+
+    // Generate new OTP
+    const otp = generateOTP();
+
+    // Send the OTP via email
+    await sendEmail(email, otp);
+
+    // Save the new OTP to the user's presentCompany.otp field
+    user.presentCompany.otp = otp;
+    await user.save();
+
+    res.json({ message: 'OTP sent to the company email.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 
 // Get profile by ID

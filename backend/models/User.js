@@ -5,15 +5,12 @@ const Schema = mongoose.Schema;
 const EducationSchema = new mongoose.Schema({
   level: {
     type: String, 
-    required: true,
   },
   schoolName: {
     type: String,
-    required: true,
   },
   yearOfPassing: {
     type: Number,
-    required: true,
   },
 });
 
@@ -21,15 +18,12 @@ const EducationSchema = new mongoose.Schema({
 const ExperienceSchema = new mongoose.Schema({
   companyName: {
     type: String,
-    required: true,
   },
   position: {
     type: String,
-    required: true,
   },
   yearsOfExperience: {
     type: Number,
-    required: true,
   },
 });
 
@@ -37,23 +31,29 @@ const ExperienceSchema = new mongoose.Schema({
 const PresentCompanySchema = new mongoose.Schema({
   role: {
     type: String,
-    required: true,
   },
   companyName: {
     type: String,
-    required: true,
+  },
+  companyEmail:{
+    type: String,
+  },
+  CompanyEmailVerified:{
+    type: Boolean,
+    default: false
   },
   yearsOfExperience: {
     type: Number,
-    required: true,
   },
   location: {
     type: String,
-    required: true,
   },
   currentCTC: {
     type: Number,
-    required: true,
+  },
+  otp: {
+    type: String,
+    default: null,
   },
 });
 
@@ -104,6 +104,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  googleId: { type: String },
   password: {
     type: String,
     required: true,
