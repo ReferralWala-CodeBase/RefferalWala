@@ -11,7 +11,7 @@ const JobPostSchema = new Schema({
     type: String,
     required: false,
   },
-  jobId: {
+  jobUniqueId: {
     type: String,
     required: false,
   },
@@ -55,15 +55,21 @@ const JobPostSchema = new Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      status: {
+        type: String,
+        enum: ['applied', 'selected', 'rejected', 'on hold'],
+        default: 'applied',
+      },
     },
   ],
+  
   status: {
     type: String,
     enum: ['active', 'inactive'],
     default: 'active',
   },
   endDate: {
-    type: Date, // Storing the end date for the job post
+    type: Date, 
     required: false, 
   },
   createdAt: {

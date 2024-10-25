@@ -13,10 +13,10 @@ router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword); 
 router.post('/resend-otp', resendOTP);
 router.post('/sendOTP',sendOTP)
-router.get('/profile/:id',jwtMiddleware, getProfileById);
-router.get('/profile/email/:email', jwtMiddleware,  getProfileByEmail);
-router.get('/profiles', jwtMiddleware, getAllProfiles);
-router.put('/profile/:id', jwtMiddleware, updateProfileById);
+router.get('/profile/:id', getProfileById);
+router.get('/profile/email/:email',  getProfileByEmail);
+router.get('/profiles', getAllProfiles);
+router.put('/profile/:id',  updateProfileById);
 router.post('/follow/:id',jwtMiddleware, followUser);
 router.post('/unfollow/:id',jwtMiddleware, unfollowUser);
 router.get('/notifications/:userId',jwtMiddleware, getNotifications);

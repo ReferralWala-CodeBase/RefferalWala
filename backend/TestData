@@ -1,0 +1,66 @@
+Users
+1)      "_id": "670ca1087b7734208f696e45",
+        "email": "a123@gmail.com",
+        "mobileNumber": "7867876534",
+        "firstName": "Ujjwal",
+            "lastName": "Agrawal"
+2)       "_id": "670c1e4d7eb92f881a487129",
+        "email": "copene2785@paxnw.com",
+        "mobileNumber": "96067254796",
+         "firstName": "Surya",
+        "lastName": "Singh"
+
+
+JOBS
+1) {
+        "_id": "66fdc28ad64fb775cbe79b5c",
+        "user": {
+            "_id": "66eb5081f957a0238fc98339",
+            "email": "vorere7007@ofionk.com",
+            "firstName": "Ravi",
+            "lastName": "Kumar"
+        },
+        "jobRole": "Developer",
+        "companyName": "Infosys",
+        "jobDescription": "We are looking for a skilled Software Engineer.",
+        "experienceRequired": "4 years",
+        "location": "Remote",
+        "workMode": "Full-time",
+        "employmentType": "Permanent",
+        "ctc": "10-22 LPA",
+        "noOfReferrals": 2,
+        "jobLink": "http://example.com/syncron",
+        "applicants": [
+            "670c1e4d7eb92f881a487129"
+        ],
+        "status": "inactive",
+        "createdAt": "2024-10-02T22:00:42.958Z",
+        "__v": 5,
+        "endDate": "2025-09-24T00:00:00.000Z"
+    }
+
+2) {
+    "_id": "66fdc220d64fb775cbe79b49",
+    "user": {
+        "_id": "66fdab58e0401254efeae23f",
+        "email": "xodeh89512@rinseart.com",
+        "firstName": "Raja",
+        "lastName": "Kumar"
+    },
+    "jobRole": "Backend Developer",
+    "companyName": "IBM",
+    "jobDescription": "We are looking for a skilled Software Engineer.",
+    "experienceRequired": "4 years",
+    "location": "Remote",
+    "workMode": "Full-time",
+    "employmentType": "Permanent",
+    "ctc": "10-22 LPA",
+    "noOfReferrals": 2,
+    "jobLink": "http://example.com/syncron",
+    "applicants": [],
+    "status": "inactive",
+    "createdAt": "2024-10-02T21:58:56.483Z",
+    "__v": 0,
+    "endDate": "2024-04-24T00:00:00.000Z",
+    "jobuniqueId": "1234Syncri"
+},            

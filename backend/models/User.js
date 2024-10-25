@@ -163,6 +163,12 @@ following: [{
   type: mongoose.Schema.Types.ObjectId,
   ref: 'User', // Reference to the User model for following
 }],
+appliedJobs: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'JobPost',
+  },
+],
 });
 
 const User = mongoose.model('User', userSchema);
