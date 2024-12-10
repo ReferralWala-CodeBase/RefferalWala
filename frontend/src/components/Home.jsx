@@ -6,7 +6,30 @@ function Home() {
   const [postCard, setPostCard] = useState([]);
 
   useEffect(() => {
-    setPostCard(postdata);
+    const fetchData = async () => {
+      const apiUrl = "https://referralwala-deployment.vercel.app/job/all";
+      const bearerToken = localStorage.getItem('token');
+      try {
+        
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        setPostCard(result);
+      } catch (err) {
+        setPostCard(postdata);
+      }
+    }
+    fetchData();
   }, []);
 
   return (
