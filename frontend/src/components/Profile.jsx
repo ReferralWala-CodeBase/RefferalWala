@@ -1,6 +1,124 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { PaperClipIcon } from "@heroicons/react/20/solid";
+import axios from "axios";
 
 function Profile() {
+  const [email, setEmail] = useState("");
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    // Retrieve email from localStorage
+    const storedEmail = localStorage.getItem("email");
+
+    if (storedEmail) setEmail(storedEmail);
+  }, []);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "Margot Foster",
+    application: "Backend Developer",
+    email: "margot.foster@example.com",
+    salary: "120,000",
+    about:
+      "Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat.",
+    attachments: [
+      { name: "resume_back_end_developer.pdf", size: "2.4mb" },
+      { name: "coverletter_back_end_developer.pdf", size: "4.5mb" },
+    ],
+    education: [
+      {
+        level: "Bachelor's Degree",
+        schoolName: "Stanford University",
+        yearOfPassing: 2018,
+      },
+    ], // Example education entries
+    experience: [
+      {
+        companyName: "TechCorp",
+        position: "Software Engineer",
+        yearsOfExperience: 3,
+      },
+      {
+        companyName: "CodeWorks",
+        position: "Junior Developer",
+        yearsOfExperience: 2,
+      },
+    ], // Example experience entries
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleAttachmentChange = (index, value) => {
+    const updatedAttachments = [...formData.attachments];
+    updatedAttachments[index].name = value;
+    setFormData({ ...formData, attachments: updatedAttachments });
+  };
+
+  const handleAddAttachment = () => {
+    fileInputRef.current.click();
+  };
+
+  // Removes an attachment by index
+  const handleRemoveAttachment = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      attachments: prevData.attachments.filter((_, i) => i !== index),
+    }));
+  };
+
+  // Processes the selected file
+  const handleFileSelection = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        attachments: [
+          ...prevData.attachments,
+          { name: file.name, size: `${(file.size / 1024).toFixed(1)} KB` },
+        ],
+      }));
+    }
+  };
+  // Function to handle adding a new education entry
+  const handleAddEducation = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      education: [
+        ...prevData.education,
+        { level: "", schoolName: "", yearOfPassing: "" }, // Default values for new education
+      ],
+    }));
+  };
+
+  // Function to handle removing an education entry
+  const handleRemoveEducation = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      education: prevData.education.filter((_, i) => i !== index),
+    }));
+  };
+
+  // Function to handle adding a new experience entry
+  const handleAddExperience = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      experience: [
+        ...prevData.experience,
+        { companyName: "", position: "", yearsOfExperience: "" }, // Default values for new experience
+      ],
+    }));
+  };
+
+  // Function to handle removing an experience entry
+  const handleRemoveExperience = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      experience: prevData.experience.filter((_, i) => i !== index),
+    }));
+  };
+
   return (
     <div class="bg-gray-100">
       <div class="container mx-auto py-8">
@@ -13,7 +131,7 @@ function Profile() {
                   class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
                   alt="bg"
                 />
-                <h1 class="text-xl font-bold">John Doe</h1>
+                <h1 class="text-xl font-bold">John</h1>
                 <p class="text-gray-700">Software Developer</p>
                 <div class="mt-6 flex flex-wrap gap-4 justify-center">
                   <a
@@ -21,12 +139,6 @@ function Profile() {
                     class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
                   >
                     Contact
-                  </a>
-                  <a
-                    href="/"
-                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded"
-                  >
-                    Edit
                   </a>
                 </div>
               </div>
@@ -138,72 +250,281 @@ function Profile() {
               </div>
             </div>
           </div>
-          <div class="col-span-4 sm:col-span-9">
-            <div class="bg-white shadow rounded-lg p-6">
-              <h2 class="text-xl font-bold mb-4">About Me</h2>
-              <p class="text-gray-700">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                finibus est vitae tortor ullamcorper, ut vestibulum velit
-                convallis. Aenean posuere risus non velit egestas suscipit. Nunc
-                finibus vel ante id euismod. Vestibulum ante ipsum primis in
-                faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam
-                erat volutpat. Nulla vulputate pharetra tellus, in luctus risus
-                rhoncus id.
-              </p>
-              <hr class="my-6 border-t border-gray-300" />
-              <h2 class="text-xl font-bold mt-6 mb-4">Experience</h2>
-              <div class="mb-6">
-                <div class="flex justify-between flex-wrap gap-2 w-full">
-                  <span class="text-gray-700 font-bold">Web Developer</span>
-                  <p>
-                    <span class="text-gray-700 mr-2">at ABC Company</span>
-                    <span class="text-gray-700">2017 - 2019</span>
+          <div className="col-span-4 sm:col-span-9">
+            <div className="bg-white shadow rounded-lg p-6">
+              <div>
+                <div className="px-4 sm:px-0 relative">
+                  <button
+                    onClick={() => setIsEditing(!isEditing)}
+                    className="absolute right-0 text-blue-500 hover:text-blue-700"
+                  >
+                    {isEditing ? "Save" : "Update"}
+                  </button>
+                  <h3 className="text-base/7 font-semibold text-gray-900">
+                    Applicant Information
+                  </h3>
+                  <p className="mt-1 max-w-2xl text-sm/6 text-gray-500">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Cupiditate, necessitatibus, rem vero veniam minus quos quam
+                    voluptate illo.
                   </p>
                 </div>
-                <p class="mt-2">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  finibus est vitae tortor ullamcorper, ut vestibulum velit
-                  convallis. Aenean posuere risus non velit egestas suscipit.
-                </p>
-              </div>
-              <div class="mb-6">
-                <div class="flex justify-between flex-wrap gap-2 w-full">
-                  <span class="text-gray-700 font-bold">Web Developer</span>
-                  <p>
-                    <span class="text-gray-700 mr-2">at ABC Company</span>
-                    <span class="text-gray-700">2017 - 2019</span>
-                  </p>
+                <div className="mt-6 border-t border-gray-100">
+                  <dl className="divide-y divide-gray-100">
+                    {/* Full Name and Application */}
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
+                      <div className="">
+                        <dt className="text-sm/6 font-medium text-gray-900">
+                          Full name
+                        </dt>
+                        <dd className="text-sm/6 text-gray-700 sm:mt-0">
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              name="fullName"
+                              value={formData.fullName}
+                              onChange={handleInputChange}
+                              className="border rounded p-1"
+                            />
+                          ) : (
+                            formData.fullName
+                          )}
+                        </dd>
+                      </div>
+                      <div className="">
+                        <dt className="text-sm/6 font-medium text-gray-900">
+                          Application for
+                        </dt>
+                        <dd className="text-sm/6 text-gray-700 sm:mt-0">
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              name="application"
+                              value={formData.application}
+                              onChange={handleInputChange}
+                              className="border rounded p-1"
+                            />
+                          ) : (
+                            formData.application
+                          )}
+                        </dd>
+                      </div>
+                    </div>
+                    {/* Email and Salary */}
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0">
+                      <div>
+                        <dt className="text-sm/6 font-medium text-gray-900">
+                          Email address
+                        </dt>
+                        <dd className="text-sm/6 text-gray-700 sm:mt-0">
+                          {isEditing ? (
+                            <input
+                              type="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleInputChange}
+                              className="border rounded p-1"
+                            />
+                          ) : (
+                            formData.email
+                          )}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-sm/6 font-medium text-gray-900">
+                          Salary expectation
+                        </dt>
+                        <dd className="text-sm/6 text-gray-700 sm:mt-0">
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              name="salary"
+                              value={formData.salary}
+                              onChange={handleInputChange}
+                              className="border rounded p-1"
+                            />
+                          ) : (
+                            `$${formData.salary}`
+                          )}
+                        </dd>
+                      </div>
+                    </div>
+                    {/* Education */}
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-0">
+                      <dt className="text-sm/6 font-medium text-gray-900">
+                        Education
+                      </dt>
+                      <dd className="mt-1 text-sm/6 text-gray-700 sm:mt-0 ">
+                        {formData.education.map((edu, index) => (
+                          <div key={index} className="sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <div className="mb-4">
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Level
+                              </label>
+                              {isEditing ? (
+                                <input
+                                  type="text"
+                                  name={`education[${index}].level`}
+                                  value={edu.level}
+                                  onChange={handleInputChange}
+                                  className="border border-gray-300 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                              ) : (
+                                <p className="text-gray-900">{edu.level}</p>
+                              )}
+                            </div>
+                            <div className="mb-4">
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                School Name
+                              </label>
+                              {isEditing ? (
+                                <input
+                                  type="text"
+                                  name={`education[${index}].schoolName`}
+                                  value={edu.schoolName}
+                                  onChange={handleInputChange}
+                                  className="border border-gray-300 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                              ) : (
+                                <p className="text-gray-900">
+                                  {edu.schoolName}
+                                </p>
+                              )}
+                            </div>
+                            <div className="mb-4">
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Year of Passing
+                              </label>
+                              {isEditing ? (
+                                <input
+                                  type="number"
+                                  name={`education[${index}].yearOfPassing`}
+                                  value={edu.yearOfPassing}
+                                  onChange={handleInputChange}
+                                  className="border border-gray-300 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                              ) : (
+                                <p className="text-gray-900">
+                                  {edu.yearOfPassing}
+                                </p>
+                              )}
+                            </div>
+                            {isEditing && (
+                              <button
+                                className="text-red-500 hover:text-red-700 font-medium text-sm"
+                                onClick={() => handleRemoveEducation(index)}
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                        {isEditing && (
+                          <button
+                            onClick={handleAddEducation}
+                            className="mt-4 text-blue-500 hover:text-blue-700 font-medium"
+                          >
+                            Add Education
+                          </button>
+                        )}
+                      </dd>
+                    </div>
+                    {/* About */}
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-0">
+                      <dt className="text-sm/6 font-medium text-gray-900">
+                        About
+                      </dt>
+                      <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        {isEditing ? (
+                          <textarea
+                            name="about"
+                            value={formData.about}
+                            onChange={handleInputChange}
+                            className="border rounded p-1 w-full"
+                          />
+                        ) : (
+                          formData.about
+                        )}
+                      </dd>
+                    </div>
+                    {/* Attachments */}
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm/6 font-medium text-gray-900">
+                        Attachments
+                      </dt>
+                      <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                        <ul
+                          role="list"
+                          className="divide-y divide-gray-100 rounded-md border border-gray-200"
+                        >
+                          {formData.attachments.map((attachment, index) => (
+                            <li
+                              key={index}
+                              className="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6"
+                            >
+                              <div className="flex w-0 flex-1 items-center">
+                                <svg
+                                  className="h-5 w-5 shrink-0 text-gray-400"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M15.621 4.379a3 3 0 0 0-4.242 0l-7 7a3 3 0 0 0 4.241 4.243h.001l.497-.5a.75.75 0 0 1 1.064 1.057l-.498.501-.002.002a4.5 4.5 0 0 1-6.364-6.364l7-7a4.5 4.5 0 0 1 6.368 6.36l-3.455 3.553A2.625 2.625 0 1 1 9.52 9.52l3.45-3.451a.75.75 0 1 1 1.061 1.06l-3.45 3.451a1.125 1.125 0 0 0 1.587 1.595l3.454-3.553a3 3 0 0 0 0-4.242Z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                                  <span className="truncate font-medium">
+                                    {attachment.name}
+                                  </span>
+                                  <span className="shrink-0 text-gray-400">
+                                    {attachment.size}
+                                  </span>
+                                </div>
+                              </div>
+                              {isEditing && (
+                                <button
+                                  onClick={() => handleRemoveAttachment(index)}
+                                  className="ml-4 shrink-0 text-red-500 hover:text-red-700"
+                                >
+                                  Remove
+                                </button>
+                              )}
+                              {!isEditing && (
+                                <div className="ml-4 shrink-0">
+                                  <a
+                                    href="#"
+                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                  >
+                                    Download
+                                  </a>
+                                </div>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                        {isEditing && (
+                          <div className="mt-4">
+                            <button
+                              onClick={handleAddAttachment}
+                              className="text-blue-500 hover:text-blue-700"
+                            >
+                              Add Attachment
+                            </button>
+                            <input
+                              type="file"
+                              ref={fileInputRef}
+                              style={{ display: "none" }}
+                              onChange={handleFileSelection}
+                            />
+                          </div>
+                        )}
+                      </dd>
+                    </div>
+                  </dl>
                 </div>
-                <p class="mt-2">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  finibus est vitae tortor ullamcorper, ut vestibulum velit
-                  convallis. Aenean posuere risus non velit egestas suscipit.
-                </p>
-              </div>
-              <div class="mb-6">
-                <div class="flex justify-between flex-wrap gap-2 w-full">
-                  <span class="text-gray-700 font-bold">Web Developer</span>
-                  <p>
-                    <span class="text-gray-700 mr-2">at ABC Company</span>
-                    <span class="text-gray-700">2017 - 2019</span>
-                  </p>
-                </div>
-                <p class="mt-2">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  finibus est vitae tortor ullamcorper, ut vestibulum velit
-                  convallis. Aenean posuere risus non velit egestas suscipit.
-                </p>
-              </div>
-
-              <hr class="my-6 border-t border-gray-300" />
-              <div class="mb-6 mt-4">
-                <h2 class="text-xl font-bold mt-6 mb-4">My Posts</h2>
-
-                <p class="mt-2">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  finibus est vitae tortor ullamcorper, ut vestibulum velit
-                  convallis. Aenean posuere risus non velit egestas suscipit.
-                </p>
               </div>
             </div>
           </div>
