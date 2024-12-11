@@ -8,10 +8,19 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import ForgotPage from "./pages/ForgotPage";
+import PostJob from "./components/Post/PostJob";
+import PostedJobsList from "./components/Post/PostedJobsList";
+import SidebarNavigation from "./components/SidebarNavigation";
+import Navbar from "./components/Navbar";
+import ViewPostedJob from "./components/Post/ViewPostedJob";
+import EditPostedJob from "./components/Post/EditPostedJob";
+import JobApplicantsList from "./components/Post/JobApplicantsList";
+import PostedJobsCard from "./components/Post/PostedJobsCard";
 
 function App() {
   return (
     <>
+    <Navbar/>
       <Routes>
         <Route path="/" element={<SignupPage />} />
         <Route path="/home" element={<HomePage />} />
@@ -21,6 +30,14 @@ function App() {
         <Route path="/profile-user" element={<ProfilePage />} />
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/postjob" element={<PostJob />} />
+        {/* <Route path="/viewpostedjob" element={<ViewPostedJob />} /> */}
+        <Route path="/postedjobslist" element={<PostedJobsList />} />
+        <Route path="/postedjobscard" element={<PostedJobsCard />} />
+        <Route path="/viewpostedjob/:jobId" element={<ViewPostedJob />} />
+        <Route path="/editpostedjob/:jobId" element={<EditPostedJob />} />
+        <Route path="/jobapplicantslist/:jobId" element={<JobApplicantsList />} />
+
       </Routes>
     </>
 
