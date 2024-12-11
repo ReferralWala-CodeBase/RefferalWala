@@ -3,6 +3,9 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from 'react-router-dom';
+import { FaSpinner } from "react-icons/fa";
+import postdata from "../../postdata.json"
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -34,7 +37,8 @@ export default function PostedJobsCard() {
         const data = await response.json();
         setJobs(data);
       } catch (error) {
-        setError(error.message);
+        setJobs(postdata);
+        //setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -45,15 +49,40 @@ export default function PostedJobsCard() {
 
   const navigate = useNavigate();
   const handleView = (jobId) => {
-    navigate(`/viewpostedjob/${jobId}`);
+    if(localStorage.getItem('token') === null)
+    {
+      navigate('/user-login')
+    }
+      
+    else
+    {
+      navigate(`/viewpostedjob/${jobId}`);
+    }
+      
   };
+
+  function getDate(endDate_param)
+  {
+    var tempDate=endDate_param+"";
+    var date='';
+    for(let i=0; i<tempDate.length; i++)
+    {
+      if(/^[a-zA-Z]$/.test(tempDate[i]))
+        break;
+      else
+        date+=tempDate[i];
+    }
+    return date;
+  }
 
 
   return (
     <div className='m-3'>
     <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
       {loading ? (
-        <p>Loading...</p>
+        <div className="flex justify-center items-center">
+          <FaSpinner className="animate-spin text-xl" />
+        </div>
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
@@ -89,7 +118,7 @@ export default function PostedJobsCard() {
               </div>
               <div className="flex justify-between gap-x-4 py-2">
                 <dt className="text-gray-500">Last Date to apply</dt>
-                <dd className="text-gray-700">{job.endDate}</dd>
+                <dd className="text-gray-700">{getDate(job.endDate)}</dd>
               </div>
             </dl>
           </li>

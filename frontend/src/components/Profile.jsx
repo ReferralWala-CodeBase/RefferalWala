@@ -5,17 +5,11 @@ import axios from "axios";
 function Profile() {
   const [email, setEmail] = useState("");
   const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    // Retrieve email from localStorage
-    const storedEmail = localStorage.getItem("email");
-
-    if (storedEmail) setEmail(storedEmail);
-  }, []);
+  const [userData, setUserData] = useState();
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "Margot Foster",
+    fullName: "",
     application: "Backend Developer",
     email: "margot.foster@example.com",
     salary: "120,000",
@@ -45,6 +39,73 @@ function Profile() {
       },
     ], // Example experience entries
   });
+
+  var result='';
+  useEffect(() => {
+    // Retrieve email from localStorage
+    const storedEmail = localStorage.getItem("email");
+
+    if (storedEmail) setEmail(storedEmail);
+
+    const fetchData = async () => {
+      const apiUrl = "https://referralwala-deployment.vercel.app/user/profile/66eb5081f957a0238fc98339";
+      const bearerToken = localStorage.getItem('token');
+      try {
+        
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        result = await response.json();
+        
+        setFormData({
+          fullName: result.firstName+" "+result.lastName,
+          application: "Backend Developer",
+          email: result.email,
+          salary: "120,000",
+          about:
+            "Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat.",
+          attachments: [
+            { name: "resume_back_end_developer.pdf", size: "2.4mb" },
+            { name: "coverletter_back_end_developer.pdf", size: "4.5mb" },
+          ],
+          education: [
+            {
+              level: "Bachelor's Degree",
+              schoolName: "Stanford University",
+              yearOfPassing: 2018,
+            },
+          ], // Example education entries
+          experience: [
+            {
+              companyName: "TechCorp",
+              position: "Software Engineer",
+              yearsOfExperience: 3,
+            },
+            {
+              companyName: "CodeWorks",
+              position: "Junior Developer",
+              yearsOfExperience: 2,
+            },
+          ], // Example experience entries
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchData();
+
+  }, []);
+
+  
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -131,7 +192,7 @@ function Profile() {
                   class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
                   alt="bg"
                 />
-                <h1 class="text-xl font-bold">John</h1>
+                <h1 class="text-xl font-bold">{formData.fullName}</h1>
                 <p class="text-gray-700">Software Developer</p>
                 <div class="mt-6 flex flex-wrap gap-4 justify-center">
                   <a

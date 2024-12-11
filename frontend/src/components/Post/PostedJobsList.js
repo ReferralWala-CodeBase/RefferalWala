@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
+import { FaSpinner } from "react-icons/fa";
 
 export default function PostedJobsList() {
   const [jobs, setJobs] = useState([]);
@@ -60,7 +61,9 @@ export default function PostedJobsList() {
         {/* Table */}
         <div className="mt-2 flow-root">
           {loading ? (
-            <p>Loading...</p>
+            <div className="flex justify-center items-center">
+              <FaSpinner className="animate-spin text-xl" />
+            </div>
           ) : error ? (
             <p className="text-red-500">Error: {error}</p>
           ) : jobs.length === 0 ? (
@@ -91,20 +94,20 @@ export default function PostedJobsList() {
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.companyName}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.location}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.status}</td>
-                      <td className="relative py-4 pl-3 pr-2 text-right text-sm font-medium sm:pr-6">
+                      {/* <td className="relative py-4 pl-3 pr-2 text-right text-sm font-medium sm:pr-6">
                         <button
                           onClick={() => handleEdit(job._id)}
                           className="text-indigo-600 hover:text-indigo-900"
                         >
                           Edit
                         </button>
-                      </td>
+                      </td> */}
                       <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                         <button
                           onClick={() => handleView(job._id)}
                           className="text-indigo-600 hover:text-indigo-900"
                         >
-                          View
+                          View/Edit
                         </button>
                       </td>
                       <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
