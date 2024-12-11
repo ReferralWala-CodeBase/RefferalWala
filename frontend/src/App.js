@@ -6,7 +6,8 @@ import SignupPage from "./pages/SignupPage";
 import TermsConditionsPage from "./pages/TermsConditionsPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import HomePage from "./pages/HomePage";
-import ProfilePage from "./pages/ProfilePage";
+import ViewProfile from "./components/Profile/ViewProfile";
+import EditProfile from "./components/Profile/EditProfile";
 import ForgotPage from "./pages/ForgotPage";
 import PostJob from "./components/Post/PostJob";
 import PostedJobsList from "./components/Post/PostedJobsList";
@@ -16,6 +17,7 @@ import ViewPostedJob from "./components/Post/ViewPostedJob";
 import EditPostedJob from "./components/Post/EditPostedJob";
 import JobApplicantsList from "./components/Post/JobApplicantsList";
 import PostedJobsCard from "./components/Post/PostedJobsCard";
+import ViewApplicantProfile from "./components/Post/ViewApplicantProfile";
 
 function App() {
   return (
@@ -27,7 +29,9 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPage />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/user-login" element={<LoginPage />} />
-        <Route path="/profile-user" element={<ProfilePage />} />
+        <Route path="/viewprofile" element={<ViewProfile />} />
+        <Route path="/viewapplicantprofile/:applicantId" element={<ViewApplicantProfile />} />
+        <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/postjob" element={<PostJob />} />

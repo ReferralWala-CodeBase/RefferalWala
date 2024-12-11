@@ -41,7 +41,7 @@ export default function JobApplicantsList() {
   const navigate = useNavigate();
 
   const handleViewApplicantDetails = (applicantId) => {
-    navigate(`/viewapplicant/${applicantId}`); 
+    navigate(`/viewapplicantprofile/${applicantId}`); 
   };
 
   return (
@@ -86,7 +86,7 @@ export default function JobApplicantsList() {
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant.status}</td>
                       <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                         <button
-                          onClick={() => handleViewApplicantDetails(applicant._id)}
+                          onClick={() => handleViewApplicantDetails(applicant.userId._id)}
                           className="text-indigo-600 hover:text-indigo-900"
                         >
                           View Full Profile
