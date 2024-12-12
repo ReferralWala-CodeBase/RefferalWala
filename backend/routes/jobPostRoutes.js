@@ -10,7 +10,8 @@ const {
   updateApplicantStatus,
   getUserApplicationStatuses,
   getApplicationStatusForJobPost,
-  getJobsByJobUniqueId
+  getJobsByJobUniqueId,
+  getJobPostsByUser
 } = require('../controllers/JobPostController');
 
 const jwtMiddleware = require('../middleware/jwtMiddleware'); 
@@ -22,6 +23,9 @@ router.post('/create',jwtMiddleware, createJobPost);
 
 // Get all job posts
 router.get('/all',getAllJobPosts);
+
+// Get jobs by user
+router.get('/user/:userId',jwtMiddleware, getJobPostsByUser);
 
 // Get a job post by ID
 router.get('/:id', jwtMiddleware,getJobPostById);

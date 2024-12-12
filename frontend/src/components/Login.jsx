@@ -27,7 +27,7 @@ function Login() {
       localStorage.setItem("userId", userId);
 
       if (isOTPVerified) {
-        navigate("/home");
+        navigate("/viewprofile");
       } else {
         setError("OTP verification is pending.");
       }

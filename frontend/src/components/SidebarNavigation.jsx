@@ -23,7 +23,7 @@ const navigation = [
 const teams = [
   { id: 1, name: 'Post New Job', href: '/postjob', initial: 'H', current: false },
   { id: 2, name: 'View Posted Jobs', href: '/postedjobslist', initial: 'T', current: false },
-  { id: 3, name: 'View Applicants', href: '#', initial: 'W', current: false },
+  { id: 3, name: 'Applied Jobs', href: '/appliedjobs', initial: 'W', current: false },
 ]
 
 function classNames(...classes) {

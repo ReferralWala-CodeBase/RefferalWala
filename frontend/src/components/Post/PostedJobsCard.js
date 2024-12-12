@@ -56,7 +56,7 @@ export default function PostedJobsCard() {
       
     else
     {
-      navigate(`/viewpostedjob/${jobId}`);
+      navigate(`/appliedjobdetails/${jobId}`);
     }
       
   };

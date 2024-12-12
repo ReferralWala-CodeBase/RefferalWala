@@ -80,6 +80,30 @@ exports.getAllJobPosts = async (req, res) => {
   }
 };
 
+exports.getJobPostsByUser = async (req, res) => {
+  try {
+    const { userId } = req.params; // Extract userId from request parameters
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required." });
+    }
+
+    // Find job posts associated with the given userId
+    const jobPosts = await JobPost.find({ user: userId })
+      .populate('user', 'firstName lastName email') // Populate user details
+      .exec();
+
+    if (jobPosts.length === 0) {
+      return res.status(404).json({ message: "No job posts found for the specified user." });
+    }
+
+    res.status(200).json(jobPosts);
+  } catch (err) {
+    console.error('Error fetching job posts by user:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 
 // @route   GET /job/:id
 // @desc    Get a job post by ID
