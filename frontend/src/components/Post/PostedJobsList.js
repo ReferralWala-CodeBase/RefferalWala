@@ -7,6 +7,7 @@ export default function PostedJobsList() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -52,6 +53,18 @@ export default function PostedJobsList() {
     navigate(`/jobapplicantslist/${jobId}`);
   };
 
+  const filteredJobs = jobs && Object.fromEntries(
+    Object.entries(jobs).filter(([id, job]) => {
+        return !job.hidden && (
+          job.jobUniqueId.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.companyName.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.jobRole.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.location.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.workMode.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    })
+  );
+
   return (
     <div className="flex">
       <div className="w-1/4">
@@ -59,6 +72,13 @@ export default function PostedJobsList() {
       </div>
       <div className="w-3/4">
         {/* Table */}
+        <input
+        type="text"
+        placeholder="Search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="mb-4 px-4 py-3 border-2 rounded w-full bg-[#FFFFFF] border-none text-black p-8"
+      />
         <div className="mt-2 flow-root">
           {loading ? (
             <div className="flex justify-center items-center">
@@ -87,7 +107,7 @@ export default function PostedJobsList() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {jobs.map((job) => (
+                  {Object.entries(filteredJobs).map(([id, job]) => (
                     <tr key={job._id}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{job.jobUniqueId}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.jobRole}</td>

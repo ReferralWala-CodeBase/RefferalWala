@@ -15,6 +15,7 @@ export default function PostedJobsCard() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -76,8 +77,26 @@ export default function PostedJobsCard() {
   }
 
 
+  const filteredJobs = jobs && Object.fromEntries(
+    Object.entries(jobs).filter(([id, job]) => {
+        return !job.hidden && (
+          job.companyName.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.jobRole.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.location.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.workMode.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    })
+  );
+
   return (
     <div className='m-3'>
+      <input
+        type="text"
+        placeholder="Search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="mb-4 px-4 py-3 border-2 rounded w-full bg-[#FFFFFF] border-none text-black"
+      />
     <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
       {loading ? (
         <div className="flex justify-center items-center">
@@ -86,7 +105,7 @@ export default function PostedJobsCard() {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
-        jobs.map((job) => (
+        Object.entries(filteredJobs).map(([id, job]) => (
           <li key={job._id} className="overflow-hidden rounded-xl border border-gray-200">
             <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
             <img
