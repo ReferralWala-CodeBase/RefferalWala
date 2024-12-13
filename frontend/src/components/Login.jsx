@@ -8,6 +8,7 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -27,7 +28,15 @@ function Login() {
       localStorage.setItem("userId", userId);
 
       if (isOTPVerified) {
-        navigate("/viewprofile");
+        if(localStorage.getItem('firstTimeLogin') !==null && localStorage.getItem('firstTimeLogin')==="true")
+        {
+          localStorage.removeItem('firstTimeLogin');
+          navigate("/viewprofile");
+        }
+        else
+        {
+          navigate("/")
+        }
       } else {
         setError("OTP verification is pending.");
       }
@@ -210,7 +219,7 @@ function Login() {
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{" "}
             <Link
-              to="/register"
+              to="/signup"
               className="font-semibold leading-6 text-blue-600 hover:text-blue-500"
             >
               Register

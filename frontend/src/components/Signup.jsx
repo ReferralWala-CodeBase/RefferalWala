@@ -74,6 +74,7 @@ function Signup() {
       if (response.ok) {
         toast.success("OTP verified successfully! You can now log in.");
         setShowOtpModal(false);
+        localStorage.setItem('firstTimeLogin',true)
         navigate("/user-login");
       } else {
         toast.error(data.message || "OTP verification failed. Try again.");

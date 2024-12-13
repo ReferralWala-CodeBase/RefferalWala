@@ -5,6 +5,7 @@ import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa";
 import postdata from "../../postdata.json"
+import Navbar from '../Navbar';
 
 
 function classNames(...classes) {
@@ -90,12 +91,13 @@ export default function PostedJobsCard() {
 
   return (
     <div className='m-3'>
+      <Navbar></Navbar>
       <input
         type="text"
         placeholder="Search"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="mb-4 px-4 py-3 border-2 rounded w-full bg-[#FFFFFF] border-none text-black"
+        className="mb-4 px-4 py-3 border-2 rounded w-full bg-[#FFFFFF] border-blue-500 text-black"
       />
     <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
       {loading ? (
