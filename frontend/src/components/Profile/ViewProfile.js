@@ -64,31 +64,31 @@ export default function ViewProfile() {
           <div>
             <label className="block text-sm font-medium text-gray-700">First Name</label>
             <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-              {profileData.firstName}
+              {profileData.firstName || ''}
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Last Name</label>
             <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-              {profileData.lastName}
+              {profileData.lastName || ''}
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Email</label>
             <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-              {profileData.email}
+              {profileData.email || ''}
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Mobile Number</label>
             <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-              {profileData.mobileNumber}
+              {profileData.mobileNumber || ''}
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Gender</label>
             <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-              {profileData.gender || 'N/A'}
+              {profileData.gender || ''}
             </div>
           </div>
         </div>
@@ -107,9 +107,9 @@ export default function ViewProfile() {
       {profileData.education?.length ? (
         profileData.education.map((edu, index) => (
           <tr key={index} className="border-t border-gray-300">
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.level || 'N/A'}</td>
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.schoolName || 'N/A'}</td>
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.yearOfPassing || 'N/A'}</td>
+            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.level || ''}</td>
+            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.schoolName || ''}</td>
+            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.yearOfPassing || ''}</td>
           </tr>
         ))
       ) : (
@@ -133,19 +133,19 @@ export default function ViewProfile() {
               <div>
                 <label className="block text-sm font-medium text-gray-700">Role</label>
                 <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                  {profileData.presentCompany.role || 'N/A'}
+                  {profileData.presentCompany.role || ''}
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Company Name</label>
                 <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                  {profileData.presentCompany.companyName || 'N/A'}
+                  {profileData.presentCompany.companyName || ''}
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Company Email</label>
                 <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                  {profileData.presentCompany.companyEmail || 'N/A'}
+                  {profileData.presentCompany.companyEmail || ''}
                 </div>
               </div>
               <div>
@@ -157,19 +157,19 @@ export default function ViewProfile() {
               <div>
                 <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
                 <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                  {profileData.presentCompany.yearsOfExperience || 'N/A'}
+                  {profileData.presentCompany.yearsOfExperience || ''}
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Location</label>
                 <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                  {profileData.presentCompany.location || 'N/A'}
+                  {profileData.presentCompany.location || ''}
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Current CTC</label>
                 <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                  {profileData.presentCompany.currentCTC || 'N/A'}
+                  {profileData.presentCompany.currentCTC || ''}
                 </div>
               </div>
             </>
@@ -193,9 +193,9 @@ export default function ViewProfile() {
       {profileData.experience?.length ? (
         profileData.experience.map((exp, index) => (
           <tr key={index} className="border-t border-gray-300">
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.companyName || 'N/A'}</td>
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.position || 'N/A'}</td>
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.yearsOfExperience || 'N/A'}</td>
+            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.companyName || ''}</td>
+            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.position || ''}</td>
+            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.yearsOfExperience || ''}</td>
           </tr>
         ))
       ) : (
@@ -219,19 +219,19 @@ export default function ViewProfile() {
   <div>
     <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
     <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.preferences?.preferredCompanyName || 'N/A'}
+      {profileData.preferences?.preferredCompanyName || ''}
     </div>
   </div>
   <div>
     <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
     <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.preferences?.preferredPosition || 'N/A'}
+      {profileData.preferences?.preferredPosition || ''}
     </div>
   </div>
   <div>
     <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
     <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.preferences?.expectedCTCRange || 'N/A'}
+      {profileData.preferences?.expectedCTCRange || ''}
     </div>
   </div>
 </div>
@@ -246,7 +246,7 @@ export default function ViewProfile() {
               {link.charAt(0).toUpperCase() + link.slice(1)}
             </label>
             <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-              {profileData.links?.[link] || 'N/A'}
+              {profileData.links?.[link] || ''}
             </div>
           </div>
         ))}

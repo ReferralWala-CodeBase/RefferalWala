@@ -81,10 +81,10 @@ export default function PostedJobsCard() {
   const filteredJobs = jobs && Object.fromEntries(
     Object.entries(jobs).filter(([id, job]) => {
         return !job.hidden && (
-          job.companyName.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.jobRole.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.location.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.workMode.toString().toLowerCase().includes(searchQuery.toLowerCase())
+          job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
       );
     })
   );

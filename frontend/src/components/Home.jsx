@@ -8,13 +8,12 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       const apiUrl = "https://referralwala-deployment.vercel.app/job/all";
-      const bearerToken = localStorage.getItem('token');
       try {
         
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${bearerToken}`,
+            // Authorization: `Bearer ${bearerToken}`,
             "Content-Type": "application/json",
           },
         });

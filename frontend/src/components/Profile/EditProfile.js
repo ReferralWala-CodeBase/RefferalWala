@@ -157,7 +157,7 @@ const addEducation = () => {
               <input
                 type="text"
                 name="firstName"
-                value={profileData.firstName}
+                value={profileData.firstName || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
               />
@@ -167,7 +167,7 @@ const addEducation = () => {
               <input
                 type="text"
                 name="lastName"
-                value={profileData.lastName}
+                value={profileData.lastName || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
               />
@@ -177,7 +177,7 @@ const addEducation = () => {
               <input
                 type="email"
                 name="email"
-                value={profileData.email}
+                value={profileData.email || ''}
                 onChange={handleChange}
                 disabled
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
@@ -188,7 +188,7 @@ const addEducation = () => {
               <input
                 type="text"
                 name="mobileNumber"
-                value={profileData.mobileNumber}
+                value={profileData.mobileNumber || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
               />
@@ -502,59 +502,94 @@ const addEducation = () => {
           </button>
         </div>
       )}
-          {/* Preferences */}
-          <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
-          <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
-              <input
-                type="text"
-                name="preferredCompanyName"
-                value={profileData.preferences.preferredCompanyName || ''}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
-              <input
-                type="text"
-                name="preferredPosition"
-                value={profileData.preferences.preferredPosition || ''}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
-              <input
-                type="text"
-                name="expectedCTCRange"
-                value={profileData.preferences.expectedCTCRange || ''}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-              />
-            </div>
-          </div>
+       {/* Preferences */}
+<h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
+<div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
+  <div>
+    <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
+    <input
+      type="text"
+      name="preferredCompanyName"
+      value={profileData.preferences?.preferredCompanyName || ''}
+      onChange={(e) =>
+        setProfileData({
+          ...profileData,
+          preferences: {
+            ...profileData.preferences,
+            preferredCompanyName: e.target.value,
+          },
+        })
+      }
+      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
+    <input
+      type="text"
+      name="preferredPosition"
+      value={profileData.preferences?.preferredPosition || ''}
+      onChange={(e) =>
+        setProfileData({
+          ...profileData,
+          preferences: {
+            ...profileData.preferences,
+            preferredPosition: e.target.value,
+          },
+        })
+      }
+      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
+    <input
+      type="text"
+      name="expectedCTCRange"
+      value={profileData.preferences?.expectedCTCRange || ''}
+      onChange={(e) =>
+        setProfileData({
+          ...profileData,
+          preferences: {
+            ...profileData.preferences,
+            expectedCTCRange: e.target.value,
+          },
+        })
+      }
+      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+    />
+  </div>
+</div>
+
 
           {/* Links */}
-          <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Links</h3>
-          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {['github', 'portfolio', 'linkedin', 'facebook', 'instagram', 'other'].map((link) => (
-              <div key={link}>
-                <label className="block text-sm font-medium text-gray-700">
-                  {link.charAt(0).toUpperCase() + link.slice(1)}
-                </label>
-                <input
-                  type="text"
-                  name={link}
-                  value={profileData.links[link] || ''}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
-              </div>
-            ))}
-          </div>
+        {/* Links */}
+<h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Links</h3>
+<div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+  {['github', 'portfolio', 'linkedin', 'facebook', 'instagram', 'other'].map((link) => (
+    <div key={link}>
+      <label className="block text-sm font-medium text-gray-700">
+        {link.charAt(0).toUpperCase() + link.slice(1)}
+      </label>
+      <input
+        type="text"
+        name={link}
+        value={profileData.links[link] || ''}
+        onChange={(e) =>
+          setProfileData({
+            ...profileData,
+            links: {
+              ...profileData.links,
+              [link]: e.target.value,
+            },
+          })
+        }
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+      />
+    </div>
+  ))}
+</div>
+
 {/* Achievements */}
 <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Achievements</h3>
 <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -618,15 +653,16 @@ const addEducation = () => {
 
           {/* Resume Link */}
           <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume Link</h3>
-          <div className="mt-3">
-            <input
-              type="text"
-              name="resumeLink"
-              value={profileData.resume || ''}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-            />
-          </div>
+<div className="mt-3">
+  <input
+    type="text"
+    name="resume" 
+    value={profileData.resume || ''}
+    onChange={handleChange}
+    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+  />
+</div>
+
 
           {/* About Me */}
           <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">About Me</h3>

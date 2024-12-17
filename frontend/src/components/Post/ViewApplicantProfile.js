@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
-import { useNavigate,  useParams  } from 'react-router-dom';
+import { useNavigate,  useParams, useLocation  } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
 
 export default function ViewApplicantProfile() {
   const navigate = useNavigate();
   const { applicantId } = useParams();
   const [profileData, setProfileData] = useState(null);
+  const location = useLocation(); 
+  const { jobId } = location.state || {};
+  const [status, setStatus] = useState(''); 
+  const [updatingStatus, setUpdatingStatus] = useState(false); 
+  const statusOptions = ['applied', 'selected', 'rejected', 'on hold'];
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -35,7 +40,65 @@ export default function ViewApplicantProfile() {
     };
 
     fetchProfileData();
-  }, []);
+  }, [applicantId]);
+
+
+  useEffect(() => {
+    const fetchCurrentStatus = async () => {
+      try {
+        const bearerToken = localStorage.getItem('token');
+        const response = await fetch(
+          `https://referralwala-deployment.vercel.app/job/user/${applicantId}/jobpost/${jobId}/application/status`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (!response.ok) throw new Error('Failed to fetch status');
+
+        const { status } = await response.json();
+        setStatus(status); // Set current status
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    if (jobId && applicantId) fetchCurrentStatus();
+  }, [applicantId, jobId]);
+
+  // Handle status change
+  const handleStatusChange = async (newStatus) => {
+    setUpdatingStatus(true);
+
+    try {
+      const bearerToken = localStorage.getItem('token');
+      const response = await fetch(
+        `https://referralwala-deployment.vercel.app/job/${jobId}/applicant/${applicantId}/status`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to update status');
+
+      setStatus(newStatus); 
+      alert('Status updated successfully');
+    } catch (error) {
+      console.error('Error updating status:', error);
+      alert('Failed to update status');
+    } finally {
+      setUpdatingStatus(false);
+    }
+  };
 
   if (!profileData) {
     return (
@@ -51,6 +114,25 @@ export default function ViewApplicantProfile() {
         <SidebarNavigation />
       </div>
       <div className="w-3/4 px-4 sm:px-6">
+        <div className="col-span-2 flex justify-end p-4">
+          <label htmlFor="status" className="mr-2 font-medium text-gray-700">
+            Status:
+          </label>
+          <select
+            id="status"
+            value={status}
+            onChange={(e) => handleStatusChange(e.target.value)}
+            className="inline-flex rounded-md border border-gray-300 bg-white py-2 px-4 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            disabled={updatingStatus} // Disable while updating
+          >
+            {statusOptions.map((option) => (
+              <option key={option} value={option}>
+                {option.charAt(0).toUpperCase() + option.slice(1)}
+              </option>
+            ))}
+          </select>
+          {updatingStatus && <FaSpinner className="ml-2 animate-spin text-indigo-600" />}
+        </div>
         <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Basic Profile</h3>
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Basic Information */}

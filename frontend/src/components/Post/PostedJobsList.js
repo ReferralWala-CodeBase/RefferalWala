@@ -12,9 +12,9 @@ export default function PostedJobsList() {
   useEffect(() => {
     const fetchJobs = async () => {
       const bearerToken = localStorage.getItem('token');
-
+      const userId = localStorage.getItem('userId'); 
       try {
-        const response = await fetch('https://referralwala-deployment.vercel.app/job/all', {
+        const response = await fetch(`https://referralwala-deployment.vercel.app/job/user/${userId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -56,11 +56,11 @@ export default function PostedJobsList() {
   const filteredJobs = jobs && Object.fromEntries(
     Object.entries(jobs).filter(([id, job]) => {
         return !job.hidden && (
-          job.jobUniqueId.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.companyName.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.jobRole.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.location.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.workMode.toString().toLowerCase().includes(searchQuery.toLowerCase())
+          job?.jobUniqueId?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
       );
     })
   );

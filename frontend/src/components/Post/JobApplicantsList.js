@@ -41,21 +41,30 @@ export default function JobApplicantsList() {
 
   const navigate = useNavigate();
 
+  // const handleViewApplicantDetails = (applicantId) => {
+  //   navigate(`/viewapplicantprofile/${applicantId}`); 
+  // };
   const handleViewApplicantDetails = (applicantId) => {
-    navigate(`/viewapplicantprofile/${applicantId}`); 
+    navigate(`/viewapplicantprofile/${applicantId}`, {
+      state: { jobId },
+    });
   };
 
   const filteredApplicants = applicants && Object.fromEntries(
     Object.entries(applicants).filter(([id, applicant]) => {
-        return !applicant.hidden && (
-          applicant.userId.firstName.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          applicant.userId.lastName.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          applicant.userId.email.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          applicant.appliedAt.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          applicant.status.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      return (
+        !applicant.hidden &&
+        (
+          applicant?.userId?.firstName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          applicant?.userId?.lastName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          applicant?.userId?.email?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          applicant?.appliedAt?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          applicant?.status?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        )
       );
     })
   );
+  
 
   return (
     <div className="flex">
