@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa";
 import postdata from "../../postdata.json"
 import Navbar from '../Navbar';
-
+import JobLocationFilter from './JobFilter';
+import React from 'react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -17,6 +18,13 @@ export default function PostedJobsCard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLocations, setSelectedLocations] = useState([]);
+
+  const locations = [
+    "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
+    // Add all 100 locations here
+  ];
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -77,17 +85,56 @@ export default function PostedJobsCard() {
     return date;
   }
 
+  function checkLocation(job)
+  {
+    if(selectedLocations.length === 0)
+      return true;
+    let i=0
+    while(i<selectedLocations.length)
+    { 
+      if(job.location.toString().toLowerCase() === selectedLocations[i].toString().toLowerCase())
+        return true;
+      i++
+    }
+    return false;
+  }
 
-  const filteredJobs = jobs && Object.fromEntries(
-    Object.entries(jobs).filter(([id, job]) => {
-        return !job.hidden && (
-          job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    })
-  );
+  
+  
+    // Filter locations based on the search term
+    const filteredLocations = locations.filter(location =>
+      location.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  
+    const handleSearchChange = (e) => {
+      setSearchTerm(e.target.value);
+    };
+  
+    const handleLocationSelect = (location) => {
+      if (!selectedLocations.includes(location)) {
+        setSelectedLocations([...selectedLocations, location]);
+      }
+    };
+  
+    const handleLocationRemove = (location) => {
+      setSelectedLocations(selectedLocations.filter(item => item !== location));
+    };
+
+    const filteredJobs = jobs && Object.fromEntries(
+      Object.entries(jobs).filter(([id, job]) => {
+          return !job.hidden && (
+            job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+            job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+            job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+            job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        ) && checkLocation(job);
+      })
+    );
+  
+    // Notify parent about the selected locations
+    // React.useEffect(() => {
+    //   onFilterChange(selectedLocations);
+    // }, [selectedLocations, onFilterChange]);
 
   return (
     <div className='m-3'>
@@ -99,6 +146,81 @@ export default function PostedJobsCard() {
         onChange={(e) => setSearchQuery(e.target.value)}
         className="mb-4 px-4 py-3 border-2 rounded w-full bg-[#FFFFFF] border-blue-500 text-black"
       />
+
+<div style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "5px", width: "300px" }}>
+      <h4>Filter by Job Location</h4>
+      <input
+        type="text"
+        placeholder="Search locations..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+        style={{
+          width: "100%",
+          padding: "8px",
+          marginBottom: "10px",
+          border: "1px solid #ddd",
+          borderRadius: "4px",
+        }}
+      />
+
+      <ul
+        style={{
+          maxHeight: "150px",
+          overflowY: "auto",
+          padding: "0",
+          listStyle: "none",
+          border: "1px solid #ddd",
+          borderRadius: "4px",
+        }}
+      >
+        {filteredLocations.map((location) => (
+          <li
+            key={location}
+            style={{
+              padding: "8px",
+              cursor: "pointer",
+              backgroundColor: selectedLocations.includes(location)
+                ? "#d3f3d3"
+                : "#fff",
+            }}
+            onClick={() => handleLocationSelect(location)}
+          >
+            {location}
+          </li>
+        ))}
+      </ul>
+
+      <div style={{ marginTop: "10px" }}>
+        <h5>Selected Locations:</h5>
+        {selectedLocations.map((location) => (
+          <div
+            key={location}
+            style={{
+              display: "inline-block",
+              background: "#007bff",
+              color: "#fff",
+              padding: "5px 10px",
+              borderRadius: "20px",
+              margin: "5px",
+              fontSize: "14px",
+            }}
+          >
+            {location}
+            <span
+              style={{
+                marginLeft: "10px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+              onClick={() => handleLocationRemove(location)}
+            >
+              &times;
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+
     <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
       {loading ? (
         <div className="flex justify-center items-center">
