@@ -19,10 +19,16 @@ export default function PostedJobsCard() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState("");
+  const [companySearchTerm, setCompanySearchTerm] = useState("");
   const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedCompanies, setSelectedCompanies] = useState([]);
 
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
+    // Add all 100 locations here
+  ];
+  const companies = [
+    "LSEG", "Boeing", "Synchron", "Google", "Cognizant", "Microsoft", "Meta",
     // Add all 100 locations here
   ];
 
@@ -85,14 +91,14 @@ export default function PostedJobsCard() {
     return date;
   }
 
-  function checkLocation(job)
+  function handleFilter(keyWordTobeSearched,selectedItems)
   {
-    if(selectedLocations.length === 0)
+    if(selectedItems.length === 0)
       return true;
     let i=0
-    while(i<selectedLocations.length)
+    while(i<selectedItems.length)
     { 
-      if(job.location.toString().toLowerCase() === selectedLocations[i].toString().toLowerCase())
+      if(keyWordTobeSearched === selectedItems[i].toString().toLowerCase())
         return true;
       i++
     }
@@ -120,6 +126,27 @@ export default function PostedJobsCard() {
       setSelectedLocations(selectedLocations.filter(item => item !== location));
     };
 
+
+    //Filter company based on companySearchTerm
+
+    const filteredCompanies = companies.filter(company =>
+      company.toLowerCase().includes(companySearchTerm.toLowerCase())
+    );
+  
+    const handleCompanySearchChange = (e) => {
+      setCompanySearchTerm(e.target.value);
+    };
+  
+    const handleCompanySelect = (company) => {
+      if (!selectedCompanies.includes(company)) {
+        setSelectedCompanies([...selectedCompanies, company]);
+      }
+    };
+  
+    const handleCompanyRemove = (company) => {
+      setSelectedCompanies(selectedCompanies.filter(item => item !== company));
+    };
+
     const filteredJobs = jobs && Object.fromEntries(
       Object.entries(jobs).filter(([id, job]) => {
           return !job.hidden && (
@@ -127,7 +154,8 @@ export default function PostedJobsCard() {
             job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
             job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
             job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
-        ) && checkLocation(job);
+        ) && handleFilter(job.location.toString().toLowerCase(),selectedLocations)
+          && handleFilter(job.companyName.toString().toLowerCase(),selectedCompanies);
       })
     );
   
@@ -147,7 +175,8 @@ export default function PostedJobsCard() {
         className="mb-4 px-4 py-3 border-2 rounded w-full bg-[#FFFFFF] border-blue-500 text-black"
       />
 
-<div style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "5px", width: "300px" }}>
+    <div style={{display:"flex"}}>
+      <div style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "5px", width: "300px" }}>
       <h4>Filter by Job Location</h4>
       <input
         type="text"
@@ -220,7 +249,80 @@ export default function PostedJobsCard() {
         ))}
       </div>
     </div>
+    <div style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "5px", width: "300px" }}>
+      <h4>Filter by Company</h4>
+      <input
+        type="text"
+        placeholder="Search Companies..."
+        value={companySearchTerm}
+        onChange={handleCompanySearchChange}
+        style={{
+          width: "100%",
+          padding: "8px",
+          marginBottom: "10px",
+          border: "1px solid #ddd",
+          borderRadius: "4px",
+        }}
+      />
 
+      <ul
+        style={{
+          maxHeight: "150px",
+          overflowY: "auto",
+          padding: "0",
+          listStyle: "none",
+          border: "1px solid #ddd",
+          borderRadius: "4px",
+        }}
+      >
+        {filteredCompanies.map((company) => (
+          <li
+            key={company}
+            style={{
+              padding: "8px",
+              cursor: "pointer",
+              backgroundColor: selectedCompanies.includes(company)
+                ? "#d3f3d3"
+                : "#fff",
+            }}
+            onClick={() => handleCompanySelect(company)}
+          >
+            {company}
+          </li>
+        ))}
+      </ul>
+
+      <div style={{ marginTop: "10px" }}>
+        <h5>Selected Companies:</h5>
+        {selectedCompanies.map((company) => (
+          <div
+            key={company}
+            style={{
+              display: "inline-block",
+              background: "#007bff",
+              color: "#fff",
+              padding: "5px 10px",
+              borderRadius: "20px",
+              margin: "5px",
+              fontSize: "14px",
+            }}
+          >
+            {company}
+            <span
+              style={{
+                marginLeft: "10px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+              onClick={() => handleCompanyRemove(company)}
+            >
+              &times;
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+    </div>
     <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
       {loading ? (
         <div className="flex justify-center items-center">
