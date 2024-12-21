@@ -4,9 +4,9 @@ import SidebarNavigation from '../SidebarNavigation';
 import { FaSpinner } from "react-icons/fa";
 
 export default function ViewPostedJob() {
-  const { jobId } = useParams();  // Extract jobId from URL
-  const navigate = useNavigate();  // Navigation to different pages
-  
+  const { jobId } = useParams();
+  const navigate = useNavigate();
+
   const [jobData, setJobData] = useState(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function ViewPostedJob() {
         }
 
         const data = await response.json();
-        setJobData(data);  // Populate state with fetched job data
+        setJobData(data);
       } catch (error) {
         console.error('Error fetching job data:', error);
         alert('Error fetching job details.');
@@ -36,25 +36,23 @@ export default function ViewPostedJob() {
     fetchJobData();
   }, [jobId]);
 
-  function getDate(endDate_param)
-  {
-    var tempDate=endDate_param+"";
-    var date='';
-    for(let i=0; i<tempDate.length; i++)
-    {
-      if(/^[a-zA-Z]$/.test(tempDate[i]))
+  function getDate(endDate_param) {
+    var tempDate = endDate_param + "";
+    var date = '';
+    for (let i = 0; i < tempDate.length; i++) {
+      if (/^[a-zA-Z]$/.test(tempDate[i]))
         break;
       else
-        date+=tempDate[i];
+        date += tempDate[i];
     }
     return date;
   }
 
   if (!jobData) {
-    return 
-      <div className="flex justify-center items-center">
-        <FaSpinner className="animate-spin text-xl" />
-      </div>;
+    return
+    <div className="flex justify-center items-center">
+      <FaSpinner className="animate-spin text-xl" />
+    </div>;
   }
 
   return (
@@ -63,14 +61,14 @@ export default function ViewPostedJob() {
         <SidebarNavigation />
       </div>
       <div className="w-3/4 px-4 sm:px-6">
-      <div className="col-span-2 flex justify-end p-4">
-            <button
-              onClick={() => navigate(`/editpostedjob/${jobId}`)}
-              className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Edit Job
-            </button>
-          </div>
+        <div className="col-span-2 flex justify-end p-4">
+          <button
+            onClick={() => navigate(`/editpostedjob/${jobId}`)}
+            className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Edit Job
+          </button>
+        </div>
         <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Job Details</h3>
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>

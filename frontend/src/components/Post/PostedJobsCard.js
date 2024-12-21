@@ -22,6 +22,7 @@ export default function PostedJobsCard() {
   const [companySearchTerm, setCompanySearchTerm] = useState("");
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
+  const [filterVisible, setFilterVisible] = useState(false);
 
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
@@ -141,6 +142,8 @@ export default function PostedJobsCard() {
     setSelectedCompanies(selectedCompanies.filter(item => item !== company));
   };
 
+  const toggleFilterVisibility = () => setFilterVisible(!filterVisible);
+
   const filteredJobs = jobs && Object.fromEntries(
     Object.entries(jobs).filter(([id, job]) => {
       return !job.hidden && (
@@ -164,7 +167,15 @@ export default function PostedJobsCard() {
       <div className="container mx-auto px-4 py-6">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-8xl">
-          <div className="w-full md:w-1/4 bg-white p-6 rounded-lg shadow">
+          <button
+            onClick={toggleFilterVisibility}
+            className="md:hidden mb-4 px-4 py-1 text-xs bg-blue-500 text-white rounded"
+          >
+            {filterVisible ? "Hide Filters" : "Show Filters"}
+          </button>
+
+          <div className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow ${filterVisible ? "block" : "hidden"
+            } md:block`}>
             <h3 className="text-xl font-semibold mb-4">Filter by Location</h3>
             <input
               type="text"
