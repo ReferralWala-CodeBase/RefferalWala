@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
+import { UserMinusIcon, UserPlusIcon, BellIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa";
 import postdata from "../../postdata.json"
 import Navbar from '../Navbar';
 import JobLocationFilter from './JobFilter';
+
 import React from 'react';
 
 function classNames(...classes) {
@@ -23,7 +25,10 @@ export default function PostedJobsCard() {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [filterVisible, setFilterVisible] = useState(false);
-
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followingList, setFollowingList] = useState([]);
+  const bearerToken = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
     // Add all 100 locations here
@@ -35,10 +40,40 @@ export default function PostedJobsCard() {
 
   useEffect(() => {
     const fetchJobs = async () => {
-      const bearerToken = localStorage.getItem('token');
 
       try {
         const response = await fetch('https://referralwala-deployment.vercel.app/job/all', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch jobs');
+        }
+
+        const data = await response.json();
+        // Filter only active jobs
+        const activeJobs = data.filter((job) => job.status === 'active');
+        setJobs(activeJobs);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+   // Fetch the list of users the logged-in user is following
+   useEffect(() => {
+    const fetchFollowingList = async () => {
+      if (!userId) return;
+
+      try {
+        const response = await fetch(`https://referralwala-deployment.vercel.app/user/${userId}/following`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -48,21 +83,69 @@ export default function PostedJobsCard() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch jobs');
+          throw new Error(errorData.msg || 'Failed to fetch following users');
         }
-
-        const data = await response.json();
-        setJobs(data);
+          const data = await response.json();
+          setFollowingList(data.following || []); // Set the list of followed users
+       
       } catch (error) {
-        setJobs(postdata);
-        //setError(error.message);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching following list:", error);
       }
     };
 
-    fetchJobs();
+    fetchFollowingList();
   }, []);
+ // Handle follow request
+ const handleFollow = async (targetUserId) => {
+  if (!userId) return;
+
+  try {
+    const response = await fetch(
+      `https://referralwala-deployment.vercel.app/user/follow/${targetUserId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      }
+    );
+    if (response.ok) {
+      setFollowingList((prevList) => [...prevList, { _id: targetUserId }]); // Add the followed user to the list
+    } else {
+      console.error("Follow request failed");
+    }
+  } catch (error) {
+    console.error("Error following the user:", error);
+  }
+};
+
+// Handle unfollow request
+const handleUnfollow = async (targetUserId) => {
+  if (!userId) return;
+
+  try {
+    const response = await fetch(
+      `https://referralwala-deployment.vercel.app/user/unfollow/${targetUserId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      }
+    );
+    if (response.ok) {
+      setFollowingList((prevList) => prevList.filter(user => user._id !== targetUserId)); // Remove the unfollowed user from the list
+    } else {
+      console.error("Unfollow request failed");
+    }
+  } catch (error) {
+    console.error("Error unfollowing the user:", error);
+  }
+};
 
   const navigate = useNavigate();
   const handleView = (jobId) => {
@@ -304,9 +387,31 @@ export default function PostedJobsCard() {
                       <dd className="text-gray-700">{job.workMode}</dd>
                     </div>
                     <div className="flex justify-between gap-x-4 py-2">
-                      <dt className="text-gray-500">Last Date to apply</dt>
+                      <dt className="text-gray-500">Last Date to apply </dt>
                       <dd className="text-gray-700">{getDate(job.endDate)}</dd>
                     </div>
+                    <div className="flex justify-between gap-x-4 py-2">
+      <dt className="text-gray-500">Posted by</dt>
+      <dd className="text-gray-700 flex items-center space-x-2">
+        <span>{job.user.firstName || "anonymous"}</span>
+        
+        {/* Directly compare if the job user is in the following list */}
+        {followingList.some(user => user._id === job.user._id) ? (
+          <UserMinusIcon
+            onClick={() => handleUnfollow(job.user._id)} 
+            className="cursor-pointer text-red-500 w-6 h-6"
+            title="Unfollow"
+          />
+        ) : (
+          <UserPlusIcon
+            onClick={() => handleFollow(job.user._id)} 
+            className="cursor-pointer text-blue-500 w-6 h-6"
+            title="Follow"
+          />
+        )}
+      </dd>
+    </div>
+
                   </dl>
                 </li>
               ))

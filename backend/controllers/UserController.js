@@ -399,6 +399,39 @@ exports.unfollowUser = async (req, res) => {
   }
 };
 
+exports.getFollowers = async (req, res) => {
+  try {
+    const { id } = req.params; // ID of the user whose followers are to be fetched
+    const user = await User.findById(id).populate('followers', 'firstName lastName email profileImg'); // Populate to get user details
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.status(200).json({ followers: user.followers });
+  } catch (err) {
+    console.error('Error fetching followers:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+exports.getFollowing = async (req, res) => {
+  try {
+    const { id } = req.params; // ID of the user whose following list is to be fetched
+    const user = await User.findById(id).populate('following', 'firstName lastName email profileImg'); // Populate to get user details
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.status(200).json({ following: user.following });
+  } catch (err) {
+    console.error('Error fetching following list:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+
 // Get notifications for a user
 exports.getNotifications = async (req, res) => {
   try {

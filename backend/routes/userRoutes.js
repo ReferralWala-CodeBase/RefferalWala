@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, verifyOTP,verifyCompanyEmail, sendOTP,forgotPassword, resetPassword, resendOTP , getAllProfiles, getProfileById, getProfileByEmail, updateProfileById, followUser, unfollowUser, getNotifications} = require('../controllers/UserController');
+const { registerUser, loginUser, verifyOTP,verifyCompanyEmail, sendOTP,forgotPassword, getFollowers,getFollowing, resetPassword, resendOTP , getAllProfiles, getProfileById, getProfileByEmail, updateProfileById, followUser, unfollowUser, getNotifications} = require('../controllers/UserController');
 
 const jwtMiddleware = require('../middleware/jwtMiddleware'); 
 
@@ -20,5 +20,7 @@ router.put('/profile/:id', jwtMiddleware, updateProfileById);
 router.post('/follow/:id',jwtMiddleware, followUser);
 router.post('/unfollow/:id',jwtMiddleware, unfollowUser);
 router.get('/notifications/:userId',jwtMiddleware, getNotifications);
+router.get('/:id/followers', getFollowers);
+router.get('/:id/following', getFollowing);
 
 module.exports = router;

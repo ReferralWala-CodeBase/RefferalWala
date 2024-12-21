@@ -19,13 +19,13 @@ const navigation = [
   { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
   {
     name: "Followers",
-    href: "/checkfollowers",
+    href: "/followerlist",
     icon: DocumentDuplicateIcon,
     current: false,
   },
   {
     name: "Following",
-    href: "/checkfollowings",
+    href: "/followinglist",
     icon: ChartPieIcon,
     current: false,
   },

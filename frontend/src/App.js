@@ -20,6 +20,9 @@ import PostedJobsCard from "./components/Post/PostedJobsCard";
 import ViewApplicantProfile from "./components/Post/ViewApplicantProfile";
 import AppliedJobs from "./components/Post/AppliedJobs";
 import AppliedJobDetails from "./components/Post/AppliedJobDetails";
+import FollowingList from "./components/Profile/FollowingList";
+import FollowerList from "./components/Profile/FollowerList";
+import CheckUserProfile from "./components/Profile/CheckUserProfile";
 
 function App() {
   return (
@@ -33,6 +36,7 @@ function App() {
         <Route path="/user-login" element={<LoginPage />} />
         <Route path="/viewprofile" element={<ViewProfile />} />
         <Route path="/viewapplicantprofile/:applicantId" element={<ViewApplicantProfile />} />
+        <Route path="/checkuserprofile/:applicantId" element={<CheckUserProfile />} />
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -44,6 +48,8 @@ function App() {
         <Route path="/viewpostedjob/:jobId" element={<ViewPostedJob />} />
         <Route path="/editpostedjob/:jobId" element={<EditPostedJob />} />
         <Route path="/jobapplicantslist/:jobId" element={<JobApplicantsList />} />
+        <Route path="/followinglist" element={<FollowingList />} />
+        <Route path="/followerlist" element={<FollowerList />} />
 
       </Routes>
     </>
