@@ -162,15 +162,6 @@ export default function PostedJobsCard() {
     <div className="min-h-screen bg-gray-50">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="container mx-auto px-4 py-6">
-        {/* Search Bar */}
-        {/* <input
-          type="text"
-          placeholder="Search jobs..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full mb-6 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
-        /> */}
-
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-8xl">
           <div className="w-full md:w-1/4 bg-white p-6 rounded-lg shadow">
