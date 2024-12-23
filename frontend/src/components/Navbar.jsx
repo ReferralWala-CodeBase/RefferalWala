@@ -220,6 +220,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import profile from "../assets/profile-icon-user.png";
+import { Dialog } from "@headlessui/react"; 
+import NotificationsPage from "../components/Profile/NotificationsPage";
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
@@ -241,6 +243,7 @@ function classNames(...classes) {
 
 export default function Navbar({ searchQuery, setSearchQuery }) {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -311,9 +314,11 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       type="button"
                       className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
+                      <Link to="/notifications">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
+                      </Link>
                     </button>
 
                     <Menu as="div" className="relative ml-4 flex-shrink-0">

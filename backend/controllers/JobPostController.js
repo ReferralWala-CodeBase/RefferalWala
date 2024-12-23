@@ -44,7 +44,7 @@ exports.createJobPost = async (req, res) => {
       populatedUser.followers.forEach(follower => {
         const notification = new Notification({
           user: follower._id,
-          message: `${user.firstName} ${user.lastName} has posted a new job: ${jobRole} at ${companyName}`, // Changed title to jobRole
+          message: `${user.firstName} has posted a new job: ${jobRole} at ${companyName}`, // Changed title to jobRole
           post: newJobPost._id,
         });
         notification.save(); // Save the notification
@@ -243,7 +243,7 @@ exports.updateJobPost = async (req, res) => {
         const notificationPromises = user.followers.map(follower => {
             const notification = new Notification({
                 user: follower._id,
-                message: `${user.firstName} ${user.lastName} has updated a job post: ${jobPost.jobRole} at ${jobPost.companyName}`, // Ensure `companyName` is accessible
+                message: `${user.firstName} has updated a job post: ${jobPost.jobRole} at ${jobPost.companyName}`, // Ensure `companyName` is accessible
                 post: jobPost._id,
             });
             return notification.save(); // Return the promise for saving the notification
@@ -274,7 +274,7 @@ exports.deleteJobPost = async (req, res) => {
             return res.status(404).json({ msg: 'Job post not found' });
         }
 
-        await JobPost.deleteOne({ _id: id }); // Use deleteOne instead of remove
+        await JobPost.deleteOne({ _id: id });
         res.status(200).json({ msg: 'Job post deleted successfully' });
     } catch (err) {
         console.error('Error deleting job post:', err.message);
@@ -418,7 +418,7 @@ exports.updateApplicantStatus = async (req, res) => {
     if (user) {
       const notification = new Notification({
         user: jobPost.user,
-        message: `The status of ${user.firstName} ${user.lastName}'s application for ${jobPost.jobRole} at ${jobPost.companyName} has been updated to ${status}.`,
+        message: `The status of ${user.firstName}'s application for ${jobPost.jobRole} at ${jobPost.companyName} has been updated to ${status}.`,
         post: jobPost._id,
       });
 

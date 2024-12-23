@@ -23,7 +23,7 @@ import AppliedJobDetails from "./components/Post/AppliedJobDetails";
 import FollowingList from "./components/Profile/FollowingList";
 import FollowerList from "./components/Profile/FollowerList";
 import CheckUserProfile from "./components/Profile/CheckUserProfile";
-
+import NotificationsPage from "./components/Profile/NotificationsPage";
 function App() {
   return (
     <>
@@ -50,6 +50,7 @@ function App() {
         <Route path="/jobapplicantslist/:jobId" element={<JobApplicantsList />} />
         <Route path="/followinglist" element={<FollowingList />} />
         <Route path="/followerlist" element={<FollowerList />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
 
       </Routes>
     </>

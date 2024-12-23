@@ -8,15 +8,16 @@ export default function AppliedJobDetails() {
   const navigate = useNavigate(); // Navigation to different pages
   
   const [jobData, setJobData] = useState(null);
-  const [isApplied, setIsApplied] = useState(false); // State to track if user has applied
+  const [applicationStatus, setApplicationStatus] = useState(null); // Store the application status
+  const [loading, setLoading] = useState(true); // Loading state
   
   useEffect(() => {
     const fetchJobData = async () => {
       try {
         const bearerToken = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId'); // Get current user's ID
         
-        const response = await fetch(`https://referralwala-deployment.vercel.app/job/${jobId}`, {
+        // Fetching job details
+        const jobResponse = await fetch(`https://referralwala-deployment.vercel.app/job/${jobId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -24,19 +25,35 @@ export default function AppliedJobDetails() {
           },
         });
 
-        if (!response.ok) {
+        if (!jobResponse.ok) {
           throw new Error('Failed to fetch job data');
         }
 
-        const data = await response.json();
-        setJobData(data); // Populate state with fetched job data
+        const jobData = await jobResponse.json();
+        setJobData(jobData); // Set the job data
 
-        // Check if the user has already applied
-        const userApplied = data.applicants?.includes(userId);
-        setIsApplied(userApplied);
+        // Now fetch the application status
+        const userId = localStorage.getItem('userId');
+        const statusResponse = await fetch(`https://referralwala-deployment.vercel.app/job/user/${userId}/jobpost/${jobId}/application/status`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!statusResponse.ok) {
+          throw new Error('Failed to fetch application status');
+        }
+
+        const statusData = await statusResponse.json();
+        setApplicationStatus(statusData.status); // Set the application status
+        
       } catch (error) {
-        console.error('Error fetching job data:', error);
-        alert('Error fetching job details.');
+        console.error('Error fetching job data or application status:', error);
+        alert('Error fetching job details or application status.');
+      } finally {
+        setLoading(false); // Stop loading once the fetch is done
       }
     };
 
@@ -80,10 +97,18 @@ export default function AppliedJobDetails() {
     return date;
   }
 
-  if (!jobData) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center">
         <FaSpinner className="animate-spin text-xl" />
+      </div>
+    );
+  }
+
+  if (!jobData) {
+    return (
+      <div className="flex justify-center items-center">
+        <p className="text-red-600">Error: Job data could not be fetched.</p>
       </div>
     );
   }
@@ -95,15 +120,21 @@ export default function AppliedJobDetails() {
       </div>
       <div className="w-3/4 px-4 sm:px-6">
         <div className="col-span-2 flex justify-end p-4">
-          {!isApplied ? (
+          {applicationStatus === 'applied' ? (
+            <p className="text-blue-600 font-medium">You have applied for this job.</p>
+          ) : applicationStatus === 'selected' ? (
+            <p className="text-green-600 font-medium">You have been selected for this job!</p>
+          ) : applicationStatus === 'rejected' ? (
+            <p className="text-red-600 font-medium">Your application was rejected.</p>
+          ) : applicationStatus === 'on hold' ? (
+            <p className="text-yellow-600 font-medium">Your application is on hold.</p>
+          ) : (
             <button
               onClick={handleApply}
               className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Apply
             </button>
-          ) : (
-            <p className="text-green-600 font-medium">You have already applied for this job.</p>
           )}
         </div>
         <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Job Details</h3>
