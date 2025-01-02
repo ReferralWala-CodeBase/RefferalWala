@@ -4,10 +4,11 @@ import postdata from "../postdata.json";
 
 function Home() {
   const [postCard, setPostCard] = useState([]);
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiUrl = "https://referralwala-deployment.vercel.app/job/all";
+      const apiUrl = `${Fronted_API_URL}/job/all`;
       try {
         
         const response = await fetch(apiUrl, {

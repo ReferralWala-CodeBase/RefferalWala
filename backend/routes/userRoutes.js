@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, verifyOTP,verifyCompanyEmail, sendOTP,forgotPassword, getFollowers,getFollowing, resetPassword, resendOTP , getAllProfiles, getProfileById, getProfileByEmail, updateProfileById, followUser, unfollowUser, getNotifications} = require('../controllers/UserController');
+const { registerUser, loginUser, verifyOTP,verifyCompanyEmail, sendOTP,forgotPassword, getFollowers,getFollowing, resetPassword, resendOTP , getAllProfiles, getProfileById, getProfileByEmail, updateProfileById, followUser, unfollowUser, getNotifications, getDelect} = require('../controllers/UserController');
 
 const jwtMiddleware = require('../middleware/jwtMiddleware'); 
 
@@ -15,12 +15,13 @@ router.post('/resend-otp', resendOTP);
 router.post('/sendOTP',sendOTP)
 router.get('/profile/:id', jwtMiddleware,getProfileById);
 router.get('/profile/email/:email',  jwtMiddleware,getProfileByEmail);
-router.get('/profiles', jwtMiddleware,getAllProfiles);
+router.get('/profiles', getAllProfiles);
 router.put('/profile/:id', jwtMiddleware, updateProfileById);
 router.post('/follow/:id',jwtMiddleware, followUser);
 router.post('/unfollow/:id',jwtMiddleware, unfollowUser);
 router.get('/notifications/:userId',jwtMiddleware, getNotifications);
 router.get('/:id/followers', getFollowers);
 router.get('/:id/following', getFollowing);
+router.delete('/delete', getDelect); //to delect the user
 
 module.exports = router;
