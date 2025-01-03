@@ -250,14 +250,14 @@ const handleUnfollow = async (targetUserId) => {
       <div className="container mx-auto px-4 py-6">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-8xl">
-          <button
+          {/* <button
             onClick={toggleFilterVisibility}
             className="md:hidden mb-4 px-4 py-1 text-xs bg-blue-500 text-white rounded"
           >
             {filterVisible ? "Hide Filters" : "Show Filters"}
-          </button>
+          </button> */}
 
-          <div className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow ${filterVisible ? "block" : "hidden"
+          {/* <div className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow ${filterVisible ? "block" : "hidden"
             } md:block`}>
             <h3 className="text-xl font-semibold mb-4">Filter by Location</h3>
             <input
@@ -344,11 +344,11 @@ const handleUnfollow = async (targetUserId) => {
                 </span>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Job Cards Section */}
           <ul role="list"
-            className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+            className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
             {loading ? (
               <div className="flex justify-center items-center">
                 <FaSpinner className="animate-spin text-xl" />
