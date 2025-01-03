@@ -393,7 +393,7 @@ const handleUnfollow = async (targetUserId) => {
                     <div className="flex justify-between gap-x-4 py-2">
       <dt className="text-gray-500">Posted by</dt>
       <dd className="text-gray-700 flex items-center space-x-2">
-        <span>{job.user.firstName || "anonymous"}</span>
+        <span>{job.user?.firstName || "anonymous"}</span>
         
         {/* Directly compare if the job user is in the following list */}
         {followingList.some(user => user._id === job.user._id) ? (
