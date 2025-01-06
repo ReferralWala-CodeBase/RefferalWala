@@ -1,10 +1,10 @@
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 
-require('dotenv').config(); 
+require('dotenv').config();
 
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -69,7 +69,6 @@ exports.registerUser = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 
 
 exports.verifyOTP = async (req, res) => {
@@ -156,12 +155,11 @@ exports.loginUser = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    const expiresIn = '1h'; 
+    const expiresIn = '1d';
 
     // Create and send the JWT token for successful login
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn });
-    res.json({ token, isOTPVerified: true, userId: user._id }); 
-    console.log(token);
+    res.json({ token, isOTPVerified: true, userId: user._id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -246,6 +244,7 @@ exports.resendOTP = async (req, res) => {
     // Save the new OTP to the user document
     user.otp = otp;
     await user.save();
+    console.log("otp saved")
 
     res.json({ message: 'OTP sent to your email.' });
   } catch (err) {
@@ -340,62 +339,66 @@ exports.updateProfileById = async (req, res) => {
 
 exports.followUser = async (req, res) => {
   try {
-      const { id } = req.params; // ID of the user to follow
-      const { userId } = req.body; // ID of the user following
+    const { id } = req.params; // ID of the user to follow
+    const { userId } = req.body; // ID of the user following
 
-      const userToFollow = await User.findById(id);
-      const follower = await User.findById(userId);
+    if (id === userId) {
+      return res.status(400).json({ msg: 'You cannot follow yourself' });
+    }
 
-      if (!userToFollow || !follower) {
-          return res.status(404).json({ msg: 'User not found' });
-      }
+    const userToFollow = await User.findById(id);
+    const follower = await User.findById(userId);
 
-      // Check if already following
-      if (follower.following.includes(id)) {
-          return res.status(400).json({ msg: 'Already following this user' });
-      }
+    if (!userToFollow || !follower) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
 
-      // Follow the user
-      follower.following.push(id);
-      userToFollow.followers.push(userId);
-      await follower.save();
-      await userToFollow.save();
+    // Check if already following
+    if (follower.following.includes(id)) {
+      return res.status(400).json({ msg: 'Already following this user' });
+    }
 
-      res.status(200).json({ msg: 'You are now following this user' });
+    // Follow the user
+    follower.following.push(id);
+    userToFollow.followers.push(userId);
+    await follower.save();
+    await userToFollow.save();
+
+    res.status(200).json({ msg: 'You are now following this user' });
   } catch (err) {
-      console.error('Error following user:', err.message);
-      res.status(500).send('Server Error');
+    console.error('Error following user:', err.message);
+    res.status(500).send('Server Error');
   }
 };
 
 // Unfollow a user
 exports.unfollowUser = async (req, res) => {
   try {
-      const { id } = req.params; // ID of the user to unfollow
-      const { userId } = req.body; // ID of the user unfollowing
+    const { id } = req.params; // ID of the user to unfollow
+    const { userId } = req.body; // ID of the user unfollowing
 
-      const userToUnfollow = await User.findById(id);
-      const unfollower = await User.findById(userId);
+    const userToUnfollow = await User.findById(id);
+    const unfollower = await User.findById(userId);
 
-      if (!userToUnfollow || !unfollower) {
-          return res.status(404).json({ msg: 'User not found' });
-      }
+    if (!userToUnfollow || !unfollower) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
 
-      // Check if not following
-      if (!unfollower.following.includes(id)) {
-          return res.status(400).json({ msg: 'Not following this user' });
-      }
+    // Check if not following
+    if (!unfollower.following.includes(id)) {
+      return res.status(400).json({ msg: 'Not following this user' });
+    }
 
-      // Unfollow the user
-      unfollower.following.pull(id);
-      userToUnfollow.followers.pull(userId);
-      await unfollower.save();
-      await userToUnfollow.save();
+    // Unfollow the user
+    unfollower.following.pull(id);
+    userToUnfollow.followers.pull(userId);
+    await unfollower.save();
+    await userToUnfollow.save();
 
-      res.status(200).json({ msg: 'You have unfollowed this user' });
+    res.status(200).json({ msg: 'You have unfollowed this user' });
   } catch (err) {
-      console.error('Error unfollowing user:', err.message);
-      res.status(500).send('Server Error');
+    console.error('Error unfollowing user:', err.message);
+    res.status(500).send('Server Error');
   }
 };
 
@@ -435,15 +438,35 @@ exports.getFollowing = async (req, res) => {
 // Get notifications for a user
 exports.getNotifications = async (req, res) => {
   try {
-      const { userId } = req.params; // ID of the user for whom notifications are to be fetched
-      const notifications = await Notification.find({ user: userId })
-          .populate('post', 'title') // Adjust to your post model fields
-          .sort({ createdAt: -1 });
+    const { userId } = req.params; // ID of the user for whom notifications are to be fetched
+    const notifications = await Notification.find({ user: userId })
+      .populate('post', 'title') // Adjust to your post model fields
+      .sort({ createdAt: -1 });
 
-      res.status(200).json(notifications);
+    res.status(200).json(notifications);
   } catch (err) {
-      console.error('Error fetching notifications:', err.message);
-      res.status(500).send('Server Error');
+    console.error('Error fetching notifications:', err.message);
+    res.status(500).send('Server Error');
   }
 };
 
+exports.getDelect = async (req, res) => {
+  const { email } = req.body; // Ensure the request contains the email
+
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+
+  try {
+    const result = await User.findOneAndDelete({ email });
+
+    if (!result) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User deleted successfully', user: result });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Server error while deleting user' });
+  }
+}

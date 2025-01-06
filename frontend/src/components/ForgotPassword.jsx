@@ -10,6 +10,7 @@ function ForgotPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [step, setStep] = useState(1); // Step 1: Request OTP, Step 2: Verify OTP & Reset Password
   const navigate = useNavigate();
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleOtpChange = (e) => setOtp(e.target.value);
@@ -20,7 +21,7 @@ function ForgotPassword() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://referralwala-deployment.vercel.app/user/forgot-password",
+        `${Fronted_API_URL}/user/forgot-password`,
         {
           method: "POST",
           headers: {
@@ -47,7 +48,7 @@ function ForgotPassword() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://referralwala-deployment.vercel.app/user/reset-password",
+        `${Fronted_API_URL}/user/reset-password`,
         {
           method: "POST",
           headers: {

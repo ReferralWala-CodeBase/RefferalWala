@@ -13,7 +13,8 @@ const jwtMiddleware = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId);
+
+    const user = await User.findById(decoded.userId) || await User.findById(decoded._id);  // Use both because one work in manual and one in google;
 
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized: Invalid token' });

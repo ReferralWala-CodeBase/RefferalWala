@@ -6,6 +6,7 @@ const NotificationsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate(); // Initialize the useNavigate hook
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -19,7 +20,7 @@ const NotificationsPage = () => {
 
       try {
         const response = await fetch(
-          `https://referralwala-deployment.vercel.app/user/notifications/${userId}`,
+          `${Fronted_API_URL}/user/notifications/${userId}`,
           {
             method: "GET",
             headers: {

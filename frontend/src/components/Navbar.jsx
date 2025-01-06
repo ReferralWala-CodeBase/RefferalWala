@@ -233,7 +233,7 @@ const navigation = [
 
 const userNavigation = [
   { name: "Your Profile", href: "/viewprofile" },
-  { name: "Settings", href: "/settings" },
+  { name: "Settings", href: "#" },
   { name: "Sign out", href: "#" },
 ];
 
@@ -260,7 +260,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   };
 
   return (
-    <Disclosure as="header" className="bg-white shadow">
+    <Disclosure as="header" className="bg-white sticky top-0 z-50">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
@@ -310,6 +310,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
                 {loggedIn ? (
                   <>
+                  {/* Here i want to notification */} 
                     <button
                       type="button"
                       className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

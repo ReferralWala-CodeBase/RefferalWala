@@ -1,26 +1,24 @@
 const express = require('express');
-const passport = require('passport');
+const { passport, handleGoogleLogin } = require('../config/passport.js');
 const router = express.Router();
 
-// Route for Google authentication
+// Google Login with OAuth Code
+router.post('/googleLogin', handleGoogleLogin);
+
+// Google OAuth Redirect
 router.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-// Callback route for Google to redirect to after successful login
 router.get(
   '/auth/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/login', // Redirect to login if failure
-    session: false, // Disable sessions since you're using JWT
-  }),
+  passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    // Issue JWT upon successful login
-    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, {
+      expiresIn: '7d',
     });
-    res.json({ token, userId: req.user._id });
+    res.redirect(`/auth/success?token=${token}`);
   }
 );
 

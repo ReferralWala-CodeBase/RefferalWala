@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useGoogleLogin } from '@react-oauth/google';
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +16,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "https://referralwala-deployment.vercel.app/user/login",
+        `${Fronted_API_URL}/user/login`,
         {
           email,
           password,
@@ -28,13 +29,11 @@ function Login() {
       localStorage.setItem("userId", userId);
 
       if (isOTPVerified) {
-        if(localStorage.getItem('firstTimeLogin') !==null && localStorage.getItem('firstTimeLogin')==="true")
-        {
+        if (localStorage.getItem('firstTimeLogin') !== null && localStorage.getItem('firstTimeLogin') === "true") {
           localStorage.removeItem('firstTimeLogin');
           navigate("/viewprofile");
         }
-        else
-        {
+        else {
           navigate("/")
         }
       } else {
@@ -45,6 +44,42 @@ function Login() {
       setError("Invalid email or password");
     }
   };
+
+  const handleGoogleAuth = useGoogleLogin({
+    onSuccess: async (authResult) => {
+      try {
+        if (authResult['code']) {
+          const response = await fetch(`${Fronted_API_URL}/googleauth/googleLogin`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: authResult.code }),
+          });
+  
+          const data = await response.json();
+  
+          if (!response.ok) {
+            alert(data.message || 'An error occurred during signup/login');
+            return;
+          }
+  
+          const { token, userId } = data;
+          console.log(token)
+  
+          // Store token in localStorage and navigate to profile
+          localStorage.setItem('token', token);
+          localStorage.setItem('userId', userId);
+          alert("Login successfully")
+          navigate('/viewprofile');
+        }
+      } catch (error) {
+        console.error('Error during Google authentication:', error);
+      }
+    },
+    onError: () => alert('Google Sign In was unsuccessful. Try again later.'),
+    flow: 'auth-code',
+  });
+  
+
 
   return (
     <section className="min-h-screen bg-slate-200/90">
@@ -161,9 +196,10 @@ function Login() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <a
-                  href="/"
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                <div
+                onClick={handleGoogleAuth}
+                  // href="#"
+                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer"
                 >
                   <svg
                     className="h-5 w-5"
@@ -190,11 +226,11 @@ function Login() {
                   <span className="text-sm font-semibold leading-6">
                     Google
                   </span>
-                </a>
+                </div>
 
                 <a
                   href="/"
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer pointer-events-none"
                 >
                   <svg
                     className="h-5 w-5"

@@ -9,13 +9,15 @@ export default function CheckUserProfile() {
   const [profileData, setProfileData] = useState(null);
   const location = useLocation(); 
   const { jobId } = location.state || {};
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         
         const bearerToken = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
-        const response = await fetch(`https://referralwala-deployment.vercel.app/user/profile/${applicantId}`, {
+        const response = await fetch(`${Fronted_API_URL}/user/profile/${applicantId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,

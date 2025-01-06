@@ -2,22 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import { FaSpinner } from "react-icons/fa";
+import Navbar from "../Navbar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AppliedJobDetails() {
   const { jobId } = useParams(); // Extract jobId from URL
   const navigate = useNavigate(); // Navigation to different pages
-  
+
   const [jobData, setJobData] = useState(null);
   const [applicationStatus, setApplicationStatus] = useState(null); // Store the application status
   const [loading, setLoading] = useState(true); // Loading state
-  
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+
   useEffect(() => {
     const fetchJobData = async () => {
       try {
         const bearerToken = localStorage.getItem('token');
-        
+
         // Fetching job details
-        const jobResponse = await fetch(`https://referralwala-deployment.vercel.app/job/${jobId}`, {
+        const jobResponse = await fetch(`${Fronted_API_URL}/job/${jobId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -34,7 +38,7 @@ export default function AppliedJobDetails() {
 
         // Now fetch the application status
         const userId = localStorage.getItem('userId');
-        const statusResponse = await fetch(`https://referralwala-deployment.vercel.app/job/user/${userId}/jobpost/${jobId}/application/status`, {
+        const statusResponse = await fetch(`${Fronted_API_URL}/job/user/${userId}/jobpost/${jobId}/application/status`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -48,10 +52,10 @@ export default function AppliedJobDetails() {
 
         const statusData = await statusResponse.json();
         setApplicationStatus(statusData.status); // Set the application status
-        
+
       } catch (error) {
         console.error('Error fetching job data or application status:', error);
-        alert('Error fetching job details or application status.');
+        // alert('Error fetching job details or application status.');
       } finally {
         setLoading(false); // Stop loading once the fetch is done
       }
@@ -65,7 +69,7 @@ export default function AppliedJobDetails() {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId'); // Get current user's ID
 
-      const response = await fetch(`https://referralwala-deployment.vercel.app/job/apply/${jobId}`, {
+      const response = await fetch(`${Fronted_API_URL}/job/apply/${jobId}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${bearerToken}`,
@@ -75,7 +79,9 @@ export default function AppliedJobDetails() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to apply for the job');
+        const errorData = await response.json();
+        // throw new Error('Failed to apply for the job');
+        throw new Error(errorData.msg || response.statusText);
       }
 
       // On successful application, redirect to the "applied jobs" page
@@ -83,7 +89,8 @@ export default function AppliedJobDetails() {
       navigate('/appliedjobs');
     } catch (error) {
       console.error('Error applying for the job:', error);
-      alert('Error applying for the job.');
+      toast.error(error.message);
+      // alert('Error applying for the job.');
     }
   };
 
@@ -114,81 +121,85 @@ export default function AppliedJobDetails() {
   }
 
   return (
-    <div className="flex">
-      <div className="w-1/4">
-        <SidebarNavigation />
-      </div>
-      <div className="w-3/4 px-4 sm:px-6">
-        <div className="col-span-2 flex justify-end p-4">
-          {applicationStatus === 'applied' ? (
-            <p className="text-blue-600 font-medium">You have applied for this job.</p>
-          ) : applicationStatus === 'selected' ? (
-            <p className="text-green-600 font-medium">You have been selected for this job!</p>
-          ) : applicationStatus === 'rejected' ? (
-            <p className="text-red-600 font-medium">Your application was rejected.</p>
-          ) : applicationStatus === 'on hold' ? (
-            <p className="text-yellow-600 font-medium">Your application is on hold.</p>
-          ) : (
-            <button
-              onClick={handleApply}
-              className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Apply
-            </button>
-          )}
+    <>
+      <Navbar />
+      <div className="flex">
+        <div className="w-1/4">
+          <SidebarNavigation />
         </div>
-        <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Job Details</h3>
-        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Job Role</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobRole}</div>
+        <div className="w-3/4 px-4 sm:px-6">
+          <div className="col-span-2 flex justify-end p-4">
+            {applicationStatus === 'applied' ? (
+              <p className="text-blue-600 font-medium">You have applied for this job.</p>
+            ) : applicationStatus === 'selected' ? (
+              <p className="text-green-600 font-medium">You have been selected for this job!</p>
+            ) : applicationStatus === 'rejected' ? (
+              <p className="text-red-600 font-medium">Your application was rejected.</p>
+            ) : applicationStatus === 'on hold' ? (
+              <p className="text-yellow-600 font-medium">Your application is on hold.</p>
+            ) : (
+              <button
+                onClick={handleApply}
+                className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Apply
+              </button>
+            )}
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Job Link</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobLink}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Job ID</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobUniqueId}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Company Name</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.companyName}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Experience Required (Years)</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.experienceRequired}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Location</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.location}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Work Mode</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.workMode}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Employment Type</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.employmentType}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">CTC (INR-Lakhs)</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.ctc}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Number of Referrals</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.noOfReferrals}</div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">End Date</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{getDate(jobData.endDate)}</div>
-          </div>
-          <div className="col-span-2 pb-4">
-            <label className="block text-sm font-medium text-gray-700">Job Description</label>
-            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2 h-40 overflow-auto">{jobData.jobDescription}</div>
+          <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Job Details</h3>
+          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Job Role</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobRole}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Job Link</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobLink}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Job ID</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobUniqueId}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Company Name</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.companyName}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Experience Required (Years)</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.experienceRequired}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Location</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.location}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Work Mode</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.workMode}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Employment Type</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.employmentType}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">CTC (INR-Lakhs)</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.ctc}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Number of Referrals</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.noOfReferrals}</div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">End Date</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{getDate(jobData.endDate)}</div>
+            </div>
+            <div className="col-span-2 pb-4">
+              <label className="block text-sm font-medium text-gray-700">Job Description</label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2 h-40 overflow-auto">{jobData.jobDescription}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+    </>
   );
 }

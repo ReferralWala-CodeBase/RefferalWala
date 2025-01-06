@@ -27,10 +27,10 @@ import NotificationsPage from "./components/Profile/NotificationsPage";
 function App() {
   return (
     <>
-
       <Routes>
-        <Route path="/signup" element={<SignupPage />} />
+
         <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPage />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/user-login" element={<LoginPage />} />

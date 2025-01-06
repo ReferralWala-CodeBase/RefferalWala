@@ -6,14 +6,14 @@ import { FaSpinner } from "react-icons/fa";
 export default function ViewPostedJob() {
   const { jobId } = useParams();
   const navigate = useNavigate();
-
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const [jobData, setJobData] = useState(null);
 
   useEffect(() => {
     const fetchJobData = async () => {
       try {
         const bearerToken = localStorage.getItem('token');
-        const response = await fetch(`https://referralwala-deployment.vercel.app/job/${jobId}`, {
+        const response = await fetch(`${Fronted_API_URL}/job/${jobId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,

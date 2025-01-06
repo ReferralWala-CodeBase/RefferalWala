@@ -15,6 +15,18 @@ exports.createJobPost = async (req, res) => {
       if (!user) {
         return res.status(404).json({ msg: 'User not found' });
       }
+
+      // to avoid duplicates job posting
+      const duplicateJob = await JobPost.findOne({
+        user: userId,
+        jobRole,
+        companyName,
+        jobUniqueId,
+      });
+  
+      if (duplicateJob) {
+        return res.status(400).json({ msg: 'You have already posted this job.' });
+      }      
   
       // Create a new job post
       const newJobPost = new JobPost({
@@ -140,6 +152,10 @@ exports.applyForJobPost = async (req, res) => {
     const jobPost = await JobPost.findById(id).populate('user', 'firstName lastName email');
     if (!jobPost) {
       return res.status(404).json({ msg: 'Job post not found' });
+    }
+
+    if (jobPost.user._id.toString() === userId) {
+      return res.status(400).json({ msg: 'You cannot apply for your own job' });
     }
 
     // Check if the user has already applied
