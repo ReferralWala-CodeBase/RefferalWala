@@ -268,7 +268,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               <div className="relative z-10 flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
                   <h1 className="font-bold tracking-[2px] text-sm text-blue-600">
-                    Referral Wala
+                    ReferralWala
                   </h1>
                 </div>
               </div>
@@ -288,7 +288,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       id="search"
                       name="search"
                       className="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      placeholder="Search"
+                      placeholder="Your Dream is waiting....."
                       type="search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
