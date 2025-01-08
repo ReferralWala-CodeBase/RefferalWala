@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useGoogleLogin } from '@react-oauth/google';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -58,7 +60,7 @@ function Login() {
           const data = await response.json();
   
           if (!response.ok) {
-            alert(data.message || 'An error occurred during signup/login');
+            toast.error(data.message || "An error occurred during signup/login");
             return;
           }
   
@@ -68,14 +70,14 @@ function Login() {
           // Store token in localStorage and navigate to profile
           localStorage.setItem('token', token);
           localStorage.setItem('userId', userId);
-          alert("Login successfully")
+          toast.success("Login successfully");
           navigate('/viewprofile');
         }
       } catch (error) {
         console.error('Error during Google authentication:', error);
       }
     },
-    onError: () => alert('Google Sign In was unsuccessful. Try again later.'),
+    onError: () => toast.error('Google Sign In was unsuccessful. Try again later.'),
     flow: 'auth-code',
   });
   
@@ -263,6 +265,7 @@ function Login() {
           </p>
         </div>
       </div>
+
     </section>
   );
 }

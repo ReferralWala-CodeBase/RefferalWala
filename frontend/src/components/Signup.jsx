@@ -42,7 +42,7 @@ function Signup() {
           const data = await response.json();
 
           if (!response.ok) {
-            alert(data.message || 'An error occurred during signup/login');
+            toast.error(data.message || "An error occurred during signup/login");
             return;
           }
 
@@ -52,14 +52,14 @@ function Signup() {
           // Store token in localStorage and navigate to profile
           localStorage.setItem('token', token);
           localStorage.setItem('userId', userId);
-          alert("Register successfully")
+          toast.success("Register successfully");
           navigate('/viewprofile');
         }
       } catch (error) {
         console.error('Error during Google authentication:', error);
       }
     },
-    onError: () => alert('Google Sign In was unsuccessful. Try again later.'),
+    onError: () => toast.error('Google Sign up was unsuccessful. Try again later.'),
     flow: 'auth-code',
   });
 

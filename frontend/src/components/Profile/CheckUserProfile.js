@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
-import { useNavigate,  useParams, useLocation  } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function CheckUserProfile() {
   const navigate = useNavigate();
   const { applicantId } = useParams();
   const [profileData, setProfileData] = useState(null);
-  const location = useLocation(); 
+  const location = useLocation();
   const { jobId } = location.state || {};
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        
+
         const bearerToken = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
         const response = await fetch(`${Fronted_API_URL}/user/profile/${applicantId}`, {
@@ -30,10 +32,10 @@ export default function CheckUserProfile() {
         }
 
         const data = await response.json();
-        setProfileData(data); 
+        setProfileData(data);
       } catch (error) {
         console.error('Error fetching profile data:', error);
-        alert('Error fetching profile details.');
+        toast.error(error.message);
       }
     };
 
@@ -89,39 +91,39 @@ export default function CheckUserProfile() {
             </div>
           </div>
         </div>
-  
+
         <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education</h3>
-<div className="mt-3 overflow-x-auto">
-  <table className="min-w-full table-auto border border-gray-300">
-    <thead className="bg-gray-200">
-      <tr>
-        <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Level</th>
-        <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">School Name</th>
-        <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Year of Passing</th>
-      </tr>
-    </thead>
-    <tbody>
-      {profileData.education?.length ? (
-        profileData.education.map((edu, index) => (
-          <tr key={index} className="border-t border-gray-300">
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.level || 'N/A'}</td>
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.schoolName || 'N/A'}</td>
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.yearOfPassing || 'N/A'}</td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan="3" className="px-4 py-2 text-sm text-gray-900 text-center border border-gray-300">
-            No education details added
-          </td>
-        </tr>
-      )}
-    </tbody>
-  </table>
-</div>
+        <div className="mt-3 overflow-x-auto">
+          <table className="min-w-full table-auto border border-gray-300">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Level</th>
+                <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">School Name</th>
+                <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Year of Passing</th>
+              </tr>
+            </thead>
+            <tbody>
+              {profileData.education?.length ? (
+                profileData.education.map((edu, index) => (
+                  <tr key={index} className="border-t border-gray-300">
+                    <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.level || 'N/A'}</td>
+                    <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.schoolName || 'N/A'}</td>
+                    <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{edu.yearOfPassing || 'N/A'}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="px-4 py-2 text-sm text-gray-900 text-center border border-gray-300">
+                    No education details added
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
 
-  
+
         {/* Present Company */}
         <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Present Company</h3>
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -177,143 +179,143 @@ export default function CheckUserProfile() {
           )}
         </div>
         <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Experience</h3>
-<div className="mt-3 overflow-x-auto">
-  <table className="min-w-full table-auto border border-gray-300">
-    <thead className="bg-gray-200">
-      <tr>
-        <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Company Name</th>
-        <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Position</th>
-        <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Years of Experience</th>
-      </tr>
-    </thead>
-    <tbody>
-      {profileData.experience?.length ? (
-        profileData.experience.map((exp, index) => (
-          <tr key={index} className="border-t border-gray-300">
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.companyName || 'N/A'}</td>
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.position || 'N/A'}</td>
-            <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.yearsOfExperience || 'N/A'}</td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan="3" className="px-4 py-2 text-sm text-gray-900 text-center border border-gray-300">
-            No experience details added
-          </td>
-        </tr>
-      )}
-    </tbody>
-  </table>
-</div>
+        <div className="mt-3 overflow-x-auto">
+          <table className="min-w-full table-auto border border-gray-300">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Company Name</th>
+                <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Position</th>
+                <th className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300">Years of Experience</th>
+              </tr>
+            </thead>
+            <tbody>
+              {profileData.experience?.length ? (
+                profileData.experience.map((exp, index) => (
+                  <tr key={index} className="border-t border-gray-300">
+                    <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.companyName || 'N/A'}</td>
+                    <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.position || 'N/A'}</td>
+                    <td className="px-4 py-2 text-sm text-gray-900 border border-gray-300">{exp.yearsOfExperience || 'N/A'}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="px-4 py-2 text-sm text-gray-900 text-center border border-gray-300">
+                    No experience details added
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
 
 
 
 
-      {/* Preferences */}
-      <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
-<div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
-  <div>
-    <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.preferences?.preferredCompanyName || 'N/A'}
-    </div>
-  </div>
-  <div>
-    <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.preferences?.preferredPosition || 'N/A'}
-    </div>
-  </div>
-  <div>
-    <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.preferences?.expectedCTCRange || 'N/A'}
-    </div>
-  </div>
-</div>
-
-
-      {/* Links */}
-      <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Links</h3>
-      <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {['github', 'portfolio', 'linkedin', 'facebook', 'instagram', 'other'].map((link) => (
-          <div key={link}>
-            <label className="block text-sm font-medium text-gray-700">
-              {link.charAt(0).toUpperCase() + link.slice(1)}
-            </label>
+        {/* Preferences */}
+        <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
             <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-              {profileData.links?.[link] || 'N/A'}
+              {profileData.preferences?.preferredCompanyName || 'N/A'}
             </div>
           </div>
-        ))}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
+            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+              {profileData.preferences?.preferredPosition || 'N/A'}
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
+            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+              {profileData.preferences?.expectedCTCRange || 'N/A'}
+            </div>
+          </div>
+        </div>
+
+
+        {/* Links */}
+        <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Links</h3>
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {['github', 'portfolio', 'linkedin', 'facebook', 'instagram', 'other'].map((link) => (
+            <div key={link}>
+              <label className="block text-sm font-medium text-gray-700">
+                {link.charAt(0).toUpperCase() + link.slice(1)}
+              </label>
+              <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+                {profileData.links?.[link] || 'N/A'}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Skills */}
+        <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Skills</h3>
+        <div className="mt-3">
+          {profileData.skills?.length ? (
+            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+              {profileData.skills.join(", ")}
+            </div>
+          ) : (
+            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+              No skills added
+            </div>
+          )}
+        </div>
+
+        {/* Achievements */}
+        <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Achievements</h3>
+        <div className="mt-3">
+          {profileData.achievements?.length ? (
+            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+              {profileData.achievements.join(", ")}
+            </div>
+          ) : (
+            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+              No achievements added
+            </div>
+          )}
+        </div>
+
+
+        {/* Resume Link */}
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Resume Link</label>
+            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+              {profileData.resume ? (
+                <a
+                  href={profileData.resumeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-indigo-600 hover:underline"
+                >
+                  View Resume
+                </a>
+              ) : (
+                'No resume uploaded'
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* About Me */}
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700">About Me</label>
+            <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
+              {profileData.aboutMe || 'No about me information provided'}
+            </div>
+          </div>
+        </div>
+
       </div>
 
-    {/* Skills */}
-<h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Skills</h3>
-<div className="mt-3">
-  {profileData.skills?.length ? (
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.skills.join(", ")}
-    </div>
-  ) : (
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      No skills added
-    </div>
-  )}
-</div>
-
-{/* Achievements */}
-<h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Achievements</h3>
-<div className="mt-3">
-  {profileData.achievements?.length ? (
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.achievements.join(", ")}
-    </div>
-  ) : (
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      No achievements added
-    </div>
-  )}
-</div>
-
-
-      {/* Resume Link */}
-<div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-  <div>
-    <label className="block text-sm font-medium text-gray-700">Resume Link</label>
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.resume ? (
-        <a
-          href={profileData.resumeLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-indigo-600 hover:underline"
-        >
-          View Resume
-        </a>
-      ) : (
-        'No resume uploaded'
-      )}
-    </div>
-  </div>
-</div>
-
-{/* About Me */}
-<div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-  <div className="col-span-2">
-    <label className="block text-sm font-medium text-gray-700">About Me</label>
-    <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-      {profileData.aboutMe || 'No about me information provided'}
-    </div>
-  </div>
-</div>
-
-      </div>
-
-      
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
-  
-  
+
+
 }

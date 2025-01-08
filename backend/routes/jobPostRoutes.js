@@ -11,7 +11,9 @@ const {
   getUserApplicationStatuses,
   getApplicationStatusForJobPost,
   getJobsByJobUniqueId,
-  getJobPostsByUser
+  getJobPostsByUser,
+  removeFromJobApplicants,
+  withdrawFromJobApplicants
 } = require('../controllers/JobPostController');
 
 const jwtMiddleware = require('../middleware/jwtMiddleware'); 
@@ -52,6 +54,9 @@ router.put('/update/:id',jwtMiddleware, updateJobPost);
 router.get('/unique/:jobUniqueId',jwtMiddleware, getJobsByJobUniqueId);
 
 // Delete a job post
-router.delete('/delete/:id',jwtMiddleware, deleteJobPost);
+router.delete('/delete/:id', jwtMiddleware, deleteJobPost);
+
+// Withdraw user a job applicants list
+router.delete('/withdraw_applicant', jwtMiddleware, withdrawFromJobApplicants);
 
 module.exports = router;

@@ -87,7 +87,7 @@ export default function PostedJobsCard() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.msg || 'Failed to fetch following users');
+          throw new Error(errorData.message || 'Failed to fetch following users');
         }
         const data = await response.json();
         setFollowingList(data.following || []); // Set the list of followed users
@@ -99,6 +99,7 @@ export default function PostedJobsCard() {
 
     fetchFollowingList();
   }, []);
+  
   // Handle follow request
   const handleFollow = async (targetUserId) => {
     if (!userId) return;
@@ -121,7 +122,7 @@ export default function PostedJobsCard() {
       } else {
         console.error("Follow request failed");
         const errorData = await response.json();
-        throw new Error(errorData.msg || response.statusText);
+        throw new Error(errorData.message || response.statusText);
       }
     } catch (error) {
       toast.error(error.message);
@@ -402,7 +403,8 @@ export default function PostedJobsCard() {
                     <div className="flex justify-between gap-x-4 py-2">
                       <dt className="text-gray-500">Posted by</dt>
                       <dd className="text-gray-700 flex items-center space-x-2">
-                        <span>{job.user.firstName || "anonymous"}</span>
+                        {/* <span>{job.user.firstName || "anonymous"}</span> */}
+                        <span>{job.user?.firstName || "anonymous"}</span>
 
                         {/* Directly compare if the job user is in the following list */}
                         {followingList.some(user => user._id === job.user._id) ? (

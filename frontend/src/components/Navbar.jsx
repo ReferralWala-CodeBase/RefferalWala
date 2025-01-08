@@ -269,7 +269,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 <div className="flex flex-shrink-0 items-center">
                   <h1 className="font-bold tracking-[2px] text-sm text-blue-600">
                     Referral Wala
-                  </h1>
+                  </h1>3
                 </div>
               </div>
               <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">

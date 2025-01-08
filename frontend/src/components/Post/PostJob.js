@@ -57,7 +57,7 @@ export default function PostJob() {
       }
 
       const responseData = await response.json();
-      alert('Job posted successfully!');
+      toast.success("Job posted successfully!");
       console.log('Response:', responseData);
     } catch (error) {
       console.error('Error posting job:', error.message);

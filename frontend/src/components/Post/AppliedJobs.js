@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
+import { FaTrash } from 'react-icons/fa';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AppliedJobs() {
   const navigate = useNavigate();
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refresh, setRefresh] = useState(false); // to refresh
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   useEffect(() => {
@@ -39,7 +43,36 @@ export default function AppliedJobs() {
     };
 
     fetchAppliedJobs();
-  }, []);
+  }, [refresh]);
+
+  const withdrawApplication = async (jobId) => {
+    try {
+      const bearerToken = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+  
+      const response = await fetch(`${Fronted_API_URL}/job/withdraw_applicant`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ jobId }),
+      });
+  
+      const data = await response.json();
+      console.log("Response data:", data);
+  
+      if (response.ok) {
+        toast.success("Withdraw successfully!");
+        setRefresh((prev) => !prev);
+      } else {
+        toast.error(data.message || "Withdraw failed. Try again.");
+      }
+    } catch (err) {
+      toast.error(error.message);
+    }
+  };
+  
 
   const handleViewJobDetails = (jobId) => {
     navigate(`/appliedjobdetails/${jobId}`);
@@ -94,7 +127,9 @@ export default function AppliedJobs() {
                           >
                             View Job
                           </button>
+                          {/* <FaTrash onClick={() => removeEducation(index)} className="m-2 mt-5 text-2xl" /> */}
                         </td>
+                        <FaTrash onClick={() => withdrawApplication(job.jobPostId._id)} className="m-2 mt-4 text-xl" />
                       </tr>
                     ))}
                   </tbody>
@@ -104,6 +139,7 @@ export default function AppliedJobs() {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
   );
 }

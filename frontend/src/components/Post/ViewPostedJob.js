@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import { FaSpinner } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ViewPostedJob() {
   const { jobId } = useParams();
@@ -29,7 +31,7 @@ export default function ViewPostedJob() {
         setJobData(data);
       } catch (error) {
         console.error('Error fetching job data:', error);
-        alert('Error fetching job details.');
+        toast.error(error.message);
       }
     };
 
@@ -121,6 +123,7 @@ export default function ViewPostedJob() {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
 }
