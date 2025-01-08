@@ -260,14 +260,14 @@ export default function PostedJobsCard() {
       <div className="container mx-auto px-4 py-6">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-8xl">
-          <button
+          {/* <button
             onClick={toggleFilterVisibility}
             className="md:hidden mb-4 px-4 py-1 text-xs bg-blue-500 text-white rounded"
           >
             {filterVisible ? "Hide Filters" : "Show Filters"}
-          </button>
+          </button> */}
 
-          <div className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow ${filterVisible ? "block" : "hidden"
+          {/* <div className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow ${filterVisible ? "block" : "hidden"
             } md:block`}>
             <h3 className="text-xl font-semibold mb-4">Filter by Location</h3>
             <input
@@ -354,11 +354,11 @@ export default function PostedJobsCard() {
                 </span>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Job Cards Section */}
           <ul role="list"
-            className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+            className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
             {loading ? (
               <div className="flex justify-center items-center">
                 <FaSpinner className="animate-spin text-xl" />
@@ -401,6 +401,7 @@ export default function PostedJobsCard() {
                       <dd className="text-gray-700">{getDate(job.endDate)}</dd>
                     </div>
                     <div className="flex justify-between gap-x-4 py-2">
+
                       <dt className="text-gray-500">Posted by</dt>
                       <dd className="text-gray-700 flex items-center space-x-2">
                         {/* <span>{job.user.firstName || "anonymous"}</span> */}
@@ -422,6 +423,7 @@ export default function PostedJobsCard() {
                         )}
                       </dd>
                     </div>
+
 
                   </dl>
                 </li>

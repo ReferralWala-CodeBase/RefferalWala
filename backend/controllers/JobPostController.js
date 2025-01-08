@@ -203,6 +203,55 @@ exports.applyForJobPost = async (req, res) => {
   }
 };
 
+exports.withdrawApplication = async (req, res) => {
+  try {
+    const { id } = req.params; // Job Post ID
+    const { userId } = req.body; // User ID withdrawing the application
+
+    const jobPost = await JobPost.findById(id);
+    if (!jobPost) {
+      return res.status(404).json({ msg: 'Job post not found' });
+    }
+
+    // Check if the user has applied
+    if (!jobPost.applicants.includes(userId)) {
+      return res.status(400).json({ msg: 'User has not applied for this job' });
+    }
+
+    // Remove the applicant from the job post
+    jobPost.applicants = jobPost.applicants.filter((applicantId) => applicantId.toString() !== userId);
+    await jobPost.save();
+
+    // Remove the applicant status
+    await ApplicantStatus.findOneAndDelete({ userId, jobPostId: jobPost._id });
+
+    // Update user's applied jobs
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { appliedJobs: jobPost._id } }, // Use $pull to remove the job ID
+      { new: true } // Return the updated document
+    );
+
+    // Optionally, create a notification for the job post creator
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    const notification = new Notification({
+      user: jobPost.user,
+      message: `${user.firstName} has withdrawn their application for your job: ${jobPost.jobRole} at ${jobPost.companyName}`,
+      post: jobPost._id,
+    });
+
+    await notification.save();
+
+    res.status(200).json({ msg: 'Application withdrawn successfully', jobPost });
+  } catch (err) {
+    console.error('Error withdrawing application:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
 
 
 // @route   GET /job/applicants/:id
