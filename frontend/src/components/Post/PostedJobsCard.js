@@ -29,13 +29,12 @@ export default function PostedJobsCard() {
   const [followingList, setFollowingList] = useState([]);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
+
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
-    // Add all 100 locations here
   ];
   const companies = [
     "LSEG", "Boeing", "Synchron", "Google", "Cognizant", "Microsoft", "Meta",
-    // Add all 100 locations here
   ];
 
   useEffect(() => {
@@ -54,7 +53,6 @@ export default function PostedJobsCard() {
         }
 
         const data = await response.json();
-        // Filter only active jobs
         const activeJobs = data.filter((job) => job.status === 'active');
         setJobs(activeJobs);
       } catch (error) {
@@ -67,8 +65,7 @@ export default function PostedJobsCard() {
     fetchJobs();
   }, []);
 
-   // Fetch the list of users the logged-in user is following
-   useEffect(() => {
+  useEffect(() => {
     const fetchFollowingList = async () => {
       if (!userId) return;
 
@@ -85,67 +82,67 @@ export default function PostedJobsCard() {
           const errorData = await response.json();
           throw new Error(errorData.msg || 'Failed to fetch following users');
         }
-          const data = await response.json();
-          setFollowingList(data.following || []); // Set the list of followed users
-       
+        const data = await response.json();
+        setFollowingList(data.following || []); // Set the list of followed users
+
       } catch (error) {
         console.error("Error fetching following list:", error);
       }
     };
 
     fetchFollowingList();
-  }, []);
- // Handle follow request
- const handleFollow = async (targetUserId) => {
-  if (!userId) return;
+  }, [bearerToken, userId]);
+  // Handle follow request
+  const handleFollow = async (targetUserId) => {
+    if (!userId) return;
 
-  try {
-    const response = await fetch(
-      `https://referralwala-deployment.vercel.app/user/follow/${targetUserId}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
+    try {
+      const response = await fetch(
+        `https://referralwala-deployment.vercel.app/user/follow/${targetUserId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      if (response.ok) {
+        setFollowingList((prevList) => [...prevList, { _id: targetUserId }]); // Add the followed user to the list
+      } else {
+        console.error("Follow request failed");
       }
-    );
-    if (response.ok) {
-      setFollowingList((prevList) => [...prevList, { _id: targetUserId }]); // Add the followed user to the list
-    } else {
-      console.error("Follow request failed");
+    } catch (error) {
+      console.error("Error following the user:", error);
     }
-  } catch (error) {
-    console.error("Error following the user:", error);
-  }
-};
+  };
 
-// Handle unfollow request
-const handleUnfollow = async (targetUserId) => {
-  if (!userId) return;
+  // Handle unfollow request
+  const handleUnfollow = async (targetUserId) => {
+    if (!userId) return;
 
-  try {
-    const response = await fetch(
-      `https://referralwala-deployment.vercel.app/user/unfollow/${targetUserId}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
+    try {
+      const response = await fetch(
+        `https://referralwala-deployment.vercel.app/user/unfollow/${targetUserId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      if (response.ok) {
+        setFollowingList((prevList) => prevList.filter(user => user._id !== targetUserId)); // Remove the unfollowed user from the list
+      } else {
+        console.error("Unfollow request failed");
       }
-    );
-    if (response.ok) {
-      setFollowingList((prevList) => prevList.filter(user => user._id !== targetUserId)); // Remove the unfollowed user from the list
-    } else {
-      console.error("Unfollow request failed");
+    } catch (error) {
+      console.error("Error unfollowing the user:", error);
     }
-  } catch (error) {
-    console.error("Error unfollowing the user:", error);
-  }
-};
+  };
 
   const navigate = useNavigate();
   const handleView = (jobId) => {
@@ -391,26 +388,26 @@ const handleUnfollow = async (targetUserId) => {
                       <dd className="text-gray-700">{getDate(job.endDate)}</dd>
                     </div>
                     <div className="flex justify-between gap-x-4 py-2">
-      <dt className="text-gray-500">Posted by</dt>
-      <dd className="text-gray-700 flex items-center space-x-2">
-        <span>{job.user.firstName || "anonymous"}</span>
-        
-        {/* Directly compare if the job user is in the following list */}
-        {followingList.some(user => user._id === job.user._id) ? (
-          <UserMinusIcon
-            onClick={() => handleUnfollow(job.user._id)} 
-            className="cursor-pointer text-red-500 w-6 h-6"
-            title="Unfollow"
-          />
-        ) : (
-          <UserPlusIcon
-            onClick={() => handleFollow(job.user._id)} 
-            className="cursor-pointer text-blue-500 w-6 h-6"
-            title="Follow"
-          />
-        )}
-      </dd>
-    </div>
+                      <dt className="text-gray-500">Posted by</dt>
+                      <dd className="text-gray-700 flex items-center space-x-2">
+                        <span>{job.user.firstName || "anonymous"}</span>
+
+                        {/* Directly compare if the job user is in the following list */}
+                        {followingList.some(user => user._id === job.user._id) ? (
+                          <UserMinusIcon
+                            onClick={() => handleUnfollow(job.user._id)}
+                            className="cursor-pointer text-red-500 w-6 h-6"
+                            title="Unfollow"
+                          />
+                        ) : (
+                          <UserPlusIcon
+                            onClick={() => handleFollow(job.user._id)}
+                            className="cursor-pointer text-blue-500 w-6 h-6"
+                            title="Follow"
+                          />
+                        )}
+                      </dd>
+                    </div>
 
                   </dl>
                 </li>

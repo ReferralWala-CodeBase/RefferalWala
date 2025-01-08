@@ -220,8 +220,6 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import profile from "../assets/profile-icon-user.png";
-import { Dialog } from "@headlessui/react"; 
-import NotificationsPage from "../components/Profile/NotificationsPage";
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
@@ -253,14 +251,27 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     }
   }, []);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     localStorage.removeItem("token");
+
+    if ("caches" in window) {
+      try {
+        const cacheNames = await caches.keys();
+        await Promise.all(
+          cacheNames.map((cacheName) => caches.delete(cacheName))
+        );
+        console.log("Cache cleared successfully.");
+      } catch (error) {
+        console.error("Error clearing cache:", error);
+      }
+    }
+
     setLoggedIn(false);
     navigate("/user-login");
   };
 
   return (
-    <Disclosure as="header" className="bg-white shadow">
+    <Disclosure as="header" className="bg-blue-800 shadow">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
@@ -273,22 +284,22 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 </div>
               </div>
               <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
-                <div className="w-full sm:max-w-xs">
+                <div className="w-full sm:max-w-sm">
                   <label htmlFor="search" className="sr-only">
                     Search
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon
-                        className="h-5 w-5 text-gray-400"
+                        className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
                         aria-hidden="true"
                       />
                     </div>
                     <input
                       id="search"
                       name="search"
-                      className="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      placeholder="Search"
+                      className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
+                      placeholder="Search..."
                       type="search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -296,6 +307,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                   </div>
                 </div>
               </div>
+
               <div className="relative z-10 flex items-center lg:hidden">
                 <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                   <span className="absolute -inset-0.5" />
@@ -315,9 +327,9 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       <Link to="/notifications">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">View notifications</span>
+                        <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </Link>
                     </button>
 
