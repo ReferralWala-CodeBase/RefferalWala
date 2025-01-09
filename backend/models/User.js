@@ -101,8 +101,8 @@ const userSchema = new mongoose.Schema({
   },
   mobileNumber: {
     type: Number,
-    // required: true,
-    // unique: true,
+    unique: false,
+    default: null,
   },
   googleId: { type: String },
   password: {

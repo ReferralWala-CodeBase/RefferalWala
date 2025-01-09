@@ -56,6 +56,6 @@ router.put('/update/:id',jwtMiddleware, updateJobPost);
 router.get('/unique/:jobUniqueId',jwtMiddleware, getJobsByJobUniqueId);
 
 // Delete a job post
-router.delete('/delete/:id',jwtMiddleware, deleteJobPost);
+router.delete('/delete/:id', jwtMiddleware, deleteJobPost);
 
 module.exports = router;

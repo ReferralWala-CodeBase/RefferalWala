@@ -3,6 +3,8 @@ import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
 import Navbar from "../Navbar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ export default function ViewProfile() {
         setProfileData(data);
       } catch (error) {
         console.error('Error fetching profile data:', error);
-        alert('Error fetching profile details.');
+        toast.error(error.message);
       }
     };
 
@@ -69,31 +71,31 @@ export default function ViewProfile() {
             <div>
               <label className="block text-sm font-medium text-gray-700">First Name</label>
               <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                {profileData.firstName || 'N/A'}
+                {profileData.firstName || <>&nbsp;</>}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Last Name</label>
               <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                {profileData.lastName || 'N/A'}
+                {profileData.lastName || <>&nbsp;</>}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Email</label>
               <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                {profileData.email || 'N/A'}
+                {profileData.email || <>&nbsp;</>}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Mobile Number</label>
               <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                {profileData.mobileNumber || 'N/A'}
+                {profileData.mobileNumber || <>&nbsp;</>}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Gender</label>
               <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                {profileData.gender || 'N/A'}
+                {profileData.gender || <>&nbsp;</>}
               </div>
             </div>
           </div>
@@ -138,19 +140,19 @@ export default function ViewProfile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Role</label>
                   <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                    {profileData.presentCompany.role || 'N/A'}
+                    {profileData.presentCompany.role || <>&nbsp;</>}
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Company Name</label>
                   <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                    {profileData.presentCompany.companyName || 'N/A'}
+                    {profileData.presentCompany.companyName || <>&nbsp;</>}
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Company Email</label>
                   <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                    {profileData.presentCompany.companyEmail || 'N/A'}
+                    {profileData.presentCompany.companyEmail || <>&nbsp;</>}
                   </div>
                 </div>
                 <div>
@@ -162,19 +164,19 @@ export default function ViewProfile() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
                   <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                    {profileData.presentCompany.yearsOfExperience || 'N/A'}
+                    {profileData.presentCompany.yearsOfExperience || <>&nbsp;</>}
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Location</label>
                   <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                    {profileData.presentCompany.location || 'N/A'}
+                    {profileData.presentCompany.location || <>&nbsp;</>}
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Current CTC (INR-Lakhs)</label>
                   <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                    {profileData.presentCompany.currentCTC || 'N/A'}
+                    {profileData.presentCompany.currentCTC || <>&nbsp;</>}
                   </div>
                 </div>
               </>
@@ -224,19 +226,19 @@ export default function ViewProfile() {
             <div>
               <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
               <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                {profileData.preferences?.preferredCompanyName || 'N/A'}
+                {profileData.preferences?.preferredCompanyName || <>&nbsp;</>}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
               <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                {profileData.preferences?.preferredPosition || 'N/A'}
+                {profileData.preferences?.preferredPosition || <>&nbsp;</>}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
               <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                {profileData.preferences?.expectedCTCRange || 'N/A'}
+                {profileData.preferences?.expectedCTCRange || <>&nbsp;</>}
               </div>
             </div>
           </div>
@@ -251,7 +253,7 @@ export default function ViewProfile() {
                   {link.charAt(0).toUpperCase() + link.slice(1)}
                 </label>
                 <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">
-                  {profileData.links?.[link] || 'N/A'}
+                  {profileData.links?.[link] || <>&nbsp;</>}
                 </div>
               </div>
             ))}
@@ -318,8 +320,8 @@ export default function ViewProfile() {
           </div>
 
         </div>
-
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
   );
 

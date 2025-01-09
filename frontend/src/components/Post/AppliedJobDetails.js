@@ -55,7 +55,7 @@ export default function AppliedJobDetails() {
 
       } catch (error) {
         console.error('Error fetching job data or application status:', error);
-        // alert('Error fetching job details or application status.');
+        toast.error(error.message);
       } finally {
         setLoading(false); // Stop loading once the fetch is done
       }
@@ -85,12 +85,10 @@ export default function AppliedJobDetails() {
       }
 
       // On successful application, redirect to the "applied jobs" page
-      alert('Successfully applied for the job!');
+      toast.success("Successfully applied for the job!");
       navigate('/appliedjobs');
     } catch (error) {
-      console.error('Error applying for the job:', error);
       toast.error(error.message);
-      // alert('Error applying for the job.');
     }
   };
 

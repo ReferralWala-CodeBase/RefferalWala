@@ -46,7 +46,7 @@ export default function EditJob() {
         setFormData(data);  // Populate form with existing job data
       } catch (error) {
         console.error('Error fetching job data:', error);
-        alert('Error fetching job details.');
+        toast.error(error.message);
       }
     };
 
@@ -98,7 +98,7 @@ export default function EditJob() {
       navigate(`/postedjobslist`);
     } catch (error) {
       console.error('Error updating job:', error.message);
-      alert('Failed to update job. Please try again.');
+      toast.error(error.message);
     }
   };
 

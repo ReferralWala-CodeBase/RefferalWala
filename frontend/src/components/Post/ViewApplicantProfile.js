@@ -3,6 +3,8 @@ import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
 import Navbar from "../Navbar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ViewApplicantProfile() {
   const navigate = useNavigate();
@@ -37,7 +39,7 @@ export default function ViewApplicantProfile() {
         setProfileData(data);
       } catch (error) {
         console.error('Error fetching profile data:', error);
-        alert('Error fetching profile details.');
+        toast.error(error.message);
       }
     };
 
@@ -93,10 +95,10 @@ export default function ViewApplicantProfile() {
       if (!response.ok) throw new Error('Failed to update status');
 
       setStatus(newStatus);
-      alert('Status updated successfully');
+      toast.success("Status updated successfully!");
     } catch (error) {
       console.error('Error updating status:', error);
-      alert('Failed to update status');
+      toast.error(error.message);
     } finally {
       setUpdatingStatus(false);
     }
@@ -392,8 +394,8 @@ export default function ViewApplicantProfile() {
           </div>
 
         </div>
-
       </div>
+       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
   );
 }
