@@ -2,62 +2,74 @@ const JobPost = require('../models/JobPost');
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 const ApplicantStatus = require('../models/ApplicantStatus');
-const mongoose = require('mongoose'); 
+const mongoose = require('mongoose');
 
 // @route   POST /job/create
 // @desc    Create a new job referral post
 exports.createJobPost = async (req, res) => {
-    try {
-      const { userId, jobRole, jobUniqueId, endDate, companyName, jobDescription, experienceRequired, location, workMode, employmentType, ctc, noOfReferrals, jobLink } = req.body;
-  
-      // Check if the user exists
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ msg: 'User not found' });
-      }
-  
-      // Create a new job post
-      const newJobPost = new JobPost({
-        user: userId,
-        jobRole,
-        companyName,
-        jobDescription,
-        experienceRequired,
-        location,
-        workMode,
-        jobUniqueId,
-        endDate,
-        employmentType,
-        ctc,
-        noOfReferrals,
-        jobLink,
-        endDate
-      });
-  
-      // Save the job post
-      await newJobPost.save();
-  
-      // Populate followers of the user who created the job post
-      const populatedUser = await User.findById(userId).populate('followers');
-      
-      // Send notifications to each follower
-      populatedUser.followers.forEach(follower => {
-        const notification = new Notification({
-          user: follower._id,
-          message: `${user.firstName} has posted a new job: ${jobRole} at ${companyName}`, // Changed title to jobRole
-          post: newJobPost._id,
-        });
-        notification.save(); // Save the notification
-      });
-  
-      // Respond with the newly created job post
-      res.status(201).json(newJobPost);
-    } catch (err) {
-      console.error('Error creating job post:', err.message);
-      res.status(500).send('Server Error');
+  try {
+    const { userId, jobRole, jobUniqueId, endDate, companyName, jobDescription, experienceRequired, location, workMode, employmentType, ctc, noOfReferrals, jobLink } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  };
-  
+
+    // to avoid duplicates job posting
+    const duplicateJob = await JobPost.findOne({
+      user: userId,
+      jobRole,
+      companyName,
+      jobUniqueId,
+    });
+
+    if (duplicateJob) {
+      return res.status(400).json({ message: 'You have already posted this job.' });
+    }
+
+    // Create a new job post
+    const newJobPost = new JobPost({
+      user: userId,
+      jobRole,
+      companyName,
+      jobDescription,
+      experienceRequired,
+      location,
+      workMode,
+      jobUniqueId,
+      endDate,
+      employmentType,
+      ctc,
+      noOfReferrals,
+      jobLink,
+      endDate
+    });
+
+    // Save the job post
+    await newJobPost.save();
+
+    // Populate followers of the user who created the job post
+    const populatedUser = await User.findById(userId).populate('followers');
+
+    // Send notifications to each follower
+    populatedUser.followers.forEach(follower => {
+      const notification = new Notification({
+        user: follower._id,
+        message: `${user.firstName} has posted a new job: ${jobRole} at ${companyName}`, // Changed title to jobRole
+        post: newJobPost._id,
+      });
+      notification.save(); // Save the notification
+    });
+
+    // Respond with the newly created job post
+    res.status(201).json(newJobPost);
+  } catch (err) {
+    console.error('Error creating job post:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 
 // @route   GET /job/all
 // @desc    Get all job referral posts
@@ -113,7 +125,7 @@ exports.getJobPostById = async (req, res) => {
     const jobPost = await JobPost.findById(id).populate('user', 'firstName lastName email');
 
     if (!jobPost) {
-      return res.status(404).json({ msg: 'Job post not found' });
+      return res.status(404).json({ message: 'Job post not found' });
     }
 
     // Check and update the status if the endDate has passed
@@ -139,12 +151,16 @@ exports.applyForJobPost = async (req, res) => {
 
     const jobPost = await JobPost.findById(id).populate('user', 'firstName lastName email');
     if (!jobPost) {
-      return res.status(404).json({ msg: 'Job post not found' });
+      return res.status(404).json({ message: 'Job post not found' });
+    }
+
+    if (jobPost.user._id.toString() === userId) {
+      return res.status(400).json({ message: 'You cannot apply for your own job' });
     }
 
     // Check if the user has already applied
     if (jobPost.applicants.includes(userId)) {
-      return res.status(400).json({ msg: 'User already applied for this job' });
+      return res.status(400).json({ message: 'User already applied for this job' });
     }
 
     // Add the applicant to the job post
@@ -168,7 +184,7 @@ exports.applyForJobPost = async (req, res) => {
     // Retrieve user info to get the first name
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     // Create a notification for the job post creator
@@ -180,13 +196,62 @@ exports.applyForJobPost = async (req, res) => {
 
     await notification.save();
 
-    res.status(200).json({ msg: 'Applied successfully', jobPost });
+    res.status(200).json({ message: 'Applied successfully', jobPost });
   } catch (err) {
     console.error('Error applying for job:', err.message);
     res.status(500).send('Server Error');
   }
 };
 
+exports.withdrawApplication = async (req, res) => {
+  try {
+    const { id } = req.params; // Job Post ID
+    const { userId } = req.body; // User ID withdrawing the application
+
+    const jobPost = await JobPost.findById(id);
+    if (!jobPost) {
+      return res.status(404).json({ msg: 'Job post not found' });
+    }
+
+    // Check if the user has applied
+    if (!jobPost.applicants.includes(userId)) {
+      return res.status(400).json({ msg: 'User has not applied for this job' });
+    }
+
+    // Remove the applicant from the job post
+    jobPost.applicants = jobPost.applicants.filter((applicantId) => applicantId.toString() !== userId);
+    await jobPost.save();
+
+    // Remove the applicant status
+    await ApplicantStatus.findOneAndDelete({ userId, jobPostId: jobPost._id });
+
+    // Update user's applied jobs
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { appliedJobs: jobPost._id } }, // Use $pull to remove the job ID
+      { new: true } // Return the updated document
+    );
+
+    // Optionally, create a notification for the job post creator
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    const notification = new Notification({
+      user: jobPost.user,
+      message: `${user.firstName} has withdrawn their application for your job: ${jobPost.jobRole} at ${jobPost.companyName}`,
+      post: jobPost._id,
+    });
+
+    await notification.save();
+
+    res.status(200).json({ msg: 'Application withdrawn successfully', jobPost });
+  } catch (err) {
+    console.error('Error withdrawing application:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
 
 
 // @route   GET /job/applicants/:id
@@ -198,7 +263,7 @@ exports.getApplicantsForJobPost = async (req, res) => {
     // Find the job post with the given ID
     const jobPost = await JobPost.findById(id);
     if (!jobPost) {
-      return res.status(404).json({ msg: 'Job post not found' });
+      return res.status(404).json({ message: 'Job post not found' });
     }
 
     // Fetch applicants and their statuses
@@ -218,68 +283,68 @@ exports.getApplicantsForJobPost = async (req, res) => {
 // @route   PUT /job/update/:id
 // @desc    Update a job post
 exports.updateJobPost = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const updates = req.body;
+  try {
+    const { id } = req.params;
+    const updates = req.body;
 
-        // Find the job post by ID
-        const jobPost = await JobPost.findById(id);
-        if (!jobPost) {
-            return res.status(404).json({ msg: 'Job post not found' });
-        }
-
-        // Save the original userId to fetch followers later
-        const userId = jobPost.user; 
-
-        // Update the job post with new data
-        Object.assign(jobPost, updates);
-
-        await jobPost.save();
-
-        // Fetch the user who created the job post and populate their followers
-        const user = await User.findById(userId).populate('followers');
-
-        // Prepare notifications to be sent to each follower
-        const notificationPromises = user.followers.map(follower => {
-            const notification = new Notification({
-                user: follower._id,
-                message: `${user.firstName} has updated a job post: ${jobPost.jobRole} at ${jobPost.companyName}`, // Ensure `companyName` is accessible
-                post: jobPost._id,
-            });
-            return notification.save(); // Return the promise for saving the notification
-        });
-
-        // Wait for all notifications to be saved
-        await Promise.all(notificationPromises);
-
-        res.status(200).json({ msg: 'Job post updated', jobPost });
-    } catch (err) {
-        console.error('Error updating job post:', err.message);
-        res.status(500).send('Server Error');
+    // Find the job post by ID
+    const jobPost = await JobPost.findById(id);
+    if (!jobPost) {
+      return res.status(404).json({ message: 'Job post not found' });
     }
+
+    // Save the original userId to fetch followers later
+    const userId = jobPost.user;
+
+    // Update the job post with new data
+    Object.assign(jobPost, updates);
+
+    await jobPost.save();
+
+    // Fetch the user who created the job post and populate their followers
+    const user = await User.findById(userId).populate('followers');
+
+    // Prepare notifications to be sent to each follower
+    const notificationPromises = user.followers.map(follower => {
+      const notification = new Notification({
+        user: follower._id,
+        message: `${user.firstName} has updated a job post: ${jobPost.jobRole} at ${jobPost.companyName}`, // Ensure `companyName` is accessible
+        post: jobPost._id,
+      });
+      return notification.save(); // Return the promise for saving the notification
+    });
+
+    // Wait for all notifications to be saved
+    await Promise.all(notificationPromises);
+
+    res.status(200).json({ message: 'Job post updated', jobPost });
+  } catch (err) {
+    console.error('Error updating job post:', err.message);
+    res.status(500).send('Server Error');
+  }
 };
 
-  
+
 
 // @route   DELETE /job/delete/:id
 // @desc    Delete a job post
 exports.deleteJobPost = async (req, res) => {
-    try {
-        const { id } = req.params;
-        
-        console.log('Deleting job post with ID:', id); // Log the ID for debugging
+  try {
+    const { id } = req.params;
 
-        const jobPost = await JobPost.findById(id);
-        if (!jobPost) {
-            return res.status(404).json({ msg: 'Job post not found' });
-        }
+    console.log('Deleting job post with ID:', id); // Log the ID for debugging
 
-        await JobPost.deleteOne({ _id: id });
-        res.status(200).json({ msg: 'Job post deleted successfully' });
-    } catch (err) {
-        console.error('Error deleting job post:', err.message);
-        res.status(500).send('Server Error');
+    const jobPost = await JobPost.findById(id);
+    if (!jobPost) {
+      return res.status(404).json({ message: 'Job post not found' });
     }
+
+    await JobPost.deleteOne({ _id: id });
+    res.status(200).json({ message: 'Job post deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting job post:', err.message);
+    res.status(500).send('Server Error');
+  }
 };
 
 exports.getUserApplicationStatuses = async (req, res) => {
@@ -288,7 +353,7 @@ exports.getUserApplicationStatuses = async (req, res) => {
 
     // Validate ObjectId format for userId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ msg: 'Invalid user ID format' });
+      return res.status(400).json({ message: 'Invalid user ID format' });
     }
 
     // Find all applicant statuses for the given user
@@ -297,7 +362,7 @@ exports.getUserApplicationStatuses = async (req, res) => {
       .exec();
 
     if (applicantStatuses.length === 0) {
-      return res.status(404).json({ msg: 'No applications found for this user' });
+      return res.status(404).json({ message: 'No applications found for this user' });
     }
 
     // Return applicant statuses along with job details
@@ -314,7 +379,7 @@ exports.getApplicationStatusForJobPost = async (req, res) => {
 
     // Validate ObjectId format for userId and jobPostId
     if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(jobPostId)) {
-      return res.status(400).json({ msg: 'Invalid user ID or job post ID format' });
+      return res.status(400).json({ message: 'Invalid user ID or job post ID format' });
     }
 
     // Find the applicant status for the specified user and job post
@@ -322,7 +387,7 @@ exports.getApplicationStatusForJobPost = async (req, res) => {
       .populate('jobPostId', 'jobRole companyName jobUniqueId'); // Populate job details
 
     if (!applicantStatus) {
-      return res.status(404).json({ msg: 'No application found for this job post' });
+      return res.status(404).json({ message: 'No application found for this job post' });
     }
 
     // Return the applicant status along with job details
@@ -340,7 +405,7 @@ exports.getJobsByJobUniqueId = async (req, res) => {
 
     // Validate jobUniqueId (optional)
     if (!jobUniqueId) {
-      return res.status(400).json({ msg: 'Job Unique ID is required' });
+      return res.status(400).json({ message: 'Job Unique ID is required' });
     }
 
     // Find all job posts with the specified jobUniqueId
@@ -348,7 +413,7 @@ exports.getJobsByJobUniqueId = async (req, res) => {
 
     // Check if any jobs were found
     if (jobs.length === 0) {
-      return res.status(404).json({ msg: 'No jobs found with this unique ID' });
+      return res.status(404).json({ message: 'No jobs found with this unique ID' });
     }
 
     // Return the list of jobs with their details
@@ -374,22 +439,22 @@ exports.updateApplicantStatus = async (req, res) => {
     // Validate status
     const validStatuses = ['applied', 'selected', 'rejected', 'on hold'];
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({ msg: 'Invalid status' });
+      return res.status(400).json({ message: 'Invalid status' });
     }
 
     // Validate ObjectId format for jobId and applicantId
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
-      return res.status(404).json({ msg: 'Job post not found' });
+      return res.status(404).json({ message: 'Job post not found' });
     }
 
     if (!mongoose.Types.ObjectId.isValid(applicantId)) {
-      return res.status(404).json({ msg: 'Applicant not found' });
+      return res.status(404).json({ message: 'Applicant not found' });
     }
 
     // Check if the job post exists
     const jobPost = await JobPost.findById(jobId);
     if (!jobPost) {
-      return res.status(404).json({ msg: 'Job post not found' });
+      return res.status(404).json({ message: 'Job post not found' });
     }
 
     // Check if the applicant has been selected for the same jobUniqueId
@@ -400,13 +465,13 @@ exports.updateApplicantStatus = async (req, res) => {
     }).populate('jobPostId');
 
     if (existingSelection && existingSelection.jobPostId.jobUniqueId === jobPost.jobUniqueId) {
-      return res.status(400).json({ msg: 'User is already selected for another job with the same unique ID.' });
+      return res.status(400).json({ message: 'User is already selected for another job with the same unique ID.' });
     }
 
     // Find the applicant status for the specified job and applicant
     const applicantStatus = await ApplicantStatus.findOne({ userId: applicantId, jobPostId: jobId });
     if (!applicantStatus) {
-      return res.status(404).json({ msg: 'Applicant not found' });
+      return res.status(404).json({ message: 'Applicant not found' });
     }
 
     // Update the status
@@ -425,10 +490,87 @@ exports.updateApplicantStatus = async (req, res) => {
       await notification.save();
     }
 
-    res.status(200).json({ msg: 'Applicant status updated successfully', applicantStatus });
+    res.status(200).json({ message: 'Applicant status updated successfully', applicantStatus });
   } catch (err) {
     console.error('Error updating applicant status:', err.message);
     res.status(500).send('Server Error');
   }
 };
+
+
+//removing from applicatant list
+exports.removeFromJobApplicants = async (req, res) => {
+  try {
+    const { userId } = req.body; // The ID of the user to be removed from applicants list
+    console.log(userId);
+
+    // Find all JobPosts where the user is an applicant
+    const jobPostsWithApplicant = await JobPost.find();
+
+    // Loop through each job post and remove the user from applicants list if found
+    for (const jobPost of jobPostsWithApplicant) {
+      // Find the applicant's index by matching the userId with applicants array
+      const applicantIndex = jobPost.applicants.findIndex(applicant => 
+        applicant.toString() === userId // Convert ObjectId to string and compare
+      );
+
+      if (applicantIndex !== -1) {
+        
+        jobPost.applicants.pull(jobPost.applicants[applicantIndex]);  // Remove the userId from the applicants array
+
+        // Save the updated job post
+        await jobPost.save();
+      }
+    }
+
+    res.status(200).json({ message: `User with ID ${userId} has been removed from all job applicants lists` });
+  } catch (err) {
+    console.error('Error removing user from job applicants list:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+
+
+//here struck
+exports.withdrawFromJobApplicants = async (req, res) => {
+  try {
+    const { jobId } = req.body; // Extract jobId from request body
+    const userId = req.user.userId; // Assume authenticated user's ID is in req.user.userId
+
+    // Step 1: Remove the user from the job's applicants list
+    const jobPostUpdate = JobPost.updateOne(
+      { _id: jobId },
+      { $pull: { applicants: userId } }
+    );
+
+    // Step 2: Remove the job from the user's appliedJobs list
+    const userUpdate = User.updateOne(
+      { _id: userId },
+      { $pull: { appliedJobs: jobId } }
+    );
+
+    // Step 3: Remove the entry from ApplicantStatus collection
+    const applicantStatusDelete = ApplicantStatus.deleteOne({
+      userId,
+      jobPostId: jobId,
+    });
+
+    // Execute all the operations in parallel
+    const [jobPostResult, userResult, deleteResult] = await Promise.all([
+      jobPostUpdate,
+      userUpdate,
+      applicantStatusDelete,
+    ]);
+
+    // Response
+    return res.status(200).json({ message: `User with ID ${userId} withdrawn from job ${jobId}.`});
+  } catch (err) {
+    console.error("Error withdrawing user from job applicants:", err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+
+
 

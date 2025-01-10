@@ -1,10 +1,11 @@
 const User = require('../models/User');
+const JobPost = require('../models/JobPost');
 const Notification = require('../models/Notification');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 
-require('dotenv').config(); 
+require('dotenv').config();
 
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -32,6 +33,16 @@ const sendEmail = async (recipient, otp, subject = 'OTP for Verification') => {
 exports.registerUser = async (req, res) => {
   try {
     const { email, mobileNumber, password } = req.body;
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid email format' });
+    }
+
+    // Validate mobile number (check if it's a number and contains exactly 10 digits)
+    if (!mobileNumber || !/^\d{10}$/.test(mobileNumber)) {
+      return res.status(400).json({ message: 'Invalid mobile number.' });
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({
@@ -71,7 +82,6 @@ exports.registerUser = async (req, res) => {
 };
 
 
-
 exports.verifyOTP = async (req, res) => {
   try {
     console.log('Received request body:', req.body);
@@ -109,13 +119,13 @@ exports.verifyCompanyEmail = async (req, res) => {
     const { email, otp } = req.body; // Company email & OTP in the body
 
     // Find the user with the given company email
-    const user = await User.findOne({ 'presentCompany.companyEmail': email });
+    const user = await User.findById(req.user.userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found with this company email' });
+      return res.status(404).json({ error: 'User not found' });
     }
 
     // Check if the company email has already been verified
-    if (user.presentCompany.CompanyEmailVerified) {
+    if (user.presentCompany.CompanyEmailVerified === email) {
       return res.status(400).json({ error: 'Company email already verified' });
     }
 
@@ -156,12 +166,11 @@ exports.loginUser = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    const expiresIn = '1h'; 
+    const expiresIn = '1d';
 
     // Create and send the JWT token for successful login
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn });
-    res.json({ token, isOTPVerified: true, userId: user._id }); 
-    console.log(token);
+    res.json({ token, isOTPVerified: true, userId: user._id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -246,6 +255,7 @@ exports.resendOTP = async (req, res) => {
     // Save the new OTP to the user document
     user.otp = otp;
     await user.save();
+    console.log("otp saved")
 
     res.json({ message: 'OTP sent to your email.' });
   } catch (err) {
@@ -261,9 +271,19 @@ exports.sendOTP = async (req, res) => {
     const { email } = req.body;
 
     // Find the user with the given company email
-    const user = await User.findOne({ 'presentCompany.companyEmail': email });
+    const user = await User.findById(req.user.userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found with this company email' });
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if the company email has already been verified
+    if (user.presentCompany.companyEmail === email) {
+      return res.status(400).json({ message: 'Company email already verified' });
+    }
+
+    // To initialized presentCompany 
+    if (!user.presentCompany) {
+      user.presentCompany = {};
     }
 
     // Generate new OTP
@@ -340,64 +360,69 @@ exports.updateProfileById = async (req, res) => {
 
 exports.followUser = async (req, res) => {
   try {
-      const { id } = req.params; // ID of the user to follow
-      const { userId } = req.body; // ID of the user following
+    const { id } = req.params; // ID of the user to follow
+    const { userId } = req.body; // ID of the user following
 
-      const userToFollow = await User.findById(id);
-      const follower = await User.findById(userId);
+    if (id === userId) {
+      return res.status(400).json({ message: 'You cannot follow yourself' });
+    }
 
-      if (!userToFollow || !follower) {
-          return res.status(404).json({ msg: 'User not found' });
-      }
+    const userToFollow = await User.findById(id);
+    const follower = await User.findById(userId);
 
-      // Check if already following
-      if (follower.following.includes(id)) {
-          return res.status(400).json({ msg: 'Already following this user' });
-      }
+    if (!userToFollow || !follower) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-      // Follow the user
-      follower.following.push(id);
-      userToFollow.followers.push(userId);
-      await follower.save();
-      await userToFollow.save();
+    // Check if already following
+    if (follower.following.includes(id)) {
+      return res.status(400).json({ message: 'Already following this user' });
+    }
 
-      res.status(200).json({ msg: 'You are now following this user' });
+    // Follow the user
+    follower.following.push(id);
+    userToFollow.followers.push(userId);
+    await follower.save();
+    await userToFollow.save();
+
+    res.status(200).json({ message: 'You are now following this user' });
   } catch (err) {
-      console.error('Error following user:', err.message);
-      res.status(500).send('Server Error');
+    console.error('Error following user:', err.message);
+    res.status(500).send('Server Error');
   }
 };
 
 // Unfollow a user
 exports.unfollowUser = async (req, res) => {
   try {
-      const { id } = req.params; // ID of the user to unfollow
-      const { userId } = req.body; // ID of the user unfollowing
+    const { id } = req.params; // ID of the user to unfollow
+    const { userId } = req.body; // ID of the user unfollowing
 
-      const userToUnfollow = await User.findById(id);
-      const unfollower = await User.findById(userId);
+    const userToUnfollow = await User.findById(id);
+    const unfollower = await User.findById(userId);
 
-      if (!userToUnfollow || !unfollower) {
-          return res.status(404).json({ msg: 'User not found' });
-      }
+    if (!userToUnfollow || !unfollower) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-      // Check if not following
-      if (!unfollower.following.includes(id)) {
-          return res.status(400).json({ msg: 'Not following this user' });
-      }
+    // Check if not following
+    if (!unfollower.following.includes(id)) {
+      return res.status(400).json({ message: 'Not following this user' });
+    }
 
-      // Unfollow the user
-      unfollower.following.pull(id);
-      userToUnfollow.followers.pull(userId);
-      await unfollower.save();
-      await userToUnfollow.save();
+    // Unfollow the user
+    unfollower.following.pull(id);
+    userToUnfollow.followers.pull(userId);
+    await unfollower.save();
+    await userToUnfollow.save();
 
-      res.status(200).json({ msg: 'You have unfollowed this user' });
+    res.status(200).json({ message: 'You have unfollowed this user' });
   } catch (err) {
-      console.error('Error unfollowing user:', err.message);
-      res.status(500).send('Server Error');
+    console.error('Error unfollowing user:', err.message);
+    res.status(500).send('Server Error');
   }
 };
+
 
 exports.getFollowers = async (req, res) => {
   try {
@@ -405,7 +430,7 @@ exports.getFollowers = async (req, res) => {
     const user = await User.findById(id).populate('followers', 'firstName lastName email profileImg'); // Populate to get user details
 
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     res.status(200).json({ followers: user.followers });
@@ -421,7 +446,7 @@ exports.getFollowing = async (req, res) => {
     const user = await User.findById(id).populate('following', 'firstName lastName email profileImg'); // Populate to get user details
 
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     res.status(200).json({ following: user.following });
@@ -435,15 +460,75 @@ exports.getFollowing = async (req, res) => {
 // Get notifications for a user
 exports.getNotifications = async (req, res) => {
   try {
-      const { userId } = req.params; // ID of the user for whom notifications are to be fetched
-      const notifications = await Notification.find({ user: userId })
-          .populate('post', 'title') // Adjust to your post model fields
-          .sort({ createdAt: -1 });
+    const { userId } = req.params; // ID of the user for whom notifications are to be fetched
+    const notifications = await Notification.find({ user: userId })
+      .populate('post', 'title') // Adjust to your post model fields
+      .sort({ createdAt: -1 });
 
-      res.status(200).json(notifications);
+    res.status(200).json(notifications);
   } catch (err) {
-      console.error('Error fetching notifications:', err.message);
-      res.status(500).send('Server Error');
+    console.error('Error fetching notifications:', err.message);
+    res.status(500).send('Server Error');
   }
 };
 
+exports.getDelect = async (req, res) => {
+  const { email } = req.body; // Email of the user to be deleted
+  const { id } = req.params; // ID of the user for removing associated activity
+
+  // Validate input
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+
+  try {
+
+    const usersFollowing = await User.find({ following: id });  // Fetch users that the user is following
+    const usersWithFollower = await User.find({ followers: id });  // Fetch users that follow the user
+    const jobPosts = await JobPost.find();  // Fetch all job posts to check for applicants
+
+    // Check if the user follows anyone
+    if (!usersFollowing.length) {
+      console.log("This user is not following anyone.");
+    }
+
+    // Check if anyone is following the user
+    if (!usersWithFollower.length) {
+      console.log("No users are following this user.");
+    }
+
+    const deletedUser = await User.findOneAndDelete({ email }); // Find and delete the user by email
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Remove the user from others' following lists
+    for (const user of usersFollowing) {
+      user.following.pull(id);
+      await user.save();
+    }
+
+    // Remove the user from others' followers lists
+    for (const user of usersWithFollower) {
+      user.followers.pull(id);
+      await user.save();
+    }
+
+    // Remove the user from the applicants list of job posts
+    for (const jobPost of jobPosts) {
+      const applicantIndex = jobPost.applicants.indexOf(id);
+      if (applicantIndex !== -1) {
+        jobPost.applicants.pull(id);
+        await jobPost.save();
+      } else {
+        console.log("User is not in any job applicants list.");
+      }
+    }
+
+    res.status(200).json({ message: `User and associated activities deleted successfully.`, user: deletedUser });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Server error while deleting user' });
+  }
+};

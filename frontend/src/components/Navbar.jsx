@@ -220,6 +220,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import profile from "../assets/profile-icon-user.png";
+import { Dialog } from "@headlessui/react";
+import NotificationsPage from "../components/Profile/NotificationsPage";
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
@@ -231,7 +233,7 @@ const navigation = [
 
 const userNavigation = [
   { name: "Your Profile", href: "/viewprofile" },
-  { name: "Settings", href: "/settings" },
+  { name: "Settings", href: "#" },
   { name: "Sign out", href: "#" },
 ];
 
@@ -272,6 +274,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
 
   return (
     <Disclosure as="header" className="bg-blue-800 shadow">
+    <Disclosure as="header" className="bg-white sticky top-0 z-50">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
@@ -279,7 +282,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               <div className="relative z-10 flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
                   <h1 className="font-bold tracking-[2px] text-sm text-blue-600">
-                    Referral Wala
+                    ReferralWala
                   </h1>
                 </div>
               </div>
@@ -300,6 +303,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       name="search"
                       className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
                       placeholder="Search..."
+                      className="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Your Dream is waiting....."
                       type="search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -322,6 +327,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
                 {loggedIn ? (
                   <>
+                    {/* Here i want to notification */}
                     <button
                       type="button"
                       className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -441,27 +447,16 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
             <div className="space-y-1 px-2 pb-3 pt-2">
               {loggedIn
                 ? userNavigation.map((item) =>
-                    item.name === "Sign out" ? (
-                      <Disclosure.Button
-                        key={item.name}
-                        as="button"
-                        onClick={handleSignOut}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </Disclosure.Button>
-                    ) : (
-                      <Disclosure.Button
-                        key={item.name}
-                        as={Link}
-                        to={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </Disclosure.Button>
-                    )
-                  )
-                : navigation.map((item) => (
+                  item.name === "Sign out" ? (
+                    <Disclosure.Button
+                      key={item.name}
+                      as="button"
+                      onClick={handleSignOut}
+                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
+                    >
+                      {item.name}
+                    </Disclosure.Button>
+                  ) : (
                     <Disclosure.Button
                       key={item.name}
                       as={Link}
@@ -470,7 +465,18 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                     >
                       {item.name}
                     </Disclosure.Button>
-                  ))}
+                  )
+                )
+                : navigation.map((item) => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as={Link}
+                    to={item.href}
+                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                ))}
             </div>
           </Disclosure.Panel>
         </>

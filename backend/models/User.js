@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // Education schema
 const EducationSchema = new mongoose.Schema({
   level: {
-    type: String, 
+    type: String,
   },
   schoolName: {
     type: String,
@@ -35,10 +35,10 @@ const PresentCompanySchema = new mongoose.Schema({
   companyName: {
     type: String,
   },
-  companyEmail:{
+  companyEmail: {
     type: String,
   },
-  CompanyEmailVerified:{
+  CompanyEmailVerified: {
     type: Boolean,
     default: false
   },
@@ -66,7 +66,7 @@ const PreferencesSchema = new mongoose.Schema({
     type: String,
   },
   expectedCTCRange: {
-    type: String, 
+    type: String,
   },
 });
 
@@ -100,14 +100,14 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   mobileNumber: {
-    type: String,
-    required: true,
-    unique: true,
+    type: Number,
+    unique: false,
+    default: null,
   },
   googleId: { type: String },
   password: {
     type: String,
-    required: true,
+    // required: true,
   },
   otp: {
     type: String,
@@ -133,42 +133,42 @@ const userSchema = new mongoose.Schema({
   aboutMe: {
     type: String,
   },
-  profileImg:{
+  profileImg: {
     type: String,
   },
-  presentCompany: PresentCompanySchema, 
+  presentCompany: PresentCompanySchema,
   education: [EducationSchema],
-  experience: [ExperienceSchema], 
+  experience: [ExperienceSchema],
   skills: {
-    type: [String], 
+    type: [String],
   },
   achievements: {
-    type: [String], 
+    type: [String],
   },
-  preferences: PreferencesSchema, 
-  links: LinksSchema, 
+  preferences: PreferencesSchema,
+  links: LinksSchema,
   resume: {
-    type: String, 
+    type: String,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-// New fields for followers and following
-followers: [{
-  type: mongoose.Schema.Types.ObjectId,
-  ref: 'User', // Reference to the User model for followers
-}],
-following: [{
-  type: mongoose.Schema.Types.ObjectId,
-  ref: 'User', // Reference to the User model for following
-}],
-appliedJobs: [
-  {
+  // New fields for followers and following
+  followers: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'JobPost',
-  },
-],
+    ref: 'User', // Reference to the User model for followers
+  }],
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User model for following
+  }],
+  appliedJobs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'JobPost',
+    },
+  ],
 });
 
 const User = mongoose.model('User', userSchema);

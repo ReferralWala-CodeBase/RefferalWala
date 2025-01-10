@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useGoogleLogin } from '@react-oauth/google';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ function Signup() {
   const [success, setSuccess] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
   const navigate = useNavigate();
+  const Fronted_API_URL = process.env.REACT_APP_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,11 +29,45 @@ function Signup() {
     setOtp(e.target.value); // Update OTP state
   };
 
+  const handleGoogleAuth = useGoogleLogin({
+    onSuccess: async (authResult) => {
+      try {
+        if (authResult['code']) {
+          const response = await fetch(`${Fronted_API_URL}/googleauth/googleLogin`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: authResult.code }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            toast.error(data.message || "An error occurred during signup/login");
+            return;
+          }
+
+          const { token, userId } = data;
+          console.log(token)
+
+          // Store token in localStorage and navigate to profile
+          localStorage.setItem('token', token);
+          localStorage.setItem('userId', userId);
+          toast.success("Register successfully");
+          navigate('/viewprofile');
+        }
+      } catch (error) {
+        console.error('Error during Google authentication:', error);
+      }
+    },
+    onError: () => toast.error('Google Sign up was unsuccessful. Try again later.'),
+    flow: 'auth-code',
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://referralwala-deployment.vercel.app/user/register",
+        `${Fronted_API_URL}/user/register`,
         {
           method: "POST",
           headers: {
@@ -59,7 +95,7 @@ function Signup() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://referralwala-deployment.vercel.app/user/verify-otp",
+        `${Fronted_API_URL}/user/verify-otp`,
         {
           method: "POST",
           headers: {
@@ -74,7 +110,7 @@ function Signup() {
       if (response.ok) {
         toast.success("OTP verified successfully! You can now log in.");
         setShowOtpModal(false);
-        localStorage.setItem('firstTimeLogin',true)
+        localStorage.setItem('firstTimeLogin', true)
         navigate("/user-login");
       } else {
         toast.error(data.message || "OTP verification failed. Try again.");
@@ -174,6 +210,76 @@ function Signup() {
               </div>
             </form>
 
+            {/*Registration Using Google*/}
+            <div>
+              <div className="relative mt-10">
+                <div
+                  className="absolute inset-0 flex items-center"
+                  aria-hidden="true"
+                >
+                  <div className="w-full border-t border-gray-200" />
+                </div>
+                <div className="relative flex justify-center text-sm font-medium leading-6">
+                  <span className="bg-white px-6 text-gray-900">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <div
+                  onClick={handleGoogleAuth}
+                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer"
+                >
+                  <svg
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z"
+                      fill="#EA4335"
+                    />
+                    <path
+                      d="M23.49 12.275C23.49 11.49 23.415 10.73 23.3 10H12V14.51H18.47C18.18 15.99 17.34 17.25 16.08 18.1L19.945 21.1C22.2 19.01 23.49 15.92 23.49 12.275Z"
+                      fill="#4285F4"
+                    />
+                    <path
+                      d="M5.26498 14.2949C5.02498 13.5699 4.88501 12.7999 4.88501 11.9999C4.88501 11.1999 5.01998 10.4299 5.26498 9.7049L1.275 6.60986C0.46 8.22986 0 10.0599 0 11.9999C0 13.9399 0.46 15.7699 1.28 17.3899L5.26498 14.2949Z"
+                      fill="#FBBC05"
+                    />
+                    <path
+                      d="M12.0004 24.0001C15.2404 24.0001 17.9654 22.935 19.9454 21.095L16.0804 18.095C15.0054 18.82 13.6204 19.245 12.0004 19.245C8.8704 19.245 6.21537 17.135 5.2654 14.29L1.27539 17.385C3.25539 21.31 7.3104 24.0001 12.0004 24.0001Z"
+                      fill="#34A853"
+                    />
+                  </svg>
+                  <span className="text-sm font-semibold leading-6">
+                    Google
+                  </span>
+                </div>
+
+                <a
+                  href="/"
+                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer pointer-events-none"
+                >
+                  <svg
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 0C4.485 0 0 4.485 0 10c0 4.991 3.657 9.128 8.438 9.879v-6.989H5.896v-2.89h2.542V7.179c0-2.507 1.492-3.891 3.776-3.891 1.094 0 2.236.195 2.236.195v2.458h-1.258c-1.241 0-1.628.771-1.628 1.56v1.88h2.771l-.443 2.89h-2.328v6.989C16.343 19.128 20 14.991 20 10c0-5.515-4.485-10-10-10z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-sm font-semibold leading-6">
+                    Facebook
+                  </span>
+                </a>
+              </div>
+            </div>
             <p className="mt-8 text-center text-sm text-gray-500">
               Already have an account?{" "}
               <Link
@@ -183,6 +289,8 @@ function Signup() {
                 Sign in
               </Link>
             </p>
+
+
           </div>
         </div>
       </div>

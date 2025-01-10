@@ -8,6 +8,8 @@ import { FaSpinner } from "react-icons/fa";
 import postdata from "../../postdata.json"
 import Navbar from '../Navbar';
 import JobLocationFilter from './JobFilter';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import React from 'react';
 
@@ -29,6 +31,7 @@ export default function PostedJobsCard() {
   const [followingList, setFollowingList] = useState([]);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
@@ -41,7 +44,7 @@ export default function PostedJobsCard() {
     const fetchJobs = async () => {
 
       try {
-        const response = await fetch('https://referralwala-deployment.vercel.app/job/all', {
+        const response = await fetch(`${Fronted_API_URL}/job/all`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -65,12 +68,13 @@ export default function PostedJobsCard() {
     fetchJobs();
   }, []);
 
+  // Fetch the list of users the logged-in user is following
   useEffect(() => {
     const fetchFollowingList = async () => {
       if (!userId) return;
 
       try {
-        const response = await fetch(`https://referralwala-deployment.vercel.app/user/${userId}/following`, {
+        const response = await fetch(`${Fronted_API_URL}/user/${userId}/following`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -80,7 +84,7 @@ export default function PostedJobsCard() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.msg || 'Failed to fetch following users');
+          throw new Error(errorData.message || 'Failed to fetch following users');
         }
         const data = await response.json();
         setFollowingList(data.following || []); // Set the list of followed users
@@ -247,14 +251,14 @@ export default function PostedJobsCard() {
       <div className="container mx-auto px-4 py-6">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-8xl">
-          <button
+          {/* <button
             onClick={toggleFilterVisibility}
             className="md:hidden mb-4 px-4 py-1 text-xs bg-blue-500 text-white rounded"
           >
             {filterVisible ? "Hide Filters" : "Show Filters"}
-          </button>
+          </button> */}
 
-          <div className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow ${filterVisible ? "block" : "hidden"
+          {/* <div className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow ${filterVisible ? "block" : "hidden"
             } md:block`}>
             <h3 className="text-xl font-semibold mb-4">Filter by Location</h3>
             <input
@@ -341,11 +345,11 @@ export default function PostedJobsCard() {
                 </span>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Job Cards Section */}
           <ul role="list"
-            className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+            className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
             {loading ? (
               <div className="flex justify-center items-center">
                 <FaSpinner className="animate-spin text-xl" />
@@ -416,6 +420,7 @@ export default function PostedJobsCard() {
           </ul>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
 }
