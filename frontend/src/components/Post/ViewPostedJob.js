@@ -50,11 +50,57 @@ export default function ViewPostedJob() {
     return date;
   }
 
+  const inactivate = async () => {
+    const bearerToken = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    
+    const updatedJobData = { 
+      userId, 
+      status: 'inactive' // Set the status field to 'inactive'
+    };
+  
+    try {
+      const response = await fetch(`${Fronted_API_URL}/job/update/${jobId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedJobData),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
+      }
+  
+      const responseData = await response.json();
+      toast.success("Job status updated to inactive successfully!", {
+        position: "top-right",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        onClose: () => {
+          navigate(`/postedjobslist`);
+        }
+      });
+      console.log('Response:', responseData);
+    } catch (error) {
+      console.error('Error fetching job data:', error);
+      toast.error(error.message);
+    }
+  };
+  
+
   if (!jobData) {
-    return
+    return (
     <div className="flex justify-center items-center">
       <FaSpinner className="animate-spin text-xl" />
-    </div>;
+    </div>
+    )
   }
 
   return (
@@ -70,6 +116,12 @@ export default function ViewPostedJob() {
           >
             Edit Job
           </button>
+          <button
+            onClick={inactivate}
+            className="bg-gray-300 text-gray-700 px-4 py-2 mx-2 rounded"
+          >Inactive
+          </button>
+
         </div>
         <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Job Details</h3>
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">

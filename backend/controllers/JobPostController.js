@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 // @desc    Create a new job referral post
 exports.createJobPost = async (req, res) => {
   try {
-    const { userId, jobRole, jobUniqueId, endDate, companyName, jobDescription, experienceRequired, location, workMode, employmentType, ctc, noOfReferrals, jobLink } = req.body;
+    const { userId, jobRole, jobUniqueId, endDate, companyName, companyLogoUrl,jobDescription, experienceRequired, location, workMode, employmentType, ctc, noOfReferrals, jobLink } = req.body;
 
     // Check if the user exists
     const user = await User.findById(userId);
@@ -33,6 +33,7 @@ exports.createJobPost = async (req, res) => {
       user: userId,
       jobRole,
       companyName,
+      companyLogoUrl,
       jobDescription,
       experienceRequired,
       location,
@@ -106,7 +107,7 @@ exports.getJobPostsByUser = async (req, res) => {
       .exec();
 
     if (jobPosts.length === 0) {
-      return res.status(404).json({ message: "No job posts found for the specified user." });
+      return res.status(404).json({ message: "Start building your dream team-post your first job!" });
     }
 
     res.status(200).json(jobPosts);
@@ -362,7 +363,7 @@ exports.getUserApplicationStatuses = async (req, res) => {
       .exec();
 
     if (applicantStatuses.length === 0) {
-      return res.status(404).json({ message: 'No applications found for this user' });
+      return res.status(404).json({ message: 'Make Your Career Dreams a Reality' });
     }
 
     // Return applicant statuses along with job details

@@ -243,8 +243,12 @@ function classNames(...classes) {
 
 export default function Navbar({ searchQuery, setSearchQuery }) {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
+  const [openNotifications, setOpenNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -253,10 +257,55 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (openNotifications) {
+      fetchNotifications();
+    }
+  }, [openNotifications]);
+
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setLoggedIn(false);
     navigate("/user-login");
+  };
+
+  const fetchNotifications = async () => {
+    const userId = localStorage.getItem("userId");
+    const bearerToken = localStorage.getItem("token");
+    if (!userId) {
+      setError("User not logged in");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${Fronted_API_URL}/user/notifications/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch notifications");
+      }
+      const data = await response.json();
+      console.log("Fetched notifications:", data); // Log data to check the response
+      setNotifications(data || []); // Ensure we set the notifications array correctly
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNotificationClick = (postId) => {
+    console.log("Navigating to post ID:", postId); // Log the postId for debugging
+    // Navigate to the job details page based on the postId
+    navigate(`/appliedjobdetails/${postId}`);
   };
 
   return (
@@ -313,13 +362,12 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                     {/* Here i want to notification */}
                     <button
                       type="button"
+                      onClick={() => setOpenNotifications(true)}
                       className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                      <Link to="/notifications">
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </Link>
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">View notifications</span>
+                      <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
 
                     <Menu as="div" className="relative ml-4 flex-shrink-0">
@@ -462,6 +510,61 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 ))}
             </div>
           </Disclosure.Panel>
+
+          <Transition.Root show={openNotifications} as={Fragment}>
+            <Dialog as="div" className="relative z-10 " onClose={setOpenNotifications}>
+              <div className="fixed inset-0 bg-gray-500 mt-11 bg-opacity-75 transition-opacity overflow-hidden"/>
+              <div className="fixed inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="transform transition ease-in-out duration-500 sm:duration-700"
+                      enterFrom="translate-x-full"
+                      enterTo="translate-x-0"
+                      leave="transform transition ease-in-out duration-500 sm:duration-700"
+                      leaveFrom="translate-x-0"
+                      leaveTo="translate-x-full"
+                    >
+                      <Dialog.Panel className="pointer-events-auto w-screen mt-11 max-w-md">
+                        <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                          <div className="px-4 sm:px-6 flex justify-between items-center">
+                            <Dialog.Title className="text-lg font-medium text-gray-900">
+                              Notifications
+                            </Dialog.Title>
+                            <button
+                              type="button"
+                              className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                              onClick={() => setOpenNotifications(false)}
+                            >
+                              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                            </button>
+                          </div>
+                          <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                            {notifications.length > 0 ? (
+                              <ul className="mt-4 space-y-2">
+                                {notifications.map((notification, index) => (
+                                  <li
+                                    key={index}
+                                    className="p-3 bg-gray-100 rounded-md shadow-md text-sm text-gray-700 cursor-pointer"
+                                    onClick={() => handleNotificationClick(notification.post._id)}
+                                  >
+                                    {notification.message || "New Notification"}
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <div className="text-sm text-gray-500">No notifications available</div>
+                            )}
+                          </div>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </div>
+            </Dialog>
+          </Transition.Root>
         </>
       )}
     </Disclosure>
