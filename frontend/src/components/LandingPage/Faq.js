@@ -17,6 +17,21 @@ const faqs = [
     answer:
       "Yes, ReferralWala is an Indian company.",
   },
+  {
+    question: "Is there a limit to how many referrals I can make?",
+    answer:
+      "No, there is no limit to the number of referrals you can make. ReferralWala encourages users to actively participate in the referral ecosystem.",
+  },
+  {
+    question: "What industries or job roles does ReferralWala support?",
+    answer:
+      "ReferralWala supports a wide range of industries and job roles, making it suitable for professionals across diverse domains.",
+  },
+  {
+    question: "How can I get started with ReferralWala?",
+    answer:
+      "Simply sign up on the platform, complete your profile, and start exploring opportunities to give or receive referrals.",
+  },
 
 ]
 
