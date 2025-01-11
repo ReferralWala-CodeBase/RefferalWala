@@ -3,26 +3,21 @@ import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 
 const faqs = [
   {
-    question: "What's the best thing about Switzerland?",
+    question: "Does ReferralWala charge money for using the platform?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "No. ReferralWala is offering free access to all its users throughout the year 2025.",
   },
   {
-    question: "What's the best thing about Switzerland?",
+    question: "Does ReferralWala provide referrals to its users?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "No, ReferralWala does not provide referrals to its user. It provides a platform where users may give referrals to other users.",
   },
   {
-    question: "What's the best thing about Switzerland?",
+    question: "Is it an Indian company?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "Yes, ReferralWala is an Indian company.",
   },
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  }
-  // More questions...
+
 ]
 
 export default function Faq() {
