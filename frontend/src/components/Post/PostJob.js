@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export default function PostJob() {
   const [formData, setFormData] = useState({
@@ -23,15 +23,63 @@ export default function PostJob() {
     jobDescription: '',
   });
 
+  const [profileIncomplete, setProfileIncomplete] = useState(false);
+  const [companySuggestions, setCompanySuggestions] = useState([]);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const OLA_API_Key = process.env.REACT_APP_OLA_API_KEY; // OLA API
   const Logo_Dev_Secret_key = process.env.REACT_APP_LOGO_DEV_SECRET_KEY; // Logo dev secret key
 
   const navigate = useNavigate();
 
-  const [companySuggestions, setCompanySuggestions] = useState([]);
-  const [locationSuggestions, setLocationSuggestions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const checkProfileCompletion = async () => {
+    setLoading(true);
+    try {
+
+      const bearerToken = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to fetch profile data.");
+      }
+      const profileData = await response.json();
+      const { mobileNumber, presentCompany } = profileData;
+
+      if (
+        !mobileNumber ||
+        !presentCompany?.role ||
+        !presentCompany?.companyName ||
+        !presentCompany?.CompanyEmailVerified
+      ) {
+        setProfileIncomplete(true);
+      } else {
+        setProfileIncomplete(false);
+      }
+
+    } catch (error) {
+      console.error("Error checking profile:", error);
+      toast.error("Error checking profile. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
+  useEffect(() => {
+
+    checkProfileCompletion();
+
+  }, []);
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -108,6 +156,12 @@ export default function PostJob() {
 
   const handleJobPostSubmit = async (e) => {
     e.preventDefault();
+
+    if (profileIncomplete) {
+      toast.error("Please complete your profile before posting a job.");
+      return;
+    }
+
 
     // Add userId from local storage to formData
     const bearerToken = localStorage.getItem('token');
@@ -406,13 +460,55 @@ export default function PostJob() {
               <button
                 type="submit"
                 className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+
+                disabled={loading}
+
               >
-                Post Job
+
+                {loading ? "Checking Profile..." : "Post Job"}
+
               </button>
             </div>
           </form>
         </div>
       </div>
+      {/* Dialog for incomplete profile */}
+
+      {profileIncomplete && (
+
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+
+          <div className="bg-white p-6 rounded-md shadow-md">
+
+            <h2 className="text-lg font-semibold text-gray-900">
+
+              Complete Your Profile
+
+            </h2>
+
+            <p className="mt-2 text-sm text-gray-600">
+
+              Please fill in your profile details, including your mobile number
+
+              and company information, before posting a job.
+
+            </p>
+
+            <div className="mt-4 flex justify-end">
+
+              <button
+
+                onClick={() => navigate("/viewprofile")}
+
+                className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+
+              >
+                Go to Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
   );
