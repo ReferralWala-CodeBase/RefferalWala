@@ -89,7 +89,19 @@ export default function PostedJobsList() {
                 <FaSpinner className="animate-spin text-xl" />
               </div>
             ) : error ? (
-              <p className="text-red-500">Error: {error}</p>
+              error === "Start building your dream team-post your first job!" ? ( // Handle specific 404 error message
+                <div className="flex mt-4">
+                  <p className="text-gray-700 mr-3 mt-1">{error}</p>
+                  <button
+                    onClick={() => navigate('/postjob')} // Navigate to job creation
+                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  >
+                    Add Job
+                  </button>
+                </div>
+              ) : (
+                <p className="text-red-500">{error}</p>
+              )
             ) : jobs.length === 0 ? (
               <p>No jobs found.</p>
             ) : (

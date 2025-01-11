@@ -19,6 +19,10 @@ const JobPostSchema = new Schema({
     type: String,
     required: false,
   },
+  companyLogoUrl: {
+    type: String,  
+    required: false,
+  },
   jobDescription: {
     type: String,
     required: false,

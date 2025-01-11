@@ -30,7 +30,7 @@ export default function AppliedJobs() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.msg || 'No applications Found!! Start Applying for your dream Job. ');
+          throw new Error(errorData.message || 'No applications Found!! Start Applying for your dream Job. ');
         }
 
         const data = await response.json();
@@ -89,9 +89,21 @@ export default function AppliedJobs() {
           <div className="mt-2 flow-root">
             {loading ? (
               <p>Loading...</p>
-            ) : error ? (
-              <p className="text-red-500">{error}</p>
-            ) : appliedJobs.length === 0 ? (
+            ): error ? (
+              error === "Make Your Career Dreams a Reality" ? ( // Handle specific 404 error message
+                <div className="flex mt-4">
+                  <p className="text-gray-700 mr-3 mt-1">{error}</p>
+                  <button
+                    onClick={() => navigate('/')} // Navigate to job creation
+                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  >
+                    Add Job
+                  </button>
+                </div>
+              ) : (
+                <p className="text-red-500">{error}</p>
+              )
+            ) :  appliedJobs.length === 0 ? (
               <p>No applied jobs found.</p>
             ) : (
               <div className="max-w-7xl">
