@@ -333,20 +333,60 @@ exports.deleteJobPost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log('Deleting job post with ID:', id); // Log the ID for debugging
+    console.log('Deleting job post with ID:', id);
 
+    // Find the job post
     const jobPost = await JobPost.findById(id);
     if (!jobPost) {
       return res.status(404).json({ message: 'Job post not found' });
     }
 
-    await JobPost.deleteOne({ _id: id });
-    res.status(200).json({ message: 'Job post deleted successfully' });
+    const jobRole = jobPost.jobRole;
+    const companyName = jobPost.companyName;
+
+    // Get all applicants for the job post
+    const applicants = jobPost.applicants;
+
+    // Notify each applicant about the job deletion and remove the job from their appliedJobs field
+    const notificationsPromises = applicants.map(async (userId) => {
+      // Create a notification for the user
+      const notification = new Notification({
+        user: userId,
+        message: `The job "${jobRole}" at "${companyName}" you applied for has been deleted. You can explore other job postings on our platform.`,
+        post: id,
+      });
+
+      // Save the notification
+      await notification.save();
+
+      // Remove the job from the user's appliedJobs field
+      await User.updateOne(
+        { _id: userId },
+        { $pull: { appliedJobs: id } } // Pull the job ID from the appliedJobs array
+      );
+    });
+
+    // Remove applicant status records associated with the job post
+    const applicantStatusDeletePromise = ApplicantStatus.deleteMany({ jobPostId: id });
+
+    // Clear the job post's applicants array
+    jobPost.applicants = [];
+    await jobPost.save();
+
+    // Delete the job post from the database
+    const jobPostDeletePromise = JobPost.deleteOne({ _id: id });
+
+    // Wait for all operations to complete
+    await Promise.all([...notificationsPromises, applicantStatusDeletePromise, jobPostDeletePromise]);
+
+    res.status(200).json({ message: 'Job post deleted successfully, and notifications sent to applicants.' });
   } catch (err) {
     console.error('Error deleting job post:', err.message);
     res.status(500).send('Server Error');
   }
 };
+
+
 
 exports.getUserApplicationStatuses = async (req, res) => {
   try {
