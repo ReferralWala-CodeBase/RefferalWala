@@ -9,6 +9,7 @@ import postdata from "../../postdata.json"
 import Navbar from '../Navbar';
 import JobLocationFilter from './JobFilter';
 import { motion } from "framer-motion";
+import { FaMapMarkerAlt, FaBuilding, FaFilter } from "react-icons/fa"
 
 import React from 'react';
 
@@ -259,94 +260,115 @@ export default function PostedJobsCard() {
             {filterVisible ? "Hide Filters" : "Show Filters"}
           </button>
 
-          <div className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow ${filterVisible ? "block" : "hidden"
-            } md:block`}>
-            <h3 className="text-xl font-semibold mb-4">Filter by Location</h3>
-            <input
-              type="text"
-              placeholder="Search locations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full mb-4 px-3 py-2 border border-gray-300 rounded"
-            />
-            <ul className="space-y-2 max-h-40 overflow-y-auto">
-              {locations
-                .filter((loc) =>
-                  loc.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-                .map((loc) => (
-                  <li
-                    key={loc}
-                    onClick={() => handleLocationSelect(loc)}
-                    className={`px-4 py-2 cursor-pointer rounded ${selectedLocations.includes(loc)
-                      ? "bg-blue-100"
-                      : "hover:bg-gray-200"
-                      }`}
-                  >
-                    {loc}
-                  </li>
-                ))}
-            </ul>
-            <div className="mt-4">
-              {selectedLocations.map((loc) => (
-                <span
-                  key={loc}
-                  className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-sm mr-2 mb-2"
-                >
-                  {loc}{" "}
-                  <button
-                    onClick={() => handleLocationRemove(loc)}
-                    className="ml-1 text-red-500"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
+          <div
+            className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow-lg border border-gray-200 ${filterVisible ? "block" : "hidden"
+              } md:block`}
+          >
+            {/* Main Heading */}
+            <div className="flex items-center gap-2 mb-6">
+              <FaFilter className="text-blue-500 text-xl" />
+              <h1 className="text-xl font-bold text-gray-800">You can Filter your Search</h1>
             </div>
 
-            <h3 className="text-xl font-semibold mt-6 mb-4">Filter by Company</h3>
-            <input
-              type="text"
-              placeholder="Search companies..."
-              value={companySearchTerm}
-              onChange={(e) => setCompanySearchTerm(e.target.value)}
-              className="w-full mb-4 px-3 py-2 border border-gray-300 rounded"
-            />
-            <ul className="space-y-2 max-h-40 overflow-y-auto">
-              {companies
-                .filter((comp) =>
-                  comp.toLowerCase().includes(companySearchTerm.toLowerCase())
-                )
-                .map((comp) => (
-                  <li
+            {/* Filter by Location */}
+            <div className="mb-8">
+              <div className="flex items-center gap-2 border-b pb-2 mb-4">
+                <FaMapMarkerAlt className="text-blue-500 text-lg" />
+                <h3 className="text-lg font-semibold text-gray-800">Location</h3>
+              </div>
+              <input
+                type="text"
+                placeholder="Search locations..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              />
+              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
+                {locations
+                  .filter((loc) =>
+                    loc.toLowerCase().includes(searchTerm.toLowerCase())
+                  )
+                  .map((loc) => (
+                    <li
+                      key={loc}
+                      onClick={() => handleLocationSelect(loc)}
+                      className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedLocations.includes(loc)
+                        ? "bg-blue-100 text-blue-700 font-medium"
+                        : "hover:bg-gray-100"
+                        }`}
+                    >
+                      {loc}
+                    </li>
+                  ))}
+              </ul>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {selectedLocations.map((loc) => (
+                  <span
+                    key={loc}
+                    className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1"
+                  >
+                    {loc}
+                    <button
+                      onClick={() => handleLocationRemove(loc)}
+                      className="text-white hover:text-red-300 transition"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Filter by Company */}
+            <div>
+              <div className="flex items-center gap-2 border-b pb-2 mb-4">
+                <FaBuilding className="text-blue-500 text-lg" />
+                <h3 className="text-lg font-semibold text-gray-800">Company</h3>
+              </div>
+              <input
+                type="text"
+                placeholder="Search companies..."
+                value={companySearchTerm}
+                onChange={(e) => setCompanySearchTerm(e.target.value)}
+                className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              />
+              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
+                {companies
+                  .filter((comp) =>
+                    comp.toLowerCase().includes(companySearchTerm.toLowerCase())
+                  )
+                  .map((comp) => (
+                    <li
+                      key={comp}
+                      onClick={() => handleCompanySelect(comp)}
+                      className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedCompanies.includes(comp)
+                        ? "bg-blue-100 text-blue-700 font-medium"
+                        : "hover:bg-gray-100"
+                        }`}
+                    >
+                      {comp}
+                    </li>
+                  ))}
+              </ul>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {selectedCompanies.map((comp) => (
+                  <span
                     key={comp}
-                    onClick={() => handleCompanySelect(comp)}
-                    className={`px-4 py-2 cursor-pointer rounded ${selectedCompanies.includes(comp)
-                      ? "bg-blue-100"
-                      : "hover:bg-gray-200"
-                      }`}
+                    className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1"
                   >
                     {comp}
-                  </li>
+                    <button
+                      onClick={() => handleCompanyRemove(comp)}
+                      className="text-white hover:text-red-300 transition"
+                    >
+                      ×
+                    </button>
+                  </span>
                 ))}
-            </ul>
-            <div className="mt-4">
-              {selectedCompanies.map((comp) => (
-                <span
-                  key={comp}
-                  className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-sm mr-2 mb-2"
-                >
-                  {comp}{" "}
-                  <button
-                    onClick={() => handleCompanyRemove(comp)}
-                    className="ml-1 text-red-500"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
+              </div>
             </div>
           </div>
+
 
           {/* Job Cards Section */}
           <div>
