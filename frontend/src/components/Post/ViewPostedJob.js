@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   BriefcaseIcon,
@@ -10,12 +10,13 @@ import {
   MapPinIcon,
   PencilIcon,
 } from '@heroicons/react/20/solid';
-import { Menu, Transition } from '@headlessui/react';
+import { Dialog, Menu, Transition } from '@headlessui/react';
 import SidebarNavigation from '../SidebarNavigation';
 import { FaSpinner } from "react-icons/fa";
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -26,6 +27,8 @@ export default function ViewPostedJob() {
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const [jobData, setJobData] = useState(null);
+  const [open, setOpen] = useState(false);
+  const cancelButtonRef = useRef(null);
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -87,6 +90,7 @@ export default function ViewPostedJob() {
 
       if (!response.ok) {
         const errorData = await response.json();
+        alert("not ok")
         throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
       }
 
@@ -103,6 +107,7 @@ export default function ViewPostedJob() {
           navigate(`/postedjobslist`);
         }
       });
+      setOpen(false);
       console.log('Response:', responseData);
     } catch (error) {
       console.error('Error fetching job data:', error);
@@ -190,11 +195,90 @@ export default function ViewPostedJob() {
                 </button>
 
                 <button
-                  onClick={inactivate}
+                  // onClick={inactivate}
+                  onClick={() => setOpen(true)}
                   className="bg-gray-300 text-gray-700 px-4 py-2 mx-2 rounded"
-                >Inactive
+                >Close Job
                 </button>
               </span>
+
+              <Transition.Root show={open} as={Fragment}>
+                <Dialog
+                  as="div"
+                  className="relative z-10"
+                  initialFocus={cancelButtonRef}
+                  onClose={() => setOpen(false)}
+                >
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                  </Transition.Child>
+
+                  <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                    <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        enterTo="opacity-100 translate-y-0 sm:scale-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                        leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                      >
+                        <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                          <div className="sm:flex sm:items-start">
+                            <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                              <ExclamationTriangleIcon
+                                className="h-6 w-6 text-red-600"
+                                aria-hidden="true"
+                              />
+                            </div>
+                            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                              <Dialog.Title
+                                as="h3"
+                                className="text-base font-semibold leading-6 text-gray-900"
+                              >
+                                Close Job
+                              </Dialog.Title>
+                              <div className="mt-2">
+                                <p className="text-sm text-gray-500">
+                                  Are you sure you want to close this job? This action
+                                  cannot be undone.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                            <button
+                              type="button"
+                              className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                              onClick={inactivate}
+                            >
+                              Confirm
+                            </button>
+                            <button
+                              type="button"
+                              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                              onClick={() => setOpen(false)}
+                              ref={cancelButtonRef}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </Dialog.Panel>
+                      </Transition.Child>
+                    </div>
+                  </div>
+                </Dialog>
+              </Transition.Root>
+
             </div>
             <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Job Details</h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -251,6 +335,7 @@ export default function ViewPostedJob() {
           </div>
         </main >
       </div >
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
 
 

@@ -129,7 +129,7 @@ export default function PostedJobsList() {
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.jobRole}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.companyName}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.location}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.status}</td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.status === "inactive" ? "Closed" : job.status}</td>
                         {/* <td className="relative py-4 pl-3 pr-2 text-right text-sm font-medium sm:pr-6">
                         <button
                           onClick={() => handleEdit(job._id)}
