@@ -52,16 +52,14 @@ function About() {
                 />
                 <blockquote className="mt-6 text-xl font-semibold leading-8 text-white">
                   <p>
-                    “Amet amet eget scelerisque tellus sit neque faucibus non
-                    eleifend. Integer eu praesent at a. Ornare arcu gravida
-                    natoque erat et cursus tortor.”
+                    “Success usually comes to those who are too busy to be looking for it.”
                   </p>
                 </blockquote>
                 <figcaption className="mt-6 text-sm leading-6 text-gray-300">
                   <strong className="font-semibold text-white">
-                    Judith Rogers,
+                  Henry David Thoreau,
                   </strong>{" "}
-                  CEO at Workcation
+                  
                 </figcaption>
               </figure>
             </div>
@@ -88,7 +86,7 @@ function About() {
                 </p>
               </div>
             </div>
-            <dl className="mt-10 grid grid-cols-2 gap-8 border-t border-gray-900/10 pt-10 sm:grid-cols-4">
+            {/* <dl className="mt-10 grid grid-cols-2 gap-8 border-t border-gray-900/10 pt-10 sm:grid-cols-4">
               {stats.map((stat, statIdx) => (
                 <div key={statIdx}>
                   <dt className="text-sm font-semibold leading-6 text-gray-600">
@@ -99,8 +97,8 @@ function About() {
                   </dd>
                 </div>
               ))}
-            </dl>
-            <div className="mt-10 flex">
+            </dl> */}
+            {/* <div className="mt-10 flex">
               <a
                 href="##"
                 className="text-base font-semibold leading-7 text-indigo-600"
@@ -108,7 +106,7 @@ function About() {
                 Learn more about our company{" "}
                 <span aria-hidden="true">&rarr;</span>
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

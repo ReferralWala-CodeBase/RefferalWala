@@ -297,6 +297,7 @@ export default function EditProfile() {
                   value={profileData.mobileNumber || ''}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  required
                 />
               </div>
               <div>
@@ -323,6 +324,7 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="role"
+                  required
                   value={profileData.presentCompany?.role || ''}
                   onChange={(e) =>
                     setProfileData({
@@ -341,6 +343,7 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="companyName"
+                  required
                   value={profileData.presentCompany?.companyName || ''}
                   onChange={(e) =>
                     setProfileData({

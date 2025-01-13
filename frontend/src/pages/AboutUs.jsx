@@ -17,8 +17,8 @@ export default function AboutUs() {
        <WhyDifferent/>
        <About />  
        <Stats/>
-       <Pricing/>
-       <Testimonials/>
+       {/* <Pricing/> */}
+       {/* <Testimonials/> */}
        <Faq/>
        <ContactUs/>
        <Footer/>

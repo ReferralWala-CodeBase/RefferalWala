@@ -9,6 +9,7 @@ import {
   LinkIcon,
   MapPinIcon,
   PencilIcon,
+  XCircleIcon
 } from '@heroicons/react/20/solid';
 import { Menu, Transition } from '@headlessui/react';
 import SidebarNavigation from '../SidebarNavigation';
@@ -65,6 +66,94 @@ export default function ViewPostedJob() {
     }
     return date;
   }
+
+  const inactivate = async () => {
+
+    const bearerToken = localStorage.getItem('token');
+
+    const userId = localStorage.getItem('userId');
+
+
+
+    const updatedJobData = {
+
+      userId,
+
+      status: 'inactive' // Set the status field to 'inactive'
+
+    };
+
+
+
+    try {
+
+      const response = await fetch(`${Fronted_API_URL}/job/update/${jobId}`, {
+
+        method: 'PUT',
+
+        headers: {
+
+          Authorization: `Bearer ${bearerToken}`,
+
+          'Content-Type': 'application/json',
+
+        },
+
+        body: JSON.stringify(updatedJobData),
+
+      });
+
+
+
+      if (!response.ok) {
+
+        const errorData = await response.json();
+
+        throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
+
+      }
+
+
+
+      const responseData = await response.json();
+
+      toast.success("Job status updated to inactive successfully!", {
+
+        position: "top-right",
+
+        autoClose: 3000, // 3 seconds
+
+        hideProgressBar: false,
+
+        closeOnClick: true,
+
+        pauseOnHover: true,
+
+        draggable: true,
+
+        progress: undefined,
+
+        onClose: () => {
+
+          navigate(`/postedjobslist`);
+
+        }
+
+      });
+
+      console.log('Response:', responseData);
+
+    } catch (error) {
+
+      console.error('Error fetching job data:', error);
+
+      toast.error(error.message);
+
+    }
+
+  };
+
+
 
   if (!jobData) {
     return
@@ -134,7 +223,7 @@ export default function ViewPostedJob() {
         
       </div>
       <div className="mt-5 flex lg:ml-4 lg:mt-0">
-        <span className="hidden sm:block">
+        <span className="sm:block">
           <button
             type="button"
             onClick={() => navigate(`/editpostedjob/${jobId}`)}
@@ -143,16 +232,18 @@ export default function ViewPostedJob() {
             <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
             Edit
           </button>
+          
         </span>
-        {/* <span className="sm:ml-3">
+        <span className="sm:ml-3">
           <button
-            type="button"
-            className="inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400"
-          >
-            <CheckIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
-            Publish
-          </button>
-        </span> */}
+          type="button"
+           onClick={inactivate}
+           className="inline-flex items-center rounded-md bg-white/10 mx-1 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+          > <XCircleIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+          Close 
+
+            </button>
+        </span>
      
       </div>
      
