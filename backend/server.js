@@ -7,6 +7,7 @@ const connectDB = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
 const jobPostRoutes = require('./routes/jobPostRoutes');
 const authRoutes = require('./routes/auth');
+const contactRoutes = require('./routes/contactRoutes');
 const cron = require('node-cron');
 const Notification = require('./models/Notification');
 dotenv.config();
@@ -36,6 +37,7 @@ cron.schedule('0 0 * * *', async () => {
 
 app.use('/user', userRoutes);
 app.use('/job', jobPostRoutes);
+app.use('/contact', contactRoutes);
 app.use('/googleauth',authRoutes);
 
 const PORT = process.env.PORT || 5000;

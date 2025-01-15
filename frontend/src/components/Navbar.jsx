@@ -220,8 +220,6 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import profile from "../assets/profile-icon-user.png";
-import { Dialog } from "@headlessui/react";
-import NotificationsPage from "../components/Profile/NotificationsPage";
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
@@ -233,7 +231,7 @@ const navigation = [
 
 const userNavigation = [
   { name: "Your Profile", href: "/viewprofile" },
-  { name: "Settings", href: "#" },
+  { name: "Settings", href: "/settings" },
   { name: "Sign out", href: "#" },
 ];
 
@@ -243,12 +241,8 @@ function classNames(...classes) {
 
 export default function Navbar({ searchQuery, setSearchQuery }) {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [openNotifications, setOpenNotifications] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate();
-  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -257,59 +251,27 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     }
   }, []);
 
-  useEffect(() => {
-    if (openNotifications) {
-      fetchNotifications();
-    }
-  }, [openNotifications]);
-
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     localStorage.removeItem("token");
+
+    if ("caches" in window) {
+      try {
+        const cacheNames = await caches.keys();
+        await Promise.all(
+          cacheNames.map((cacheName) => caches.delete(cacheName))
+        );
+        console.log("Cache cleared successfully.");
+      } catch (error) {
+        console.error("Error clearing cache:", error);
+      }
+    }
+
     setLoggedIn(false);
     navigate("/user-login");
   };
 
-  const fetchNotifications = async () => {
-    const userId = localStorage.getItem("userId");
-    const bearerToken = localStorage.getItem("token");
-    if (!userId) {
-      setError("User not logged in");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `${Fronted_API_URL}/user/notifications/${userId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch notifications");
-      }
-      const data = await response.json();
-      console.log("Fetched notifications:", data); // Log data to check the response
-      setNotifications(data || []); // Ensure we set the notifications array correctly
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleNotificationClick = (postId) => {
-    console.log("Navigating to post ID:", postId); // Log the postId for debugging
-    // Navigate to the job details page based on the postId
-    navigate(`/appliedjobdetails/${postId}`);
-  };
-
   return (
-    <Disclosure as="header" className="bg-white sticky top-0 z-50">
+    <Disclosure as="header" className="bg-blue-800 shadow">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
@@ -317,27 +279,27 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               <div className="relative z-10 flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
                   <h1 className="font-bold tracking-[2px] text-sm text-blue-600">
-                    ReferralWala
+                    Referral Wala
                   </h1>
                 </div>
               </div>
               <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
-                <div className="w-full sm:max-w-xs">
+                <div className="w-full sm:max-w-sm">
                   <label htmlFor="search" className="sr-only">
                     Search
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon
-                        className="h-5 w-5 text-gray-400"
+                        className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
                         aria-hidden="true"
                       />
                     </div>
                     <input
                       id="search"
                       name="search"
-                      className="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      placeholder="Your Dream is waiting....."
+                      className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
+                      placeholder="Search..."
                       type="search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -345,6 +307,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                   </div>
                 </div>
               </div>
+
               <div className="relative z-10 flex items-center lg:hidden">
                 <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                   <span className="absolute -inset-0.5" />
@@ -359,15 +322,15 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
                 {loggedIn ? (
                   <>
-                    {/* Here i want to notification */}
                     <button
                       type="button"
-                      onClick={() => setOpenNotifications(true)}
                       className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                      <Link to="/notifications">
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">View notifications</span>
+                        <BellIcon className="h-6 w-6" aria-hidden="true" />
+                      </Link>
                     </button>
 
                     <Menu as="div" className="relative ml-4 flex-shrink-0">
@@ -478,16 +441,27 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
             <div className="space-y-1 px-2 pb-3 pt-2">
               {loggedIn
                 ? userNavigation.map((item) =>
-                  item.name === "Sign out" ? (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="button"
-                      onClick={handleSignOut}
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ) : (
+                    item.name === "Sign out" ? (
+                      <Disclosure.Button
+                        key={item.name}
+                        as="button"
+                        onClick={handleSignOut}
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
+                      >
+                        {item.name}
+                      </Disclosure.Button>
+                    ) : (
+                      <Disclosure.Button
+                        key={item.name}
+                        as={Link}
+                        to={item.href}
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
+                      >
+                        {item.name}
+                      </Disclosure.Button>
+                    )
+                  )
+                : navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
                       as={Link}
@@ -496,75 +470,9 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                     >
                       {item.name}
                     </Disclosure.Button>
-                  )
-                )
-                : navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as={Link}
-                    to={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
+                  ))}
             </div>
           </Disclosure.Panel>
-
-          <Transition.Root show={openNotifications} as={Fragment}>
-            <Dialog as="div" className="relative z-10 " onClose={setOpenNotifications}>
-              <div className="fixed inset-0 bg-gray-500 mt-11 bg-opacity-75 transition-opacity overflow-hidden"/>
-              <div className="fixed inset-0 overflow-hidden">
-                <div className="absolute inset-0 overflow-hidden">
-                  <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-                    <Transition.Child
-                      as={Fragment}
-                      enter="transform transition ease-in-out duration-500 sm:duration-700"
-                      enterFrom="translate-x-full"
-                      enterTo="translate-x-0"
-                      leave="transform transition ease-in-out duration-500 sm:duration-700"
-                      leaveFrom="translate-x-0"
-                      leaveTo="translate-x-full"
-                    >
-                      <Dialog.Panel className="pointer-events-auto w-screen mt-11 max-w-md">
-                        <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
-                          <div className="px-4 sm:px-6 flex justify-between items-center">
-                            <Dialog.Title className="text-lg font-medium text-gray-900">
-                              Notifications
-                            </Dialog.Title>
-                            <button
-                              type="button"
-                              className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                              onClick={() => setOpenNotifications(false)}
-                            >
-                              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                            </button>
-                          </div>
-                          <div className="relative mt-6 flex-1 px-4 sm:px-6">
-                            {notifications.length > 0 ? (
-                              <ul className="mt-4 space-y-2">
-                                {notifications.map((notification, index) => (
-                                  <li
-                                    key={index}
-                                    className="p-3 bg-gray-100 rounded-md shadow-md text-sm text-gray-700 cursor-pointer"
-                                    onClick={() => handleNotificationClick(notification.post._id)}
-                                  >
-                                    {notification.message || "New Notification"}
-                                  </li>
-                                ))}
-                              </ul>
-                            ) : (
-                              <div className="text-sm text-gray-500">No notifications available</div>
-                            )}
-                          </div>
-                        </div>
-                      </Dialog.Panel>
-                    </Transition.Child>
-                  </div>
-                </div>
-              </div>
-            </Dialog>
-          </Transition.Root>
         </>
       )}
     </Disclosure>
