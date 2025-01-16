@@ -25,7 +25,13 @@ export default function FollowingList() {
 
         if (!response.ok) {
           const errorData = await response.json();
+          if (response.status === 401) {
+            // Unauthorized, remove the token and navigate to login
+            localStorage.removeItem('token');
+            navigate('/user-login');
+          } else {
           throw new Error(errorData.msg || 'Failed to fetch following users');
+          }
         }
 
         const data = await response.json();
@@ -50,10 +56,10 @@ export default function FollowingList() {
     <>
       <Navbar />
       <div className="flex">
-        <div className="w-1/4">
+        <div className="w-2/12 md:w-1/4">
           <SidebarNavigation />
         </div>
-        <div className="w-3/4">
+        <div className="w-10/12 md:w-3/4">
           <div className="mt-2">
             {loading ? (
               <p>Loading...</p>

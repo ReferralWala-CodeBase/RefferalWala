@@ -23,6 +23,7 @@ app.use(express.json());
 connectDB();
 
 app.use(express.json());
+
 app.use(passport.initialize());
 cron.schedule('0 0 * * *', async () => {
     try {

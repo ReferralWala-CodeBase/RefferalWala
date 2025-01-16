@@ -271,7 +271,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   };
 
   return (
-    <Disclosure as="header" className="bg-blue-800 shadow">
+    <Disclosure as="header" className="bg-blue-800 shadow sticky top-0 z-10">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">

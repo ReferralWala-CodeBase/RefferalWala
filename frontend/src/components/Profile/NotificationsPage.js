@@ -30,7 +30,13 @@ const NotificationsPage = () => {
           }
         );
         if (!response.ok) {
+          if (response.status === 401) {
+            // Unauthorized, remove the token and navigate to login
+            localStorage.removeItem('token');
+            navigate('/user-login');
+          } else {
           throw new Error("Failed to fetch notifications");
+          }
         }
         const data = await response.json();
         console.log("Fetched notifications:", data); // Log data to check the response

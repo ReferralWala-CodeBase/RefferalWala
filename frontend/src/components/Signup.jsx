@@ -122,16 +122,16 @@ function Signup() {
 
   return (
     <section className="min-h-screen bg-slate-200/90">
-      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="flex min-h-full flex-1 flex-col justify-center sm:px-6 lg:px-8">
+        {/* <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
             className="mx-auto h-10 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
             alt="Referral Wala"
           />
-        </div>
+        </div> */}
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <h2 className="mb-3 text-start text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Create your account

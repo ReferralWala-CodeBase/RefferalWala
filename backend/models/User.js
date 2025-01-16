@@ -133,7 +133,7 @@ const userSchema = new mongoose.Schema({
   aboutMe: {
     type: String,
   },
-  profileImg: {
+  profilePhoto: {
     type: String,
   },
   presentCompany: PresentCompanySchema,

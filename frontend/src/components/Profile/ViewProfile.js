@@ -29,7 +29,13 @@ export default function ViewProfile() {
         });
 
         if (!response.ok) {
+          if (response.status === 401) {
+            // Unauthorized, remove the token and navigate to login
+            localStorage.removeItem('token');
+            navigate('/user-login');
+          } else {
           throw new Error('Failed to fetch profile data');
+          }
         }
 
         const data = await response.json();
@@ -55,12 +61,12 @@ export default function ViewProfile() {
     <>
       <Navbar className="sticky top-0 z-50" />
       <div className="flex mt-[navbar-height]">
-        <div className="w-1/4">
+        <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-3/4 px-4 sm:px-6">
-          <div className="flex justify-between items-center pt-4 pb-4">
-            <h3 className="mt-2 text-xl font-medium leading-7 text-gray-900">Basic Profile</h3>
+        <div className="w-11/12 md:w-3/4 px-4 sm:px-6 m-auto">
+          <div className="flex justify-between items-center pt-2 pb-4 ml-4">
+            <h3 className="text-xl font-medium leading-7 text-gray-900">Basic Profile</h3>
             <button
               onClick={() => navigate(`/editprofile`)}
               className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -69,16 +75,16 @@ export default function ViewProfile() {
             </button>
           </div>
 
-          <div className="p-6 font-sans rounded-lg shadow-lg bg-gray-50">
-            <div className="flex">
-              <div className="w-1/3 text-center pr-6 border-r border-gray-300">
+          <div className="p-6 sm:mr-0 font-sans rounded-lg shadow-lg bg-gray-50">
+            <div className="flex flex-col lg:flex-row">
+              <div className="lg:w-1/3 text-center lg:pr-6 lg:border-r border-gray-300 mb-6 lg:mb-0">
                 <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"
+                  src={profileData.profilePhoto || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"}
                   alt="Profile"
                   className="w-36 h-36 rounded-full mx-auto mb-4"
                 />
-                <h2 className="text-xl font-semibold text-gray-800">{profileData.firstName + " " + profileData.lastName || <>&nbsp;</>}</h2>
-                <p className="text-sm text-gray-600 mb-3">{profileData.presentCompany.role || <>&nbsp;</>}</p>
+                <h2 className="text-xl font-semibold text-gray-800">{profileData.firstName || <>&nbsp;</>} {profileData.lastName || <>&nbsp;</>}</h2>
+                <p className="text-sm text-gray-600 mb-3">{profileData.presentCompany?.role || <>&nbsp;</>}</p>
                 <div className="text-sm text-gray-700 leading-relaxed  flex items-center flex-wrap space-x-4">
                   <div className="flex items-center space-x-1">
                     <FaEnvelope className="text-gray-500" />
@@ -150,7 +156,7 @@ export default function ViewProfile() {
 
 
               </div>
-              <div className="w-2/3 pl-6">
+              <div className="lg:w-2/3 lg:pl-6">
                 <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
                 <p className="text-sm text-gray-700 mb-6">{profileData.aboutMe || 'No about me information provided'}</p>
                 <h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>

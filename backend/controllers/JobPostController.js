@@ -269,7 +269,7 @@ exports.getApplicantsForJobPost = async (req, res) => {
 
     // Fetch applicants and their statuses
     const applicants = await ApplicantStatus.find({ jobPostId: jobPost._id })
-      .populate('userId', 'firstName lastName email'); // Populate user details
+      .populate('userId', 'firstName lastName email profilePhoto'); // Populate user details
 
     // Return applicants along with their status
     res.status(200).json(applicants);

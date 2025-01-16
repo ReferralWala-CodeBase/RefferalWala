@@ -9,7 +9,6 @@ import {
   LinkIcon,
   MapPinIcon,
   PencilIcon,
-  XCircleIcon
 } from '@heroicons/react/20/solid';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import SidebarNavigation from '../SidebarNavigation';
@@ -44,7 +43,13 @@ export default function ViewPostedJob() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch job data');
+          if (response.status === 401) {
+            // Unauthorized, remove the token and navigate to login
+            localStorage.removeItem('token');
+            navigate('/user-login');
+          } else {
+            throw new Error('Failed to fetch job data');
+          }
         }
 
         const data = await response.json();
@@ -71,98 +76,57 @@ export default function ViewPostedJob() {
   }
 
   const inactivate = async () => {
-
     const bearerToken = localStorage.getItem('token');
-
     const userId = localStorage.getItem('userId');
 
-
-
     const updatedJobData = {
-
       userId,
-
       status: 'inactive' // Set the status field to 'inactive'
-
     };
 
-
-
     try {
-
       const response = await fetch(`${Fronted_API_URL}/job/update/${jobId}`, {
-
         method: 'PUT',
-
         headers: {
-
           Authorization: `Bearer ${bearerToken}`,
-
           'Content-Type': 'application/json',
-
         },
-
         body: JSON.stringify(updatedJobData),
-
       });
 
-
-
       if (!response.ok) {
-
         const errorData = await response.json();
         alert("not ok")
         throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
-
       }
 
-
-
       const responseData = await response.json();
-
       toast.success("Job status updated to inactive successfully!", {
-
         position: "top-right",
-
         autoClose: 3000, // 3 seconds
-
         hideProgressBar: false,
-
         closeOnClick: true,
-
         pauseOnHover: true,
-
         draggable: true,
-
         progress: undefined,
-
         onClose: () => {
-
           navigate(`/postedjobslist`);
-
         }
-
       });
       setOpen(false);
       console.log('Response:', responseData);
-
     } catch (error) {
-
       console.error('Error fetching job data:', error);
-
       toast.error(error.message);
-
     }
-
   };
-
 
 
   if (!jobData) {
     return
-      <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center">
       <FaSpinner className="animate-spin text-xl" />
-    </div>;
+    </div>
   }
 
   return (
@@ -322,64 +286,13 @@ export default function ViewPostedJob() {
               </Transition.Root>
 
             </div>
-            <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Job Details</h3>
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Job Role</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobRole}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Job Link</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobLink}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Job ID</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.jobUniqueId}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Company Name</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.companyName}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Experience Required (Years)</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.experienceRequired}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Location</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.location}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Work Mode</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.workMode}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Employment Type</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.employmentType}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">CTC (INR-Lakhs)</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.ctc}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Number of Referrals</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{jobData.noOfReferrals}</div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">End Date</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2">{getDate(jobData.endDate)}</div>
-              </div>
-              <div className="col-span-2 pb-4">
-                <label className="block text-sm font-medium text-gray-700">Job Description</label>
-                <div className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2 h-40 overflow-auto">{jobData.jobDescription}</div>
-              </div>
-            </div>
 
           </div>
         </main >
       </div >
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
-  
+
 
   );
 }

@@ -26,7 +26,13 @@ export default function JobApplicantsList() {
 
         if (!response.ok) {
           const errorData = await response.json();
+          if (response.status === 401) {
+            // Unauthorized, remove the token and navigate to login
+            localStorage.removeItem('token');
+            navigate('/user-login');
+          } else {
           throw new Error(errorData.message || 'Failed to fetch applicants');
+          }
         }
 
         const data = await response.json();
@@ -72,10 +78,10 @@ export default function JobApplicantsList() {
     <>
       <Navbar />
       <div className="flex">
-        <div className="w-1/4">
+        <div className="w-2/12 md:w-1/4">
           <SidebarNavigation />
         </div>
-        <div className="w-3/4">
+        <div className="w-10/12 md:w-3/4">
           <input
             type="text"
             placeholder="Search"
@@ -107,7 +113,7 @@ export default function JobApplicantsList() {
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {Object.entries(filteredApplicants).map(([id, applicant]) => (
                       <tr key={applicant._id}>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">   <img className="h-11 w-11 rounded-full" src='https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' alt="" />
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"> <img className="h-11 w-11 rounded-full" src={ applicant.userId.profilePhoto || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'} alt="" />
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
 

@@ -26,7 +26,13 @@ export default function PostedJobsList() {
 
         if (!response.ok) {
           const errorData = await response.json();
+          if (response.status === 401) {
+            // Unauthorized, remove the token and navigate to login
+            localStorage.removeItem('token');
+            navigate('/user-login');
+          } else {
           throw new Error(errorData.message || 'Failed to fetch jobs');
+          }
         }
 
         const data = await response.json();
@@ -71,17 +77,17 @@ export default function PostedJobsList() {
     <>
       <Navbar />
       <div className="flex">
-        <div className="w-1/4">
+        <div className="w-2/12 md:w-1/4 fixed lg:relative" >
           <SidebarNavigation />
         </div>
-        <div className="w-3/4">
+        <div className="w-10/12 md:w-3/4 m-auto">
           {/* Table */}
           <input
             type="text"
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="m-4 px-4 py-3 border-2 rounded w-3/4 bg-[#FFFFFF] border-none text-black p-8"
+            className="m-4 ml-10 px-4 py-3 border-2 rounded w-3/4 bg-[#FFFFFF] border-none text-black p-8"
           />
           <div className="mt-2 flow-root">
             {loading ? (
@@ -105,60 +111,113 @@ export default function PostedJobsList() {
             ) : jobs.length === 0 ? (
               <p>No jobs found.</p>
             ) : (
-              <div className="max-w-7xl">
-                <table className="min-w-full divide-y divide-gray-300">
-                  <thead>
-                    <tr>
-                      <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Job Unique ID</th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Job Role</th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Company Name</th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                      {/* <th className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                      <span className="sr-only">Actions</span>
-                    </th> */}
-                      <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
-                      <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
-                      <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
-                    {Object.entries(filteredJobs).map(([id, job]) => (
-                      <tr key={job._id}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{job.jobUniqueId}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.jobRole}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.companyName}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.location}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.status === "inactive" ? "Closed" : job.status}</td>
-                        {/* <td className="relative py-4 pl-3 pr-2 text-right text-sm font-medium sm:pr-6">
-                        <button
-                          onClick={() => handleEdit(job._id)}
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Edit
-                        </button>
-                      </td> */}
-                        <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                          <button
-                            onClick={() => handleView(job._id)}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            View/Edit
-                          </button>
-                        </td>
-                        <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                          <button
-                            onClick={() => handleViewApplicants(job._id)}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            View Applicants
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  {/* Display Table View for Larger Screens */}
+  <div className="hidden lg:block overflow-x-auto">
+    <table className="min-w-full divide-y divide-gray-300">
+      <thead>
+        <tr>
+          <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+            Job Unique ID
+          </th>
+          <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+            Job Role
+          </th>
+          <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+            Company Name
+          </th>
+          <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+            Location
+          </th>
+          <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+            Status
+          </th>
+          <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
+          <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-gray-200 bg-white">
+        {Object.entries(filteredJobs).map(([id, job]) => (
+          <tr key={job._id}>
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+              {job.jobUniqueId}
+            </td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              {job.jobRole}
+            </td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              {job.companyName}
+            </td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              {job.location}
+            </td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              {job.status === "inactive" ? "Closed" : job.status}
+            </td>
+            <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
+              <button
+                onClick={() => handleView(job._id)}
+                className="text-indigo-600 hover:text-indigo-900"
+              >
+                View/Edit
+              </button>
+            </td>
+            <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
+              <button
+                onClick={() => handleViewApplicants(job._id)}
+                className="text-indigo-600 hover:text-indigo-900"
+              >
+                View Applicants
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {/* Display Card View for Smaller and Tablet Screens */}
+  <div className="block lg:hidden">
+    {Object.entries(filteredJobs).map(([id, job]) => (
+      <div
+        key={job._id}
+        className="mb-4 rounded-lg border border-gray-300 bg-white p-4 shadow"
+      >
+        <p className="text-sm font-medium text-gray-900">
+          <strong>Job Unique ID:</strong> {job.jobUniqueId}
+        </p>
+        <p className="text-sm text-gray-700">
+          <strong>Job Role:</strong> {job.jobRole}
+        </p>
+        <p className="text-sm text-gray-700">
+          <strong>Company Name:</strong> {job.companyName}
+        </p>
+        <p className="text-sm text-gray-700">
+          <strong>Location:</strong> {job.location}
+        </p>
+        <p className="text-sm text-gray-700">
+          <strong>Status:</strong> {job.status === "inactive" ? "Closed" : job.status}
+        </p>
+        <div className="mt-4 flex justify-center space-x-4">
+          <button
+            onClick={() => handleView(job._id)}
+            className="rounded bg-indigo-600 px-3 py-1.5 text-sm text-white hover:bg-indigo-700"
+          >
+            View/Edit
+          </button>
+          <button
+            onClick={() => handleViewApplicants(job._id)}
+            className="rounded bg-indigo-600 px-3 py-1.5 text-sm text-white hover:bg-indigo-700"
+          >
+            View Applicants
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+
             )}
           </div>
         </div>
