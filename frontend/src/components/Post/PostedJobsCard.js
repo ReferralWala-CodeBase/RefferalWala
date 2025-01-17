@@ -252,11 +252,11 @@ export default function PostedJobsCard() {
   // }, [selectedLocations, onFilterChange]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100/70">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="container mx-auto px-4 py-6">
         {/* Main Layout */}
-        <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-8xl">
+        <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-full">
           <button
             onClick={toggleFilterVisibility}
             className="md:hidden mb-4 px-4 py-1 text-xs bg-blue-500 text-white rounded"
@@ -265,17 +265,17 @@ export default function PostedJobsCard() {
           </button>
 
           <div
-            className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow-lg border border-gray-200 ${filterVisible ? "block" : "hidden"
+            className={`w-full md:w-1/4 bg-white p-4 rounded-lg shadow-lg border border-gray-200 ${filterVisible ? "block" : "hidden"
               } md:block`}
           >
             {/* Main Heading */}
             <div className="flex items-center gap-2 mb-6">
-              <FaFilter className="text-blue-500 text-xl" />
-              <h1 className="text-xl font-bold text-gray-800">You can Filter your Search</h1>
+              <FaFilter className="text-blue-500 text-lg" />
+              <h1 className="text-md font-bold text-gray-800">You can Filter your Search</h1>
             </div>
 
             {/* Filter by Location */}
-            <div className="mb-8">
+            <div className="mb-5 border py-5 px-2 rounded-lg">
               <div className="flex items-center gap-2 border-b pb-2 mb-4">
                 <FaMapMarkerAlt className="text-blue-500 text-lg" />
                 <h3 className="text-lg font-semibold text-gray-800">Location</h3>
@@ -287,7 +287,7 @@ export default function PostedJobsCard() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
-              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
+              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs">
                 {locations
                   .filter((loc) =>
                     loc.toLowerCase().includes(searchTerm.toLowerCase())
@@ -324,7 +324,7 @@ export default function PostedJobsCard() {
             </div>
 
             {/* Filter by Company */}
-            <div>
+            <div className='className="mb-5 border py-5 px-2 rounded-lg"'>
               <div className="flex items-center gap-2 border-b pb-2 mb-4">
                 <FaBuilding className="text-blue-500 text-lg" />
                 <h3 className="text-lg font-semibold text-gray-800">Company</h3>
@@ -336,7 +336,7 @@ export default function PostedJobsCard() {
                 onChange={(e) => setCompanySearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
-              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
+              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs">
                 {companies
                   .filter((comp) =>
                     comp.toLowerCase().includes(companySearchTerm.toLowerCase())
@@ -464,7 +464,7 @@ export default function PostedJobsCard() {
               // Card View
               <ul
                 role="list"
-                className="grid grid-cols-1 gap-x-3 gap-y-8 lg:grid-cols-3 xl:gap-x-4 px-4"
+                className="grid grid-cols-1 gap-x-3 gap-y-8 lg:grid-cols-2 xl:gap-x-3 px-4"
               >
                 {loading ? (
                   <div className="flex justify-center items-center">
@@ -541,6 +541,87 @@ export default function PostedJobsCard() {
               </ul>
             )}
           </div>
+
+          {/* Right Side  */}
+          <div className="hidden lg:block w-1/5 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+            <div>
+              <div className="flex items-center gap-2 border-b pb-2 mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">Recruiter List</h3>
+              </div>
+
+              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
+                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
+                  <span className="text-gray-700">John Doe</span>
+                  <span className="text-gray-500 text-xs">HR Manager</span>
+                </li>
+                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
+                  <span className="text-gray-700">Jane Smith</span>
+                  <span className="text-gray-500 text-xs">Recruiter</span>
+                </li>
+                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
+                  <span className="text-gray-700">Michael Brown</span>
+                  <span className="text-gray-500 text-xs">Talent Acquisition</span>
+                </li>
+                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
+                  <span className="text-gray-700">Emily Davis</span>
+                  <span className="text-gray-500 text-xs">Senior Recruiter</span>
+                </li>
+              </ul>
+
+            </div>
+
+            {/* Company List Section */}
+            <div className="mt-6">
+              <div className="flex items-center gap-2 border-b pb-2 mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">Company List</h3>
+              </div>
+              <ul className="space-y-1 max-h-64 overflow-y-auto custom-scrollbar text-sm">
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">TechCorp Solutions</span>
+                  <span className="text-gray-500 text-xs">IT</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">Innovatech Ltd.</span>
+                  <span className="text-gray-500 text-xs">Software</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">BrightFuture Inc.</span>
+                  <span className="text-gray-500 text-xs">Education</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">Green Energy Co.</span>
+                  <span className="text-gray-500 text-xs">Energy</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">HealthPlus Services</span>
+                  <span className="text-gray-500 text-xs">Healthcare</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">SmartBuild Group</span>
+                  <span className="text-gray-500 text-xs">Construction</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">Alpha Retail</span>
+                  <span className="text-gray-500 text-xs">Retail</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">NextGen Logistics</span>
+                  <span className="text-gray-500 text-xs">Logistics</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">CreativeDesign Studio</span>
+                  <span className="text-gray-500 text-xs">Design</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">BlueOcean Tech</span>
+                  <span className="text-gray-500 text-xs">Technology</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
+
         </div>
       </div>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
