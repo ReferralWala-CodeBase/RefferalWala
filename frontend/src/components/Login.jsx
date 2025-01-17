@@ -85,17 +85,10 @@ function Login() {
 
   return (
     <section className="min-h-screen bg-slate-200/90">
-      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
-            alt="Referral Wala"
-          />
-        </div>
+      <div className="flex min-h-full flex-1 flex-col justify-center  sm:px-6 lg:px-8">
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+        <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-[480px]">
+          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12 mt-4">
             <h2 className="mb-3 text-start text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Sign in to your account
             </h2>
@@ -183,7 +176,7 @@ function Login() {
             </form>
 
             <div>
-              <div className="relative mt-10">
+              <div className="relative mt-4">
                 <div
                   className="absolute inset-0 flex items-center"
                   aria-hidden="true"
@@ -254,7 +247,7 @@ function Login() {
             </div>
           </div>
 
-          <p className="mt-10 text-center text-sm text-gray-500">
+          <p className="mt-5 text-center text-sm text-gray-500">
             Not a member?{" "}
             <Link
               to="/signup"

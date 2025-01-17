@@ -28,7 +28,14 @@ export default function CheckUserProfile() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch profile data');
+          if (response.status === 401) {
+            // Unauthorized, remove the token and navigate to login
+            localStorage.removeItem('token');
+            navigate('/user-login');
+          } else {
+            throw new Error('Failed to fetch profile data');
+          }
+    
         }
 
         const data = await response.json();
@@ -53,10 +60,10 @@ export default function CheckUserProfile() {
 
   return (
     <div className="flex">
-      <div className="w-1/4">
+      <div className="w-2/12 md:w-1/4">
         <SidebarNavigation />
       </div>
-      <div className="w-3/4 px-4 sm:px-6">
+      <div className="w-10/12 md:w-3/4 px-4 sm:px-6">
         <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Basic Profile</h3>
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Basic Information */}

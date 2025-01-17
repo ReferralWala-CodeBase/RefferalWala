@@ -80,8 +80,13 @@ export default function AppliedJobDetails() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        // throw new Error('Failed to apply for the job');
+        if (response.status === 401) {
+          // Unauthorized, remove the token and navigate to login
+          localStorage.removeItem('token');
+          navigate('/user-login');
+        } else {
         throw new Error(errorData.msg || response.statusText);
+        }
       }
 
       // On successful application, redirect to the "applied jobs" page
@@ -122,10 +127,10 @@ export default function AppliedJobDetails() {
     <>
       <Navbar />
       <div className="flex">
-        <div className="w-1/4">
+        <div className="w-2/12 md:w-1/4">
           <SidebarNavigation />
         </div>
-        <div className="w-3/4 px-4 sm:px-6">
+        <div className="w-10/12 md:w-3/4 px-4 sm:px-6">
           <div className="col-span-2 flex justify-end p-4">
             {applicationStatus === 'applied' ? (
               <p className="text-blue-600 font-medium">You have applied for this job.</p>

@@ -8,6 +8,9 @@ module.exports = {
       maxWidth: {
         '8xl': '90rem',
       },
+      margin: {
+        '10p': '10%', // Custom class for 10% margin
+      },
     },
   },
   plugins: [

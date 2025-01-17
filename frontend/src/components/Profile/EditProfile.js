@@ -9,12 +9,14 @@ import "react-toastify/dist/ReactToastify.css";
 export default function EditProfile() {
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const Cloudinary_URL = process.env.REACT_APP_CLOUDINARY_URL; // Cloudinary API
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     mobileNumber: '',
     gender: '',
+    profilePhoto: '',
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
     presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', companyEmail: '', yearsOfExperience: '' }],
@@ -40,6 +42,7 @@ export default function EditProfile() {
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleOtpChange = (e) => {
     setOtp(e.target.value); // Update OTP state
@@ -75,7 +78,6 @@ export default function EditProfile() {
     }
   };
 
-
   const handleCompanyVerification = async (e) => {
     try {
       const bearerToken = localStorage.getItem('token');
@@ -98,7 +100,7 @@ export default function EditProfile() {
         setShowOtpModal(true);
         toast.success("OTP send successfully! ");
       } else {
-        if (response.status === 400 ) {
+        if (response.status === 400) {
           toast.error(data.message || "Email is already verified.");
         } else {
           toast.error(data.message || "OTP send failed. Try again.");
@@ -127,6 +129,27 @@ export default function EditProfile() {
     setProfileData({ ...profileData, achievements: newAchievements });
   };
 
+  const handleSkillChange = (index, value) => {
+    const updatedSkills = [...profileData.skills];
+    updatedSkills[index] = value;
+    setProfileData({ ...profileData, skills: updatedSkills });
+  };
+
+  // Add a new skill input field
+  const addSkill = () => {
+    setProfileData({
+      ...profileData,
+      skills: [...profileData.skills, ""] // Add a new empty input for skills
+    });
+  };
+
+  // Remove a skill from the list
+  const removeSkill = (index) => {
+    const updatedSkills = profileData.skills.filter((_, i) => i !== index);
+    setProfileData({ ...profileData, skills: updatedSkills });
+  };
+
+
   // Fetching the existing profile data
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -142,7 +165,13 @@ export default function EditProfile() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch profile data');
+          if (response.status === 401) {
+            // Unauthorized, remove the token and navigate to login
+            localStorage.removeItem('token');
+            navigate('/user-login');
+          } else {
+            throw new Error('Failed to fetch profile data');
+          }
         }
 
         const data = await response.json();
@@ -178,7 +207,6 @@ export default function EditProfile() {
     setNewExperience((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Add new Education entry
   // Add new Education entry
   const addEducation = () => {
     setProfileData((prev) => ({
@@ -222,6 +250,13 @@ export default function EditProfile() {
     try {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
+
+      // Direct image upload if the profile photo is provided
+      if (profileData.profilePhoto) {
+        const uploadResponse = await uploadImageToCloudinary(profileData.profilePhoto);
+        profileData.profilePhoto = uploadResponse.secure_url;
+      }
+
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
         method: 'PUT',
         headers: {
@@ -245,15 +280,55 @@ export default function EditProfile() {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        // Create a preview URL for the selected image
+        const previewURL = URL.createObjectURL(file);
+
+        // Show the image preview in the state
+        setImagePreview(previewURL);
+
+        // Update profileData with the file (this is the file object, not the preview URL)
+        setProfileData((prevData) => ({
+          ...prevData,
+          profilePhoto: file, // Store the actual file in profileData for uploading later
+        }));
+      } catch (error) {
+        console.error('Error uploading image:', error.message);
+      }
+    }
+  };
+
+
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'Referrwala Image'); // Replace with upload preset name
+
+    const response = await fetch(`${Cloudinary_URL}`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Image upload failed');
+    }
+
+    return data; // Return data containing URL and other metadata
+  };
 
   return (
     <>
       <Navbar />
       <div className="flex">
-        <div className="w-1/4">
+        <div className="w-2/12 md:w-1/4">
           <SidebarNavigation />
         </div>
-        <div className="w-3/4 px-4 sm:px-6">
+        <div className="w-10/12 md:w-3/4 px-4 sm:px-6">
           <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Edit Profile</h3>
           <form onSubmit={handleSubmit}>
             {/* Basic Information */}
@@ -314,6 +389,32 @@ export default function EditProfile() {
                   <option value="Other">Other</option>
                 </select>
               </div>
+              <div className="flex items-center space-x-4">
+                {/* Image Upload */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Profile Photo
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-16 w-16 rounded-full border shadow"
+                  />
+                ) : (<img
+                  src={profileData.profilePhoto}
+                  alt="Profile"
+                  className="h-16 w-16 rounded-full border shadow"
+                />)}
+              </div>
+
             </div>
 
             {/* Present Company */}
@@ -805,26 +906,31 @@ export default function EditProfile() {
             {/* Skills */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Skills</h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="col-span-2">
-                <input
-                  type="text"
-                  name="skills"
-                  placeholder="Enter skills separated by commas"
-                  value={profileData.skills.join(', ')}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      skills: e.target.value.split(',').map((skill) => skill.trim())
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
+              <div className="col-span-2 flex flex-wrap gap-4">
+                {profileData.skills.map((skill, index) => (
+                  <div key={index} className="flex items-center mb-2">
+                    <input
+                      type="text"
+                      name={`skill-${index}`}
+                      placeholder="Enter skill"
+                      value={skill}
+                      onChange={(e) => handleSkillChange(index, e.target.value)}
+                      className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                    {/* Trash Icon to Delete Skill */}
+                    <FaTrash
+                      onClick={() => removeSkill(index)}
+                      className="ml-2 cursor-pointer"
+                    />
+                  </div>
+                ))}
               </div>
+
               {/* Add Button for Skills */}
               <div className="col-span-2 mt-4">
                 <button
                   type="button"
-                  onClick={() => setProfileData({ ...profileData, skills: [...profileData.skills, 'New Skill'] })}
+                  onClick={addSkill}
                   className="p-2 bg-blue-500 text-white rounded"
                 >
                   Add Skill
