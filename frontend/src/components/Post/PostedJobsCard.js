@@ -30,9 +30,11 @@ export default function PostedJobsCard() {
   const [filterVisible, setFilterVisible] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
+  const [profileData, setProfileData] = useState(null);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
 
 
   const locations = [
@@ -162,17 +164,51 @@ export default function PostedJobsCard() {
     }
   };
 
-  const navigate = useNavigate();
-  const handleView = (jobId) => {
-    if (localStorage.getItem('token') === null) {
-      navigate('/user-login')
+  
+  const fetchProfileData = async () => {
+    try {
+      const bearerToken = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      return await response.json(); // Return the fetched data directly
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+      toast.error(error.message);
+      throw error; // Rethrow the error to handle it in the calling function
     }
-
-    else {
-      navigate(`/appliedjobdetails/${jobId}`);
-    }
-
   };
+  
+  const handleView = async (jobId) => {
+    if (localStorage.getItem('token') === null) {
+      navigate('/user-login');
+    } else {
+      try {
+        const profile = await fetchProfileData(); // Fetch profile data
+        if (
+          profile.firstName == null ||
+          profile.lastName == null ||
+          profile.mobileNumber == null ||
+          profile.education?.length === 0 ||
+          profile.skills?.length === 0 ||
+          !profile.resume ||
+          !profile.aboutMe
+        ) {
+          toast.success("Fill your mandatory profile fields first");
+        } else {
+          navigate(`/appliedjobdetails/${jobId}`);
+        }
+      } catch (error) {
+        console.error('Error in handleView:', error);
+      }
+    }
+  };
+  
 
   function getDate(endDate_param) {
     var tempDate = endDate_param + "";
