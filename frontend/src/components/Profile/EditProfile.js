@@ -325,10 +325,10 @@ export default function EditProfile() {
     <>
       <Navbar />
       <div className="flex">
-        <div className="w-2/12 md:w-1/4">
+        <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-4 sm:px-6">
+        <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
           <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Edit Profile</h3>
           <form onSubmit={handleSubmit}>
             {/* Basic Information */}
@@ -406,12 +406,12 @@ export default function EditProfile() {
                   <img
                     src={imagePreview}
                     alt="Preview"
-                    className="h-16 w-16 rounded-full border shadow"
+                    className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
                   />
                 ) : (<img
                   src={profileData.profilePhoto}
                   alt="Profile"
-                  className="h-16 w-16 rounded-full border shadow"
+                  className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
                 />)}
               </div>
 

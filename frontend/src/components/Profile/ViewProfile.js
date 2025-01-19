@@ -34,7 +34,7 @@ export default function ViewProfile() {
             localStorage.removeItem('token');
             navigate('/user-login');
           } else {
-          throw new Error('Failed to fetch profile data');
+            throw new Error('Failed to fetch profile data');
           }
         }
 
@@ -81,7 +81,7 @@ export default function ViewProfile() {
                 <img
                   src={profileData.profilePhoto || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"}
                   alt="Profile"
-                  className="w-36 h-36 rounded-full mx-auto mb-4"
+                  className="w-36 h-36 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
                 />
                 <h2 className="text-xl font-semibold text-gray-800">{profileData.firstName || <>&nbsp;</>} {profileData.lastName || <>&nbsp;</>}</h2>
                 <p className="text-sm text-gray-600 mb-3">{profileData.presentCompany?.role || <>&nbsp;</>}</p>
@@ -90,7 +90,7 @@ export default function ViewProfile() {
                     <FaEnvelope className="text-gray-500" />
                     <span>{profileData.email || <>&nbsp;</>}</span>
                   </div>
-                  <span className="text-gray-400">||</span>
+                  {/* <span className="text-gray-400">||</span> */}
                   <div className="flex items-center space-x-1">
                     <FaPhone className="text-gray-500" />
                     <span>{profileData.mobileNumber || <>&nbsp;</>}</span>
@@ -217,16 +217,16 @@ export default function ViewProfile() {
                 ))}
               </div>
             ) : (
-              <div className="text-gray-600 text-center mt-6">
+              <div className="text-gray-600 mt-6">
                 No education details added.
               </div>
             )}
 
             {/* Present Company Section */}
-            <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Present Company</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-4">Present Company</h3>
             {profileData.presentCompany ? (
               <div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-row flex-wrap gap-10 md:gap-x-24 gap-y-10">
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Role:</span>
                     <span className="text-gray-600">{profileData.presentCompany.role || '-'}</span>
@@ -297,52 +297,57 @@ export default function ViewProfile() {
                 ))}
               </div>
             ) : (
-              <div className="text-gray-600 text-center mt-6">
+              <div className="text-gray-600 mt-6">
                 No experience details added.
               </div>
             )}
 
             {/* Preferences */}
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Preferences</h3>
-            <div className="border hover:shadow-xl transition-shadow bg-white border-gray-200 p-8 rounded-lg shadow-xl mt-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Preferred Company Name */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Preferred Company Name</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.preferredCompanyName ? (
-                      <span>{profileData.preferences.preferredCompanyName}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
+            {profileData.preferences ? (
+              <div className="border hover:shadow-xl transition-shadow bg-white border-gray-200 p-8 rounded-lg shadow-xl mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {/* Preferred Company Name */}
+                  <div className="flex flex-col">
+                    <label className="text-base font-medium text-gray-700 mb-2">Preferred Company Name</label>
+                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
+                      {profileData.preferences.preferredCompanyName ? (
+                        <span>{profileData.preferences.preferredCompanyName}</span>
+                      ) : (
+                        <span className="text-gray-400">Not Set</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Preferred Position */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Preferred Position</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.preferredPosition ? (
-                      <span>{profileData.preferences.preferredPosition}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
+                  {/* Preferred Position */}
+                  <div className="flex flex-col">
+                    <label className="text-base font-medium text-gray-700 mb-2">Preferred Position</label>
+                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
+                      {profileData.preferences.preferredPosition ? (
+                        <span>{profileData.preferences.preferredPosition}</span>
+                      ) : (
+                        <span className="text-gray-400">Not Set</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Expected CTC Range */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Expected CTC Range</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.expectedCTCRange ? (
-                      <span>{profileData.preferences.expectedCTCRange}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
+                  {/* Expected CTC Range */}
+                  <div className="flex flex-col">
+                    <label className="text-base font-medium text-gray-700 mb-2">Expected CTC Range</label>
+                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
+                      {profileData.preferences.expectedCTCRange ? (
+                        <span>{profileData.preferences.expectedCTCRange}</span>
+                      ) : (
+                        <span className="text-gray-400">Not Set</span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <p className="text-gray-500 mt-4">No Preferences Set</p>
+            )}
+
 
           </div>
         </div>

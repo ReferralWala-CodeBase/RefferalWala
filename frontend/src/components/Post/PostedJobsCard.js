@@ -145,7 +145,7 @@ export default function PostedJobsCard() {
       );
       if (response.ok) {
         setFollowingList((prevList) => prevList.filter(user => user._id !== targetUserId)); // Remove the unfollowed user from the list
-        toast.success("UnFollowed Successfully.");
+        toast.success("Unfollowed Successfully.");
       } else {
         console.error("Unfollow request failed");
         const errorData = await response.json();

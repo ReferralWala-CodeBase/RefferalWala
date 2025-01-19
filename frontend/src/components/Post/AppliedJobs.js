@@ -97,7 +97,7 @@ export default function AppliedJobs() {
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 m-auto">
-          <div className="mt-4 text-center flow-root">
+          <div className="mt-4 flow-root">
             {loading ? (
               <p>Loading...</p>
             ) : error ? (
@@ -179,7 +179,7 @@ export default function AppliedJobs() {
 
                 {/* Card View for Smaller Screens */}
                 <div className="block md:hidden">
-                  <p className='mb-5 text-center text-xl font-medium leading-7 text-gray-900'>Applied Jobs</p>
+                  <p className='mb-5 text-xl font-medium leading-7 text-gray-900'>Applied Jobs</p>
                   {appliedJobs.map((job) => (
                     <div
                       key={job.jobPostId._id}

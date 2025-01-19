@@ -220,19 +220,62 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import profile from "../assets/profile-icon-user.png";
+import {
+  CalendarIcon,
+  ChartPieIcon,
+  DocumentDuplicateIcon,
+  FolderIcon,
+  HomeIcon,
+  UsersIcon,
+} from '@heroicons/react/24/outline'
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
-  { name: "About Us", href: "/about-us" },
-  { name: "Contact Us", href: "/contact-us" },
-  { name: "Privacy Policy", href: "/privacy-policy" },
-  { name: "Terms & Conditions", href: "/terms-conditions" },
+  { name: "Sign up", href: "/signup", current: false },
+  // { name: "About Us", href: "/about-us" },
+  // { name: "Contact Us", href: "/contact-us" },
+  // { name: "Privacy Policy", href: "/privacy-policy" },
+  // { name: "Terms & Conditions", href: "/terms-conditions" },
 ];
 
 const userNavigation = [
-  { name: "Your Profile", href: "/viewprofile" },
-  { name: "Settings", href: "/settings" },
+  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
+  { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
+  { name: "Followers", href: "/followerlist", icon: DocumentDuplicateIcon, current: false },
+  { name: "Following", href: "/followinglist", icon: ChartPieIcon, current: false },
   { name: "Sign out", href: "#" },
+];
+
+const sidenavigation = [
+  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
+  { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
+  { name: "Followers", href: "/followerlist", icon: DocumentDuplicateIcon, current: false },
+  { name: "Following", href: "/followinglist", icon: ChartPieIcon, current: false },
+];
+const teams = [
+  {
+    id: 1,
+    name: "Post New Job",
+    href: "/postjob",
+    initial: "P",
+    current: false,
+  },
+  {
+    id: 2,
+    name: "View Posted Jobs",
+    href: "/postedjobslist",
+    initial: "V",
+    current: false,
+  },
+  {
+    id: 3,
+    name: "Applied Jobs",
+    href: "/appliedjobs",
+    initial: "A",
+    current: false,
+  },
 ];
 
 function classNames(...classes) {
@@ -279,7 +322,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               <div className="relative z-10 flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
                   <h1 className="font-bold tracking-[2px] text-sm text-blue-600">
-                    Referral Wala
+                    ReferralWala
                   </h1>
                 </div>
               </div>
@@ -437,42 +480,101 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               </div>
             </div>
           </div>
-          <Disclosure.Panel as="nav" className="lg:hidden" aria-label="Global">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {loggedIn
-                ? userNavigation.map((item) =>
-                    item.name === "Sign out" ? (
+          { /* Here the small screen*/}
+          <Disclosure.Panel
+            as="nav"
+            className={classNames(
+              "lg:hidden absolute top-0 left-0 h-screen w-64 bg-white shadow-md transform transition-transform duration-300",
+              open ? "translate-x-0" : "-translate-x-full"
+            )}
+            aria-label="Global"
+          >
+            <div className="flex h-full flex-col gap-y-5 overflow-y-auto px-4 pb-2">
+
+              {/* Navigation Items */}
+              <nav className="flex-1 mt-16">
+                <ul role="list" className="space-y-1 mb-5">
+                  {sidenavigation.map((item) => (
+                    <li key={item.name}>
                       <Disclosure.Button
-                        key={item.name}
-                        as="button"
-                        onClick={handleSignOut}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </Disclosure.Button>
-                    ) : (
-                      <Disclosure.Button
-                        key={item.name}
                         as={Link}
                         to={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
+                        className={classNames(
+                          item.current
+                            ? "bg-gray-50 text-indigo-600"
+                            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                        )}
                       >
+                        <item.icon
+                          className={classNames(
+                            item.current ? "text-indigo-600" : "text-gray-400 group-hover:text-indigo-600",
+                            "h-6 w-6"
+                          )}
+                          aria-hidden="true"
+                        />
                         {item.name}
                       </Disclosure.Button>
-                    )
-                  )
-                : navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as={Link}
-                      to={item.href}
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
-                    >
-                      {item.name}
-                    </Disclosure.Button>
+                    </li>
                   ))}
+                  {/* Notifications */}
+                  <li>
+                    <Disclosure.Button
+                      as={Link}
+                      to="/notifications"
+                      className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                    >
+                      <BellIcon className="h-6 w-6 text-gray-400 group-hover:text-indigo-600" />
+                      Notifications
+                    </Disclosure.Button>
+                  </li>
+
+                </ul>
+
+                <div className="text-xs font-semibold leading-6 text-gray-400 ml-4">Your teams</div>
+                <ul role="list" className="mt-2 space-y-1">
+                  {teams.map((team) => (
+                    <li key={team.name}>
+                      <Disclosure.Button
+                        as={Link}
+                        to={team.href}
+                        className={classNames(
+                          team.current
+                            ? "bg-gray-50 text-indigo-600"
+                            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                        )}
+                      >
+                        <span
+                          className={classNames(
+                            team.current
+                              ? "text-indigo-600 border-indigo-600"
+                              : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
+                            "flex h-6 w-6 items-center justify-center rounded-lg border text-xs font-medium bg-white"
+                          )}
+                        >
+                          {team.initial}
+                        </span>
+                        {team.name}
+                      </Disclosure.Button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              {/* Sign Out */}
+              {loggedIn && (
+                <Disclosure.Button
+                  as="button"
+                  onClick={handleSignOut}
+                  className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Sign Out
+                </Disclosure.Button>
+              )}
             </div>
           </Disclosure.Panel>
+
         </>
       )}
     </Disclosure>
