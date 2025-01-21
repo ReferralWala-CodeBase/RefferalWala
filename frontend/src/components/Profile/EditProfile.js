@@ -334,7 +334,7 @@ export default function EditProfile() {
             {/* Basic Information */}
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700">First Name</label>
+                <label className="block text-sm font-medium text-gray-700">First Name <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="firstName"
@@ -344,7 +344,7 @@ export default function EditProfile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                <label className="block text-sm font-medium text-gray-700">Last Name <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="lastName"
@@ -354,7 +354,7 @@ export default function EditProfile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <label className="block text-sm font-medium text-gray-700">Email <span className="text-red-500">*</span></label>
                 <input
                   type="email"
                   name="email"
@@ -365,9 +365,9 @@ export default function EditProfile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Mobile Number</label>
+                <label className="block text-sm font-medium text-gray-700">Mobile Number <span className="text-red-500">*</span></label>
                 <input
-                  type="text"
+                  type="tel"
                   name="mobileNumber"
                   value={profileData.mobileNumber || ''}
                   onChange={handleChange}
@@ -376,7 +376,7 @@ export default function EditProfile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Gender</label>
+                <label className="block text-sm font-medium text-gray-700">Gender <span className="text-red-500">*</span></label>
                 <select
                   name="gender"
                   value={profileData.gender}
@@ -579,7 +579,7 @@ export default function EditProfile() {
               </div>
             </div>
             {/* Education Section */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education</h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education <span className="text-red-500">*</span></h3>
             {profileData.education.map((edu, index) => (
               <div key={index} className="mt-3 flex items-center gap-6">
                 <div className="flex-1">
@@ -904,7 +904,7 @@ export default function EditProfile() {
             </div>
 
             {/* Skills */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Skills</h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Skills <span className="text-red-500">*</span></h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="col-span-2 flex flex-wrap gap-4">
                 {profileData.skills.map((skill, index) => (
@@ -940,7 +940,7 @@ export default function EditProfile() {
 
 
             {/* Resume Link */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume Link</h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume Link <span className="text-red-500">*</span></h3>
             <div className="mt-3">
               <input
                 type="text"
@@ -953,7 +953,7 @@ export default function EditProfile() {
 
 
             {/* About Me */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">About Me</h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">About Me <span className="text-red-500">*</span></h3>
             <div className="mt-3">
               <textarea
                 name="aboutMe"

@@ -13,12 +13,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import React from 'react';
+import JobPostModal from './JobPostModal';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function PostedJobsCard() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,9 +33,11 @@ export default function PostedJobsCard() {
   const [filterVisible, setFilterVisible] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
+  const [profileData, setProfileData] = useState(null);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
 
 
   const locations = [
@@ -116,7 +121,7 @@ export default function PostedJobsCard() {
       );
       if (response.ok) {
         setFollowingList((prevList) => [...prevList, { _id: targetUserId }]); // Add the followed user to the list
-         toast.success("Followed Successfully.");
+        toast.success("Followed Successfully.");
       } else {
         console.error("Follow request failed");
         const errorData = await response.json();
@@ -154,7 +159,7 @@ export default function PostedJobsCard() {
           localStorage.removeItem('token');
           navigate('/user-login');
         } else {
-        throw new Error(errorData.message || response.statusText);
+          throw new Error(errorData.message || response.statusText);
         }
       }
     } catch (error) {
@@ -162,17 +167,51 @@ export default function PostedJobsCard() {
     }
   };
 
-  const navigate = useNavigate();
-  const handleView = (jobId) => {
-    if (localStorage.getItem('token') === null) {
-      navigate('/user-login')
-    }
 
-    else {
-      navigate(`/appliedjobdetails/${jobId}`);
+  const fetchProfileData = async () => {
+    try {
+      const bearerToken = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      return await response.json(); // Return the fetched data directly
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+      toast.error(error.message);
+      throw error; // Rethrow the error to handle it in the calling function
     }
-
   };
+
+  const handleView = async (jobId) => {
+    if (localStorage.getItem('token') === null) {
+      navigate('/user-login');
+    } else {
+      try {
+        const profile = await fetchProfileData(); // Fetch profile data
+        if (
+          profile.firstName == null ||
+          profile.lastName == null ||
+          profile.mobileNumber == null ||
+          profile.education?.length === 0 ||
+          profile.skills?.length === 0 ||
+          !profile.resume ||
+          !profile.aboutMe
+        ) {
+          toast.success("Fill your mandatory profile fields first");
+        } else {
+          navigate(`/appliedjobdetails/${jobId}`);
+        }
+      } catch (error) {
+        console.error('Error in handleView:', error);
+      }
+    }
+  };
+
 
   function getDate(endDate_param) {
     var tempDate = endDate_param + "";
@@ -264,11 +303,13 @@ export default function PostedJobsCard() {
   // }, [selectedLocations, onFilterChange]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100/70">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="container mx-auto px-4 py-6">
         {/* Main Layout */}
-        <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-8xl">
+        <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-full">
+
+
           <button
             onClick={toggleFilterVisibility}
             className="md:hidden mb-4 px-4 py-1 text-xs bg-blue-500 text-white rounded"
@@ -277,17 +318,17 @@ export default function PostedJobsCard() {
           </button>
 
           <div
-            className={`w-full md:w-1/4 bg-white p-6 rounded-lg shadow-lg border border-gray-200 ${filterVisible ? "block" : "hidden"
+            className={`w-full md:w-1/4 bg-white p-4 rounded-lg shadow-lg border border-gray-200 ${filterVisible ? "block" : "hidden"
               } md:block`}
           >
             {/* Main Heading */}
             <div className="flex items-center gap-2 mb-6">
-              <FaFilter className="text-blue-500 text-xl" />
-              <h1 className="text-xl font-bold text-gray-800">You can Filter your Search</h1>
+              <FaFilter className="text-blue-500 text-lg" />
+              <h1 className="text-md font-bold text-gray-800">You can Filter your Search</h1>
             </div>
 
             {/* Filter by Location */}
-            <div className="mb-8">
+            <div className="mb-5 border py-5 px-2 rounded-lg">
               <div className="flex items-center gap-2 border-b pb-2 mb-4">
                 <FaMapMarkerAlt className="text-blue-500 text-lg" />
                 <h3 className="text-lg font-semibold text-gray-800">Location</h3>
@@ -299,7 +340,7 @@ export default function PostedJobsCard() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
-              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
+              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs">
                 {locations
                   .filter((loc) =>
                     loc.toLowerCase().includes(searchTerm.toLowerCase())
@@ -336,7 +377,7 @@ export default function PostedJobsCard() {
             </div>
 
             {/* Filter by Company */}
-            <div>
+            <div className='className="mb-5 border py-5 px-2 rounded-lg"'>
               <div className="flex items-center gap-2 border-b pb-2 mb-4">
                 <FaBuilding className="text-blue-500 text-lg" />
                 <h3 className="text-lg font-semibold text-gray-800">Company</h3>
@@ -348,7 +389,7 @@ export default function PostedJobsCard() {
                 onChange={(e) => setCompanySearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
-              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
+              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs">
                 {companies
                   .filter((comp) =>
                     comp.toLowerCase().includes(companySearchTerm.toLowerCase())
@@ -388,7 +429,9 @@ export default function PostedJobsCard() {
           {/* Job Cards Section */}
           <div>
             {/* Toggle Switch */}
-            <div className="flex justify-end items-end py-5 mx-4">
+            <div className="flex justify-between items-end py-5 mx-4">
+
+              <button onClick={() => setIsModalOpen(true)} className='py-1 px-5 bg-orange-400 text-white text-md font-light rounded-lg'>Add Post</button>
               <label className="inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
@@ -476,7 +519,7 @@ export default function PostedJobsCard() {
               // Card View
               <ul
                 role="list"
-                className="grid grid-cols-1 gap-x-3 gap-y-8 lg:grid-cols-3 xl:gap-x-4 px-4"
+                className="grid grid-cols-1 gap-x-3 gap-y-8 lg:grid-cols-2 xl:gap-x-3 px-4"
               >
                 {loading ? (
                   <div className="flex justify-center items-center">
@@ -493,20 +536,20 @@ export default function PostedJobsCard() {
                       transition={{ duration: 0.3 }}
                     >
                       <motion.div
-                        className="flex items-center text-white gap-x-4 border-b border-gray-900/5 bg-gradient-to-r from-black to-blue-500 p-6 group-hover:bg-indigo-600 group-hover:text-white transition-all"
+                        className="flex items-center text-white gap-x-4 border-b border-gray-900/5 bg-gradient-to-r from-blue-500 to-gray-50 p-6 group-hover:bg-indigo-600 group-hover:text-white transition-all"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
                       >
                         <img
-                          src= {job.companyLogoUrl || 'data:image/png;base64,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'}
+                          src={job.companyLogoUrl || 'data:image/png;base64,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'}
                           alt="img"
                           className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
                         />
                         <div className="text-sm font-medium leading-6">{job.companyName}</div>
                         <button
                           onClick={() => handleView(job._id)}
-                          className="relative ml-auto inline-flex justify-center rounded-full bg-white py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-transform transform group-hover:scale-110"
+                          className="relative ml-auto inline-flex justify-center rounded-full bg-orange-500 py-2 px-4 text-sm font-light text-white shadow-sm hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-transform transform group-hover:scale-110"
                         >
                           Apply
                         </button>
@@ -547,6 +590,13 @@ export default function PostedJobsCard() {
                             )}
                           </dd>
                         </div>
+
+                        <hr />
+
+                        <div className='flex justify-between mt-3'>
+                          <button className='py-1 px-2 text-xs rounded-full bg-gray-200'>Share</button>
+                          <button className='py-1 px-2 text-xs rounded-full bg-gray-200'>Report</button>
+                        </div>
                       </dl>
                     </motion.li>
                   ))
@@ -554,8 +604,95 @@ export default function PostedJobsCard() {
               </ul>
             )}
           </div>
+
+          {/* Right Side  */}
+          <div className="hidden lg:block w-1/5 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+            <div>
+              <div className="flex items-center gap-2 border-b pb-2 mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">Recruiter List</h3>
+              </div>
+
+              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
+                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
+                  <span className="text-gray-700">John Doe</span>
+                  <span className="text-gray-500 text-xs">HR Manager</span>
+                </li>
+                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
+                  <span className="text-gray-700">Jane Smith</span>
+                  <span className="text-gray-500 text-xs">Recruiter</span>
+                </li>
+                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
+                  <span className="text-gray-700">Michael Brown</span>
+                  <span className="text-gray-500 text-xs">Talent Acquisition</span>
+                </li>
+                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
+                  <span className="text-gray-700">Emily Davis</span>
+                  <span className="text-gray-500 text-xs">Senior Recruiter</span>
+                </li>
+              </ul>
+
+            </div>
+
+            {/* Company List Section */}
+            <div className="mt-6">
+              <div className="flex items-center gap-2 border-b pb-2 mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">Company List</h3>
+              </div>
+              <ul className="space-y-1 max-h-64 overflow-y-auto custom-scrollbar text-sm">
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">TechCorp Solutions</span>
+                  <span className="text-gray-500 text-xs">IT</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">Innovatech Ltd.</span>
+                  <span className="text-gray-500 text-xs">Software</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">BrightFuture Inc.</span>
+                  <span className="text-gray-500 text-xs">Education</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">Green Energy Co.</span>
+                  <span className="text-gray-500 text-xs">Energy</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">HealthPlus Services</span>
+                  <span className="text-gray-500 text-xs">Healthcare</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">SmartBuild Group</span>
+                  <span className="text-gray-500 text-xs">Construction</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">Alpha Retail</span>
+                  <span className="text-gray-500 text-xs">Retail</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">NextGen Logistics</span>
+                  <span className="text-gray-500 text-xs">Logistics</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">CreativeDesign Studio</span>
+                  <span className="text-gray-500 text-xs">Design</span>
+                </li>
+                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
+                  <span className="text-gray-700">BlueOcean Tech</span>
+                  <span className="text-gray-500 text-xs">Technology</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
+
         </div>
       </div>
+
+      <JobPostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );

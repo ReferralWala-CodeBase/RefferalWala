@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 export default function PostJob() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     userId: '',
     jobRole: '',
@@ -186,8 +187,8 @@ export default function PostJob() {
           localStorage.removeItem('token');
           navigate('/user-login');
         } else {
-        // throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
-        throw new Error(errorData.msg || response.statusText);
+          // throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
+          throw new Error(errorData.msg || response.statusText);
         }
       }
 
