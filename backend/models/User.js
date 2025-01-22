@@ -169,6 +169,10 @@ const userSchema = new mongoose.Schema({
       ref: 'JobPost',
     },
   ],
+  WishlistJobs: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'JobPost'
+  }]  
 });
 
 const User = mongoose.model('User', userSchema);

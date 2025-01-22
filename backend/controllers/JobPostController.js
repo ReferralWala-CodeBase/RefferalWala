@@ -615,3 +615,76 @@ exports.withdrawFromJobApplicants = async (req, res) => {
 
 
 
+// Add job to wishlist
+exports.addJobToWishlist = async (req, res) => {
+  try {
+    const { userId, jobId } = req.body;
+
+    // Validate job existence
+    const job = await JobPost.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    // Add job to wishlist if not already present
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.WishlistJobs.includes(jobId)) {
+      return res.status(400).json({ message: 'Job is already in the wishlist' });
+    }
+
+    user.WishlistJobs.push(jobId);
+    await user.save();
+
+    res.status(200).json({ message: 'Job added to wishlist successfully', wishlist: user.WishlistJobs });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
+
+
+
+// Remove job from wishlist
+exports.removeJobFromWishlist = async (req, res) => {
+  try {
+    const { userId, jobId } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (!user.WishlistJobs.includes(jobId)) {
+      return res.status(400).json({ message: 'Job is not in the wishlist' });
+    }
+
+    user.WishlistJobs = user.WishlistJobs.filter(id => id.toString() !== jobId);
+    await user.save();
+
+    res.status(200).json({ message: 'Job removed from wishlist successfully', wishlist: user.WishlistJobs });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
+
+
+
+// Get wishlist jobs
+
+exports.getWishlistJobs = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId).populate('WishlistJobs');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ wishlist: user.WishlistJobs });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};

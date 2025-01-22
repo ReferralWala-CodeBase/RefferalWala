@@ -12,7 +12,8 @@ const {
   getApplicationStatusForJobPost,
   getJobsByJobUniqueId,
   getJobPostsByUser,
-  withdrawApplication
+  withdrawApplication,
+  addJobToWishlist, removeJobFromWishlist, getWishlistJobs
 } = require('../controllers/JobPostController');
 
 const jwtMiddleware = require('../middleware/jwtMiddleware'); 
@@ -57,5 +58,14 @@ router.get('/unique/:jobUniqueId',jwtMiddleware, getJobsByJobUniqueId);
 
 // Delete a job post
 router.delete('/delete/:id', jwtMiddleware, deleteJobPost);
+
+// Route to add a job to the wishlist
+router.post('/wishlist/add', jwtMiddleware, addJobToWishlist);
+
+// Route to remove a job from the wishlist
+router.delete('/wishlist/remove',jwtMiddleware, removeJobFromWishlist);
+
+// Route to get all wishlist jobs
+router.get('/wishlist/:userId',jwtMiddleware, getWishlistJobs);
 
 module.exports = router;

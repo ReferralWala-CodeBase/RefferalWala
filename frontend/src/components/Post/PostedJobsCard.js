@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 import { UserMinusIcon, UserPlusIcon, BellIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router-dom';
-import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
+import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner,FaBookmark, FaRegBookmark ,FaShareAlt } from "react-icons/fa";
 import postdata from "../../postdata.json"
 import Navbar from '../Navbar';
 import JobLocationFilter from './JobFilter';
@@ -34,6 +34,7 @@ export default function PostedJobsCard() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
   const [profileData, setProfileData] = useState(null);
+  const [wishlistJobs, setWishlistJobs] = useState([]);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
@@ -49,7 +50,6 @@ export default function PostedJobsCard() {
 
   useEffect(() => {
     const fetchJobs = async () => {
-
       try {
         const response = await fetch(`${Fronted_API_URL}/job/all`, {
           method: 'GET',
@@ -74,6 +74,76 @@ export default function PostedJobsCard() {
 
     fetchJobs();
   }, []);
+
+  useEffect(() => {
+  const fetchWishlistJobs = async () => {
+    try {
+      const response = await fetch(`${Fronted_API_URL}/job/wishlist/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        const wishlistJobIds = data.wishlist.map((job) => job._id);
+        setWishlistJobs(wishlistJobIds); 
+      } else {
+        toast.error("Failed to fetch wishlist jobs.");
+      }
+    } catch (error) {
+      console.error("Error fetching wishlist jobs:", error);
+      toast.error("Failed to fetch wishlist jobs.");
+    }
+  };
+  fetchWishlistJobs();
+}, []);
+  
+  const handleAddToWishlist = async (jobId) => {
+    try {
+      const response = await fetch(
+        `${Fronted_API_URL}/job/wishlist/add`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, jobId }),
+        }
+      );
+     if (response.ok) {
+      setWishlistJobs((prev) => [...prev, jobId]); 
+      toast.success("Successfully added to wishlist!");
+    }
+  } catch (error) {
+    toast.error("Failed to add to wishlist.");
+  }
+};
+
+const handleRemoveFromWishlist = async (jobId) => {
+  try {
+    const response = await fetch(
+      `${Fronted_API_URL}/job/wishlist/remove`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, jobId }),
+      }
+    );
+    if (response.ok) {
+      setWishlistJobs((prev) => prev.filter((id) => id !== jobId)); // Remove job ID from local state
+      toast.success("Successfully removed from wishlist!");
+    }
+  } catch (error) {
+    toast.error("Failed to remove from wishlist.");
+  }
+};
 
   // Fetch the list of users the logged-in user is following
   useEffect(() => {
@@ -167,6 +237,7 @@ export default function PostedJobsCard() {
     }
   };
 
+  
 
   const fetchProfileData = async () => {
     try {
@@ -187,6 +258,7 @@ export default function PostedJobsCard() {
     }
   };
 
+  
   const handleView = async (jobId) => {
     if (localStorage.getItem('token') === null) {
       navigate('/user-login');
@@ -509,6 +581,30 @@ export default function PostedJobsCard() {
                               Apply
                             </button>
                           </td>
+                          <td className="py-3 px-4">
+  {wishlistJobs.includes(job._id) ? (
+    <FaBookmark
+      onClick={() => handleRemoveFromWishlist(job._id)}
+      className="cursor-pointer text-yellow-500 w-6 h-6"
+      title="Remove from Wishlist"
+    />
+  ) : (
+    <FaRegBookmark
+      onClick={() => handleAddToWishlist(job._id)}
+      className="cursor-pointer text-gray-500 w-6 h-6 hover:text-yellow-500 transition"
+      title="Add to Wishlist"
+    />
+  )}
+</td>
+<td className="py-3 px-4">
+<FaShareAlt
+     // onClick={() => handleShare(job._id)}  // Add your share function here
+     className="cursor-pointer text-gray-500 w-6 h-6 ml-1 hover:text-indigo-500 transition"
+     title="Share"
+      />
+</td>
+
+
                         </tr>
                       ))
                     )}
@@ -553,6 +649,24 @@ export default function PostedJobsCard() {
                         >
                           Apply
                         </button>
+                        {wishlistJobs.includes(job._id) ? (
+    <FaBookmark
+      onClick={() => handleRemoveFromWishlist(job._id)}
+      className="cursor-pointer text-yellow-500 w-6 h-6 ml-1"
+      title="Remove from Wishlist"
+    />
+  ) : (
+    <FaRegBookmark
+      onClick={() => handleAddToWishlist(job._id)}
+      className="cursor-pointer text-gray-500 w-6 h-6 ml-1 hover:text-yellow-500 transition"
+      title="Add to Wishlist"
+    />
+  )}
+    <FaShareAlt
+     // onClick={() => handleShare(job._id)}  // Add your share function here
+     className="cursor-pointer text-gray-500 w-6 h-6 ml-1 hover:text-indigo-500 transition"
+     title="Share"
+      />
                       </motion.div>
                       <dl className="px-6 py-4 text-sm leading-6">
                         <div className="flex justify-between gap-x-4 py-2">
@@ -594,7 +708,7 @@ export default function PostedJobsCard() {
                         <hr />
 
                         <div className='flex justify-between mt-3'>
-                          <button className='py-1 px-2 text-xs rounded-full bg-gray-200'>Share</button>
+                          
                           <button className='py-1 px-2 text-xs rounded-full bg-gray-200'>Report</button>
                         </div>
                       </dl>
