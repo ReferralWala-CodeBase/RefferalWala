@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 import { UserMinusIcon, UserPlusIcon, BellIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router-dom';
-import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner,FaBookmark, FaRegBookmark ,FaShareAlt } from "react-icons/fa";
+import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
 import postdata from "../../postdata.json"
 import Navbar from '../Navbar';
 import JobLocationFilter from './JobFilter';
@@ -34,7 +34,6 @@ export default function PostedJobsCard() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
   const [profileData, setProfileData] = useState(null);
-  const [wishlistJobs, setWishlistJobs] = useState([]);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
@@ -50,6 +49,7 @@ export default function PostedJobsCard() {
 
   useEffect(() => {
     const fetchJobs = async () => {
+
       try {
         const response = await fetch(`${Fronted_API_URL}/job/all`, {
           method: 'GET',
@@ -74,76 +74,6 @@ export default function PostedJobsCard() {
 
     fetchJobs();
   }, []);
-
-  useEffect(() => {
-  const fetchWishlistJobs = async () => {
-    try {
-      const response = await fetch(`${Fronted_API_URL}/job/wishlist/${userId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        const wishlistJobIds = data.wishlist.map((job) => job._id);
-        setWishlistJobs(wishlistJobIds); 
-      } else {
-        toast.error("Failed to fetch wishlist jobs.");
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist jobs:", error);
-      toast.error("Failed to fetch wishlist jobs.");
-    }
-  };
-  fetchWishlistJobs();
-}, []);
-  
-  const handleAddToWishlist = async (jobId) => {
-    try {
-      const response = await fetch(
-        `${Fronted_API_URL}/job/wishlist/add`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId, jobId }),
-        }
-      );
-     if (response.ok) {
-      setWishlistJobs((prev) => [...prev, jobId]); 
-      toast.success("Successfully added to wishlist!");
-    }
-  } catch (error) {
-    toast.error("Failed to add to wishlist.");
-  }
-};
-
-const handleRemoveFromWishlist = async (jobId) => {
-  try {
-    const response = await fetch(
-      `${Fronted_API_URL}/job/wishlist/remove`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, jobId }),
-      }
-    );
-    if (response.ok) {
-      setWishlistJobs((prev) => prev.filter((id) => id !== jobId)); // Remove job ID from local state
-      toast.success("Successfully removed from wishlist!");
-    }
-  } catch (error) {
-    toast.error("Failed to remove from wishlist.");
-  }
-};
 
   // Fetch the list of users the logged-in user is following
   useEffect(() => {
@@ -237,7 +167,6 @@ const handleRemoveFromWishlist = async (jobId) => {
     }
   };
 
-  
 
   const fetchProfileData = async () => {
     try {
@@ -258,7 +187,6 @@ const handleRemoveFromWishlist = async (jobId) => {
     }
   };
 
-  
   const handleView = async (jobId) => {
     if (localStorage.getItem('token') === null) {
       navigate('/user-login');
@@ -377,7 +305,7 @@ const handleRemoveFromWishlist = async (jobId) => {
   return (
     <div className="min-h-screen bg-gray-100/70">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <div className="container mx-auto px-4 py-2">
+      <div className="container mx-auto md:px-3 px-0 md:py-2 py-1">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-1 mx-auto max-w-full">
           <button
@@ -388,17 +316,19 @@ const handleRemoveFromWishlist = async (jobId) => {
           </button>
 
           <div
-            className={`w-full md:w-1/4 bg-white p-4 rounded-lg shadow-lg border border-gray-200 ${filterVisible ? "block" : "hidden"
+            className={`w-full md:w-1/4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 ${filterVisible ? "block" : "hidden"
               } md:block`}
           >
             {/* Main Heading */}
-            <div className="flex items-center gap-2 mb-6">
-              <FaFilter className="text-blue-500 text-lg" />
-              <h1 className="text-md font-bold text-gray-800">You can Filter your Search</h1>
+            <div className="flex items-center gap-2 mb-3 justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 text-blue-500">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+              </svg>
+              <h1 className="text-md font-bold text-gray-800">Filters</h1>
             </div>
 
             {/* Filter by Location */}
-            <div className="mb-5 border py-5 px-2 rounded-lg">
+            <div className="mb-5 border py-3 px-2 rounded-lg">
               <div className="flex items-center gap-2 border-b pb-2 mb-4">
                 <FaMapMarkerAlt className="text-blue-500 text-lg" />
                 <h3 className="text-lg font-semibold text-gray-800">Location</h3>
@@ -447,7 +377,7 @@ const handleRemoveFromWishlist = async (jobId) => {
             </div>
 
             {/* Filter by Company */}
-            <div className="mb-5 border py-5 px-2 rounded-lg">
+            <div className="mb-5 border py-3 px-2 rounded-lg">
               <div className="flex items-center gap-2 border-b pb-2 mb-4">
                 <FaBuilding className="text-blue-500 text-lg" />
                 <h3 className="text-lg font-semibold text-gray-800">Company</h3>
@@ -579,30 +509,6 @@ const handleRemoveFromWishlist = async (jobId) => {
                               Apply
                             </button>
                           </td>
-                          <td className="py-3 px-4">
-  {wishlistJobs.includes(job._id) ? (
-    <FaBookmark
-      onClick={() => handleRemoveFromWishlist(job._id)}
-      className="cursor-pointer text-yellow-500 w-6 h-6"
-      title="Remove from Wishlist"
-    />
-  ) : (
-    <FaRegBookmark
-      onClick={() => handleAddToWishlist(job._id)}
-      className="cursor-pointer text-gray-500 w-6 h-6 hover:text-yellow-500 transition"
-      title="Add to Wishlist"
-    />
-  )}
-</td>
-<td className="py-3 px-4">
-<FaShareAlt
-     // onClick={() => handleShare(job._id)}  // Add your share function here
-     className="cursor-pointer text-gray-500 w-6 h-6 ml-1 hover:text-indigo-500 transition"
-     title="Share"
-      />
-</td>
-
-
                         </tr>
                       ))
                     )}
@@ -613,7 +519,7 @@ const handleRemoveFromWishlist = async (jobId) => {
               // Card View
               <ul
                 role="list"
-                className="grid grid-cols-1 gap-x-2 gap-y-8 lg:grid-cols-3 xl:gap-x-3 px-4"
+                className="grid grid-cols-1 gap-x-2 gap-y-4 lg:grid-cols-3 xl:gap-x-3 px-4"
               >
                 {loading ? (
                   <div className="flex justify-center items-center">
@@ -629,8 +535,22 @@ const handleRemoveFromWishlist = async (jobId) => {
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.3 }}
                     >
+                      <div className="absolute top-2 left-2 z-10">
+                        <button className="flex items-center justify-center w-8 h-8 bg-white text-red-500 rounded-full shadow-md hover:text-red-600 hover:shadow-lg transition">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            className="w-5 h-5"
+                          >
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                          </svg>
+                        </button>
+                      </div>
+
                       {/* Top Section */}
                       <div className="h-20 bg-gradient-to-r from-blue-400 to-blue-200"></div>
+
                       <div className="absolute mt-8 top-2 right-2">
                         <div className="bg-white rounded-full shadow-md p-1">
                           <img
@@ -654,7 +574,27 @@ const handleRemoveFromWishlist = async (jobId) => {
                         </h3>
 
                         {/* Company Name */}
-                        <p className="text-sm text-gray-500 mt-1">{job.companyName}</p>
+                        <div className='flex justify-between mt-2'>
+                          <div className='flex gap-1 items-center'>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
+                            </svg>
+
+                            <p className="text-sm text-gray-500 mt-1">{job.companyName}</p>
+                          </div>
+
+                          <div className='flex gap-1 items-center'>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
+                            </svg>
+
+                            <p className="text-xs text-gray-700 mt-1">{job.experienceRequired}</p>
+                          </div>
+                        </div>
+
+
+
+
                       </div>
 
                       {/* Apply Button */}
@@ -681,96 +621,20 @@ const handleRemoveFromWishlist = async (jobId) => {
                             />
                           </svg>
                         </button>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                        {wishlistJobs.includes(job._id) ? (
-    <FaBookmark
-      onClick={() => handleRemoveFromWishlist(job._id)}
-      className="cursor-pointer text-yellow-500 w-6 h-6 ml-1"
-      title="Remove from Wishlist"
-    />
-  ) : (
-    <FaRegBookmark
-      onClick={() => handleAddToWishlist(job._id)}
-      className="cursor-pointer text-gray-500 w-6 h-6 ml-1 hover:text-yellow-500 transition"
-      title="Add to Wishlist"
-    />
-  )}
-    <FaShareAlt
-     // onClick={() => handleShare(job._id)}  // Add your share function here
-     className="cursor-pointer text-gray-500 w-6 h-6 ml-1 hover:text-indigo-500 transition"
-     title="Share"
-      />
-                      </motion.div>
-                      <dl className="px-6 py-4 text-sm leading-6">
-                        <div className="flex justify-between gap-x-4 py-2">
-                          <dt className="text-gray-500">Job Role</dt>
-                          <dd className="text-gray-700 group-hover:text-indigo-600">{job.jobRole}</dd>
-                        </div>
-                        <div className="flex justify-between gap-x-4 py-2">
-                          <dt className="text-gray-500">Location</dt>
-                          <dd className="text-gray-700 group-hover:text-indigo-600">{job.location}</dd>
-                        </div>
-                        <div className="flex justify-between gap-x-4 py-2">
-                          <dt className="text-gray-500">Work Mode</dt>
-                          <dd className="text-gray-700 group-hover:text-indigo-600">{job.workMode}</dd>
-                        </div>
-                        <div className="flex justify-between gap-x-4 py-2">
-                          <dt className="text-gray-500">Last Date to Apply</dt>
-                          <dd className="text-gray-700 group-hover:text-indigo-600">{getDate(job.endDate)}</dd>
-                        </div>
-                        <div className="flex justify-between gap-x-4 py-2">
-                          <dt className="text-gray-500">Posted by</dt>
-                          <dd className="text-gray-700 flex items-center space-x-2">
-                            <span className="group-hover:text-indigo-600">{job.user.firstName || "anonymous"}</span>
-                            {followingList.some((user) => user._id === job.user._id) ? (
-                              <UserMinusIcon
-                                onClick={() => handleUnfollow(job.user._id)}
-                                className="cursor-pointer text-red-500 w-6 h-6"
-                                title="Unfollow"
-                              />
-                            ) : (
-                              <UserPlusIcon
-                                onClick={() => handleFollow(job.user._id)}
-                                className="cursor-pointer text-blue-500 w-6 h-6"
-                                title="Follow"
-                              />
-                            )}
-                          </dd>
-                        </div>
-=======
-                      </div>
->>>>>>> Stashed changes
-
-                      <hr className='mt-2' />
-
-<<<<<<< Updated upstream
-                        <div className='flex justify-between mt-3'>
-                          
-                          <button className='py-1 px-2 text-xs rounded-full bg-gray-200'>Report</button>
-                        </div>
-                      </dl>
-=======
-=======
                       </div>
 
                       <hr className='mt-2' />
 
->>>>>>> Stashed changes
-                      <div className='flex justify-between mt-1 px-2 py-3'>
-                        <button className='py-1 px-2 text-xs rounded-full bg-gray-200'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-4">
+                      <div className='flex justify-end gap-1 mt-1 px-2 py-3'>
+                        <button className='p-1 text-xs rounded-full bg-gray-200'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
                         </svg>
                         </button>
-                        <button className='py-1 px-2 text-xs rounded-full bg-gray-200'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-4">
+                        <button className='p-1 text-xs rounded-full bg-gray-200'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                         </svg>
                         </button>
                       </div>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                     </motion.li>
                   ))
                 )}
