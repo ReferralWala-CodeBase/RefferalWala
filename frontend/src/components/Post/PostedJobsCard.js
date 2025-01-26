@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
-import { UserMinusIcon, UserPlusIcon, BellIcon } from "@heroicons/react/24/solid";
+import { UserMinusIcon, UserPlusIcon, BellIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router-dom';
 import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner,FaBookmark, FaRegBookmark ,FaShareAlt } from "react-icons/fa";
 import postdata from "../../postdata.json"
@@ -11,7 +10,7 @@ import JobLocationFilter from './JobFilter';
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import ReportJob from './ReportJob';
 import React from 'react';
 import JobPostModal from './JobPostModal';
 
@@ -21,6 +20,8 @@ function classNames(...classes) {
 
 export default function PostedJobsCard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState(null);
+  const [showReportDialog, setShowReportDialog] = useState(false);
 
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -121,11 +122,10 @@ export default function PostedJobsCard() {
           const wishlistJobIds = data.wishlist.map((job) => job._id);
           setWishlistJobs(wishlistJobIds); 
         } else {
-          toast.error("Failed to fetch wishlist jobs.");
+          // toast.error("Failed to fetch wishlist jobs.");
         }
       } catch (error) {
         console.error("Error fetching wishlist jobs:", error);
-        toast.error("Failed to fetch wishlist jobs.");
       }
     };
     fetchWishlistJobs();
@@ -308,6 +308,56 @@ export default function PostedJobsCard() {
     return false;
   }
 
+  const isLoggedIn = !!localStorage.getItem('token');  
+
+  const handleReportClick = (jobId) => {
+    if (!isLoggedIn) {
+      toast.error('Please log in first!');
+      return;
+    }
+    setSelectedJobId(jobId);
+    setShowReportDialog(true); 
+  };
+
+  const handleReportSuccess = () => {
+    toast.success("Job Reported Successfully.");
+    setShowReportDialog(false);
+    setSelectedJobId(null);
+  };
+
+
+  // Function to handle sharing
+  const handleShare = async (jobId) => {
+    if (!jobId || typeof jobId !== 'string') {
+      console.error('Invalid Job ID:', jobId);
+      toast.error('Job ID is invalid. Please try again.');
+      
+      return;
+    }
+
+    const currentUrl = `${window.location.origin}/appliedjobdetails/${jobId}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Job Details',
+          text: 'Check out this job on ReferralWala!',
+          url: currentUrl,
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        toast.success("Link Copied.");
+      } catch (error) {
+        console.error('Error copying to clipboard:', error);
+        toast.error('Error copying to clipboard:', error);
+       
+      }
+    }
+  };
 
 
   // Filter locations based on the search term
@@ -724,17 +774,25 @@ export default function PostedJobsCard() {
                         </div>
 
                         <div className='flex justify-end gap-1 mt-1 px-2 py-3'>
-                          <button className='p-1 text-xs rounded-full bg-gray-200'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
+                          <button className='p-1 text-xs rounded-full bg-gray-200'  onClick={() => handleShare(job._id)}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
                           </svg>
+                
                           </button>
-                          <button className='p-1 text-xs rounded-full bg-gray-200'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-                          </svg>
+                          <button className="p-1 text-xs rounded-full bg-gray-200"   onClick={() => handleReportClick(job._id)}>
+                               <ExclamationTriangleIcon className="h-5 w-5 text-gray-700" />
                           </button>
                         </div>
                       </div>
 
+                      {showReportDialog && selectedJobId === job._id && (
+              <ReportJob
+                jobId={selectedJobId}
+                isLoggedIn={isLoggedIn}
+                onReportSuccess={handleReportSuccess}
+                onCancel={() => setShowReportDialog(false)}
+              />
+            )}
 
                     </motion.li>
                   ))

@@ -47,9 +47,9 @@ const teams = [
   },
   {
     id: 3,
-    name: "Applied Jobs",
+    name: "Jobs Status",
     href: "/appliedjobs",
-    initial: "A",
+    initial: "S",
     current: false,
   },
 ];

@@ -19,6 +19,7 @@ export default function AppliedJobs() {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
   const [selectedJobId, setSelectedJobId] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState('applied');
 
   const handleOpenModal = (jobId) => {
     setSelectedJobId(jobId);
@@ -109,6 +110,7 @@ export default function AppliedJobs() {
     }
   };
 
+const filteredJobs = appliedJobs.filter(job => job.status === selectedStatus);
 
   const handleViewJobDetails = (jobId) => {
     navigate(`/appliedjobdetails/${jobId}`);
@@ -123,6 +125,18 @@ export default function AppliedJobs() {
         </div>
         <div className="w-10/12 md:w-3/4 m-auto">
           <div className="mt-4 flow-root">
+            {/* Tabs for status */}
+            <div className="flex space-x-4 mb-6">
+              {['applied', 'selected', 'rejected', 'on hold'].map(status => (
+                <button
+                  key={status}
+                  onClick={() => setSelectedStatus(status)}
+                  className={`px-4 py-2 text-sm font-medium rounded-md ${selectedStatus === status ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                >
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </button>
+              ))}
+            </div>
             {loading ? (
               <p>Loading...</p>
             ) : error ? (
@@ -139,7 +153,7 @@ export default function AppliedJobs() {
               ) : (
                 <p className="text-red-500">{error}</p>
               )
-            ) : appliedJobs.length === 0 ? (
+            ) : filteredJobs.length === 0 ? (
               <p>No applied jobs found.</p>
             ) : (
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -157,9 +171,9 @@ export default function AppliedJobs() {
                         <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Job Unique ID
                         </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        {/* <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Status
-                        </th>
+                        </th> */}
                         <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Applied On
                         </th>
@@ -167,7 +181,7 @@ export default function AppliedJobs() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {appliedJobs.map((job) => (
+                      {filteredJobs.map((job) => (
                         <tr key={job.jobPostId._id}>
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                             {job.jobPostId.jobRole}
@@ -178,7 +192,7 @@ export default function AppliedJobs() {
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {job.jobPostId.jobUniqueId}
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.status}</td>
+                          {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.status}</td> */}
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {new Date(job.appliedAt).toLocaleDateString()}
                           </td>
@@ -206,7 +220,7 @@ export default function AppliedJobs() {
                 {/* Card View for Smaller Screens */}
                 <div className="block md:hidden">
                   <p className='mb-5 text-xl font-medium leading-7 text-gray-900'>Applied Jobs</p>
-                  {appliedJobs.map((job) => (
+                  {filteredJobs.map((job) => (
                     <div
                       key={job.jobPostId._id}
                       className="mb-4 rounded-lg border border-gray-300 bg-white p-4 shadow"
@@ -220,9 +234,9 @@ export default function AppliedJobs() {
                       <p className="text-sm text-gray-700">
                         <strong>Job Unique ID:</strong> {job.jobPostId.jobUniqueId}
                       </p>
-                      <p className="text-sm text-gray-700">
+                      {/* <p className="text-sm text-gray-700">
                         <strong>Status:</strong> {job.status}
-                      </p>
+                      </p> */}
                       <p className="text-sm text-gray-700">
                         <strong>Applied On:</strong> {new Date(job.appliedAt).toLocaleDateString()}
                       </p>
