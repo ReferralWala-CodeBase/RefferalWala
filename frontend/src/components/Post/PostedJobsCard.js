@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 import { UserMinusIcon, UserPlusIcon, BellIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router-dom';
-import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
+import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner,FaBookmark, FaRegBookmark ,FaShareAlt } from "react-icons/fa";
 import postdata from "../../postdata.json"
 import Navbar from '../Navbar';
 import JobLocationFilter from './JobFilter';
@@ -33,6 +33,7 @@ export default function PostedJobsCard() {
   const [filterVisible, setFilterVisible] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
+  const [wishlistJobs, setWishlistJobs] = useState([]);
   const [profileData, setProfileData] = useState(null);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
@@ -103,6 +104,77 @@ export default function PostedJobsCard() {
 
     fetchFollowingList();
   }, [bearerToken, userId]);
+
+  //wishlist functions--
+  useEffect(() => {
+    const fetchWishlistJobs = async () => {
+      try {
+        const response = await fetch(`${Fronted_API_URL}/job/wishlist/${userId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          const wishlistJobIds = data.wishlist.map((job) => job._id);
+          setWishlistJobs(wishlistJobIds); 
+        } else {
+          toast.error("Failed to fetch wishlist jobs.");
+        }
+      } catch (error) {
+        console.error("Error fetching wishlist jobs:", error);
+        toast.error("Failed to fetch wishlist jobs.");
+      }
+    };
+    fetchWishlistJobs();
+  }, []);
+    
+    const handleAddToWishlist = async (jobId) => {
+      try {
+        const response = await fetch(
+          `${Fronted_API_URL}/job/wishlist/add`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, jobId }),
+          }
+        );
+       if (response.ok) {
+        setWishlistJobs((prev) => [...prev, jobId]); 
+        toast.success("Successfully added to wishlist!");
+      }
+    } catch (error) {
+      toast.error("Failed to add to wishlist.");
+    }
+  };
+  const handleRemoveFromWishlist = async (jobId) => {
+    try {
+      const response = await fetch(
+        `${Fronted_API_URL}/job/wishlist/remove`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, jobId }),
+        }
+      );
+      if (response.ok) {
+        setWishlistJobs((prev) => prev.filter((id) => id !== jobId)); // Remove job ID from local state
+        toast.success("Successfully removed from wishlist!");
+      }
+    } catch (error) {
+      toast.error("Failed to remove from wishlist.");
+    }
+  };
+
   // Handle follow request
   const handleFollow = async (targetUserId) => {
     if (!userId) return;
@@ -536,15 +608,29 @@ export default function PostedJobsCard() {
                       transition={{ duration: 0.3 }}
                     >
                       <div className="absolute top-2 left-2 z-10">
-                        <button className="flex items-center justify-center w-8 h-8 bg-white text-red-500 rounded-full shadow-md hover:text-red-600 hover:shadow-lg transition">
-                          <svg
+                        <button className="flex items-center justify-center w-8 h-8 hover:text-red-600 hover: transition">
+                          
+                          {wishlistJobs.includes(job._id) ? (
+                            <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
                             viewBox="0 0 24 24"
-                            className="w-5 h-5"
-                          >
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                          </svg>
+                            className="w-8 h-8 text-red-500"
+                            onClick={() => handleRemoveFromWishlist(job._id)}
+                            >
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            </svg>
+                          ) : (
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            className="w-5 h-5 text-white"
+                            onClick={() => handleAddToWishlist(job._id)}
+                            >
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            </svg>
+                          )}
                         </button>
                       </div>
 
