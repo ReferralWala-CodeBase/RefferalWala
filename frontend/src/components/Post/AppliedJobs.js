@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import { FaTrash } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Dialog, Transition } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 export default function AppliedJobs() {
   const navigate = useNavigate();
@@ -14,6 +16,19 @@ export default function AppliedJobs() {
   const [refresh, setRefresh] = useState(false); // to refresh
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const [searchQuery, setSearchQuery] = useState('');
+  const [open, setOpen] = useState(false);
+  const cancelButtonRef = useRef(null);
+  const [selectedJobId, setSelectedJobId] = useState(null);
+
+  const handleOpenModal = (jobId) => {
+    setSelectedJobId(jobId);
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedJobId(null);
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchAppliedJobs = async () => {
@@ -56,20 +71,29 @@ export default function AppliedJobs() {
       const bearerToken = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
 
-      const response = await fetch(`${Fronted_API_URL}/job/withdraw_applicant`, {
-        method: "DELETE",
+      const response = await fetch(`${Fronted_API_URL}/job/withdraw/${jobId}`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ jobId }),
+        body: JSON.stringify({ userId }),
       });
 
       const data = await response.json();
       console.log("Response data:", data);
 
       if (response.ok) {
-        toast.success("Withdraw successfully!");
+        toast.success("Withdraw  successfully!", {
+          position: "top-right",
+          autoClose: 3000, // 3 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setOpen(false);
         setRefresh((prev) => !prev);
       } else {
         if (response.status === 401) {
@@ -92,7 +116,7 @@ export default function AppliedJobs() {
 
   return (
     <>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
@@ -168,7 +192,8 @@ export default function AppliedJobs() {
                           </td>
                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <FaTrash
-                              onClick={() => withdrawApplication(job.jobPostId._id)}
+                              // onClick={() => withdrawApplication(job.jobPostId._id)}
+                              onClick={() => handleOpenModal(job.jobPostId._id)}
                               className="m-2 mt-4 text-xl cursor-pointer text-red-500 hover:text-red-700"
                             />
                           </td>
@@ -209,13 +234,98 @@ export default function AppliedJobs() {
                           View Job
                         </button>
                         <FaTrash
-                          onClick={() => withdrawApplication(job.jobPostId._id)}
+                          // onClick={() => withdrawApplication(job.jobPostId._id)}
+                          onClick={() => handleOpenModal(job.jobPostId._id)}
                           className="text-xl cursor-pointer text-red-500 hover:text-red-700"
                         />
                       </div>
                     </div>
                   ))}
                 </div>
+
+                { /*Modal Open Dialog */}
+                {open && (
+                  <Transition.Root show={open} as={Fragment}>
+                    <Dialog
+                      as="div"
+                      className="relative z-10"
+                      initialFocus={cancelButtonRef}
+                      onClose={handleCloseModal}
+                    >
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                      </Transition.Child>
+
+                      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                          <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enterTo="opacity-100 translate-y-0 sm:scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                          >
+                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                              <div className="sm:flex sm:items-start">
+                                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                  <ExclamationTriangleIcon
+                                    className="h-6 w-6 text-red-600"
+                                    aria-hidden="true"
+                                  />
+                                </div>
+                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                  <Dialog.Title
+                                    as="h3"
+                                    className="text-base font-semibold leading-6 text-gray-900"
+                                  >
+                                    Close Job
+                                  </Dialog.Title>
+                                  <div className="mt-2">
+                                    <p className="text-sm text-gray-500">
+                                      Are you sure you want to close this job? This action
+                                      cannot be undone.
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                <button
+                                  type="button"
+                                  className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                                  onClick={() => {
+                                    withdrawApplication(selectedJobId);
+                                    handleCloseModal();
+                                  }}
+                                >
+                                  Confirm
+                                </button>
+                                <button
+                                  type="button"
+                                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                  onClick={handleCloseModal}
+                                  ref={cancelButtonRef}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </Dialog.Panel>
+                          </Transition.Child>
+                        </div>
+                      </div>
+                    </Dialog>
+                  </Transition.Root>
+                )}
+
               </div>
 
             )}

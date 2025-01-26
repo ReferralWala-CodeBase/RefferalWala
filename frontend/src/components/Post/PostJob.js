@@ -4,6 +4,7 @@ import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { LocationExport } from "../Location";
 
 export default function PostJob() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -112,16 +113,23 @@ export default function PostJob() {
             setCompanySuggestions([]);
           }
         } else if (name === "location") {
-          const response = await fetch(
-            `https://api.olamaps.io/places/v1/autocomplete?input=${encodeURIComponent(value)}&api_key=${OLA_API_Key}`
-          );
-          const data = await response.json();
+          // const response = await fetch(
+          //   `https://api.olamaps.io/places/v1/autocomplete?input=${encodeURIComponent(value)}&api_key=${OLA_API_Key}`
+          // );
+          // const data = await response.json();
 
-          if (data && data.predictions && data.predictions.length > 0) {
-            setLocationSuggestions(data.predictions);
-          } else {
-            setLocationSuggestions([]);
-          }
+          // if (data && data.predictions && data.predictions.length > 0) {
+          //   setLocationSuggestions(data.predictions);
+          // } else {
+          //   setLocationSuggestions([]);
+          // }
+          const filteredLocations = LocationExport.filter((loc) =>
+            `${loc.city}, ${loc.state}`.toLowerCase().includes(value.toLowerCase())
+          );
+      
+          setLocationSuggestions(filteredLocations.map((loc) => ({
+            description: `${loc.city}, ${loc.state}`,
+          })));
         }
       } catch (error) {
         console.error("Error fetching suggestions:", error);

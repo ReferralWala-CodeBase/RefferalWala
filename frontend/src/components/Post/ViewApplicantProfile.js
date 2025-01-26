@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
-import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow, FaGithub, FaLinkedin, FaGlobe, FaInstagram, FaFacebook, FaEnvelope, FaPhone } from "react-icons/fa";
+import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow, FaGithub, FaLinkedin, FaGlobe, FaInstagram, FaFacebook, FaEnvelope, FaPhone, FaTimes } from "react-icons/fa";
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,7 +19,8 @@ export default function ViewApplicantProfile() {
   const statusOptions = ['applied', 'selected', 'rejected', 'on hold'];
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const [searchQuery, setSearchQuery] = useState('');
-  
+  const [jobs, setJobs] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -147,6 +148,40 @@ export default function ViewApplicantProfile() {
     }
   };
 
+  const handleShowJob = async () => {
+    setIsModalOpen(true); // Open the modal
+    const bearerToken = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    try {
+      const response = await fetch(`${Fronted_API_URL}/job/user/${applicantId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          // Unauthorized, remove the token and navigate to login
+          localStorage.removeItem('token');
+          navigate('/user-login');
+        } else {
+          throw new Error('Failed to fetch profile data');
+        }
+
+      }
+      const data = await response.json();
+      setJobs(data);
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+      toast.error(error.message);
+    }
+  }
+
+  const handleViewDetails = (jobId) => {
+    navigate(`/appliedjobdetails/${jobId}`);
+  };
 
   if (!profileData) {
     return (
@@ -158,7 +193,7 @@ export default function ViewApplicantProfile() {
 
   return (
     <>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
@@ -183,12 +218,64 @@ export default function ViewApplicantProfile() {
             </select>
             {updatingStatus && <FaSpinner className="ml-4 animate-spin text-indigo-600" />}
           </div>
-          <div className="mt-4 mb-4 flex justify-between">
-            <h3 className="text-lg font-medium leading-7 text-gray-900">Basic Profile</h3>
-            <button onClick={handleFollowUnfollow} className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-              {isFollowing ? 'Unfollow' : 'Follow'}
-            </button>
+          <div className="mt-4 mb-4 flex justify-end">
+            <div>
+              {isFollowing && (
+                <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                  View Job Posted
+                </button>
+              )}
+              <button onClick={handleFollowUnfollow} className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                {isFollowing ? 'Unfollow' : 'Follow'}
+              </button>
+            </div>
           </div>
+
+          {isModalOpen && (
+            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+              <div className="mx-4 relative bg-white rounded-lg shadow-lg w-100 max-h-[80vh] overflow-hidden">
+                {/* Sticky Header */}
+                <div className="sticky top-0 bg-white z-10 border-b rounded-t-lg">
+                  {/* Close Icon */}
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
+                  >
+                    <FaTimes className='w-6 h-6' />
+                  </button>
+                  <h2 className="text-xl font-bold mb-4 text-center py-4">Posted Jobs</h2>
+                </div>
+
+                {/* Modal Content */}
+                <div className="overflow-auto max-h-[70vh] p-4 hide-scrollbar">
+                  {jobs.length > 0 ? (
+                    <ul className="space-y-2">
+                      {jobs.map((job) => (
+                        <li key={job._id} className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between">
+                          <img src={job.companyLogoUrl} alt="" className="w-10 h-10 sm:w-16 sm:h-16 mr-4" />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
+                            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                          </div>
+                          <button
+                            className="ml-4 text-blue-500 underline decoration-[1.5px] decoration-blue-500 underline-offset-2 hover:text-blue-700 focus:outline-none text-xs sm:text-sm md:text-base"
+                            onClick={() => handleViewDetails(job._id)}
+                          >
+                            View Details
+                          </button>
+                        </li>
+                      ))}
+
+                    </ul>
+                  ) : (
+                    <p>No jobs posted by this user.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="p-6 font-sans rounded-lg shadow-lg bg-gray-50">
             <div className="flex flex-col md:flex-row">
               <div className="w-full md:w-1/3 text-center pr-6 md:border-r border-gray-300 mb-6 md:mb-0">
