@@ -11,6 +11,7 @@ export default function EditJob() {
   const navigate = useNavigate(); // Using useNavigate instead of useHistory
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const [searchQuery, setSearchQuery] = useState('');
+  
 
   const [formData, setFormData] = useState({
     jobRole: '',
@@ -45,7 +46,7 @@ export default function EditJob() {
             localStorage.removeItem('token');
             navigate('/user-login');
           } else {
-          throw new Error('Failed to fetch job data');
+            throw new Error('Failed to fetch job data');
           }
         }
 
@@ -93,7 +94,7 @@ export default function EditJob() {
           localStorage.removeItem('token');
           navigate('/user-login');
         } else {
-        throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
+          throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
         }
       }
 

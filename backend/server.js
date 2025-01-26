@@ -10,13 +10,14 @@ const authRoutes = require('./routes/auth');
 const contactRoutes = require('./routes/contactRoutes');
 const cron = require('node-cron');
 const Notification = require('./models/Notification');
+const jobReportRoutes = require('./routes/jobReport');
 dotenv.config();
 require('./config/passport');
 
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:3000']
+  origin: ['http://localhost:3000', 'https://referralwala-deployment-frontend.vercel.app', 'https://referralwala.com' ]
 }));
 app.use(express.json());
 
@@ -35,11 +36,14 @@ cron.schedule('0 0 * * *', async () => {
     }
   });
 
-
+app.get('/', (req, res) => {
+    res.send('Server Running Successfully');
+});
 app.use('/user', userRoutes);
 app.use('/job', jobPostRoutes);
 app.use('/contact', contactRoutes);
 app.use('/googleauth',authRoutes);
+app.use('/job-reports', jobReportRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -402,7 +402,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   };
 
   return (
-    <Disclosure as="header" className="bg-blue-800 shadow sticky top-0 z-10">
+    <Disclosure as="header" className="bg-blue-800 shadow sticky top-0 z-50">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
@@ -670,7 +670,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
           </Disclosure.Panel>
 
           <Transition.Root show={openNotifications} as={Fragment}>
-            <Dialog as="div" className="relative z-10 " onClose={setOpenNotifications}>
+            <Dialog as="div" className="relative z-50 " onClose={setOpenNotifications}>
               <div className="fixed inset-0 bg-gray-500 mt-16 bg-opacity-75 transition-opacity overflow-hidden"/>
               <div className="fixed inset-0 overflow-hidden">
                 <div className="absolute inset-0 overflow-hidden">
