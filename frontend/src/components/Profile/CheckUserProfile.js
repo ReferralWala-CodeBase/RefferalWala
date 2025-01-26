@@ -15,6 +15,7 @@ export default function CheckUserProfile() {
   const location = useLocation();
   const { jobId } = location.state || {};
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -92,7 +93,7 @@ export default function CheckUserProfile() {
 
   return (
     <>
-      <Navbar className="sticky top-0 z-50" />
+      <Navbar className="sticky top-0 z-50" searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex mt-[navbar-height]">
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />

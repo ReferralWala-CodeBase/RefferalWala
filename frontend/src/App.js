@@ -24,6 +24,7 @@ import FollowingList from "./components/Profile/FollowingList";
 import FollowerList from "./components/Profile/FollowerList";
 import CheckUserProfile from "./components/Profile/CheckUserProfile";
 import NotificationsPage from "./components/Profile/NotificationsPage";
+import SearchPage from "./components/Search";
 function App() {
   return (
     <>
@@ -51,6 +52,7 @@ function App() {
         <Route path="/followinglist" element={<FollowingList />} />
         <Route path="/followerlist" element={<FollowerList />} />
         <Route path="/notifications" element={<NotificationsPage />} />
+        <Route path="/search" element={<SearchPage />} />
 
       </Routes>
     </>

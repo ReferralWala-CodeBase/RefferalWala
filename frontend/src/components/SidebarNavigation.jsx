@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { Link } from 'react-router-dom'
 import {
   Bars3Icon,
   CalendarIcon,
@@ -230,8 +231,8 @@ export default function SidebarNa() {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
-                          href={item.href}
+                        <Link
+                          to={item.href}
                           className={classNames(
                             item.current
                               ? 'bg-gray-50 text-indigo-600'
@@ -247,7 +248,7 @@ export default function SidebarNa() {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -257,8 +258,8 @@ export default function SidebarNa() {
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
                       <li key={team.name}>
-                        <a
-                          href={team.href}
+                        <Link
+                          to={team.href}
                           className={classNames(
                             team.current
                               ? 'bg-gray-50 text-indigo-600'
@@ -277,7 +278,7 @@ export default function SidebarNa() {
                             {team.initial}
                           </span>
                           <span className="truncate">{team.name}</span>
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>

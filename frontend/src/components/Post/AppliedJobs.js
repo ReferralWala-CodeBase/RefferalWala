@@ -13,6 +13,7 @@ export default function AppliedJobs() {
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false); // to refresh
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchAppliedJobs = async () => {
@@ -91,7 +92,7 @@ export default function AppliedJobs() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />

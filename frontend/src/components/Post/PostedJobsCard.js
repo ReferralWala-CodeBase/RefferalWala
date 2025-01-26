@@ -39,7 +39,6 @@ export default function PostedJobsCard() {
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
-
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
   ];
@@ -103,6 +102,7 @@ export default function PostedJobsCard() {
 
     fetchFollowingList();
   }, [bearerToken, userId]);
+  
   // Handle follow request
   const handleFollow = async (targetUserId) => {
     if (!userId) return;

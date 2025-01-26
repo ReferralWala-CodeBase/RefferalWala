@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function ViewProfile() {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
 
@@ -59,7 +60,7 @@ export default function ViewProfile() {
 
   return (
     <>
-      <Navbar className="sticky top-0 z-50" />
+      <Navbar className="sticky top-0 z-50" searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex mt-[navbar-height]">
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />

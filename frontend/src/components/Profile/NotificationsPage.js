@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import Navbar from "../Navbar";
 
 const NotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
@@ -7,6 +8,7 @@ const NotificationsPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate(); // Initialize the useNavigate hook
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -66,6 +68,8 @@ const NotificationsPage = () => {
   }
 
   return (
+    <>
+    <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
     <div className="p-4">
       <h2 className="text-lg font-semibold">Notifications</h2>
       {notifications.length > 0 ? (
@@ -84,6 +88,7 @@ const NotificationsPage = () => {
         <div className="text-sm text-gray-500">No notifications available</div>
       )}
     </div>
+    </>
   );
 };
 

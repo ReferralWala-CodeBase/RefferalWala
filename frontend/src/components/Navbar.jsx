@@ -215,10 +215,11 @@
 
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure, Menu, Dialog, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import profile from "../assets/profile-icon-user.png";
 import {
   CalendarIcon,
@@ -285,7 +286,14 @@ function classNames(...classes) {
 export default function Navbar({ searchQuery, setSearchQuery }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [openNotifications, setOpenNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -293,6 +301,86 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
       setLoggedIn(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (openNotifications) {
+      fetchNotifications();
+    }
+  }, [openNotifications]);
+
+
+  const fetchNotifications = async () => {
+    const userId = localStorage.getItem("userId");
+    const bearerToken = localStorage.getItem("token");
+    if (!userId) {
+      setError("User not logged in");
+      setLoading(false);
+      return;
+    }
+    try {
+      const response = await fetch(
+        `${Fronted_API_URL}/user/notifications/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch notifications");
+      }
+      const data = await response.json();
+      console.log("Fetched notifications:", data); // Log data to check the response
+      setNotifications(data || []); // Ensure we set the notifications array correctly
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleNotificationClick = (postId) => {
+    console.log("Navigating to post ID:", postId); // Log the postId for debugging
+    // Navigate to the job details page based on the postId
+    navigate(`/appliedjobdetails/${postId}`);
+  };
+
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`${Fronted_API_URL}/user/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: searchQuery }), // Trim space from front and end
+      });
+  
+      const data = await response.json(); // Parse the JSON response
+      const jobResults = data?.jobResults || [];
+      const userResults = data?.userResults || [];
+  
+      // Handle cases where both are empty
+      if (jobResults.length === 0 && userResults.length === 0) {
+        toast.error("No results found!");
+        return;
+      }
+  
+      // Navigate based on available results
+      if (jobResults.length > 0) {
+        navigate("/search", { state: { jobData: jobResults } });
+      } else if (userResults.length > 0) {
+        navigate("/search", { state: { userData: userResults } });
+      }
+  
+      setSearchResults([...jobResults, ...userResults]); // Optional: Store results if needed
+    } catch (error) {
+      console.error("Error searching:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
+  };
+  
 
   const handleSignOut = async () => {
     localStorage.removeItem("token");
@@ -346,6 +434,11 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       type="search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearch();
+                        }
+                      }}
                     />
                   </div>
                 </div>
@@ -367,9 +460,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                   <>
                     <button
                       type="button"
+                      onClick={() => setOpenNotifications(true)}
                       className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                      <Link to="/notifications">
+                      <Link>
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -574,6 +668,61 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               )}
             </div>
           </Disclosure.Panel>
+
+          <Transition.Root show={openNotifications} as={Fragment}>
+            <Dialog as="div" className="relative z-10 " onClose={setOpenNotifications}>
+              <div className="fixed inset-0 bg-gray-500 mt-16 bg-opacity-75 transition-opacity overflow-hidden"/>
+              <div className="fixed inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="transform transition ease-in-out duration-500 sm:duration-700"
+                      enterFrom="translate-x-full"
+                      enterTo="translate-x-0"
+                      leave="transform transition ease-in-out duration-500 sm:duration-700"
+                      leaveFrom="translate-x-0"
+                      leaveTo="translate-x-full"
+                    >
+                      <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                        <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                          <div className="px-4 sm:px-6 flex justify-between items-center">
+                            <Dialog.Title className="text-lg font-medium text-gray-900">
+                              Notifications
+                            </Dialog.Title>
+                            <button
+                              type="button"
+                              className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                              onClick={() => setOpenNotifications(false)}
+                            >
+                              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                            </button>
+                          </div>
+                          <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                            {notifications.length > 0 ? (
+                              <ul className="mt-4 space-y-2">
+                                {notifications.map((notification, index) => (
+                                  <li
+                                    key={index}
+                                    className="p-3 bg-gray-100 rounded-md shadow-md text-sm text-gray-700 cursor-pointer"
+                                    onClick={() => handleNotificationClick(notification.post._id)}
+                                  >
+                                    {notification.message || "New Notification"}
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <div className="text-sm text-gray-500">No notifications available</div>
+                            )}
+                          </div>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </div>
+            </Dialog>
+          </Transition.Root>
 
         </>
       )}
