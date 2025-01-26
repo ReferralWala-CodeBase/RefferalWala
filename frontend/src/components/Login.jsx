@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useGoogleLogin } from '@react-oauth/google';
@@ -11,6 +11,17 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API 
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    const rememberedPassword = localStorage.getItem("rememberedPassword");
+  
+    if (rememberedEmail && rememberedPassword) {
+      setEmail(rememberedEmail);
+      setPassword(rememberedPassword);
+    }
+  }, []);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +40,13 @@ function Login() {
 
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
+
+      const rememberMe = document.getElementById("remember-me").checked;
+
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+        localStorage.setItem("rememberedPassword", password);
+      }
 
       if (isOTPVerified) {
         if (localStorage.getItem('firstTimeLogin') !== null && localStorage.getItem('firstTimeLogin') === "true") {
@@ -56,17 +74,17 @@ function Login() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ code: authResult.code }),
           });
-  
+
           const data = await response.json();
-  
+
           if (!response.ok) {
             toast.error(data.message || "An error occurred during signup/login");
             return;
           }
-  
+
           const { token, userId } = data;
           console.log(token)
-  
+
           // Store token in localStorage and navigate to profile
           localStorage.setItem('token', token);
           localStorage.setItem('userId', userId);
@@ -80,7 +98,7 @@ function Login() {
     onError: () => toast.error('Google Sign In was unsuccessful. Try again later.'),
     flow: 'auth-code',
   });
-  
+
 
 
   return (
@@ -192,7 +210,7 @@ function Login() {
 
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <div
-                onClick={handleGoogleAuth}
+                  onClick={handleGoogleAuth}
                   // href="#"
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer"
                 >

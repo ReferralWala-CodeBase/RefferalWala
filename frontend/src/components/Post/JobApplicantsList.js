@@ -31,7 +31,7 @@ export default function JobApplicantsList() {
             localStorage.removeItem('token');
             navigate('/user-login');
           } else {
-          throw new Error(errorData.message || 'Failed to fetch applicants');
+            throw new Error(errorData.message || 'Failed to fetch applicants');
           }
         }
 
@@ -76,12 +76,12 @@ export default function JobApplicantsList() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex">
-        <div className="w-2/12 md:w-1/4">
+        <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4">
+        <div className="w-10/12 md:w-3/4 mx-auto">
           <input
             type="text"
             placeholder="Search"
@@ -99,42 +99,73 @@ export default function JobApplicantsList() {
               <p>No applicants found for this job.</p>
             ) : (
               <div className="max-w-7xl">
-                <table className="min-w-full divide-y divide-gray-300">
-                  <thead>
-                    <tr>
-                      <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Avatar</th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Applicant Name</th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Applied On</th>
-                      <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                      <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
-                    {Object.entries(filteredApplicants).map(([id, applicant]) => (
-                      <tr key={applicant._id}>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"> <img className="h-11 w-11 rounded-full" src={ applicant.userId.profilePhoto || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'} alt="" />
-                        </td>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-
-                          {applicant.userId.firstName} {applicant.userId.lastName}
-                        </td>
-
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant.userId.email}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant.appliedAt}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant.status}</td>
-                        <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                          <button
-                            onClick={() => handleViewApplicantDetails(applicant.userId._id)}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            View Full Profile
-                          </button>
-                        </td>
+                <div className="hidden lg:block">
+                  <table className="min-w-full divide-y divide-gray-300">
+                    <thead>
+                      <tr>
+                        <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Avatar</th>
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Applicant Name</th>
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Applied On</th>
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                        <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 bg-white">
+                      {Object.entries(filteredApplicants).map(([id, applicant]) => (
+                        <tr key={applicant._id}>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"> <img className="h-11 w-11 rounded-full" src={applicant.userId.profilePhoto || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'} alt="" />
+                          </td>
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+
+                            {applicant.userId.firstName} {applicant.userId.lastName}
+                          </td>
+
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant.userId.email}</td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant.appliedAt}</td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant.status}</td>
+                          <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
+                            <button
+                              onClick={() => handleViewApplicantDetails(applicant.userId._id)}
+                              className="text-indigo-600 hover:text-indigo-900"
+                            >
+                              View Full Profile
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="block lg:hidden">
+                  {Object.entries(filteredApplicants).map(([id, applicant]) => (
+                    <div key={applicant._id} className="flex flex-col p-4 bg-white shadow-lg rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <img
+                          className="h-16 w-16 rounded-full border-2 border-gray-500"
+                          src={applicant.userId.profilePhoto || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
+                          alt=""
+                        />
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {applicant.userId.firstName} {applicant.userId.lastName}
+                          </h3>
+                          <p className="text-sm text-gray-500">{applicant.userId.email}</p>
+                          <p className="text-xs text-gray-400">Applied On: {new Date(applicant.appliedAt).toLocaleDateString("en-GB")}</p>
+                          <p className="text-xs text-gray-500">Status: {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}</p>
+                        </div>
+                      </div>
+                      <div className="mt-4 text-right">
+                        <button
+                          onClick={() => handleViewApplicantDetails(applicant.userId._id)}
+                          className="text-indigo-600 hover:text-indigo-900 text-sm"
+                        >
+                          View Full Profile
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

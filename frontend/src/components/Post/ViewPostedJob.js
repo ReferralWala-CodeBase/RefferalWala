@@ -29,6 +29,7 @@ export default function ViewPostedJob() {
   const [jobData, setJobData] = useState(null);
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -131,7 +132,7 @@ export default function ViewPostedJob() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
 
       <div>
         <SidebarNavigation />

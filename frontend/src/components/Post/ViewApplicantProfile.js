@@ -11,12 +11,15 @@ export default function ViewApplicantProfile() {
   const navigate = useNavigate();
   const { applicantId } = useParams();
   const [profileData, setProfileData] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(null);
   const location = useLocation();
   const { jobId } = location.state || {};
   const [status, setStatus] = useState('');
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const statusOptions = ['applied', 'selected', 'rejected', 'on hold'];
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [searchQuery, setSearchQuery] = useState('');
+  
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -38,6 +41,9 @@ export default function ViewApplicantProfile() {
 
         const data = await response.json();
         setProfileData(data);
+
+        setIsFollowing(data.followers?.includes(userId) || false);
+
       } catch (error) {
         console.error('Error fetching profile data:', error);
         toast.error(error.message);
@@ -113,6 +119,35 @@ export default function ViewApplicantProfile() {
     }
   };
 
+  const handleFollowUnfollow = async () => {
+    const bearerToken = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    try {
+      const action = isFollowing ? 'unfollow' : 'follow';
+      const response = await fetch(`${Fronted_API_URL}/user/${action}/${applicantId}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update follow status');
+      } else {
+        toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successfully`);
+      }
+
+      // Update state and fetch updated profile data
+      setIsFollowing(!isFollowing);
+    } catch (error) {
+      console.error('Error updating follow status:', error);
+      toast.error(error.message);
+    }
+  };
+
+
   if (!profileData) {
     return (
       <div className="flex justify-center items-center">
@@ -123,12 +158,12 @@ export default function ViewApplicantProfile() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex">
-        <div className="w-2/12 md:w-1/4">
+        <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-4 sm:px-6">
+        <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
           <div className="col-span-2 flex justify-end p-4">
             <label htmlFor="status" className="mr-2 font-medium text-gray-700">
               Status:
@@ -148,24 +183,26 @@ export default function ViewApplicantProfile() {
             </select>
             {updatingStatus && <FaSpinner className="ml-4 animate-spin text-indigo-600" />}
           </div>
-
-          <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Basic Profile</h3>
+          <div className="mt-4 mb-4 flex justify-between">
+            <h3 className="text-lg font-medium leading-7 text-gray-900">Basic Profile</h3>
+            <button onClick={handleFollowUnfollow} className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              {isFollowing ? 'Unfollow' : 'Follow'}
+            </button>
+          </div>
           <div className="p-6 font-sans rounded-lg shadow-lg bg-gray-50">
-            <div className="flex">
-              <div className="w-1/3 text-center pr-6 border-r border-gray-300">
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/3 text-center pr-6 md:border-r border-gray-300 mb-6 md:mb-0">
                 <img
                   src={profileData.profilePhoto || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"}
                   alt="Profile"
                   className="w-36 h-36 rounded-full mx-auto mb-4"
                 />
                 <h2 className="text-xl font-semibold text-gray-800">{`${profileData.firstName || ''} ${profileData.lastName || ''}`.trim() || <>&nbsp;</>}</h2>
-                {/* <p className="text-sm text-gray-600 mb-3">{profileData.presentCompany.role || <>&nbsp;</>}</p> */}
-                <div className="text-sm text-gray-700 leading-relaxed  flex items-center flex-wrap space-x-4">
+                <div className="text-sm text-gray-700 leading-relaxed flex items-center flex-wrap space-x-4 justify-center">
                   <div className="flex items-center space-x-1">
                     <FaEnvelope className="text-gray-500" />
                     <span>{profileData.email || <>&nbsp;</>}</span>
                   </div>
-                  <span className="text-gray-400">||</span>
                   <div className="flex items-center space-x-1">
                     <FaPhone className="text-gray-500" />
                     <span>{profileData.mobileNumber || <>&nbsp;</>}</span>
@@ -182,7 +219,6 @@ export default function ViewApplicantProfile() {
                       <FaGithub className="text-2xl" />
                     </a>
                   )}
-
                   {profileData.links?.linkedin && (
                     <a
                       href={profileData.links.linkedin}
@@ -193,7 +229,6 @@ export default function ViewApplicantProfile() {
                       <FaLinkedin className="text-2xl" />
                     </a>
                   )}
-
                   {profileData.links?.website && (
                     <a
                       href={profileData.links.website}
@@ -204,7 +239,6 @@ export default function ViewApplicantProfile() {
                       <FaGlobe className="text-2xl" />
                     </a>
                   )}
-
                   {profileData.links?.instagram && (
                     <a
                       href={profileData.links.instagram}
@@ -215,7 +249,6 @@ export default function ViewApplicantProfile() {
                       <FaInstagram className="text-2xl" />
                     </a>
                   )}
-
                   {profileData.links?.facebook && (
                     <a
                       href={profileData.links.facebook}
@@ -227,11 +260,8 @@ export default function ViewApplicantProfile() {
                     </a>
                   )}
                 </div>
-
-
-
               </div>
-              <div className="w-2/3 pl-6">
+              <div className="w-full md:w-2/3 pl-0 md:pl-6">
                 <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
                 <p className="text-sm text-gray-700 mb-6">{profileData.aboutMe || 'No about me information provided'}</p>
                 <h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
@@ -245,7 +275,6 @@ export default function ViewApplicantProfile() {
                     </span>
                   ))}
                 </div>
-                {/* Achievements */}
                 <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Achievements</h3>
                 <div className="mt-3">
                   {profileData.achievements?.length ? (
@@ -258,9 +287,9 @@ export default function ViewApplicantProfile() {
                     </div>
                   )}
                 </div>
-
               </div>
             </div>
+
 
             { /* Education */}
             <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-2">Education</h3>
@@ -379,45 +408,50 @@ export default function ViewApplicantProfile() {
 
             {/* Preferences */}
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Preferences</h3>
-            <div className="border hover:shadow-xl transition-shadow bg-white border-gray-200 p-8 rounded-lg shadow-xl mt-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Preferred Company Name */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Preferred Company Name</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.preferredCompanyName ? (
-                      <span>{profileData.preferences.preferredCompanyName}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
+            {profileData.preferences ? (
+              <div className="border hover:shadow-xl transition-shadow bg-white border-gray-200 p-8 rounded-lg shadow-xl mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {/* Preferred Company Name */}
+                  <div className="flex flex-col">
+                    <label className="text-base font-medium text-gray-700 mb-2">Preferred Company Name</label>
+                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
+                      {profileData.preferences.preferredCompanyName ? (
+                        <span>{profileData.preferences.preferredCompanyName}</span>
+                      ) : (
+                        <span className="text-gray-400">Not Set</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Preferred Position */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Preferred Position</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.preferredPosition ? (
-                      <span>{profileData.preferences.preferredPosition}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
+                  {/* Preferred Position */}
+                  <div className="flex flex-col">
+                    <label className="text-base font-medium text-gray-700 mb-2">Preferred Position</label>
+                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
+                      {profileData.preferences.preferredPosition ? (
+                        <span>{profileData.preferences.preferredPosition}</span>
+                      ) : (
+                        <span className="text-gray-400">Not Set</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Expected CTC Range */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Expected CTC Range</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.expectedCTCRange ? (
-                      <span>{profileData.preferences.expectedCTCRange}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
+                  {/* Expected CTC Range */}
+                  <div className="flex flex-col">
+                    <label className="text-base font-medium text-gray-700 mb-2">Expected CTC Range</label>
+                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
+                      {profileData.preferences.expectedCTCRange ? (
+                        <span>{profileData.preferences.expectedCTCRange}</span>
+                      ) : (
+                        <span className="text-gray-400">Not Set</span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <p className="text-gray-500 mt-4">No Preferences Set</p>
+            )}
+
 
           </div>
         </div>

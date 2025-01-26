@@ -13,6 +13,7 @@ export default function AppliedJobs() {
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false); // to refresh
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchAppliedJobs = async () => {
@@ -91,13 +92,13 @@ export default function AppliedJobs() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 m-auto">
-          <div className="mt-4 text-center flow-root">
+          <div className="mt-4 flow-root">
             {loading ? (
               <p>Loading...</p>
             ) : error ? (
@@ -179,7 +180,7 @@ export default function AppliedJobs() {
 
                 {/* Card View for Smaller Screens */}
                 <div className="block md:hidden">
-                  <p className='mb-5 text-center text-xl font-medium leading-7 text-gray-900'>Applied Jobs</p>
+                  <p className='mb-5 text-xl font-medium leading-7 text-gray-900'>Applied Jobs</p>
                   {appliedJobs.map((job) => (
                     <div
                       key={job.jobPostId._id}

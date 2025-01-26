@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaCheck } from 'react-icons/fa';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -43,6 +43,9 @@ export default function EditProfile() {
   const [otp, setOtp] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [originalCompanyEmail, setOriginalCompanyEmail] = useState('');
+  const [isCompanyEmailVerified, setIsCompanyEmailVerified] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleOtpChange = (e) => {
     setOtp(e.target.value); // Update OTP state
@@ -69,6 +72,9 @@ export default function EditProfile() {
 
       if (response.ok) {
         toast.success("Company Email verified successfully! ");
+        const isVerified = data?.presentCompany?.CompanyEmailVerified;
+        setIsCompanyEmailVerified(isVerified);
+        setOriginalCompanyEmail(profileData.presentCompany?.companyEmail);
         setShowOtpModal(false);
       } else {
         toast.error(data.message || "Company Email verification failed. Try again.");
@@ -79,26 +85,25 @@ export default function EditProfile() {
   };
 
   const handleCompanyVerification = async (e) => {
+    // Prevent default form submission behavior
+    e.preventDefault();
+
     try {
       const bearerToken = localStorage.getItem('token');
-      const response = await fetch(
-        `${Fronted_API_URL}/user/sendOTP`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            "Content-Type": "application/json",
-
-          },
-          body: JSON.stringify({ email: profileData.presentCompany.companyEmail }),
-        }
-      );
+      const response = await fetch(`${Fronted_API_URL}/user/sendOTP`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: profileData.presentCompany.companyEmail }),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
         setShowOtpModal(true);
-        toast.success("OTP send successfully! ");
+        toast.success("OTP sent successfully!");
       } else {
         if (response.status === 400) {
           toast.error(data.message || "Email is already verified.");
@@ -110,6 +115,7 @@ export default function EditProfile() {
       toast.error("An error occurred. Please try again.");
     }
   };
+
 
   const handleAchievementChange = (index, value) => {
     const updatedAchievements = [...profileData.achievements];
@@ -176,6 +182,8 @@ export default function EditProfile() {
 
         const data = await response.json();
         setProfileData(data);
+        setOriginalCompanyEmail(data?.presentCompany?.companyEmail);
+        setIsCompanyEmailVerified(data?.presentCompany?.CompanyEmailVerified);
       } catch (error) {
         console.error('Error fetching profile data:', error);
         toast.error(error.message);
@@ -323,12 +331,12 @@ export default function EditProfile() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex">
-        <div className="w-2/12 md:w-1/4">
+        <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-4 sm:px-6">
+        <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
           <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Edit Profile</h3>
           <form onSubmit={handleSubmit}>
             {/* Basic Information */}
@@ -406,12 +414,12 @@ export default function EditProfile() {
                   <img
                     src={imagePreview}
                     alt="Preview"
-                    className="h-16 w-16 rounded-full border shadow"
+                    className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
                   />
                 ) : (<img
                   src={profileData.profilePhoto}
                   alt="Profile"
-                  className="h-16 w-16 rounded-full border shadow"
+                  className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
                 />)}
               </div>
 
@@ -460,24 +468,38 @@ export default function EditProfile() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Company Email</label>
-                <input
-                  type="text"
-                  name="companyEmail"
-                  value={profileData.presentCompany?.companyEmail || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      presentCompany: {
-                        ...profileData.presentCompany,
-                        companyEmail: e.target.value,
-                      },
-                    })
-                  }
-                  onBlur={() => {
-                    handleCompanyVerification();
-                  }}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
+                <div className="flex items-center">
+                  <input
+                    type="text"
+                    name="companyEmail"
+                    value={profileData.presentCompany?.companyEmail || ''}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        presentCompany: {
+                          ...profileData.presentCompany,
+                          companyEmail: e.target.value,
+                        },
+                      })
+                    }
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                  {profileData.presentCompany?.companyEmail === originalCompanyEmail &&
+                    isCompanyEmailVerified && (
+                      <FaCheck
+                        className="ml-2 text-green-500"
+                        size={30}
+                        title="Verified"
+                      />
+                    )}
+                  <button
+                    type="button"
+                    onClick={handleCompanyVerification}
+                    className="ml-2 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                  >
+                    Verify
+                  </button>
+                </div>
               </div>
 
               {/* OTP Modal */}
@@ -975,8 +997,8 @@ export default function EditProfile() {
               </button>
             </div>
           </form>
-        </div>
-      </div>
+        </div >
+      </div >
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
   );

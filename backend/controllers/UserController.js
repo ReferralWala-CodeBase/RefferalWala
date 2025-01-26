@@ -276,14 +276,14 @@ exports.sendOTP = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Check if the company email has already been verified
-    if (user.presentCompany.companyEmail === email) {
-      return res.status(400).json({ message: 'Company email already verified' });
-    }
-
     // To initialized presentCompany 
     if (!user.presentCompany) {
       user.presentCompany = {};
+    }
+
+    // Check if the company email has already been verified
+    if (user.presentCompany.companyEmail === email) {
+      return res.status(400).json({ message: 'Company email already verified' });
     }
 
     // Generate new OTP
@@ -427,7 +427,7 @@ exports.unfollowUser = async (req, res) => {
 exports.getFollowers = async (req, res) => {
   try {
     const { id } = req.params; // ID of the user whose followers are to be fetched
-    const user = await User.findById(id).populate('followers', 'firstName lastName email profileImg'); // Populate to get user details
+    const user = await User.findById(id).populate('followers', 'firstName lastName email profilePhoto'); // Populate to get user details
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -443,7 +443,7 @@ exports.getFollowers = async (req, res) => {
 exports.getFollowing = async (req, res) => {
   try {
     const { id } = req.params; // ID of the user whose following list is to be fetched
-    const user = await User.findById(id).populate('following', 'firstName lastName email profileImg'); // Populate to get user details
+    const user = await User.findById(id).populate('following', 'firstName lastName email profilePhoto'); // Populate to get user details
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -471,6 +471,51 @@ exports.getNotifications = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
+// Search in Job Schema and User Schema
+exports.searching = async (req, res) => {
+  const { query } = req.body; // Get the search input
+  if (!query || !query.trim()) {
+    return res.json({ jobResults: [], userResults: [] }); // Return empty results for empty query
+  }
+
+  // Clean the input query: remove extra spaces and split into parts
+  const queryParts = query.trim().split(/\s+/); // Split by spaces
+  const regexQuery = queryParts.join('|'); // Combine parts into a regex pattern
+
+  try {
+    // Define search criteria for JobPost collection
+    const jobSearchCriteria = {
+      $or: [
+        { companyName: { $regex: regexQuery, $options: 'i' } }, // Case-insensitive search
+        { jobRole: { $regex: regexQuery, $options: 'i' } },
+        { location: { $regex: regexQuery, $options: 'i' } },
+        { workMode: { $regex: regexQuery, $options: 'i' } },
+      ],
+    };
+
+    // Define search criteria for User collection
+    const userSearchCriteria = {
+      $or: [
+        { email: { $regex: regexQuery, $options: 'i' } }, // Case-insensitive search
+        { firstName: { $regex: regexQuery, $options: 'i' } },
+        { lastName: { $regex: regexQuery, $options: 'i' } },
+      ],
+    };
+
+    // Execute search queries with a limit of 20 results each
+    const jobResults = await JobPost.find(jobSearchCriteria).limit(20);
+    const userResults = await User.find(userSearchCriteria).limit(20);
+
+    // Return the combined results
+    res.json({ jobResults, userResults });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
 exports.getDelect = async (req, res) => {
   const { email } = req.body; // Email of the user to be deleted

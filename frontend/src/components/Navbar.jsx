@@ -215,24 +215,68 @@
 
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure, Menu, Dialog, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import profile from "../assets/profile-icon-user.png";
+import {
+  CalendarIcon,
+  ChartPieIcon,
+  DocumentDuplicateIcon,
+  FolderIcon,
+  HomeIcon,
+  UsersIcon,
+} from '@heroicons/react/24/outline'
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
-  { name: "About Us", href: "/about-us" },
-  { name: "Contact Us", href: "/contact-us" },
-  { name: "Privacy Policy", href: "/privacy-policy" },
-  { name: "Terms & Conditions", href: "/terms-conditions" },
+  { name: "Sign up", href: "/signup", current: false },
+  // { name: "About Us", href: "/about-us" },
+  // { name: "Contact Us", href: "/contact-us" },
+  // { name: "Privacy Policy", href: "/privacy-policy" },
+  // { name: "Terms & Conditions", href: "/terms-conditions" },
 ];
 
 const userNavigation = [
-  { name: "Your Profile", href: "/viewprofile" },
-  { name: "Settings", href: "/settings" },
+  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
+  { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
+  { name: "Followers", href: "/followerlist", icon: DocumentDuplicateIcon, current: false },
+  { name: "Following", href: "/followinglist", icon: ChartPieIcon, current: false },
   { name: "Sign out", href: "#" },
+];
+
+const sidenavigation = [
+  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
+  { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
+  { name: "Followers", href: "/followerlist", icon: DocumentDuplicateIcon, current: false },
+  { name: "Following", href: "/followinglist", icon: ChartPieIcon, current: false },
+];
+const teams = [
+  {
+    id: 1,
+    name: "Post New Job",
+    href: "/postjob",
+    initial: "P",
+    current: false,
+  },
+  {
+    id: 2,
+    name: "View Posted Jobs",
+    href: "/postedjobslist",
+    initial: "V",
+    current: false,
+  },
+  {
+    id: 3,
+    name: "Applied Jobs",
+    href: "/appliedjobs",
+    initial: "A",
+    current: false,
+  },
 ];
 
 function classNames(...classes) {
@@ -242,7 +286,14 @@ function classNames(...classes) {
 export default function Navbar({ searchQuery, setSearchQuery }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [openNotifications, setOpenNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -250,6 +301,86 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
       setLoggedIn(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (openNotifications) {
+      fetchNotifications();
+    }
+  }, [openNotifications]);
+
+
+  const fetchNotifications = async () => {
+    const userId = localStorage.getItem("userId");
+    const bearerToken = localStorage.getItem("token");
+    if (!userId) {
+      setError("User not logged in");
+      setLoading(false);
+      return;
+    }
+    try {
+      const response = await fetch(
+        `${Fronted_API_URL}/user/notifications/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch notifications");
+      }
+      const data = await response.json();
+      console.log("Fetched notifications:", data); // Log data to check the response
+      setNotifications(data || []); // Ensure we set the notifications array correctly
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleNotificationClick = (postId) => {
+    console.log("Navigating to post ID:", postId); // Log the postId for debugging
+    // Navigate to the job details page based on the postId
+    navigate(`/appliedjobdetails/${postId}`);
+  };
+
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`${Fronted_API_URL}/user/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: searchQuery }), // Trim space from front and end
+      });
+  
+      const data = await response.json(); // Parse the JSON response
+      const jobResults = data?.jobResults || [];
+      const userResults = data?.userResults || [];
+  
+      // Handle cases where both are empty
+      if (jobResults.length === 0 && userResults.length === 0) {
+        toast.error("No results found!");
+        return;
+      }
+  
+      // Navigate based on available results
+      if (jobResults.length > 0) {
+        navigate("/search", { state: { jobData: jobResults } });
+      } else if (userResults.length > 0) {
+        navigate("/search", { state: { userData: userResults } });
+      }
+  
+      setSearchResults([...jobResults, ...userResults]); // Optional: Store results if needed
+    } catch (error) {
+      console.error("Error searching:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
+  };
+  
 
   const handleSignOut = async () => {
     localStorage.removeItem("token");
@@ -303,6 +434,11 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       type="search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearch();
+                        }
+                      }}
                     />
                   </div>
                 </div>
@@ -324,9 +460,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                   <>
                     <button
                       type="button"
+                      onClick={() => setOpenNotifications(true)}
                       className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                      <Link to="/notifications">
+                      <Link>
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -437,42 +574,156 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               </div>
             </div>
           </div>
-          <Disclosure.Panel as="nav" className="lg:hidden" aria-label="Global">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {loggedIn
-                ? userNavigation.map((item) =>
-                    item.name === "Sign out" ? (
+          { /* Here the small screen*/}
+          <Disclosure.Panel
+            as="nav"
+            className={classNames(
+              "lg:hidden absolute top-0 left-0 h-screen w-64 bg-white shadow-md transform transition-transform duration-300",
+              open ? "translate-x-0" : "-translate-x-full"
+            )}
+            aria-label="Global"
+          >
+            <div className="flex h-full flex-col gap-y-5 overflow-y-auto px-4 pb-2">
+
+              {/* Navigation Items */}
+              <nav className="flex-1 mt-16">
+                <ul role="list" className="space-y-1 mb-5">
+                  {sidenavigation.map((item) => (
+                    <li key={item.name}>
                       <Disclosure.Button
-                        key={item.name}
-                        as="button"
-                        onClick={handleSignOut}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
-                      >
-                        {item.name}
-                      </Disclosure.Button>
-                    ) : (
-                      <Disclosure.Button
-                        key={item.name}
                         as={Link}
                         to={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
+                        className={classNames(
+                          item.current
+                            ? "bg-gray-50 text-indigo-600"
+                            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                        )}
                       >
+                        <item.icon
+                          className={classNames(
+                            item.current ? "text-indigo-600" : "text-gray-400 group-hover:text-indigo-600",
+                            "h-6 w-6"
+                          )}
+                          aria-hidden="true"
+                        />
                         {item.name}
                       </Disclosure.Button>
-                    )
-                  )
-                : navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as={Link}
-                      to={item.href}
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900"
-                    >
-                      {item.name}
-                    </Disclosure.Button>
+                    </li>
                   ))}
+                  {/* Notifications */}
+                  <li>
+                    <Disclosure.Button
+                      as={Link}
+                      to="/notifications"
+                      className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                    >
+                      <BellIcon className="h-6 w-6 text-gray-400 group-hover:text-indigo-600" />
+                      Notifications
+                    </Disclosure.Button>
+                  </li>
+
+                </ul>
+
+                <div className="text-xs font-semibold leading-6 text-gray-400 ml-4">Your teams</div>
+                <ul role="list" className="mt-2 space-y-1">
+                  {teams.map((team) => (
+                    <li key={team.name}>
+                      <Disclosure.Button
+                        as={Link}
+                        to={team.href}
+                        className={classNames(
+                          team.current
+                            ? "bg-gray-50 text-indigo-600"
+                            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                        )}
+                      >
+                        <span
+                          className={classNames(
+                            team.current
+                              ? "text-indigo-600 border-indigo-600"
+                              : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
+                            "flex h-6 w-6 items-center justify-center rounded-lg border text-xs font-medium bg-white"
+                          )}
+                        >
+                          {team.initial}
+                        </span>
+                        {team.name}
+                      </Disclosure.Button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              {/* Sign Out */}
+              {loggedIn && (
+                <Disclosure.Button
+                  as="button"
+                  onClick={handleSignOut}
+                  className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Sign Out
+                </Disclosure.Button>
+              )}
             </div>
           </Disclosure.Panel>
+
+          <Transition.Root show={openNotifications} as={Fragment}>
+            <Dialog as="div" className="relative z-50 " onClose={setOpenNotifications}>
+              <div className="fixed inset-0 bg-gray-500 mt-16 bg-opacity-75 transition-opacity overflow-hidden"/>
+              <div className="fixed inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="transform transition ease-in-out duration-500 sm:duration-700"
+                      enterFrom="translate-x-full"
+                      enterTo="translate-x-0"
+                      leave="transform transition ease-in-out duration-500 sm:duration-700"
+                      leaveFrom="translate-x-0"
+                      leaveTo="translate-x-full"
+                    >
+                      <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                        <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                          <div className="px-4 sm:px-6 flex justify-between items-center">
+                            <Dialog.Title className="text-lg font-medium text-gray-900">
+                              Notifications
+                            </Dialog.Title>
+                            <button
+                              type="button"
+                              className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                              onClick={() => setOpenNotifications(false)}
+                            >
+                              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                            </button>
+                          </div>
+                          <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                            {notifications.length > 0 ? (
+                              <ul className="mt-4 space-y-2">
+                                {notifications.map((notification, index) => (
+                                  <li
+                                    key={index}
+                                    className="p-3 bg-gray-100 rounded-md shadow-md text-sm text-gray-700 cursor-pointer"
+                                    onClick={() => handleNotificationClick(notification.post._id)}
+                                  >
+                                    {notification.message || "New Notification"}
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <div className="text-sm text-gray-500">No notifications available</div>
+                            )}
+                          </div>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </div>
+            </Dialog>
+          </Transition.Root>
+
         </>
       )}
     </Disclosure>

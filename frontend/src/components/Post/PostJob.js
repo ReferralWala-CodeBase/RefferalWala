@@ -28,6 +28,7 @@ export default function PostJob() {
   const [companySuggestions, setCompanySuggestions] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const OLA_API_Key = process.env.REACT_APP_OLA_API_KEY; // OLA API
@@ -157,12 +158,12 @@ export default function PostJob() {
 
   const handleJobPostSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (profileIncomplete) {
       toast.error("Please complete your profile before posting a job.");
       return;
     }
-
 
     // Add userId from local storage to formData
     const bearerToken = localStorage.getItem('token');
@@ -193,7 +194,15 @@ export default function PostJob() {
       }
 
       const responseData = await response.json();
-      toast.success("Job posted successfully!");
+      toast.success("Job posted successfully!", {
+              position: "top-right",
+              autoClose: 3000, // 3 seconds
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
       navigate('/postedjobslist');
       console.log('Response:', responseData);
     } catch (error) {
@@ -204,7 +213,7 @@ export default function PostJob() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
@@ -212,241 +221,242 @@ export default function PostJob() {
         <div className="w-10/12 md:w-3/4 px-4 sm:px-1 m-auto">
           <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Post a New Job</h3>
           <form
-            className="mt-3 grid grid-cols-2 gap-6 sm:grid-cols-2"
             onSubmit={handleJobPostSubmit}
           >
-            <div>
-              <label
-                htmlFor="jobRole"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Job Role
-              </label>
-              <input
-                type="text"
-                id="jobRole"
-                name="jobRole"
-                value={formData.jobRole}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="jobLink"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Job Link
-              </label>
-              <input
-                type="text"
-                id="jobLink"
-                name="jobLink"
-                value={formData.jobLink}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="jobUniqueId"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Job Id
-              </label>
-              <input
-                type="text"
-                id="jobUniqueId"
-                name="jobUniqueId"
-                value={formData.jobUniqueId}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div className='relative'>
-              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
-                Company Name
-              </label>
-              <input
-                type="text"
-                id="companyName"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-              {companySuggestions.length > 0 && (
-                <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
-                  {companySuggestions.map((company, index) => (
-                    <li
-                      key={index}
-                      className="cursor-pointer p-2 hover:bg-gray-200"
-                      onClick={() => handleSuggestionClick(company)}
-                    >
-                      <div className="flex items-center">
-                        <img
-                          src={company.logo_url}
-                          alt={company.name}
-                          className="h-6 w-6 object-contain mr-2"
-                        />
-                        <span>{company.name}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div>
-              <label
-                htmlFor="experienceRequired"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Experience Required(Yrs)
-              </label>
-              <input
-                type="text"
-                id="experienceRequired"
-                name="experienceRequired"
-                value={formData.experienceRequired}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div className='relative'>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-                Location
-              </label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
+            <div className="mt-3 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div>
+                <label
+                  htmlFor="jobRole"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Job Role
+                </label>
+                <input
+                  type="text"
+                  id="jobRole"
+                  name="jobRole"
+                  value={formData.jobRole}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="jobLink"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Job Link
+                </label>
+                <input
+                  type="text"
+                  id="jobLink"
+                  name="jobLink"
+                  value={formData.jobLink}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="jobUniqueId"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Job Id
+                </label>
+                <input
+                  type="text"
+                  id="jobUniqueId"
+                  name="jobUniqueId"
+                  value={formData.jobUniqueId}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className='relative'>
+                <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
+                  Company Name
+                </label>
+                <input
+                  type="text"
+                  id="companyName"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+                {companySuggestions.length > 0 && (
+                  <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
+                    {companySuggestions.map((company, index) => (
+                      <li
+                        key={index}
+                        className="cursor-pointer p-2 hover:bg-gray-200"
+                        onClick={() => handleSuggestionClick(company)}
+                      >
+                        <div className="flex items-center">
+                          <img
+                            src={company.logo_url}
+                            alt={company.name}
+                            className="h-6 w-6 object-contain mr-2"
+                          />
+                          <span>{company.name}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="experienceRequired"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Experience Required(Yrs)
+                </label>
+                <input
+                  type="text"
+                  id="experienceRequired"
+                  name="experienceRequired"
+                  value={formData.experienceRequired}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className='relative'>
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
 
-              {locationSuggestions.length > 0 && (
-                <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-[250px] overflow-y-auto" style={{ top: '-100%' }}>
-                  {locationSuggestions.map((location, index) => (
-                    <li
-                      key={index}
-                      onClick={() => handleSelectSuggestion(location)}
-                      className="cursor-pointer p-2 hover:bg-black-800 rounded-md"
-                    >
-                      {location.description}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div>
-              <label
-                htmlFor="workMode"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Work Mode
-              </label>
-              <select
-                id="workMode"
-                name="workMode"
-                value={formData.workMode}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              >
-                <option value="remote">Remote</option>
-                <option value="onsite">Onsite</option>
-                <option value="hybrid">Hybrid</option>
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="employmentType"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Employment Type
-              </label>
-              <select
-                id="employmentType"
-                name="employmentType"
-                value={formData.employmentType}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              >
-                <option value="full-time">Full-Time</option>
-                <option value="part-time">Part-Time</option>
-                <option value="contract">Contract</option>
-                <option value="internship">Internship</option>
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="ctc"
-                className="block text-sm font-medium text-gray-700"
-              >
-                CTC (INR-Lakhs)
-              </label>
-              <select
-                id="ctc"
-                name="ctc"
-                value={formData.ctc}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              >
-                <option value="">Select Salary Package</option>
-                <option value="3-5 LPA">3-5 LPA</option>
-                <option value="5-8 LPA">5-8 LPA</option>
-                <option value="8-12 LPA">8-12 LPA</option>
-                <option value="12-15 LPA">12-15 LPA</option>
-                <option value="15-20 LPA">15-20 LPA</option>
-                <option value="20+ LPA">20+ LPA</option>
-              </select>
+                {locationSuggestions.length > 0 && (
+                  <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-[250px] overflow-y-auto" style={{ top: '-100%' }}>
+                    {locationSuggestions.map((location, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleSelectSuggestion(location)}
+                        className="cursor-pointer p-2 hover:bg-black-800 rounded-md"
+                      >
+                        {location.description}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="workMode"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Work Mode
+                </label>
+                <select
+                  id="workMode"
+                  name="workMode"
+                  value={formData.workMode}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  <option value="remote">Remote</option>
+                  <option value="onsite">Onsite</option>
+                  <option value="hybrid">Hybrid</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="employmentType"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Employment Type
+                </label>
+                <select
+                  id="employmentType"
+                  name="employmentType"
+                  value={formData.employmentType}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  <option value="full-time">Full-Time</option>
+                  <option value="part-time">Part-Time</option>
+                  <option value="contract">Contract</option>
+                  <option value="internship">Internship</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="ctc"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  CTC (INR-Lakhs)
+                </label>
+                <select
+                  id="ctc"
+                  name="ctc"
+                  value={formData.ctc}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  <option value="">Select Salary Package</option>
+                  <option value="3-5 LPA">3-5 LPA</option>
+                  <option value="5-8 LPA">5-8 LPA</option>
+                  <option value="8-12 LPA">8-12 LPA</option>
+                  <option value="12-15 LPA">12-15 LPA</option>
+                  <option value="15-20 LPA">15-20 LPA</option>
+                  <option value="20+ LPA">20+ LPA</option>
+                </select>
 
+              </div>
+              <div>
+                <label
+                  htmlFor="noOfReferrals"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Number of Referrals
+                </label>
+                <input
+                  type="number"
+                  id="noOfReferrals"
+                  name="noOfReferrals"
+                  value={formData.noOfReferrals}
+                  onChange={handleChange}
+                  min="0"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="endDate"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  End Date
+                </label>
+                <input
+                  type="date"
+                  id="endDate"
+                  name="endDate"
+                  value={formData.endDate}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="noOfReferrals"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Number of Referrals
-              </label>
-              <input
-                type="number"
-                id="noOfReferrals"
-                name="noOfReferrals"
-                value={formData.noOfReferrals}
-                onChange={handleChange}
-                min="0"
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="endDate"
-                className="block text-sm font-medium text-gray-700"
-              >
-                End Date
-              </label>
-              <input
-                type="date"
-                id="endDate"
-                name="endDate"
-                value={formData.endDate}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div className="col-span-2">
+            <div className="col-span-2 mt-6">
               <label
                 htmlFor="jobDescription"
                 className="block text-sm font-medium text-gray-700"
@@ -463,18 +473,16 @@ export default function PostJob() {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               ></textarea>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-2 mt-6">
               <button
                 type="submit"
-                className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-
                 disabled={loading}
-
+                className={`inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 
+    ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'}`}
               >
-
                 {loading ? "Checking Profile..." : "Post Job"}
-
               </button>
+
             </div>
           </form>
         </div>

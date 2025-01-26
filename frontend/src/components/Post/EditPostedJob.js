@@ -7,9 +7,11 @@ import Navbar from "../Navbar";
 
 
 export default function EditJob() {
-  const { jobId } = useParams();
-  const navigate = useNavigate();
-  const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  const { jobId } = useParams(); // Extract jobId from URL
+  const navigate = useNavigate(); // Using useNavigate instead of useHistory
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [searchQuery, setSearchQuery] = useState('');
+  
 
   const [formData, setFormData] = useState({
     jobRole: '',
@@ -128,7 +130,7 @@ export default function EditJob() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex">
         <div className="w-2/12 md:w-1/4">
           <SidebarNavigation />

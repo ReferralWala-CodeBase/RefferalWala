@@ -75,7 +75,7 @@ export default function PostedJobsList() {
 
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative" >
           <SidebarNavigation />
