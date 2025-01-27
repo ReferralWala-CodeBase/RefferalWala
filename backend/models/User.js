@@ -27,6 +27,21 @@ const ExperienceSchema = new mongoose.Schema({
   },
 });
 
+const ProjectSchema = new mongoose.Schema({
+  projectName: {
+    type: String,
+  },
+  details: {
+    type: String,
+  },
+  repoLink: {
+    type: String,
+  },
+  liveLink: {
+    type: String,
+  },
+});
+
 // Present Company schema
 const PresentCompanySchema = new mongoose.Schema({
   role: {
@@ -139,6 +154,7 @@ const userSchema = new mongoose.Schema({
   presentCompany: PresentCompanySchema,
   education: [EducationSchema],
   experience: [ExperienceSchema],
+  project: [ProjectSchema],
   skills: {
     type: [String],
   },

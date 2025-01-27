@@ -4,8 +4,48 @@ const Notification = require('../models/Notification');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 
+// Utility to load email templates
+const getEmailTemplate = (templateName) => {
+  const templatePath = path.join(__dirname, '..', 'email_templates', templateName);
+  try {
+    return fs.readFileSync(templatePath, 'utf-8');
+  } catch (error) {
+    console.error(`Error loading template ${templateName}:`, error);
+    throw new Error('Failed to load email template');
+  }
+};
 require('dotenv').config();
+
+const sendEmailTemplate = async (recipient, subject, templateName, replacements = {}) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_EMAIL,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  });
+
+  // Load the email template
+  let htmlContent = getEmailTemplate(templateName);
+
+  // Replace placeholders in the template
+  for (const [key, value] of Object.entries(replacements)) {
+    const regex = new RegExp(`{{${key}}}`, 'g'); // e.g., replace {{name}}
+    htmlContent = htmlContent.replace(regex, value);
+  }
+
+  const mailOptions = {
+    from: process.env.GMAIL_EMAIL,
+    to: recipient,
+    subject,
+    html: htmlContent,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
 
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -33,6 +73,7 @@ const sendEmail = async (recipient, otp, subject = 'OTP for Verification') => {
 exports.registerUser = async (req, res) => {
   try {
     const { email, mobileNumber, password } = req.body;
+    
 
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email)) {
@@ -63,7 +104,6 @@ exports.registerUser = async (req, res) => {
 
     // Generate OTP and send it via email
     const otp = generateOTP();
-    await sendEmail(email, otp);
 
     user = new User({
       email,
@@ -73,6 +113,19 @@ exports.registerUser = async (req, res) => {
     });
 
     await user.save();
+
+    try {
+      await sendEmailTemplate(
+        email,
+        'Verify Your OTP',
+        'otp_template.html', // Replace with your OTP email template filename
+        { otp } // Replace {{otp}} in the template with the generated OTP
+      );
+      console.log(`OTP email sent to ${email}`);
+    } catch (err) {
+      console.error(`Failed to send OTP email to ${email}:`, err);
+      return res.status(500).json({ error: 'Failed to send OTP email.' });
+    }
 
     res.json({ message: 'Please verify OTP sent to your email before logging in.' });
   } catch (err) {
@@ -107,13 +160,25 @@ exports.verifyOTP = async (req, res) => {
     user.otp = null; // Clear the OTP after verification
     await user.save();
 
-    res.json({ message: 'OTP verified successfully' });
+   // Send the registration email
+   try {
+    await sendEmailTemplate(
+      email, // recipient's email
+      'Welcome to Referralwala!', // subject
+      'registration_success.html', // template file name
+      { email } // replacements for the template (add more placeholders as needed)
+    );
+    console.log(`Welcome email sent to ${email}`);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error(`Failed to send welcome email to ${email}:`, err);
   }
-};
 
+  res.json({ message: 'OTP verified successfully and welcome email sent' });
+} catch (err) {
+  console.error(err);
+  res.status(500).json({ error: 'Internal server error' });
+}
+};
 exports.verifyCompanyEmail = async (req, res) => {
   try {
     const { email, otp } = req.body; // Company email & OTP in the body

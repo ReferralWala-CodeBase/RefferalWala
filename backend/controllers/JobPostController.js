@@ -3,6 +3,49 @@ const User = require('../models/User');
 const Notification = require('../models/Notification');
 const ApplicantStatus = require('../models/ApplicantStatus');
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
+
+const getEmailTemplate = (templateName) => {
+  const templatePath = path.join(__dirname, '..', 'email_templates', templateName);
+  try {
+    return fs.readFileSync(templatePath, 'utf-8');
+  } catch (error) {
+    console.error(`Error loading template ${templateName}:`, error);
+    throw new Error('Failed to load email template');
+  }
+};
+require('dotenv').config();
+
+const sendEmailTemplate = async (recipient, subject, templateName, replacements = {}) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_EMAIL,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  });
+
+  // Load the email template
+  let htmlContent = getEmailTemplate(templateName);
+
+  // Replace placeholders in the template
+  for (const [key, value] of Object.entries(replacements)) {
+    const regex = new RegExp(`{{${key}}}`, 'g'); // e.g., replace {{name}}
+    htmlContent = htmlContent.replace(regex, value);
+  }
+
+  const mailOptions = {
+    from: process.env.GMAIL_EMAIL,
+    to: recipient,
+    subject,
+    html: htmlContent,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
 
 // @route   POST /job/create
 // @desc    Create a new job referral post
@@ -530,14 +573,31 @@ exports.updateApplicantStatus = async (req, res) => {
 
       await notification.save();
     }
+ // Send email notification to the applicant
+ try {
+  await sendEmailTemplate(
+    user.email,  // Recipient email
+    'Your Application Status Has Changed',  // Email subject
+    'status_update_template.html',  // Replace with your status update template filename
+    { 
+      applicantName: user.firstName,
+      jobRole: jobPost.jobRole,
+      companyName: jobPost.companyName,
+      status: status,
+    }  // Replace placeholders with actual values
+  );
+  console.log(`Status update email sent to ${user.email}`);
+} catch (err) {
+  console.error(`Failed to send status update email:`, err);
+  return res.status(500).json({ error: 'Failed to send status update email.' });
+}
 
-    res.status(200).json({ message: 'Applicant status updated successfully', applicantStatus });
-  } catch (err) {
-    console.error('Error updating applicant status:', err.message);
-    res.status(500).send('Server Error');
-  }
+res.status(200).json({ message: 'Applicant status updated successfully', applicantStatus });
+} catch (err) {
+console.error('Error updating applicant status:', err.message);
+res.status(500).send('Server Error');
+}
 };
-
 
 //removing from applicatant list
 exports.removeFromJobApplicants = async (req, res) => {

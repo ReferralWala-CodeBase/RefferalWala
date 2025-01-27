@@ -791,7 +791,7 @@ export default function PostedJobsCard() {
 
       Please fill in your profile details, including your mobile number
 
-      and company information, before posting a job.
+      and company information, before Applying for a job.
 
     </p>
 
