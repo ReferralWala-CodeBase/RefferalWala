@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ReportJob from './ReportJob';
 import React from 'react';
 import JobPostModal from './JobPostModal';
+import { LocationExport } from '../Location';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -36,6 +37,7 @@ export default function PostedJobsCard() {
   const [followingList, setFollowingList] = useState([]);
   const [wishlistJobs, setWishlistJobs] = useState([]);
   const [profileData, setProfileData] = useState(null);
+  const [profileIncomplete, setProfileIncomplete] = useState(false);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
@@ -273,9 +275,10 @@ export default function PostedJobsCard() {
           !profile.resume ||
           !profile.aboutMe
         ) {
-          toast.success("Fill your mandatory profile fields first");
+          setProfileIncomplete(true);
         } else {
-          navigate(`/appliedjobdetails/${jobId}`);
+          setProfileIncomplete(false);
+          navigate(`/appliedjobdetails/${jobId}`)
         }
       } catch (error) {
         console.error('Error in handleView:', error);
@@ -369,9 +372,9 @@ export default function PostedJobsCard() {
     setSearchTerm(e.target.value);
   };
 
-  const handleLocationSelect = (location) => {
-    if (!selectedLocations.includes(location)) {
-      setSelectedLocations([...selectedLocations, location]);
+  const handleLocationSelect = (loc) => {
+    if (!selectedLocations.some((selected) => selected.city === loc.city)) {
+      setSelectedLocations((prev) => [...prev, loc]);
     }
   };
 
@@ -462,30 +465,31 @@ export default function PostedJobsCard() {
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
               <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs">
-                {locations
+                {LocationExport
                   .filter((loc) =>
-                    loc.toLowerCase().includes(searchTerm.toLowerCase())
+                    loc.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    loc.state.toLowerCase().includes(searchTerm.toLowerCase())
                   )
                   .map((loc) => (
                     <li
-                      key={loc}
+                      key={loc.city}
                       onClick={() => handleLocationSelect(loc)}
-                      className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedLocations.includes(loc)
+                      className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedLocations.some((selected) => selected.city === loc.city)
                         ? "bg-blue-100 text-blue-700 font-medium"
                         : "hover:bg-gray-100"
                         }`}
                     >
-                      {loc}
+                      {loc.city}, {loc.state}
                     </li>
                   ))}
               </ul>
               <div className="mt-4 flex flex-wrap gap-2">
                 {selectedLocations.map((loc) => (
                   <span
-                    key={loc}
+                    key={loc.city}
                     className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1"
                   >
-                    {loc}
+                    {loc.city},{loc.state}
                     <button
                       onClick={() => handleLocationRemove(loc)}
                       className="text-white hover:text-red-300 transition"
@@ -552,7 +556,7 @@ export default function PostedJobsCard() {
             {/* Toggle Switch */}
             <div className="flex justify-between items-end py-5 mx-2">
 
-              <button onClick={() => setIsModalOpen(true)} className='py-1 px-5 bg-orange-400 text-white text-md font-light rounded-lg'>Add Post</button>
+              <button onClick={() => navigate('/postjob')} className='py-1 px-5 bg-orange-400 text-white text-md font-light rounded-lg'>Add Post</button>
               <label className="inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
@@ -684,7 +688,7 @@ export default function PostedJobsCard() {
                       </div>
 
                       {/* Top Section */}
-                      <div className="h-20 bg-gradient-to-r from-blue-400 to-blue-200"></div>
+                      <div className="h-20 bg-gradient-to-r from-blue-600 to-blue-400"></div>
 
                       <div className="absolute mt-8 top-2 right-2">
                         <div className="bg-white rounded-full shadow-md p-1">
@@ -771,6 +775,42 @@ export default function PostedJobsCard() {
                               />
                             </svg>
                           </button>
+                          {profileIncomplete && (
+
+<div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+
+  <div className="bg-white p-6 rounded-md shadow-md">
+
+    <h2 className="text-lg font-semibold text-gray-900">
+
+      Complete Your Profile
+
+    </h2>
+
+    <p className="mt-2 text-sm text-gray-600">
+
+      Please fill in your profile details, including your mobile number
+
+      and company information, before posting a job.
+
+    </p>
+
+    <div className="mt-4 flex justify-end">
+
+      <button
+
+        onClick={() => navigate("/viewprofile")}
+
+        className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+
+      >
+        Go to Profile
+      </button>
+    </div>
+  </div>
+</div>
+
+)}
                         </div>
 
                         <div className='flex justify-end gap-1 mt-1 px-2 py-3'>
