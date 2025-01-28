@@ -8,8 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import company from "../../assets/company.png"
 
 export default function AppliedJobDetails() {
-  const { jobId } = useParams(); // Extract jobId from URL
-  const navigate = useNavigate(); // Navigation to different pages
+  const { jobId } = useParams();
+  const navigate = useNavigate();
 
   const [jobData, setJobData] = useState(null);
   const [applicationStatus, setApplicationStatus] = useState(null); // Store the application status
