@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Fragment } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { UserMinusIcon, UserPlusIcon, BellIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router-dom';
-import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner,FaBookmark, FaRegBookmark ,FaShareAlt } from "react-icons/fa";
-import postdata from "../../postdata.json"
+import { FaBuilding, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
 import Navbar from '../Navbar';
-import JobLocationFilter from './JobFilter';
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,12 +32,14 @@ export default function PostedJobsCard() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
   const [wishlistJobs, setWishlistJobs] = useState([]);
+
   const [profileData, setProfileData] = useState(null);
   const [profileIncomplete, setProfileIncomplete] = useState(false);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+
 
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
@@ -118,11 +116,11 @@ export default function PostedJobsCard() {
             "Content-Type": "application/json",
           },
         });
-    
+
         if (response.ok) {
           const data = await response.json();
           const wishlistJobIds = data.wishlist.map((job) => job._id);
-          setWishlistJobs(wishlistJobIds); 
+          setWishlistJobs(wishlistJobIds);
         } else {
           // toast.error("Failed to fetch wishlist jobs.");
         }
@@ -132,22 +130,22 @@ export default function PostedJobsCard() {
     };
     fetchWishlistJobs();
   }, []);
-    
-    const handleAddToWishlist = async (jobId) => {
-      try {
-        const response = await fetch(
-          `${Fronted_API_URL}/job/wishlist/add`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${bearerToken}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId, jobId }),
-          }
-        );
-       if (response.ok) {
-        setWishlistJobs((prev) => [...prev, jobId]); 
+
+  const handleAddToWishlist = async (jobId) => {
+    try {
+      const response = await fetch(
+        `${Fronted_API_URL}/job/wishlist/add`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, jobId }),
+        }
+      );
+      if (response.ok) {
+        setWishlistJobs((prev) => [...prev, jobId]);
         toast.success("Successfully added to wishlist!");
       }
     } catch (error) {
@@ -311,7 +309,7 @@ export default function PostedJobsCard() {
     return false;
   }
 
-  const isLoggedIn = !!localStorage.getItem('token');  
+  const isLoggedIn = !!localStorage.getItem('token');
 
   const handleReportClick = (jobId) => {
     if (!isLoggedIn) {
@@ -319,7 +317,7 @@ export default function PostedJobsCard() {
       return;
     }
     setSelectedJobId(jobId);
-    setShowReportDialog(true); 
+    setShowReportDialog(true);
   };
 
   const handleReportSuccess = () => {
@@ -334,7 +332,7 @@ export default function PostedJobsCard() {
     if (!jobId || typeof jobId !== 'string') {
       console.error('Invalid Job ID:', jobId);
       toast.error('Job ID is invalid. Please try again.');
-      
+
       return;
     }
 
@@ -357,7 +355,7 @@ export default function PostedJobsCard() {
       } catch (error) {
         console.error('Error copying to clipboard:', error);
         toast.error('Error copying to clipboard:', error);
-       
+
       }
     }
   };
@@ -420,6 +418,8 @@ export default function PostedJobsCard() {
   const [isTableView, setIsTableView] = useState(false);
 
   const toggleView = () => setIsTableView((prev) => !prev);
+
+
 
   // Notify parent about the selected locations
   // React.useEffect(() => {
@@ -576,270 +576,199 @@ export default function PostedJobsCard() {
             </div>
 
             {/* Conditional View Rendering */}
-            {isTableView ? (
-              // Table View
-              <div className="overflow-x-auto px-4">
-                <table className="min-w-full bg-white shadow-lg rounded-lg">
-                  <thead className="bg-indigo-600 text-white">
-                    <tr>
-                      <th className="py-3 px-4 text-left">Company Name</th>
-                      <th className="py-3 px-4 text-left">Job Role</th>
-                      <th className="py-3 px-4 text-left">Location</th>
-                      <th className="py-3 px-4 text-left">Work Mode</th>
-                      <th className="py-3 px-4 text-left">Last Date to Apply</th>
-                      <th className="py-3 px-4 text-left">Posted By</th>
-                      <th className="py-3 px-4 text-left">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan="7" className="text-center py-4">
-                          <FaSpinner className="animate-spin text-xl" />
-                        </td>
-                      </tr>
-                    ) : error ? (
-                      <tr>
-                        <td colSpan="7" className="text-center py-4 text-red-500">{error}</td>
-                      </tr>
-                    ) : (
-                      Object.entries(filteredJobs).map(([id, job]) => (
-                        <tr key={job._id} className="hover:bg-gray-100">
-                          <td className="py-3 px-4">{job.companyName}</td>
-                          <td className="py-3 px-4">{job.jobRole}</td>
-                          <td className="py-3 px-4">{job.location}</td>
-                          <td className="py-3 px-4">{job.workMode}</td>
-                          <td className="py-3 px-4">{getDate(job.endDate)}</td>
-                          <td className="py-3 px-4">
-                            <span>{job.user.firstName || "anonymous"}</span>
-                            {followingList.some((user) => user._id === job.user._id) ? (
-                              <UserMinusIcon
-                                onClick={() => handleUnfollow(job.user._id)}
-                                className="cursor-pointer text-red-500 w-6 h-6"
-                                title="Unfollow"
-                              />
-                            ) : (
-                              <UserPlusIcon
-                                onClick={() => handleFollow(job.user._id)}
-                                className="cursor-pointer text-blue-500 w-6 h-6"
-                                title="Follow"
-                              />
-                            )}
-                          </td>
-                          <td className="py-3 px-4">
-                            <button
-                              onClick={() => handleView(job._id)}
-                              className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
-                            >
-                              Apply
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              // Card View
-              <ul
-                role="list"
-                className="grid grid-cols-1 gap-x-2 gap-y-4 lg:grid-cols-3 xl:gap-x-3 px-4"
-              >
-                {loading ? (
-                  <div className="flex justify-center items-center">
-                    <FaSpinner className="animate-spin text-xl" />
-                  </div>
-                ) : error ? (
-                  <p className="text-red-500">{error}</p>
-                ) : (
-                  Object.entries(filteredJobs).map(([id, job]) => (
-                    <motion.li
-                      key={job._id}
-                      className="relative max-w-lg w-full rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="absolute top-2 left-2 z-10">
-                        <button className="flex items-center justify-center w-8 h-8 hover:text-red-600 hover: transition">
-                          
-                          {wishlistJobs.includes(job._id) ? (
-                            <svg
+            <ul
+              role="list"
+              className="grid grid-cols-1 gap-x-2 gap-y-4 lg:grid-cols-3 xl:gap-x-3 px-4"
+            >
+              {loading ? (
+                <div className="flex justify-center items-center">
+                  <FaSpinner className="animate-spin text-xl" />
+                </div>
+              ) : error ? (
+                <p className="text-red-500">{error}</p>
+              ) : (
+                Object.entries(filteredJobs).map(([id, job]) => (
+                  <motion.li
+                    key={job._id}
+                    className="relative max-w-lg w-full rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="absolute top-2 left-2 z-10">
+                      <button className="flex items-center justify-center w-8 h-8 hover:text-red-600 hover: transition">
+
+                        {wishlistJobs.includes(job._id) ? (
+                          <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                             className="w-8 h-8 text-red-500"
                             onClick={() => handleRemoveFromWishlist(job._id)}
-                            >
-                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
-                          ) : (
-                            <svg
+                          >
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                          </svg>
+                        ) : (
+                          <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                             className="w-5 h-5 text-white"
                             onClick={() => handleAddToWishlist(job._id)}
-                            >
-                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
-                          )}
+                          >
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Top Section */}
+                    <div className="h-20 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+
+                    <div className="absolute mt-8 top-2 right-2">
+                      <div className="bg-white rounded-full shadow-md p-1">
+                        <img
+                          src={job.companyLogoUrl}
+                          alt={`${job.companyName} Logo`}
+                          className="h-20 w-20 object-cover rounded-full"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="p-3 max-w-lg w-full">
+                      {/* Work Mode Tag */}
+                      <span className="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full inline-block mb-2">
+                        {job.workMode}
+                      </span>
+
+                      {/* Job Title */}
+                      <h3 className="text-lg font-semibold text-blue-600 hover:underline">
+                        {job.jobRole}
+                      </h3>
+
+                      {/* Company Name */}
+                      <div className='flex justify-between mt-2'>
+                        <div className='flex gap-1 items-center'>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
+                          </svg>
+
+                          <p className="text-sm text-gray-500 mt-1">{job.companyName}</p>
+                        </div>
+
+                        <div className='flex gap-1 items-center'>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
+                          </svg>
+
+                          <p className="text-xs text-gray-700 mt-1">{job.experienceRequired}</p>
+                        </div>
+                      </div>
+
+                      <div className='flex justify-between mt-2'>
+                        <div className='flex gap-1 items-center'>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          <p className="text-sm text-gray-500 mt-1">{job.ctc}</p>
+                        </div>
+
+                        <div className='flex gap-1 items-center'>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                          </svg>
+                          <p className="text-xs text-gray-700 mt-1">{job.location}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Apply Button */}
+
+
+                    <hr className='mt-2' />
+                    <div className='flex justify-between items-center'>
+                      <div className="mt-1 px-2">
+                        <button
+                          onClick={() => handleView(job._id)}
+                          className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
+                        >
+                          View details
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                            />
+                          </svg>
+                        </button>
+                        {profileIncomplete && (
+
+                          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+
+                            <div className="bg-white p-6 rounded-md shadow-md">
+
+                              <h2 className="text-lg font-semibold text-gray-900">
+
+                                Complete Your Profile
+
+                              </h2>
+
+                              <p className="mt-2 text-sm text-gray-600">
+                                Please fill in your profile details, including your mobile number
+                                and company information, before Applying for a job.
+                              </p>
+
+                              <div className="mt-4 flex justify-end">
+
+                                <button
+
+                                  onClick={() => navigate("/viewprofile")}
+
+                                  className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+
+                                >
+                                  Go to Profile
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                        )}
+                      </div>
+
+                      <div className='flex justify-end gap-1 mt-1 px-2 py-3'>
+                        <button className='p-1 text-xs rounded-full bg-gray-200' onClick={() => handleShare(job._id)}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                        </svg>
+
+                        </button>
+                        <button className="p-1 text-xs rounded-full bg-gray-200" onClick={() => handleReportClick(job._id)}>
+                          <ExclamationTriangleIcon className="h-5 w-5 text-gray-700" />
                         </button>
                       </div>
+                    </div>
 
-                      {/* Top Section */}
-                      <div className="h-20 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    {showReportDialog && selectedJobId === job._id && (
+                      <ReportJob
+                        jobId={selectedJobId}
+                        isLoggedIn={isLoggedIn}
+                        onReportSuccess={handleReportSuccess}
+                        onCancel={() => setShowReportDialog(false)}
+                      />
+                    )}
 
-                      <div className="absolute mt-8 top-2 right-2">
-                        <div className="bg-white rounded-full shadow-md p-1">
-                          <img
-                            src={job.companyLogoUrl}
-                            alt={`${job.companyName} Logo`}
-                            className="h-20 w-20 object-cover rounded-full"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Content Section */}
-                      <div className="p-3 max-w-lg w-full">
-                        {/* Work Mode Tag */}
-                        <span className="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full inline-block mb-2">
-                          {job.workMode}
-                        </span>
-
-                        {/* Job Title */}
-                        <h3 className="text-lg font-semibold text-blue-600 hover:underline">
-                          {job.jobRole}
-                        </h3>
-
-                        {/* Company Name */}
-                        <div className='flex justify-between mt-2'>
-                          <div className='flex gap-1 items-center'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
-                            </svg>
-
-                            <p className="text-sm text-gray-500 mt-1">{job.companyName}</p>
-                          </div>
-
-                          <div className='flex gap-1 items-center'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
-                            </svg>
-
-                            <p className="text-xs text-gray-700 mt-1">{job.experienceRequired}</p>
-                          </div>
-                        </div>
-
-                        <div className='flex justify-between mt-2'>
-                          <div className='flex gap-1 items-center'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                            <p className="text-sm text-gray-500 mt-1">{job.ctc}</p>
-                          </div>
-
-                          <div className='flex gap-1 items-center'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                            </svg>
-                            <p className="text-xs text-gray-700 mt-1">{job.location}</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Apply Button */}
-
-
-                      <hr className='mt-2' />
-                      <div className='flex justify-between items-center'>
-                        <div className="mt-1 px-2">
-                          <button
-                            onClick={() => handleView(job._id)}
-                            className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
-                          >
-                            View details
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className="w-4 h-4"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                              />
-                            </svg>
-                          </button>
-                          {profileIncomplete && (
-
-<div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-
-  <div className="bg-white p-6 rounded-md shadow-md">
-
-    <h2 className="text-lg font-semibold text-gray-900">
-
-      Complete Your Profile
-
-    </h2>
-
-    <p className="mt-2 text-sm text-gray-600">
-
-      Please fill in your profile details, including your mobile number
-
-      and company information, before Applying for a job.
-
-    </p>
-
-    <div className="mt-4 flex justify-end">
-
-      <button
-
-        onClick={() => navigate("/viewprofile")}
-
-        className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-
-      >
-        Go to Profile
-      </button>
-    </div>
-  </div>
-</div>
-
-)}
-                        </div>
-
-                        <div className='flex justify-end gap-1 mt-1 px-2 py-3'>
-                          <button className='p-1 text-xs rounded-full bg-gray-200'  onClick={() => handleShare(job._id)}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                          </svg>
-                
-                          </button>
-                          <button className="p-1 text-xs rounded-full bg-gray-200"   onClick={() => handleReportClick(job._id)}>
-                               <ExclamationTriangleIcon className="h-5 w-5 text-gray-700" />
-                          </button>
-                        </div>
-                      </div>
-
-                      {showReportDialog && selectedJobId === job._id && (
-              <ReportJob
-                jobId={selectedJobId}
-                isLoggedIn={isLoggedIn}
-                onReportSuccess={handleReportSuccess}
-                onCancel={() => setShowReportDialog(false)}
-              />
-            )}
-
-                    </motion.li>
-                  ))
-                )}
-              </ul>
-
-            )}
+                  </motion.li>
+                ))
+              )}
+            </ul>
           </div>
 
           {/* Right Side  */}
@@ -929,6 +858,16 @@ export default function PostedJobsCard() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+
+      {/* Uncomment this */}
+      {/* {showReportDialog && selectedJobId && (
+        <ReportJob
+          jobId={selectedJobId}
+          isLoggedIn={isLoggedIn}
+          onReportSuccess={handleReportSuccess}
+          onCancel={() => setShowReportDialog(false)}
+        />
+      )} */}
 
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
