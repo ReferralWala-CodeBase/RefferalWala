@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
-import { FaTrash, FaCheck } from 'react-icons/fa';
+import { FaTrash, FaCheck, FaCheckCircle  } from 'react-icons/fa';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -265,6 +265,7 @@ export default function EditProfile() {
         profileData.profilePhoto = uploadResponse.secure_url;
       }
 
+      
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
         method: 'PUT',
         headers: {
@@ -486,8 +487,9 @@ export default function EditProfile() {
                   />
                   {profileData.presentCompany?.companyEmail === originalCompanyEmail &&
                     isCompanyEmailVerified && (
-                      <FaCheck
-                        className="ml-2 text-green-500"
+                      <FaCheckCircle 
+                        className="ml-2"
+                        style={{ color: "#009fe3" }}
                         size={30}
                         title="Verified"
                       />

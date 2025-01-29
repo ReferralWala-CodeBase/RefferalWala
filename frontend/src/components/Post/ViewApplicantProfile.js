@@ -6,6 +6,7 @@ import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow, FaGithub, FaLin
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from '../Loader';
 
 export default function ViewApplicantProfile() {
   const navigate = useNavigate();
@@ -17,10 +18,18 @@ export default function ViewApplicantProfile() {
   const [status, setStatus] = useState('');
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const statusOptions = ['applied', 'selected', 'rejected', 'on hold'];
+  const Cloudinary_URL = process.env.REACT_APP_CLOUDINARY_URL; // Cloudinary API
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const [searchQuery, setSearchQuery] = useState('');
   const [jobs, setJobs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -82,43 +91,93 @@ export default function ViewApplicantProfile() {
     if (jobId && applicantId) fetchCurrentStatus();
   }, [applicantId, jobId]);
 
-  // Handle status change
+  // Handle status change selection
   const handleStatusChange = async (newStatus) => {
+    if (newStatus === "selected") {
+      setIsDialogOpen(true); // Open dialog before proceeding
+      return;
+    }
+
+    await updateStatus(newStatus, null);
+  };
+
+  // Upload file and confirm selection
+  const uploadAndConfirmSelection = async () => {
+    if (!selectedFile) {
+      toast.error("Please upload a document before selecting status.");
+      return;
+    }
+
     setUpdatingStatus(true);
 
     try {
-      const bearerToken = localStorage.getItem('token');
+      const fileUrl = await uploadImageToCloudinary(selectedFile);
+      setUploadedFileUrl(fileUrl);
+      await updateStatus("selected", fileUrl);
+    } catch (error) {
+      toast.error("File upload failed. Try again.");
+    } finally {
+      setUpdatingStatus(false);
+      setIsDialogOpen(false);
+    }
+  };
+
+  // Update status in backend
+  const updateStatus = async (newStatus, fileUrl) => {
+    setUpdatingStatus(true);
+
+    try {
+      const bearerToken = localStorage.getItem("token");
       const response = await fetch(
         `${Fronted_API_URL}/job/${jobId}/applicant/${applicantId}/status`,
         {
-          method: 'PUT',
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: newStatus }),
+          body: JSON.stringify({ status: newStatus, uploadedFileUrl: fileUrl }),
         }
       );
 
       if (!response.ok) {
         if (response.status === 401) {
-          // Unauthorized, remove the token and navigate to login
-          localStorage.removeItem('token');
-          navigate('/user-login');
+          localStorage.removeItem("token");
+          navigate("/user-login");
         } else {
-          throw new Error('Failed to update status');
+          throw new Error("Failed to update status");
         }
       }
 
       setStatus(newStatus);
       toast.success("Status updated successfully!");
     } catch (error) {
-      console.error('Error updating status:', error);
       toast.error(error.message);
     } finally {
       setUpdatingStatus(false);
     }
   };
+
+
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "Referrwala Image"); // Replace with upload preset name
+
+    const response = await fetch(`${Cloudinary_URL}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Image upload failed");
+    }
+
+    return data.secure_url; // Return only the URL of the uploaded image
+  };
+
 
   const handleFollowUnfollow = async () => {
     const bearerToken = localStorage.getItem('token');
@@ -185,9 +244,7 @@ export default function ViewApplicantProfile() {
 
   if (!profileData) {
     return (
-      <div className="flex justify-center items-center">
-        <FaSpinner className="animate-spin text-xl" />
-      </div>
+      <Loader />
     );
   }
 
@@ -218,6 +275,39 @@ export default function ViewApplicantProfile() {
             </select>
             {updatingStatus && <FaSpinner className="ml-4 animate-spin text-indigo-600" />}
           </div>
+
+          {/* File Uploading */}
+          {isDialogOpen && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 className="text-lg font-semibold mb-4">Uploading Select Document</h2>
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleFileChange}
+                  className="mb-4 w-full border border-gray-300 p-2 rounded-md"
+                />
+                <div className="flex justify-end space-x-2">
+                  <button
+                    onClick={() => setIsDialogOpen(false)}
+                    className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={uploadAndConfirmSelection}
+                    disabled={!selectedFile || updatingStatus}
+                    className={`px-4 py-2 rounded-md text-white ${updatingStatus || !selectedFile ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+                      }`}
+                  >
+                    {updatingStatus ? "Uploading..." : "Confirm Selection"}
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="mt-4 mb-4 flex justify-end">
             <div>
               {isFollowing && (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
+import Loader from '../Loader';
 
 export default function JobApplicantsList() {
   const { jobId } = useParams(); // Get jobId from URL params
@@ -92,7 +93,7 @@ export default function JobApplicantsList() {
           {/* Table */}
           <div className="mt-2 flow-root">
             {loading ? (
-              <p>Loading...</p>
+              <Loader />
             ) : error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : applicants.length === 0 ? (

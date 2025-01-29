@@ -4,6 +4,7 @@ import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
+import Loader from '../Loader';
 
 export default function FollowingList() {
   const [following, setFollowing] = useState([]);
@@ -102,7 +103,7 @@ export default function FollowingList() {
         <div className="w-10/12 md:w-3/4 mx-auto">
           <div className="mt-2">
             {loading ? (
-              <p>Loading...</p>
+              <Loader />
             ) : error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : following.length === 0 ? (

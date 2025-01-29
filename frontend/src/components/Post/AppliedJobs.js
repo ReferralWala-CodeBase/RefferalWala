@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import Loader from '../Loader';
 
 export default function AppliedJobs() {
   const navigate = useNavigate();
@@ -138,7 +139,7 @@ const filteredJobs = appliedJobs.filter(job => job.status === selectedStatus);
               ))}
             </div>
             {loading ? (
-              <p>Loading...</p>
+              <Loader />
             ) : error ? (
               error === "Make Your Career Dreams a Reality" ? ( // Handle specific 404 error message
                 <div className="flex mt-4">

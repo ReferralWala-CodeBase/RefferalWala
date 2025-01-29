@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import { FaSpinner } from "react-icons/fa";
 import Navbar from "../Navbar";
+import Loader from '../Loader';
 
 export default function PostedJobsList() {
   const [jobs, setJobs] = useState([]);
@@ -92,9 +93,7 @@ export default function PostedJobsList() {
           />
           <div className="mt-2 flow-root">
             {loading ? (
-              <div className="flex justify-center items-center">
-                <FaSpinner className="animate-spin text-xl" />
-              </div>
+              <Loader />
             ) : error ? (
               error === "Start building your dream team-post your first job!" ? ( // Handle specific 404 error message
                 <div className="flex mt-4">

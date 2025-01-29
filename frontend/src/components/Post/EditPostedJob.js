@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import Navbar from "../Navbar";
 
-
 export default function EditJob() {
   const { jobId } = useParams(); // Extract jobId from URL
   const navigate = useNavigate(); // Using useNavigate instead of useHistory

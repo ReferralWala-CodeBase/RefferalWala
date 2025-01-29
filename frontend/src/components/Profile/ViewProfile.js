@@ -8,6 +8,7 @@ import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow } from 'react-ic
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from '../Loader';
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ export default function ViewProfile() {
           }
         }
 
+       
         const data = await response.json();
         setProfileData(data);
       } catch (error) {
@@ -53,9 +55,7 @@ export default function ViewProfile() {
 
   if (!profileData) {
     return (
-      <div className="flex justify-center items-center">
-        <FaSpinner className="animate-spin text-xl" />
-      </div>
+      <Loader />
     );
   }
 

@@ -6,6 +6,7 @@ import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow, FaGithub, FaLin
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar";
+import Loader from '../Loader';
 
 export default function CheckUserProfile() {
   const navigate = useNavigate();
@@ -121,9 +122,7 @@ export default function CheckUserProfile() {
 
   if (!profileData) {
     return (
-      <div className="flex justify-center items-center">
-        <FaSpinner className="animate-spin text-xl" />
-      </div>
+      <Loader />
     );
   }
 

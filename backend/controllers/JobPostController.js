@@ -518,7 +518,7 @@ exports.getJobsByJobUniqueId = async (req, res) => {
 exports.updateApplicantStatus = async (req, res) => {
   try {
     const { jobId, applicantId } = req.params; // Extract job ID and applicant ID from the parameters
-    const { status } = req.body; // New status for the applicant
+    const { status, uploadedFileUrl } = req.body; // New status for the applicant
 
     // Validate status
     const validStatuses = ['applied', 'selected', 'rejected', 'on hold'];
@@ -560,6 +560,7 @@ exports.updateApplicantStatus = async (req, res) => {
 
     // Update the status
     applicantStatus.status = status;
+    applicantStatus.employer_doc = uploadedFileUrl;
     await applicantStatus.save();
 
     // Optionally, create a notification about the status change
@@ -597,6 +598,39 @@ res.status(200).json({ message: 'Applicant status updated successfully', applica
 console.error('Error updating applicant status:', err.message);
 res.status(500).send('Server Error');
 }
+};
+
+//Uploading Document 
+exports.updateEmployeeDocument = async (req, res) => {
+  try {
+    const { jobId, userId } = req.params;
+    const { documentUrl } = req.body;
+
+    // Validate request
+    if (!documentUrl) {
+      return res.status(400).json({ message: "Document URL is required" });
+    }
+
+    // Find job and check if the applicant exists
+    const job = await JobPost.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const applicantStatus = await ApplicantStatus.findOne({ userId: userId, jobPostId: jobId });
+    if (!applicantStatus) {
+      return res.status(404).json({ message: 'Applicant not found' });
+    }
+
+    // Update document URL
+    applicantStatus.employee_doc = documentUrl;
+    await applicantStatus.save();
+
+    res.status(200).json({ message: "Document updated successfully", documentUrl });
+  } catch (error) {
+    console.error("Error updating document:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 //removing from applicatant list
