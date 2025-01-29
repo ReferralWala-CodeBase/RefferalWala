@@ -582,9 +582,7 @@ export default function PostedJobsCard() {
               className="grid grid-cols-1 gap-x-2 gap-y-4 lg:grid-cols-3 xl:gap-x-3 px-4"
             >
               {loading ? (
-                <div className="flex justify-center items-center">
-                  <FaSpinner className="animate-spin text-xl" />
-                </div>
+                <Loader />
               ) : error ? (
                 <p className="text-red-500">{error}</p>
               ) : (
