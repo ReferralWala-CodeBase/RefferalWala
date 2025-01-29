@@ -228,23 +228,37 @@ import {
   FolderIcon,
   HomeIcon,
   UsersIcon,
-} from '@heroicons/react/24/outline'
+} from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
   { name: "Sign up", href: "/signup", current: false },
-  // { name: "About Us", href: "/about-us" },
-  // { name: "Contact Us", href: "/contact-us" },
-  // { name: "Privacy Policy", href: "/privacy-policy" },
-  // { name: "Terms & Conditions", href: "/terms-conditions" },
+  { name: "About Us", href: "/about-us" },
+  { name: "Contact Us", href: "/contact-us" },
+  { name: "Privacy Policy", href: "/privacy-policy" },
+  { name: "Terms & Conditions", href: "/terms-conditions" },
 ];
 
 const userNavigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
   { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
-  { name: "Followers", href: "/followerlist", icon: DocumentDuplicateIcon, current: false },
-  { name: "Following", href: "/followinglist", icon: ChartPieIcon, current: false },
+  {
+    name: "Followers",
+    href: "/followerlist",
+    icon: DocumentDuplicateIcon,
+    current: false,
+  },
+  {
+    name: "Following",
+    href: "/followinglist",
+    icon: ChartPieIcon,
+    current: false,
+  },
+  { name: "About Us", href: "/about-us" },
+  { name: "Contact Us", href: "/contact-us" },
+  { name: "Privacy Policy", href: "/privacy-policy" },
+  { name: "Terms & Conditions", href: "/terms-conditions" },
   { name: "Sign out", href: "#" },
 ];
 
@@ -252,8 +266,18 @@ const sidenavigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
   { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
-  { name: "Followers", href: "/followerlist", icon: DocumentDuplicateIcon, current: false },
-  { name: "Following", href: "/followinglist", icon: ChartPieIcon, current: false },
+  {
+    name: "Followers",
+    href: "/followerlist",
+    icon: DocumentDuplicateIcon,
+    current: false,
+  },
+  {
+    name: "Following",
+    href: "/followinglist",
+    icon: ChartPieIcon,
+    current: false,
+  },
 ];
 const teams = [
   {
@@ -289,11 +313,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-   const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
-  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -307,7 +330,6 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
       fetchNotifications();
     }
   }, [openNotifications]);
-
 
   const fetchNotifications = async () => {
     const userId = localStorage.getItem("userId");
@@ -346,41 +368,39 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     navigate(`/appliedjobdetails/${postId}`);
   };
 
-
   const handleSearch = async () => {
     try {
       const response = await fetch(`${Fronted_API_URL}/user/search`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ query: searchQuery }), // Trim space from front and end
       });
-  
+
       const data = await response.json(); // Parse the JSON response
       const jobResults = data?.jobResults || [];
       const userResults = data?.userResults || [];
-  
+
       // Handle cases where both are empty
       if (jobResults.length === 0 && userResults.length === 0) {
         toast.error("No results found!");
         return;
       }
-  
+
       // Navigate based on available results
       if (jobResults.length > 0) {
         navigate("/search", { state: { jobData: jobResults } });
       } else if (userResults.length > 0) {
         navigate("/search", { state: { userData: userResults } });
       }
-  
+
       setSearchResults([...jobResults, ...userResults]); // Optional: Store results if needed
     } catch (error) {
       console.error("Error searching:", error);
       toast.error("Something went wrong. Please try again.");
     }
   };
-  
 
   const handleSignOut = async () => {
     localStorage.removeItem("token");
@@ -574,7 +594,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               </div>
             </div>
           </div>
-          { /* Here the small screen*/}
+          {/* Here the small screen*/}
           <Disclosure.Panel
             as="nav"
             className={classNames(
@@ -584,7 +604,6 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
             aria-label="Global"
           >
             <div className="flex h-full flex-col gap-y-5 overflow-y-auto px-4 pb-2">
-
               {/* Navigation Items */}
               <nav className="flex-1 mt-16">
                 <ul role="list" className="space-y-1 mb-5">
@@ -602,7 +621,9 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       >
                         <item.icon
                           className={classNames(
-                            item.current ? "text-indigo-600" : "text-gray-400 group-hover:text-indigo-600",
+                            item.current
+                              ? "text-indigo-600"
+                              : "text-gray-400 group-hover:text-indigo-600",
                             "h-6 w-6"
                           )}
                           aria-hidden="true"
@@ -622,10 +643,11 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       Notifications
                     </Disclosure.Button>
                   </li>
-
                 </ul>
 
-                <div className="text-xs font-semibold leading-6 text-gray-400 ml-4">Your teams</div>
+                <div className="text-xs font-semibold leading-6 text-gray-400 ml-4">
+                  Your teams
+                </div>
                 <ul role="list" className="mt-2 space-y-1">
                   {teams.map((team) => (
                     <li key={team.name}>
@@ -670,8 +692,12 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
           </Disclosure.Panel>
 
           <Transition.Root show={openNotifications} as={Fragment}>
-            <Dialog as="div" className="relative z-50 " onClose={setOpenNotifications}>
-              <div className="fixed inset-0 bg-gray-500 mt-16 bg-opacity-75 transition-opacity overflow-hidden"/>
+            <Dialog
+              as="div"
+              className="relative z-50 "
+              onClose={setOpenNotifications}
+            >
+              <div className="fixed inset-0 bg-gray-500 mt-16 bg-opacity-75 transition-opacity overflow-hidden" />
               <div className="fixed inset-0 overflow-hidden">
                 <div className="absolute inset-0 overflow-hidden">
                   <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
@@ -695,7 +721,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                               className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                               onClick={() => setOpenNotifications(false)}
                             >
-                              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                              <XMarkIcon
+                                className="h-6 w-6"
+                                aria-hidden="true"
+                              />
                             </button>
                           </div>
                           <div className="relative mt-6 flex-1 px-4 sm:px-6">
@@ -705,14 +734,20 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                                   <li
                                     key={index}
                                     className="p-3 bg-gray-100 rounded-md shadow-md text-sm text-gray-700 cursor-pointer"
-                                    onClick={() => handleNotificationClick(notification.post._id)}
+                                    onClick={() =>
+                                      handleNotificationClick(
+                                        notification.post._id
+                                      )
+                                    }
                                   >
                                     {notification.message || "New Notification"}
                                   </li>
                                 ))}
                               </ul>
                             ) : (
-                              <div className="text-sm text-gray-500">No notifications available</div>
+                              <div className="text-sm text-gray-500">
+                                No notifications available
+                              </div>
                             )}
                           </div>
                         </div>
@@ -723,7 +758,6 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               </div>
             </Dialog>
           </Transition.Root>
-
         </>
       )}
     </Disclosure>
