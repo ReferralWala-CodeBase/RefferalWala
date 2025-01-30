@@ -11,7 +11,7 @@ router.post('/verify-otp', verifyOTP);
 router.post('/verifyCompanyEmail', jwtMiddleware,verifyCompanyEmail);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword); 
-router.post('/resend-otp',jwtMiddleware, resendOTP);
+router.post('/resend-otp', resendOTP);
 router.post('/sendOTP', jwtMiddleware, sendOTP)
 router.get('/profile/:id', jwtMiddleware, getProfileById);
 router.get('/profile/email/:email', jwtMiddleware,getProfileByEmail);
