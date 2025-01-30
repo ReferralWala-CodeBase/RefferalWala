@@ -46,7 +46,7 @@ export default function EditProfile() {
   const [originalCompanyEmail, setOriginalCompanyEmail] = useState('');
   const [isCompanyEmailVerified, setIsCompanyEmailVerified] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [resendTimer, setResendTimer] = useState(20);
+  const [resendTimer, setResendTimer] = useState(60);
 
   useEffect(() => {
     if (resendTimer > 0) {
@@ -56,7 +56,7 @@ export default function EditProfile() {
   }, [resendTimer]);
 
   const handleResendOtp = async () => {
-    setResendTimer(20);
+    setResendTimer(60);
 
     try {
       const bearerToken = localStorage.getItem('token');

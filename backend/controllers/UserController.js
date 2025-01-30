@@ -73,7 +73,7 @@ const sendEmail = async (recipient, otp, subject = 'OTP for Verification') => {
 exports.registerUser = async (req, res) => {
   try {
     const { email, mobileNumber, password } = req.body;
-    
+
 
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email)) {
@@ -160,24 +160,24 @@ exports.verifyOTP = async (req, res) => {
     user.otp = null; // Clear the OTP after verification
     await user.save();
 
-   // Send the registration email
-   try {
-    await sendEmailTemplate(
-      email, // recipient's email
-      'Welcome to Referralwala!', // subject
-      'registration_success.html', // template file name
-      { email } // replacements for the template (add more placeholders as needed)
-    );
-    console.log(`Welcome email sent to ${email}`);
-  } catch (err) {
-    console.error(`Failed to send welcome email to ${email}:`, err);
-  }
+    // Send the registration email
+    try {
+      await sendEmailTemplate(
+        email, // recipient's email
+        'Welcome to Referralwala!', // subject
+        'registration_success.html', // template file name
+        { email } // replacements for the template (add more placeholders as needed)
+      );
+      console.log(`Welcome email sent to ${email}`);
+    } catch (err) {
+      console.error(`Failed to send welcome email to ${email}:`, err);
+    }
 
-  res.json({ message: 'OTP verified successfully and welcome email sent' });
-} catch (err) {
-  console.error(err);
-  res.status(500).json({ error: 'Internal server error' });
-}
+    res.json({ message: 'OTP verified successfully and welcome email sent' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 exports.verifyCompanyEmail = async (req, res) => {
   try {
