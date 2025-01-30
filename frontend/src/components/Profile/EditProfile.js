@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
-import { FaTrash, FaCheck, FaCheckCircle  } from 'react-icons/fa';
+import { FaTrash, FaCheck, FaCheckCircle } from 'react-icons/fa';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -46,6 +46,45 @@ export default function EditProfile() {
   const [originalCompanyEmail, setOriginalCompanyEmail] = useState('');
   const [isCompanyEmailVerified, setIsCompanyEmailVerified] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [resendTimer, setResendTimer] = useState(20);
+
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
+
+  const handleResendOtp = async () => {
+    setResendTimer(20);
+
+    try {
+      const bearerToken = localStorage.getItem('token');
+      const response = await fetch(
+        `${Fronted_API_URL}/user/resend-otp`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({email: profileData.presentCompany.companyEmail}),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Resend OTP sent successfully!!!.");
+      } else {
+        toast.error(data.message || "OTP send failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+
+  };
+
 
   const handleOtpChange = (e) => {
     setOtp(e.target.value); // Update OTP state
@@ -265,7 +304,7 @@ export default function EditProfile() {
         profileData.profilePhoto = uploadResponse.secure_url;
       }
 
-      
+
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
         method: 'PUT',
         headers: {
@@ -332,7 +371,7 @@ export default function EditProfile() {
 
   return (
     <>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
@@ -487,7 +526,7 @@ export default function EditProfile() {
                   />
                   {profileData.presentCompany?.companyEmail === originalCompanyEmail &&
                     isCompanyEmailVerified && (
-                      <FaCheckCircle 
+                      <FaCheckCircle
                         className="ml-2"
                         style={{ color: "#009fe3" }}
                         size={30}
@@ -541,6 +580,17 @@ export default function EditProfile() {
                         Verify OTP
                       </button>
                     </form>
+                    {/* Resend OTP Button */}
+                    {resendTimer > 0 ? (
+                      <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
+                    ) : (
+                      <button
+                        onClick={handleResendOtp}
+                        className="mt-4 w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-400"
+                      >
+                        Resend OTP
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
