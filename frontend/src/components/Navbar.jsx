@@ -240,9 +240,9 @@ const navigation = [
 ];
 
 const userNavigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Homepage", href: "/", icon: HomeIcon, current: false },
+  // { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
-  { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
   {
     name: "Followers",
     href: "/followerlist",
@@ -255,6 +255,12 @@ const userNavigation = [
     icon: ChartPieIcon,
     current: false,
   },
+  {
+    name: "Post Job",
+    href: "/postjob",
+    icon: ChartPieIcon,
+    current: false,
+  },
   { name: "About Us", href: "/about-us" },
   { name: "Contact Us", href: "/contact-us" },
   { name: "Privacy Policy", href: "/privacy-policy" },
@@ -263,9 +269,9 @@ const userNavigation = [
 ];
 
 const sidenavigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Homepage", href: "/", icon: HomeIcon, current: false },
+  // { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
-  { name: "Homepage", href: "/", icon: CalendarIcon, current: false },
   {
     name: "Followers",
     href: "/followerlist",
@@ -317,12 +323,40 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setLoggedIn(true);
     }
+    const fetchProfileData = async () => {
+      try {
+        const bearerToken = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(
+          `${Fronted_API_URL}/user/profile/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${bearerToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data");
+        }
+
+        const data = await response.json();
+        setProfileData(data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfileData();
   }, []);
 
   useEffect(() => {
@@ -496,8 +530,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Open user menu</span>
                           <img
-                            className="h-8 w-8 rounded-full"
-                            src={profile}
+                            className="h-8 w-8 rounded-full border-2 border-gray-800 p-[1px]"
+                            src={profileData?.profilePhoto  || profile } 
                             alt="User"
                           />
                         </Menu.Button>

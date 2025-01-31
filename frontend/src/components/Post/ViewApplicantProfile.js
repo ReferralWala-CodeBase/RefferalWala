@@ -7,6 +7,7 @@ import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from '../Loader';
+import busi from "../../assets/company.png";
 
 export default function ViewApplicantProfile() {
   const navigate = useNavigate();
@@ -341,21 +342,33 @@ export default function ViewApplicantProfile() {
                   {jobs.length > 0 ? (
                     <ul className="space-y-2">
                       {jobs.map((job) => (
-                        <li key={job._id} className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between">
-                          <img src={job.companyLogoUrl} alt="" className="w-10 h-10 sm:w-16 sm:h-16 mr-4" />
+                        <li
+                          key={job._id}
+                          onClick={() => handleViewDetails(job._id)}
+                          className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer"
+                        >
+                          <img
+                            src={job.companyLogoUrl || busi}
+                            alt={job.companyName}
+                            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                          />
                           <div className="flex-1">
-                            <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                            <div className="flex justify-between items-center">
+                              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                              <span
+                                className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+                                  }`}
+                              >
+                                {job.status === "active" ? "Active" : "Inactive"}
+                              </span>
+                            </div>
                             <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
                             <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                            <p className="text-sm sm:text-base text-gray-500">End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}</p>
                           </div>
-                          <button
-                            className="ml-4 text-blue-500 underline decoration-[1.5px] decoration-blue-500 underline-offset-2 hover:text-blue-700 focus:outline-none text-xs sm:text-sm md:text-base"
-                            onClick={() => handleViewDetails(job._id)}
-                          >
-                            View Details
-                          </button>
                         </li>
                       ))}
+
 
                     </ul>
                   ) : (

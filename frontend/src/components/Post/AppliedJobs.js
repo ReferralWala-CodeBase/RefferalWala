@@ -111,7 +111,7 @@ export default function AppliedJobs() {
     }
   };
 
-const filteredJobs = appliedJobs.filter(job => job.status === selectedStatus);
+  const filteredJobs = appliedJobs.filter(job => job.status === selectedStatus);
 
   const handleViewJobDetails = (jobId) => {
     navigate(`/appliedjobdetails/${jobId}`);
@@ -183,38 +183,47 @@ const filteredJobs = appliedJobs.filter(job => job.status === selectedStatus);
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {filteredJobs.map((job) => (
-                        <tr key={job.jobPostId._id}>
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        <tr
+                          key={job.jobPostId._id}
+                          className="cursor-pointer hover:bg-gray-100"
+                        >
+                          <td
+                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
+                          >
                             {job.jobPostId.jobRole}
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <td
+                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                          >
                             {job.jobPostId.companyName}
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <td
+                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                          >
                             {job.jobPostId.jobUniqueId}
                           </td>
-                          {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{job.status}</td> */}
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <td
+                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                          >
                             {new Date(job.appliedAt).toLocaleDateString()}
                           </td>
                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                            <button
-                              onClick={() => handleViewJobDetails(job.jobPostId._id)}
-                              className="text-indigo-600 hover:text-indigo-900"
-                            >
-                              View Job
-                            </button>
-                          </td>
-                          <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <FaTrash
-                              // onClick={() => withdrawApplication(job.jobPostId._id)}
-                              onClick={() => handleOpenModal(job.jobPostId._id)}
-                              className="m-2 mt-4 text-xl cursor-pointer text-red-500 hover:text-red-700"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent triggering the row click
+                                handleOpenModal(job.jobPostId._id);
+                              }}
+                              className="m-2 mt-2 text-xl cursor-pointer text-gray-700 hover:text-gray-800"
                             />
                           </td>
                         </tr>
                       ))}
                     </tbody>
+
                   </table>
                 </div>
 
@@ -251,7 +260,7 @@ const filteredJobs = appliedJobs.filter(job => job.status === selectedStatus);
                         <FaTrash
                           // onClick={() => withdrawApplication(job.jobPostId._id)}
                           onClick={() => handleOpenModal(job.jobPostId._id)}
-                          className="text-xl cursor-pointer text-red-500 hover:text-red-700"
+                          className="text-xl cursor-pointer text-gray-700 hover:text-gray-800"
                         />
                       </div>
                     </div>
