@@ -52,7 +52,7 @@ export default function ViewApplicantProfile() {
     };
 
     fetchProfileData();
-  }, [applicantId]);
+  }, [Fronted_API_URL, applicantId]);
 
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function ViewApplicantProfile() {
     };
 
     if (jobId && applicantId) fetchCurrentStatus();
-  }, [applicantId, jobId]);
+  }, [Fronted_API_URL, applicantId, jobId]);
 
   // Handle status change
   const handleStatusChange = async (newStatus) => {
@@ -102,7 +102,6 @@ export default function ViewApplicantProfile() {
 
       if (!response.ok) {
         if (response.status === 401) {
-          // Unauthorized, remove the token and navigate to login
           localStorage.removeItem('token');
           navigate('/user-login');
         } else {

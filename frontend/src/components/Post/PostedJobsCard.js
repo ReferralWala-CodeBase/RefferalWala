@@ -10,6 +10,7 @@ import ReportJob from './ReportJob';
 import React from 'react';
 import JobPostModal from './JobPostModal';
 import { LocationExport } from '../Location';
+import SmallScreenNav from './SmallScreenNav';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -74,7 +75,7 @@ export default function PostedJobsCard() {
     };
 
     fetchJobs();
-  }, []);
+  }, [Fronted_API_URL]);
 
   // Fetch the list of users the logged-in user is following
   useEffect(() => {
@@ -103,7 +104,7 @@ export default function PostedJobsCard() {
     };
 
     fetchFollowingList();
-  }, [bearerToken, userId]);
+  }, [Fronted_API_URL, bearerToken, userId]);
 
   //wishlist functions--
   useEffect(() => {
@@ -220,7 +221,7 @@ export default function PostedJobsCard() {
         }
       );
       if (response.ok) {
-        setFollowingList((prevList) => prevList.filter(user => user._id !== targetUserId)); // Remove the unfollowed user from the list
+        setFollowingList((prevList) => prevList.filter(user => user._id !== targetUserId));
         toast.success("Unfollowed Successfully.");
       } else {
         console.error("Unfollow request failed");
@@ -263,7 +264,7 @@ export default function PostedJobsCard() {
       navigate('/user-login');
     } else {
       try {
-        const profile = await fetchProfileData(); // Fetch profile data
+        const profile = await fetchProfileData();
         if (
           profile.firstName == null ||
           profile.lastName == null ||
@@ -283,7 +284,6 @@ export default function PostedJobsCard() {
       }
     }
   };
-
 
   function getDate(endDate_param) {
     var tempDate = endDate_param + "";
@@ -429,19 +429,14 @@ export default function PostedJobsCard() {
   return (
     <div className="min-h-screen bg-gray-100/70">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
+      <SmallScreenNav />
       <div className="container mx-auto md:px-3 px-0 md:py-2 py-1">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-1 mx-auto max-w-full">
-          <button
-            onClick={toggleFilterVisibility}
-            className="md:hidden mb-4 px-4 py-1 text-xs bg-blue-500 text-white rounded"
-          >
-            {filterVisible ? "Hide Filters" : "Show Filters"}
-          </button>
 
           <div
-            className={`w-full md:w-1/4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 ${filterVisible ? "block" : "hidden"
-              } md:block`}
+            className="w-full md:w-1/4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 md:block hidden"
           >
             {/* Main Heading */}
             <div className="flex items-center gap-2 mb-3 justify-center">
@@ -557,22 +552,6 @@ export default function PostedJobsCard() {
             <div className="flex justify-between items-end py-5 mx-2">
 
               <button onClick={() => navigate('/postjob')} className='py-1 px-5 bg-orange-400 text-white text-md font-light rounded-lg'>Add Post</button>
-              <label className="inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isTableView}
-                  onChange={toggleView}
-                  className="sr-only peer"
-                />
-                <div className="relative w-12 h-6 bg-gray-400 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full transition-colors duration-300 peer-checked:bg-blue-600">
-                  <motion.span
-                    className="absolute top-[1.5px] left-[1.5px] h-5 w-5 bg-white border border-gray-300 dark:border-gray-600 rounded-full shadow-md"
-                    initial={{ x: 0 }}
-                    animate={{ x: isTableView ? 24 : 0 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                </div>
-              </label>
             </div>
 
             {/* Conditional View Rendering */}
@@ -709,39 +688,8 @@ export default function PostedJobsCard() {
                             />
                           </svg>
                         </button>
-                        {profileIncomplete && (
 
-                          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
 
-                            <div className="bg-white p-6 rounded-md shadow-md">
-
-                              <h2 className="text-lg font-semibold text-gray-900">
-
-                                Complete Your Profile
-
-                              </h2>
-
-                              <p className="mt-2 text-sm text-gray-600">
-                                Please fill in your profile details, including your mobile number
-                                and company information, before Applying for a job.
-                              </p>
-
-                              <div className="mt-4 flex justify-end">
-
-                                <button
-
-                                  onClick={() => navigate("/viewprofile")}
-
-                                  className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-
-                                >
-                                  Go to Profile
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-
-                        )}
                       </div>
 
                       <div className='flex justify-end gap-1 mt-1 px-2 py-3'>
@@ -869,6 +817,24 @@ export default function PostedJobsCard() {
         />
       )} */}
 
+      {profileIncomplete && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
+            <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Please fill in your profile details, including your mobile number and company information, before applying for a job.
+            </p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => navigate("/viewprofile")}
+                className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Go to Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
