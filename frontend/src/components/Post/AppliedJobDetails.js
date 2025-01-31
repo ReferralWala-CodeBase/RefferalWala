@@ -285,19 +285,34 @@ export default function AppliedJobDetails() {
                 <h2 class="mb-2 text-xl font-semibold text-gray-900  sm:text-2xl md:mb-3">Job Details</h2>
                 <img className='hidden lg:block h-10 w-10' src={company} alt="" />
               </div>
-              <div class="grid grid-cols-2 gap-4 border-b-2 border-t border-gray-300/80 py-4 md:py-5 lg:grid-cols-4 xl:gap-8">
+              <div class="grid grid-cols-2 gap-4 border-b-2 border-t border-gray-300/80 py-3 md:py-4 lg:grid-cols-4 xl:gap-6">
                 <div>
                   <svg class="mb-2 h-8 w-8 text-gray-400 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
                   </svg>
                   <h3 class="mb-2 text-gray-500 dark:text-gray-400">Job Role</h3>
-                  <span class="flex items-center text-2xl font-bold text-gray-900 dark:text-white"
+                  <span class="flex items-center text-lg font-bold text-gray-900"
                   >{jobData.jobRole}
-                    <span class="ms-2 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                      <svg class="-ms-1 me-1 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"></path>
-                      </svg>
-                    </span>
+                  </span>
+                </div>
+
+                <div>
+                  <svg class="mb-2 h-8 w-8 text-gray-400 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                  </svg>
+                  <h3 class="mb-2 text-gray-500 dark:text-gray-400">Employement Type</h3>
+                  <span class="flex items-center text-lg font-bold text-gray-900"
+                  >{jobData.employmentType}
+                  </span>
+                </div>
+
+                <div>
+                  <svg class="mb-2 h-8 w-8 text-gray-400 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                  </svg>
+                  <h3 class="mb-2 text-gray-500 dark:text-gray-400">CTC (INR-Lakhs)</h3>
+                  <span class="flex items-center text-lg font-bold text-gray-900"
+                  >{jobData.ctc}
                   </span>
                 </div>
 
@@ -307,15 +322,9 @@ export default function AppliedJobDetails() {
                     <path stroke="currentColor" stroke-width="2" d="M11.083 5.104c.35-.8 1.485-.8 1.834 0l1.752 4.022a1 1 0 0 0 .84.597l4.463.342c.9.069 1.255 1.2.556 1.771l-3.33 2.723a1 1 0 0 0-.337 1.016l1.03 4.119c.214.858-.71 1.552-1.474 1.106l-3.913-2.281a1 1 0 0 0-1.008 0L7.583 20.8c-.764.446-1.688-.248-1.474-1.106l1.03-4.119A1 1 0 0 0 6.8 14.56l-3.33-2.723c-.698-.571-.342-1.702.557-1.771l4.462-.342a1 1 0 0 0 .84-.597l1.753-4.022Z" />
                   </svg>
                   <h3 class="mb-2 text-gray-500 dark:text-gray-400">Job Link</h3>
-                  <span class="flex items-center text-2xl font-bold text-gray-900 dark:text-white"
+                  <span class="flex items-center text-lg font-bold text-gray-900 "
                   >{jobData.jobLink}
-                    <span class="ms-2 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                      <svg class="-ms-1 me-1 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"></path>
-                      </svg>
-                    </span>
                   </span>
-
                 </div>
 
               </div>
@@ -359,17 +368,7 @@ export default function AppliedJobDetails() {
                     </dl>
                   </div>
                   <div class="space-y-4">
-                    <dl>
-                      <dt class="font-semibold text-gray-900 dark:text-white">Employment Type</dt>
-                      <dd class="text-gray-500 dark:text-gray-400">{jobData.employmentType}</dd>
-                    </dl>
-                    <dl>
-                      <dt class="font-semibold text-gray-900 dark:text-white">CTC (INR-Lakhs)</dt>
-                      <dd class="flex items-center gap-1 text-gray-500 dark:text-gray-400">
-                        {/* svg will go here  */}
-                        {jobData.ctc}
-                      </dd>
-                    </dl>
+
                     <dl>
                       <dt class="font-semibold text-gray-900 dark:text-white">Number of Referrals</dt>
                       <dd class="text-gray-500 dark:text-gray-400">{jobData.noOfReferrals}</dd>

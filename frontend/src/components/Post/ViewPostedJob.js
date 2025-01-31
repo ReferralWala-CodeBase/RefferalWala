@@ -3,14 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   BriefcaseIcon,
   CalendarIcon,
-  CheckIcon,
-  ChevronDownIcon,
   CurrencyDollarIcon,
-  LinkIcon,
   MapPinIcon,
   PencilIcon,
 } from '@heroicons/react/20/solid';
-import { Dialog, Menu, Transition } from '@headlessui/react';
+import { Dialog, Transition } from '@headlessui/react';
 import SidebarNavigation from '../SidebarNavigation';
 import { FaSpinner } from "react-icons/fa";
 import Navbar from "../Navbar";
@@ -46,7 +43,6 @@ export default function ViewPostedJob() {
 
         if (!response.ok) {
           if (response.status === 401) {
-            // Unauthorized, remove the token and navigate to login
             localStorage.removeItem('token');
             navigate('/user-login');
           } else {
@@ -63,7 +59,7 @@ export default function ViewPostedJob() {
     };
 
     fetchJobData();
-  }, [jobId]);
+  }, [Fronted_API_URL, jobId, navigate]);
 
   function getDate(endDate_param) {
     var tempDate = endDate_param + "";
@@ -83,7 +79,7 @@ export default function ViewPostedJob() {
 
     const updatedJobData = {
       userId,
-      status: 'inactive' // Set the status field to 'inactive'
+      status: 'inactive'
     };
 
     try {
@@ -105,7 +101,7 @@ export default function ViewPostedJob() {
       const responseData = await response.json();
       toast.success("Job status updated to inactive successfully!", {
         position: "top-right",
-        autoClose: 3000, // 3 seconds
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -132,7 +128,7 @@ export default function ViewPostedJob() {
 
   return (
     <>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <div>
         <SidebarNavigation />

@@ -62,7 +62,7 @@ export default function ViewApplicantProfile() {
     };
 
     fetchProfileData();
-  }, [applicantId]);
+  }, [Fronted_API_URL, applicantId]);
 
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function ViewApplicantProfile() {
     };
 
     if (jobId && applicantId) fetchCurrentStatus();
-  }, [applicantId, jobId]);
+  }, [Fronted_API_URL, applicantId, jobId]);
 
   // Handle status change selection
   const handleStatusChange = async (newStatus) => {
