@@ -379,12 +379,15 @@ export default function EditProfile() {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
 
-      // Direct image upload if the profile photo is provided
-      if (profileData.profilePhoto) {
-        const uploadResponse = await uploadImageToCloudinary(profileData.profilePhoto);
-        profileData.profilePhoto = uploadResponse.secure_url;
-      }
+      let updatedProfilePhoto = profileData.profilePhoto;
 
+      // Only upload if profilePhoto is a File (not a string URL)
+      if (profileData.profilePhoto && profileData.profilePhoto instanceof File) {
+        const uploadResponse = await uploadImageToCloudinary(profileData.profilePhoto);
+        updatedProfilePhoto = uploadResponse.secure_url;
+      }
+  
+      const updatedProfileData = { ...profileData, profilePhoto: updatedProfilePhoto };
 
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
         method: 'PUT',

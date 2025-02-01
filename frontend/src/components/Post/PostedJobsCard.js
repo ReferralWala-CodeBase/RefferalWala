@@ -550,10 +550,10 @@ export default function PostedJobsCard() {
           {/* Job Cards Section */}
           <div className='w-full max-w-4xl'>
             {/* Toggle Switch */}
-            <div className="flex justify-between items-end py-5 mx-2">
+            {/* <div className="flex justify-between items-end py-5 mx-2">
 
               <button onClick={() => navigate('/postjob')} className='py-1 px-5 bg-orange-400 text-white text-md font-light rounded-lg'>Add Post</button>
-            </div>
+            </div> */}
 
             {/* Conditional View Rendering */}
             <ul
@@ -825,7 +825,7 @@ export default function PostedJobsCard() {
             </p>
             <div className="mt-4 flex justify-end">
               <button
-                onClick={() => navigate("/viewprofile")}
+                onClick={() => navigate("/editprofile")}
                 className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Go to Profile
