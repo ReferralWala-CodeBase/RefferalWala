@@ -5,16 +5,24 @@ import { FaSpinner } from "react-icons/fa";
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import company from "../../assets/company.png"
+import company from "../../assets/company.png";
+import Loader from '../Loader';
 
 export default function AppliedJobDetails() {
   const { jobId } = useParams(); // Extract jobId from URL
   const navigate = useNavigate(); // Navigation to different pages
   const [searchQuery, setSearchQuery] = useState('');
   const [jobData, setJobData] = useState(null);
+  const [employeeDoc, setEmployeeDoc] = useState(null);
   const [applicationStatus, setApplicationStatus] = useState(null); // Store the application status
   const [loading, setLoading] = useState(true); // Loading state
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const Cloudinary_URL = process.env.REACT_APP_CLOUDINARY_URL; // Cloudinary API
+  const userId = localStorage.getItem('userId');
+  const [verified, setVerified] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -38,7 +46,6 @@ export default function AppliedJobDetails() {
         setJobData(jobData); // Set the job data
 
         // Now fetch the application status
-        const userId = localStorage.getItem('userId');
         const statusResponse = await fetch(`${Fronted_API_URL}/job/user/${userId}/jobpost/${jobId}/application/status`, {
           method: 'GET',
           headers: {
@@ -53,6 +60,7 @@ export default function AppliedJobDetails() {
 
         const statusData = await statusResponse.json();
         setApplicationStatus(statusData.status);
+        setVerified(!!statusData.employee_doc);
 
       } catch (error) {
         console.error('Error fetching job data or application status:', error);
@@ -98,6 +106,81 @@ export default function AppliedJobDetails() {
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  // Upload and Confirm Selection
+  const uploadAndConfirmSelection = async () => {
+    if (!selectedFile) {
+      toast.error("Please select a document before confirming.");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      // Upload file to Cloudinary
+      const uploadedFileUrl = await uploadImageToCloudinary(selectedFile);
+
+      // Send to backend after successful upload
+      await updateEmployeeDocument(uploadedFileUrl);
+
+      toast.success("Document uploaded successfully!");
+      setVerified(true);
+      setIsDialogOpen(false); // Close the dialog box after success
+    } catch (error) {
+      console.error("Error uploading document:", error);
+      toast.error("Failed to upload document.");
+    } finally {
+      setUploading(false);
+      setSelectedFile(null); // Reset file state
+    }
+  };
+
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "Referrwala Image");
+
+    const response = await fetch(`${Cloudinary_URL}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Image upload failed");
+    }
+
+    return data.secure_url;
+  };
+
+  // Saving Document Of verification
+  const updateEmployeeDocument = async (fileUrl) => {
+    setUploading(true);
+    const bearerToken = localStorage.getItem("token");
+
+    const response = await fetch(`${Fronted_API_URL}/job/${jobId}/applicant/${userId}/document`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ documentUrl: fileUrl }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update employee document");
+    }
+
+    setEmployeeDoc(fileUrl); // Update state with new document URL
+  };
+
+
   function getDate(endDate_param) {
     var tempDate = endDate_param + "";
     var date = '';
@@ -110,9 +193,7 @@ export default function AppliedJobDetails() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center">
-        <FaSpinner className="animate-spin text-xl" />
-      </div>
+      <Loader />
     );
   }
 
@@ -136,7 +217,54 @@ export default function AppliedJobDetails() {
             {applicationStatus === 'applied' ? (
               <p className="text-blue-600 font-medium">You have applied for this job.</p>
             ) : applicationStatus === 'selected' ? (
-              <p className="text-green-600 font-medium">You have been selected for this job!</p>
+              <div>
+                <p className="text-green-600 font-medium">You have been selected for this job!</p>
+                {!verified && (
+                  <button
+                    onClick={() => setIsDialogOpen(true)}
+                    className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    {uploading ? 'Uploading...' : 'Uploading Selected Document'}
+                  </button>
+                )}
+
+                {/* Dialog Box */}
+                {isDialogOpen && (
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                      <h2 className="text-lg font-semibold mb-4">Upload Document</h2>
+
+                      {/* File Input */}
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf"
+                        onChange={handleFileChange}
+                        className="mb-4 w-full border border-gray-300 p-2 rounded-md"
+                      />
+
+                      {/* Action Buttons */}
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          onClick={() => setIsDialogOpen(false)}
+                          className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                        >
+                          Cancel
+                        </button>
+
+                        <button
+                          onClick={uploadAndConfirmSelection}
+                          disabled={!selectedFile || uploading}
+                          className={`px-4 py-2 rounded-md text-white ${uploading || !selectedFile ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+                            }`}
+                        >
+                          {uploading ? "Uploading..." : "Confirm Selection"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+              </div>
             ) : applicationStatus === 'rejected' ? (
               <p className="text-red-600 font-medium">Your application was rejected.</p>
             ) : applicationStatus === 'on hold' ? (

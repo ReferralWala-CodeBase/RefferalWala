@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
-import { FaTrash, FaCheck } from 'react-icons/fa';
+import { FaTrash, FaCheck, FaCheckCircle } from 'react-icons/fa';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,7 +20,8 @@ export default function EditProfile() {
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
     presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', companyEmail: '', yearsOfExperience: '' }],
-    preferences: {},
+    preferences: [{ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' }],
+    project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
       github: '',
       portfolio: '',
@@ -46,6 +47,50 @@ export default function EditProfile() {
   const [originalCompanyEmail, setOriginalCompanyEmail] = useState('');
   const [isCompanyEmailVerified, setIsCompanyEmailVerified] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [resendTimer, setResendTimer] = useState(60);
+  const [projects, setProjects] = useState([]);
+  const [showProjectForm, setShowProjectForm] = useState(false);
+  const [newProject, setNewProject] = useState({ name: "", repoLink: "", liveLink: "", description: "" });
+  const [newPreferences, setNewPreferences] = useState({ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' });
+  const [showForm, setShowForm] = useState(false); // To show the input form
+
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
+
+  const handleResendOtp = async () => {
+    setResendTimer(60);
+
+    try {
+      const bearerToken = localStorage.getItem('token');
+      const response = await fetch(
+        `${Fronted_API_URL}/user/resend-otp`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: profileData.presentCompany.companyEmail }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Resend OTP sent successfully!!!.");
+      } else {
+        toast.error(data.message || "OTP send failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+
+  };
+
 
   const handleOtpChange = (e) => {
     setOtp(e.target.value); // Update OTP state
@@ -154,6 +199,81 @@ export default function EditProfile() {
     const updatedSkills = profileData.skills.filter((_, i) => i !== index);
     setProfileData({ ...profileData, skills: updatedSkills });
   };
+
+  const handleProjectChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject((prevProject) => ({
+      ...prevProject,
+      [name]: value,
+    }));
+  };
+
+  const addProject = () => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      project: [...prevData.project, newProject], // Add newProject to project array
+    }));
+    setNewProject({ name: "", repoLink: "", liveLink: "", description: "" }); // Reset form
+    setShowProjectForm(false);
+  };
+
+  const removeProject = (index) => {
+    setProfileData((prevData) => {
+      const updatedProjects = [...prevData.project];
+      updatedProjects.splice(index, 1);
+      return { ...prevData, project: updatedProjects };
+    });
+  };
+
+
+
+
+  const handleChangeNew = (e) => {
+    setNewPreferences({ ...newPreferences, [e.target.name]: e.target.value });
+  };
+
+  // Add new preference to the list
+  const handleAddPreference = () => {
+    if (
+      !newPreferences.preferredCompanyName.trim() ||
+      !newPreferences.preferredPosition.trim() ||
+      !newPreferences.expectedCTCRange.trim()
+    ) {
+      alert("Please fill all fields before adding a preference.");
+      return;
+    }
+
+    setProfileData((prevData) => ({
+      ...prevData,
+      preferences: [...prevData.preferences, newPreferences],
+    }));
+
+    // Reset input fields and hide form
+    setNewPreferences({
+      preferredCompanyName: "",
+      preferredPosition: "",
+      expectedCTCRange: "",
+    });
+    setShowForm(false); // Hide form after submission
+  };
+
+  // Update existing preference
+  const handleUpdatePreference = (index, field, value) => {
+    setProfileData((prevData) => {
+      const updatedPreferences = [...prevData.preferences];
+      updatedPreferences[index][field] = value;
+      return { ...prevData, preferences: updatedPreferences };
+    });
+  };
+
+  // Remove a preference
+  const handleRemovePreference = (index) => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      preferences: prevData.preferences.filter((_, i) => i !== index),
+    }));
+  };
+
 
 
   // Fetching the existing profile data
@@ -265,6 +385,7 @@ export default function EditProfile() {
         profileData.profilePhoto = uploadResponse.secure_url;
       }
 
+
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
         method: 'PUT',
         headers: {
@@ -331,7 +452,7 @@ export default function EditProfile() {
 
   return (
     <>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
@@ -486,8 +607,9 @@ export default function EditProfile() {
                   />
                   {profileData.presentCompany?.companyEmail === originalCompanyEmail &&
                     isCompanyEmailVerified && (
-                      <FaCheck
-                        className="ml-2 text-green-500"
+                      <FaCheckCircle
+                        className="ml-2"
+                        style={{ color: "#009fe3" }}
                         size={30}
                         title="Verified"
                       />
@@ -539,6 +661,17 @@ export default function EditProfile() {
                         Verify OTP
                       </button>
                     </form>
+                    {/* Resend OTP Button */}
+                    {resendTimer > 0 ? (
+                      <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
+                    ) : (
+                      <button
+                        onClick={handleResendOtp}
+                        className="mt-4 w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-400"
+                      >
+                        Resend OTP
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
@@ -805,64 +938,266 @@ export default function EditProfile() {
                 </button>
               </div>
             )}
+
+            {/* Projects*/}
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Project</h3>
+            {profileData.project.map((project, index) => (
+              <div key={index} className="relative  mt-3 flex flex-col gap-6 p-4 border rounded-lg shadow-md bg-white">
+
+                {/* Delete Button in the Top-Right Corner */}
+                <button
+                  onClick={() => removeProject(index)}
+                  className="absolute top-2 right-2 text-black  "
+                >
+                  <FaTrash className="text-lg" />
+                </button>
+                <div className="flex gap-6">
+                  {/* Project Name */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Project Name</label>
+                    <input
+                      type="text"
+                      name="projectName"
+                      value={project.projectName || ''}
+                      onChange={(e) => {
+                        const updatedProjects = [...profileData.project];
+                        updatedProjects[index].projectName = e.target.value;
+                        setProfileData({ ...profileData, project: updatedProjects });
+                      }}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Repo Link */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Repo Link</label>
+                    <input
+                      type="text"
+                      name="repoLink"
+                      value={project.repoLink || ''}
+                      onChange={(e) => {
+                        const updatedProjects = [...profileData.project];
+                        updatedProjects[index].repoLink = e.target.value;
+                        setProfileData({ ...profileData, project: updatedProjects });
+                      }}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Live URL */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Live URL</label>
+                    <input
+                      type="text"
+                      name="liveLink"
+                      value={project.liveLink || ''}
+                      onChange={(e) => {
+                        const updatedProjects = [...profileData.project];
+                        updatedProjects[index].liveLink = e.target.value;
+                        setProfileData({ ...profileData, project: updatedProjects });
+                      }}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                </div>
+
+                {/* Project Description */}
+                <div className="flex">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea
+                      name="details"
+                      value={project.details || ''}
+                      onChange={(e) => {
+                        const updatedProjects = [...profileData.project];
+                        updatedProjects[index].details = e.target.value;
+                        setProfileData({ ...profileData, project: updatedProjects });
+                      }}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            ))}
+
+            {/* Add Project Button */}
+            <button
+              type="button"
+              onClick={() => setShowProjectForm(true)}
+              className="mt-4 p-2 bg-blue-500 text-white rounded"
+            >
+              Add Project
+            </button>
+
+            {/* New Project Form */}
+            {showProjectForm && (
+              <div className="mt-6 p-4 border border-gray-300 rounded">
+                <h4 className="text-lg font-medium text-gray-900">Add New Project</h4>
+                <div className="flex gap-6 mt-3">
+                  {/* Project Name */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Project Name</label>
+                    <input
+                      type="text"
+                      name="projectName"
+                      value={newProject.projectName}
+                      onChange={handleProjectChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Repo Link */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Repo Link</label>
+                    <input
+                      type="text"
+                      name="repoLink"
+                      value={newProject.repoLink}
+                      onChange={handleProjectChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Live URL */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Live URL</label>
+                    <input
+                      type="text"
+                      name="liveLink"
+                      value={newProject.liveLink}
+                      onChange={handleProjectChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                </div>
+
+                {/* Project Description */}
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <textarea
+                    name="details"
+                    value={newProject.details}
+                    onChange={handleProjectChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+
+                <button
+                  onClick={addProject}
+                  className="mt-4 p-2 bg-green-500 text-white rounded"
+                >
+                  Add Project Entry
+                </button>
+              </div>
+            )}
+
+
             {/* Preferences */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
-                <input
-                  type="text"
-                  name="preferredCompanyName"
-                  value={profileData.preferences?.preferredCompanyName || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      preferences: {
-                        ...profileData.preferences,
-                        preferredCompanyName: e.target.value,
-                      },
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
+            {profileData.preferences.map((preference, index) => (
+              <div key={index} className="mt-3 flex items-center gap-6">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
+                  <input
+                    type="text"
+                    name="preferredCompanyName"
+                    value={preference.preferredCompanyName || ''}
+                    onChange={(e) => {
+                      const updatedPreferences = [...profileData.preferences];
+                      updatedPreferences[index].preferredCompanyName = e.target.value;
+                      setProfileData({ ...profileData, preferences: updatedPreferences });
+                    }}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
+                  <input
+                    type="text"
+                    name="preferredPosition"
+                    value={preference.preferredPosition || ''}
+                    onChange={(e) => {
+                      const updatedPreferences = [...profileData.preferences];
+                      updatedPreferences[index].preferredPosition = e.target.value;
+                      setProfileData({ ...profileData, preferences: updatedPreferences });
+                    }}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
+                  <input
+                    type="text"
+                    name="expectedCTCRange"
+                    value={preference.expectedCTCRange || ''}
+                    onChange={(e) => {
+                      const updatedPreferences = [...profileData.preferences];
+                      updatedPreferences[index].expectedCTCRange = e.target.value;
+                      setProfileData({ ...profileData, preferences: updatedPreferences });
+                    }}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                {/* Remove Button in Same Row */}
+                <FaTrash onClick={() => handleRemovePreference(index)} className="m-2 mt-5 text-2xl cursor-pointer" />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
-                <input
-                  type="text"
-                  name="preferredPosition"
-                  value={profileData.preferences?.preferredPosition || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      preferences: {
-                        ...profileData.preferences,
-                        preferredPosition: e.target.value,
-                      },
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
+            ))}
+
+            {/* Add Preference Button */}
+            <button
+              type="button"
+              onClick={() => setShowForm(true)}
+              className="mt-4 p-2 bg-blue-500 text-white rounded"
+            >
+              Add Preference
+            </button>
+
+            {/* New Preference Form */}
+            {showForm && (
+              <div className="mt-6 p-4 border border-gray-300 rounded">
+                <h4 className="text-lg font-medium text-gray-900">Add New Preference</h4>
+                <div className="flex gap-6 mt-3">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
+                    <input
+                      type="text"
+                      name="preferredCompanyName"
+                      value={newPreferences.preferredCompanyName}
+                      onChange={handleChangeNew}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
+                    <input
+                      type="text"
+                      name="preferredPosition"
+                      value={newPreferences.preferredPosition}
+                      onChange={handleChangeNew}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
+                    <input
+                      type="text"
+                      name="expectedCTCRange"
+                      value={newPreferences.expectedCTCRange}
+                      onChange={handleChangeNew}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={handleAddPreference}
+                  className="mt-4 p-2 bg-green-500 text-white rounded"
+                >
+                  Add Preference Entry
+                </button>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
-                <input
-                  type="text"
-                  name="expectedCTCRange"
-                  value={profileData.preferences?.expectedCTCRange || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      preferences: {
-                        ...profileData.preferences,
-                        expectedCTCRange: e.target.value,
-                      },
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
-              </div>
-            </div>
+            )}
+
 
             {/* Links */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Links</h3>

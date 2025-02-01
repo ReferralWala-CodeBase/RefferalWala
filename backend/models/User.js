@@ -161,7 +161,7 @@ const userSchema = new mongoose.Schema({
   achievements: {
     type: [String],
   },
-  preferences: PreferencesSchema,
+  preferences: [PreferencesSchema],
   links: LinksSchema,
   resume: {
     type: String,

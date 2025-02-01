@@ -6,6 +6,8 @@ import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow, FaGithub, FaLin
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from '../Loader';
+import busi from "../../assets/company.png";
 
 export default function ViewApplicantProfile() {
   const navigate = useNavigate();
@@ -17,10 +19,18 @@ export default function ViewApplicantProfile() {
   const [status, setStatus] = useState('');
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const statusOptions = ['applied', 'selected', 'rejected', 'on hold'];
+  const Cloudinary_URL = process.env.REACT_APP_CLOUDINARY_URL; // Cloudinary API
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const [searchQuery, setSearchQuery] = useState('');
   const [jobs, setJobs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -82,42 +92,93 @@ export default function ViewApplicantProfile() {
     if (jobId && applicantId) fetchCurrentStatus();
   }, [Fronted_API_URL, applicantId, jobId]);
 
-  // Handle status change
+  // Handle status change selection
   const handleStatusChange = async (newStatus) => {
+    if (newStatus === "selected") {
+      setIsDialogOpen(true); // Open dialog before proceeding
+      return;
+    }
+
+    await updateStatus(newStatus, null);
+  };
+
+  // Upload file and confirm selection
+  const uploadAndConfirmSelection = async () => {
+    if (!selectedFile) {
+      toast.error("Please upload a document before selecting status.");
+      return;
+    }
+
     setUpdatingStatus(true);
 
     try {
-      const bearerToken = localStorage.getItem('token');
+      const fileUrl = await uploadImageToCloudinary(selectedFile);
+      setUploadedFileUrl(fileUrl);
+      await updateStatus("selected", fileUrl);
+    } catch (error) {
+      toast.error("File upload failed. Try again.");
+    } finally {
+      setUpdatingStatus(false);
+      setIsDialogOpen(false);
+    }
+  };
+
+  // Update status in backend
+  const updateStatus = async (newStatus, fileUrl) => {
+    setUpdatingStatus(true);
+
+    try {
+      const bearerToken = localStorage.getItem("token");
       const response = await fetch(
         `${Fronted_API_URL}/job/${jobId}/applicant/${applicantId}/status`,
         {
-          method: 'PUT',
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: newStatus }),
+          body: JSON.stringify({ status: newStatus, uploadedFileUrl: fileUrl }),
         }
       );
 
       if (!response.ok) {
         if (response.status === 401) {
-          localStorage.removeItem('token');
-          navigate('/user-login');
+          localStorage.removeItem("token");
+          navigate("/user-login");
         } else {
-          throw new Error('Failed to update status');
+          throw new Error("Failed to update status");
         }
       }
 
       setStatus(newStatus);
       toast.success("Status updated successfully!");
     } catch (error) {
-      console.error('Error updating status:', error);
       toast.error(error.message);
     } finally {
       setUpdatingStatus(false);
     }
   };
+
+
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "Referrwala Image"); // Replace with upload preset name
+
+    const response = await fetch(`${Cloudinary_URL}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Image upload failed");
+    }
+
+    return data.secure_url; // Return only the URL of the uploaded image
+  };
+
 
   const handleFollowUnfollow = async () => {
     const bearerToken = localStorage.getItem('token');
@@ -184,9 +245,7 @@ export default function ViewApplicantProfile() {
 
   if (!profileData) {
     return (
-      <div className="flex justify-center items-center">
-        <FaSpinner className="animate-spin text-xl" />
-      </div>
+      <Loader />
     );
   }
 
@@ -217,6 +276,39 @@ export default function ViewApplicantProfile() {
             </select>
             {updatingStatus && <FaSpinner className="ml-4 animate-spin text-indigo-600" />}
           </div>
+
+          {/* File Uploading */}
+          {isDialogOpen && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 className="text-lg font-semibold mb-4">Uploading Select Document</h2>
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleFileChange}
+                  className="mb-4 w-full border border-gray-300 p-2 rounded-md"
+                />
+                <div className="flex justify-end space-x-2">
+                  <button
+                    onClick={() => setIsDialogOpen(false)}
+                    className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={uploadAndConfirmSelection}
+                    disabled={!selectedFile || updatingStatus}
+                    className={`px-4 py-2 rounded-md text-white ${updatingStatus || !selectedFile ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+                      }`}
+                  >
+                    {updatingStatus ? "Uploading..." : "Confirm Selection"}
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="mt-4 mb-4 flex justify-end">
             <div>
               {isFollowing && (
@@ -250,21 +342,33 @@ export default function ViewApplicantProfile() {
                   {jobs.length > 0 ? (
                     <ul className="space-y-2">
                       {jobs.map((job) => (
-                        <li key={job._id} className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between">
-                          <img src={job.companyLogoUrl} alt="" className="w-10 h-10 sm:w-16 sm:h-16 mr-4" />
+                        <li
+                          key={job._id}
+                          onClick={() => handleViewDetails(job._id)}
+                          className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer"
+                        >
+                          <img
+                            src={job.companyLogoUrl || busi}
+                            alt={job.companyName}
+                            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                          />
                           <div className="flex-1">
-                            <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                            <div className="flex justify-between items-center">
+                              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                              <span
+                                className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+                                  }`}
+                              >
+                                {job.status === "active" ? "Active" : "Inactive"}
+                              </span>
+                            </div>
                             <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
                             <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                            <p className="text-sm sm:text-base text-gray-500">End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}</p>
                           </div>
-                          <button
-                            className="ml-4 text-blue-500 underline decoration-[1.5px] decoration-blue-500 underline-offset-2 hover:text-blue-700 focus:outline-none text-xs sm:text-sm md:text-base"
-                            onClick={() => handleViewDetails(job._id)}
-                          >
-                            View Details
-                          </button>
                         </li>
                       ))}
+
 
                     </ul>
                   ) : (

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,6 +16,42 @@ function Signup() {
   const [showOtpModal, setShowOtpModal] = useState(false);
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  const [resendTimer, setResendTimer] = useState(60);
+
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
+
+  const handleResendOtp = async() => {
+    setResendTimer(60); 
+    
+    try {
+      const response = await fetch(
+        `${Fronted_API_URL}/user/resend-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Resend OTP sent successfully!!!.");
+      } else {
+        toast.error(data.message || "OTP send failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+    
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -218,7 +254,7 @@ function Signup() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-4">
+              <div className="mt-6 grid grid-cols-1">
                 <div
                   onClick={handleGoogleAuth}
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer"
@@ -249,27 +285,6 @@ function Signup() {
                     Google
                   </span>
                 </div>
-
-                <a
-                  href="/"
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer pointer-events-none"
-                >
-                  <svg
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 0C4.485 0 0 4.485 0 10c0 4.991 3.657 9.128 8.438 9.879v-6.989H5.896v-2.89h2.542V7.179c0-2.507 1.492-3.891 3.776-3.891 1.094 0 2.236.195 2.236.195v2.458h-1.258c-1.241 0-1.628.771-1.628 1.56v1.88h2.771l-.443 2.89h-2.328v6.989C16.343 19.128 20 14.991 20 10c0-5.515-4.485-10-10-10z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span className="text-sm font-semibold leading-6">
-                    Facebook
-                  </span>
-                </a>
               </div>
             </div>
             <p className="mt-8 text-center text-sm text-gray-500">
@@ -323,6 +338,17 @@ function Signup() {
                 Verify OTP
               </button>
             </form>
+            {/* Resend OTP Button */}
+            {resendTimer > 0 ? (
+              <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
+            ) : (
+              <button
+                onClick={handleResendOtp}
+                className="mt-4 w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-400"
+              >
+                Resend OTP
+              </button>
+            )}
           </div>
         </div>
       )}

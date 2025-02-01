@@ -16,6 +16,12 @@ const ApplicantStatus = new mongoose.Schema({
     enum: ['applied', 'selected', 'rejected', 'on hold'],
     default: 'applied',
   },
+  employer_doc:{
+    type: String,
+  },
+  employee_doc:{
+    type: String,
+  },
   appliedAt: {
     type: Date,
     default: Date.now,

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
-import { FaSpinner } from 'react-icons/fa';
 import { PencilIcon } from '@heroicons/react/20/solid';
 import { FaGithub, FaLinkedin, FaGlobe, FaInstagram, FaFacebook, FaEnvelope, FaPhone } from "react-icons/fa";
-import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow } from 'react-icons/fa';
+import { FaUniversity, FaBuilding, FaLocationArrow, FaLaptopCode } from 'react-icons/fa';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from '../Loader';
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -40,6 +40,7 @@ export default function ViewProfile() {
           }
         }
 
+
         const data = await response.json();
         setProfileData(data);
       } catch (error) {
@@ -53,15 +54,13 @@ export default function ViewProfile() {
 
   if (!profileData) {
     return (
-      <div className="flex justify-center items-center">
-        <FaSpinner className="animate-spin text-xl" />
-      </div>
+      <Loader />
     );
   }
 
   return (
     <>
-      <Navbar className="sticky top-0 z-50" searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar className="sticky top-0 z-50" searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex mt-[navbar-height]">
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
@@ -72,7 +71,7 @@ export default function ViewProfile() {
               onClick={() => navigate(`/editprofile`)}
               className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
-              <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true"/> Edit
+              <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" /> Edit
             </button>
           </div>
 
@@ -303,52 +302,93 @@ export default function ViewProfile() {
               </div>
             )}
 
+            {/* Projects */}
+            <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Projects</h3>
+            {profileData.project?.length ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {profileData.project.map((project, index) => (
+                  <div
+                    key={index}
+                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-xl">
+                        <FaLaptopCode />
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          {project.projectName || "Project Name"}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {project.details || "Project Description"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      {/* Display Repo Link with FA Icon */}
+                      {project.repoLink && (
+                        <p className="text-blue-500 text-sm flex items-center">
+                          <FaGithub className="mr-2" />
+                          <span className="font-medium">Repository:</span>{" "}
+                          <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
+                            {project.repoLink}
+                          </a>
+                        </p>
+                      )}
+                    </div>
+                    <div className="mt-4">
+                      {/* Display Live Link with FA Icon */}
+                      {project.liveLink && (
+                        <p className="text-blue-500 text-sm flex items-center">
+                          <FaGlobe className="mr-2" />
+                          <span className="font-medium">Live Link:</span>{" "}
+                          <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                            {project.liveLink}
+                          </a>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-gray-600 mt-6">No projects added.</div>
+            )}
+
             {/* Preferences */}
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Preferences</h3>
-            {profileData.preferences ? (
-              <div className="border hover:shadow-xl transition-shadow bg-white border-gray-200 p-8 rounded-lg shadow-xl mt-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {/* Preferred Company Name */}
-                  <div className="flex flex-col">
-                    <label className="text-base font-medium text-gray-700 mb-2">Preferred Company Name</label>
-                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                      {profileData.preferences.preferredCompanyName ? (
-                        <span>{profileData.preferences.preferredCompanyName}</span>
-                      ) : (
-                        <span className="text-gray-400">Not Set</span>
-                      )}
+            {profileData.preferences?.length ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {profileData.preferences.map((pref, index) => (
+                  <div
+                    key={index}
+                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-xl">
+                        <FaLocationArrow />
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          {pref.preferredCompanyName || "Preferred Company Name"}
+                        </h3>
+                        <p className="text-sm text-gray-500">{pref.preferredPosition || "Preferred Position"}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <p className="text-gray-600">
+                        <span className="font-medium">Expected CTC Range:</span>{" "}
+                        {pref.expectedCTCRange || "Not Set"}
+                      </p>
                     </div>
                   </div>
-
-                  {/* Preferred Position */}
-                  <div className="flex flex-col">
-                    <label className="text-base font-medium text-gray-700 mb-2">Preferred Position</label>
-                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                      {profileData.preferences.preferredPosition ? (
-                        <span>{profileData.preferences.preferredPosition}</span>
-                      ) : (
-                        <span className="text-gray-400">Not Set</span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Expected CTC Range */}
-                  <div className="flex flex-col">
-                    <label className="text-base font-medium text-gray-700 mb-2">Expected CTC Range</label>
-                    <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                      {profileData.preferences.expectedCTCRange ? (
-                        <span>{profileData.preferences.expectedCTCRange}</span>
-                      ) : (
-                        <span className="text-gray-400">Not Set</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             ) : (
               <p className="text-gray-500 mt-4">No Preferences Set</p>
             )}
 
+        
 
           </div>
         </div>
