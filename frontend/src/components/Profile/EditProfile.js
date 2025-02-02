@@ -53,9 +53,9 @@ export default function EditProfile() {
   const [newProject, setNewProject] = useState({ name: "", repoLink: "", liveLink: "", description: "" });
   const [newPreferences, setNewPreferences] = useState({ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' });
   const [showForm, setShowForm] = useState(false); // To show the input form
-  const [originalMobileno, setOriginalMobileno] = useState('');
-  const [isPhoneVerified, setIsPhoneVerified] = useState(null);
-  const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false);
+  // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
+  // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
+  // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
 
   useEffect(() => {
     if (resendTimer > 0) {
@@ -304,8 +304,8 @@ export default function EditProfile() {
         setProfileData(data);
         setOriginalCompanyEmail(data?.presentCompany?.companyEmail);
         setIsCompanyEmailVerified(data?.presentCompany?.CompanyEmailVerified);
-        setOriginalMobileno(data?.mobileNumber);
-        setIsPhoneVerified(data?.mobileNumberVerified)
+        // setOriginalMobileno(data?.mobileNumber);   //Phone verify
+        // setIsPhoneVerified(data?.mobileNumberVerified)  //Phone verify
       } catch (error) {
         console.error('Error fetching profile data:', error);
         toast.error(error.message);
@@ -503,37 +503,38 @@ export default function EditProfile() {
     return data; // Return data containing URL and other metadata
   };
 
-  const handlePhoneVerification = async (e) => {
-    // Prevent default form submission behavior
-    e.preventDefault();
+  //sending sms to verify phone number
+  // const handlePhoneVerification = async (e) => {
+  //   // Prevent default form submission behavior
+  //   e.preventDefault();
 
-    try {
-      const bearerToken = localStorage.getItem('token');
-      const response = await fetch(`${Fronted_API_URL}/user/sendphoneOTP`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mobileNumber: profileData.mobileNumber }),
-      });
+  //   try {
+  //     const bearerToken = localStorage.getItem('token');
+  //     const response = await fetch(`${Fronted_API_URL}/user/sendphoneOTP`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${bearerToken}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ mobileNumber: profileData.mobileNumber }),
+  //     });
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (response.ok) {
-        setPhoneShowOtpModal(true);
-        toast.success("OTP sent successfully!");
-      } else {
-        if (response.status === 400) {
-          toast.error(data.message || "Phone is already verified.");
-        } else {
-          toast.error(data.message || "OTP send failed. Try again.");
-        }
-      }
-    } catch (error) {
-      toast.error("An error occurred. Please try again.");
-    }
-  };
+  //     if (response.ok) {
+  //       setPhoneShowOtpModal(true);
+  //       toast.success("OTP sent successfully!");
+  //     } else {
+  //       if (response.status === 400) {
+  //         toast.error(data.message || "Phone is already verified.");
+  //       } else {
+  //         toast.error(data.message || "OTP send failed. Try again.");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toast.error("An error occurred. Please try again.");
+  //   }
+  // };
 
   return (
     <>
@@ -603,6 +604,9 @@ export default function EditProfile() {
                     }
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   /> */}
+
+
+                  {/*
                   {profileData.mobileNumber === originalMobileno &&
                     isPhoneVerified && (
                       <FaCheckCircle
@@ -619,13 +623,14 @@ export default function EditProfile() {
                   >
                     Verify
                   </button>
+                  */}
                 </div>
 
 
               </div>
 
-              {/* OTP Modal */}
-              {showPhoneOtpModal && (
+              {/* Phone OTP Modal */}
+              {/* {showPhoneOtpModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
                   <div className="bg-white p-6 rounded-lg shadow-lg w-96">
                     <h3 className="text-lg font-bold text-gray-900 mb-4">Verify OTP</h3>
@@ -661,7 +666,6 @@ export default function EditProfile() {
                         Verify OTP
                       </button>
                     </form>
-                    {/* Resend OTP Button */}
                     {resendTimer > 0 ? (
                       <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
                     ) : (
@@ -674,7 +678,7 @@ export default function EditProfile() {
                     )}
                   </div>
                 </div>
-              )}
+              )} */}
 
 
               <div>
