@@ -382,11 +382,15 @@ export default function EditProfile() {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
 
-      // Direct image upload if the profile photo is provided
-      if (profileData.profilePhoto) {
+      let updatedProfilePhoto = profileData.profilePhoto;
+
+      // Only upload if profilePhoto is a File (not a string URL)
+      if (profileData.profilePhoto && profileData.profilePhoto instanceof File) {
         const uploadResponse = await uploadImageToCloudinary(profileData.profilePhoto);
-        profileData.profilePhoto = uploadResponse.secure_url;
+        updatedProfilePhoto = uploadResponse.secure_url;
       }
+
+      const updatedProfileData = { ...profileData, profilePhoto: updatedProfilePhoto };
 
       const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
       const yearPattern = /^(19|20)\d{2}$/; // Validates years like 1990-2099
