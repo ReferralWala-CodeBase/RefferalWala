@@ -53,6 +53,9 @@ export default function EditProfile() {
   const [newProject, setNewProject] = useState({ name: "", repoLink: "", liveLink: "", description: "" });
   const [newPreferences, setNewPreferences] = useState({ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' });
   const [showForm, setShowForm] = useState(false); // To show the input form
+  // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
+  // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
+  // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
 
   useEffect(() => {
     if (resendTimer > 0) {
@@ -225,9 +228,6 @@ export default function EditProfile() {
     });
   };
 
-
-
-
   const handleChangeNew = (e) => {
     setNewPreferences({ ...newPreferences, [e.target.name]: e.target.value });
   };
@@ -304,6 +304,8 @@ export default function EditProfile() {
         setProfileData(data);
         setOriginalCompanyEmail(data?.presentCompany?.companyEmail);
         setIsCompanyEmailVerified(data?.presentCompany?.CompanyEmailVerified);
+        // setOriginalMobileno(data?.mobileNumber);   //Phone verify
+        // setIsPhoneVerified(data?.mobileNumberVerified)  //Phone verify
       } catch (error) {
         console.error('Error fetching profile data:', error);
         toast.error(error.message);
@@ -375,6 +377,7 @@ export default function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
@@ -386,8 +389,59 @@ export default function EditProfile() {
         const uploadResponse = await uploadImageToCloudinary(profileData.profilePhoto);
         updatedProfilePhoto = uploadResponse.secure_url;
       }
-  
+
       const updatedProfileData = { ...profileData, profilePhoto: updatedProfilePhoto };
+
+      const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+      const yearPattern = /^(19|20)\d{2}$/; // Validates years like 1990-2099
+      const mobilePattern = /^[6-9]\d{9}$/; // Valid Indian mobile numbers
+      const numericPattern = /^\d+$/; // Only numbers
+
+      // **Mobile Number Validation**
+      if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
+        toast.error("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+
+      // **Year of Passing Validation**
+      if (profileData.education.some(edu => edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing))) {
+        toast.error("Please enter a valid year of passing.");
+        return;
+      }
+
+      // **Years of Experience Validation**
+      if (profileData.experience.some(exp => exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience))) {
+        toast.error("Years of experience must be a valid number.");
+        return;
+      }
+
+      // **Expected CTC Validation**
+      if (profileData.preferences.some(pref => pref.expectedCTCRange && isNaN(pref.expectedCTCRange))) {
+        toast.error("Expected CTC must be a valid number.");
+        return;
+      }
+
+      // **Repo & Live Link Validation**
+      if (profileData.project.some(proj => (proj.repoLink && !urlPattern.test(proj.repoLink)) ||
+        (proj.liveLink && !urlPattern.test(proj.liveLink)))) {
+        toast.error("Please enter valid URLs for repo or live links.");
+        return;
+      }
+
+      // **Social Media Links Validation**
+      Object.entries(profileData.links).forEach(([key, value]) => {
+        if (key !== "_id" && value && !urlPattern.test(value)) {
+          toast.error(`Please enter a valid URL for ${key}`);
+          return;
+        }
+      });
+
+      // **Resume Link Validation**
+      if (profileData.resume && !urlPattern.test(profileData.resume)) {
+        toast.error("Please enter a valid URL for the resume.");
+        return;
+      }
+
 
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
         method: 'PUT',
@@ -453,6 +507,39 @@ export default function EditProfile() {
     return data; // Return data containing URL and other metadata
   };
 
+  //sending sms to verify phone number
+  // const handlePhoneVerification = async (e) => {
+  //   // Prevent default form submission behavior
+  //   e.preventDefault();
+
+  //   try {
+  //     const bearerToken = localStorage.getItem('token');
+  //     const response = await fetch(`${Fronted_API_URL}/user/sendphoneOTP`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${bearerToken}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ mobileNumber: profileData.mobileNumber }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       setPhoneShowOtpModal(true);
+  //       toast.success("OTP sent successfully!");
+  //     } else {
+  //       if (response.status === 400) {
+  //         toast.error(data.message || "Phone is already verified.");
+  //       } else {
+  //         toast.error(data.message || "OTP send failed. Try again.");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toast.error("An error occurred. Please try again.");
+  //   }
+  // };
+
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -498,15 +585,106 @@ export default function EditProfile() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Mobile Number <span className="text-red-500">*</span></label>
-                <input
-                  type="tel"
-                  name="mobileNumber"
-                  value={profileData.mobileNumber || ''}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  required
-                />
+
+                <div className="flex items-center">
+                  <input
+                    type="tel"
+                    name="mobileNumber"
+                    value={profileData.mobileNumber || ''}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    required
+                  />
+
+                  {/* <input
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        presentCompany: {
+                          ...profileData.presentCompany,
+                          companyEmail: e.target.value,
+                        },
+                      })
+                    }
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  /> */}
+
+
+                  {/*
+                  {profileData.mobileNumber === originalMobileno &&
+                    isPhoneVerified && (
+                      <FaCheckCircle
+                        className="ml-2"
+                        style={{ color: "#009fe3" }}
+                        size={30}
+                        title="Verified"
+                      />
+                    )}
+                  <button
+                    type="button"
+                    onClick={handlePhoneVerification}
+                    className="ml-2 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                  >
+                    Verify
+                  </button>
+                  */}
+                </div>
+
+
               </div>
+
+              {/* Phone OTP Modal */}
+              {/* {showPhoneOtpModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
+                  <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">Verify OTP</h3>
+                    <form onSubmit={handleOtpSubmit}>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Mobile Number
+                        </label>
+                        <input
+                          type="tel"
+                          value={profileData.mobileNumber}
+                          readOnly
+                          className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          OTP
+                        </label>
+                        <input
+                          type="text"
+                          value={otp}
+                          onChange={handleOtpChange}
+                          required
+                          className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleOtpSubmit}
+                        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500"
+                      >
+                        Verify OTP
+                      </button>
+                    </form>
+                    {resendTimer > 0 ? (
+                      <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
+                    ) : (
+                      <button
+                        onClick={handleResendOtp}
+                        className="mt-4 w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-400"
+                      >
+                        Resend OTP
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )} */}
+
+
               <div>
                 <label className="block text-sm font-medium text-gray-700">Gender <span className="text-red-500">*</span></label>
                 <select

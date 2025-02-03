@@ -126,7 +126,7 @@ export default function PostJob() {
           const filteredLocations = LocationExport.filter((loc) =>
             `${loc.city}, ${loc.state}`.toLowerCase().includes(value.toLowerCase())
           );
-      
+
           setLocationSuggestions(filteredLocations.map((loc) => ({
             description: `${loc.city}, ${loc.state}`,
           })));
@@ -173,6 +173,20 @@ export default function PostJob() {
       return;
     }
 
+    if (formData.jobLink) {
+      const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+      if (!urlPattern.test(formData.jobLink)) {
+        toast.error("Please enter a valid URL for the job link.");
+        return;
+      }
+    }
+
+    // Validate experienceRequired
+    if (formData.experienceRequired && !/^\d+$/.test(formData.experienceRequired)) {
+      toast.error("Experience required must be a number.");
+      return;
+    }
+
     // Add userId from local storage to formData
     const bearerToken = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
@@ -203,14 +217,14 @@ export default function PostJob() {
 
       const responseData = await response.json();
       toast.success("Job posted successfully!", {
-              position: "top-right",
-              autoClose: 3000, // 3 seconds
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+        position: "top-right",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       navigate('/postedjobslist');
       console.log('Response:', responseData);
     } catch (error) {

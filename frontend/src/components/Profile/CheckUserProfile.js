@@ -102,8 +102,10 @@ export default function CheckUserProfile() {
         body: JSON.stringify({ userId }),
       });
 
+      const data = await response.json(); 
+
       if (!response.ok) {
-        throw new Error('Failed to update follow status');
+        throw new Error(data.message);
       } else {
         toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successfully`);
       }
@@ -155,7 +157,10 @@ export default function CheckUserProfile() {
                 <div className="sticky top-0 bg-white z-10 border-b rounded-t-lg">
                   {/* Close Icon */}
                   <button
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => {
+                      setIsModalOpen(false);
+                      setJobs([]); 
+                  }}
                     className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
                   >
                     <FaTimes className='w-6 h-6' />

@@ -183,7 +183,10 @@ export default function FollowerList() {
                       <div className="sticky top-0 bg-white z-10 border-b rounded-t-lg">
                         {/* Close Icon */}
                         <button
-                          onClick={() => setIsModalOpen(false)}
+                          onClick={() => {
+                            setIsModalOpen(false);
+                            setJobs([]); 
+                        }}
                           className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
                         >
                           <FaTimes className='w-6 h-6' />
