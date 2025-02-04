@@ -8,6 +8,7 @@ import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner, FaTimes } from "react-
 import ReportJob from './Post/ReportJob';
 import SidebarNavigation from '../components/SidebarNavigation';
 import busi from "../assets/company.png";
+import { UserPlus, UserX } from "lucide-react";
 
 export default function Search() {
     const location = useLocation();
@@ -321,8 +322,8 @@ export default function Search() {
                                                                     handleFollow(user._id); // Follow the user
                                                                     setFollowingStatus((prevStatus) => ({ ...prevStatus, [user._id]: true })); // Update state to show "Posted Job"
                                                                 }}
-                                                                className="bg-indigo-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-md shadow hover:bg-indigo-700 text-xs sm:text-sm"
-                                                            >
+                                                                className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                                <UserPlus size={17} />
                                                                 Follow
                                                             </button>
                                                         )}
@@ -343,7 +344,7 @@ export default function Search() {
                                                 <button
                                                     onClick={() => {
                                                         setIsModalOpen(false);
-                                                        setJobs([]); 
+                                                        setJobs([]);
                                                     }}
                                                     className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
                                                 >

@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
+import { UserPlus, UserX } from "lucide-react";
 
 export default function CheckUserProfile() {
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ export default function CheckUserProfile() {
         body: JSON.stringify({ userId }),
       });
 
-      const data = await response.json(); 
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.message);
@@ -144,7 +145,8 @@ export default function CheckUserProfile() {
                   View Job Posted
                 </button>
               )}
-              <button onClick={handleFollowUnfollow} className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
                 {isFollowing ? 'Unfollow' : 'Follow'}
               </button>
             </div>
@@ -159,8 +161,8 @@ export default function CheckUserProfile() {
                   <button
                     onClick={() => {
                       setIsModalOpen(false);
-                      setJobs([]); 
-                  }}
+                      setJobs([]);
+                    }}
                     className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
                   >
                     <FaTimes className='w-6 h-6' />
@@ -476,25 +478,23 @@ export default function CheckUserProfile() {
                     <div className="mt-4">
                       {/* Display Repo Link with FA Icon */}
                       {project.repoLink && (
-                        <p className="text-blue-500 text-sm flex items-center">
-                          <FaGithub className="mr-2" />
-                          <span className="font-medium">Repository:</span>{" "}
-                          <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
-                            {project.repoLink}
-                          </a>
-                        </p>
+                        <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
+                          <p className="text-blue-500 text-sm flex items-center">
+                            <FaGithub className="mr-2" />
+                            <span className="font-medium">Repository</span>{" "}
+                          </p>
+                        </a>
                       )}
                     </div>
                     <div className="mt-4">
                       {/* Display Live Link with FA Icon */}
                       {project.liveLink && (
-                        <p className="text-blue-500 text-sm flex items-center">
-                          <FaGlobe className="mr-2" />
-                          <span className="font-medium">Live Link:</span>{" "}
-                          <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                            {project.liveLink}
-                          </a>
-                        </p>
+                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                          <p className="text-blue-500 text-sm flex items-center">
+                            <FaGlobe className="mr-2" />
+                            <span className="font-medium">Live Link</span>{" "}
+                          </p>
+                        </a>
                       )}
                     </div>
                   </div>

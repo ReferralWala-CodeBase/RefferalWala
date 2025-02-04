@@ -192,7 +192,11 @@ const userSchema = new mongoose.Schema({
   WishlistJobs: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'JobPost'
-  }]  
+  }],  
+  isActivate:{
+    type: Boolean,
+    default: true
+  }
 });
 
 const User = mongoose.model('User', userSchema);
