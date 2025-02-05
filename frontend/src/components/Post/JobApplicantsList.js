@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
+import Loader from '../Loader';
 
 export default function JobApplicantsList() {
   const { jobId } = useParams(); // Get jobId from URL params
@@ -87,12 +88,13 @@ export default function JobApplicantsList() {
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="m-4 px-4 py-3 border-2 rounded w-3/4 bg-[#FFFFFF] border-none text-black"
+            // className="m-4 px-4 py-3 border-2 rounded w-3/4 bg-[#FFFFFF] border-none text-black"
+            className="m-4 ml-10 px-4 py-3 rounded w-3/4 border-1 border-blue-500 focus:outline-none text-black"
           />
           {/* Table */}
           <div className="mt-2 flow-root">
             {loading ? (
-              <p>Loading...</p>
+              <Loader />
             ) : error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : applicants.length === 0 ? (

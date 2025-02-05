@@ -119,6 +119,10 @@ const userSchema = new mongoose.Schema({
     unique: false,
     default: null,
   },
+  mobileNumberVerified: {
+    type: Boolean,
+    default: false
+  },
   googleId: { type: String },
   password: {
     type: String,
@@ -161,7 +165,7 @@ const userSchema = new mongoose.Schema({
   achievements: {
     type: [String],
   },
-  preferences: PreferencesSchema,
+  preferences: [PreferencesSchema],
   links: LinksSchema,
   resume: {
     type: String,

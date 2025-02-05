@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
-import { FaTrash, FaCheck } from 'react-icons/fa';
+import { FaTrash, FaCheck, FaCheckCircle } from 'react-icons/fa';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,7 +20,8 @@ export default function EditProfile() {
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
     presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', companyEmail: '', yearsOfExperience: '' }],
-    preferences: {},
+    preferences: [{ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' }],
+    project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
       github: '',
       portfolio: '',
@@ -46,6 +47,53 @@ export default function EditProfile() {
   const [originalCompanyEmail, setOriginalCompanyEmail] = useState('');
   const [isCompanyEmailVerified, setIsCompanyEmailVerified] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [resendTimer, setResendTimer] = useState(60);
+  const [projects, setProjects] = useState([]);
+  const [showProjectForm, setShowProjectForm] = useState(false);
+  const [newProject, setNewProject] = useState({ name: "", repoLink: "", liveLink: "", description: "" });
+  const [newPreferences, setNewPreferences] = useState({ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' });
+  const [showForm, setShowForm] = useState(false); // To show the input form
+  // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
+  // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
+  // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
+
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
+
+  const handleResendOtp = async () => {
+    setResendTimer(60);
+
+    try {
+      const bearerToken = localStorage.getItem('token');
+      const response = await fetch(
+        `${Fronted_API_URL}/user/resend-otp`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: profileData.presentCompany.companyEmail }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Resend OTP sent successfully!!!.");
+      } else {
+        toast.error(data.message || "OTP send failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+
+  };
+
 
   const handleOtpChange = (e) => {
     setOtp(e.target.value); // Update OTP state
@@ -155,6 +203,78 @@ export default function EditProfile() {
     setProfileData({ ...profileData, skills: updatedSkills });
   };
 
+  const handleProjectChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject((prevProject) => ({
+      ...prevProject,
+      [name]: value,
+    }));
+  };
+
+  const addProject = () => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      project: [...prevData.project, newProject], // Add newProject to project array
+    }));
+    setNewProject({ name: "", repoLink: "", liveLink: "", description: "" }); // Reset form
+    setShowProjectForm(false);
+  };
+
+  const removeProject = (index) => {
+    setProfileData((prevData) => {
+      const updatedProjects = [...prevData.project];
+      updatedProjects.splice(index, 1);
+      return { ...prevData, project: updatedProjects };
+    });
+  };
+
+  const handleChangeNew = (e) => {
+    setNewPreferences({ ...newPreferences, [e.target.name]: e.target.value });
+  };
+
+  // Add new preference to the list
+  const handleAddPreference = () => {
+    if (
+      !newPreferences.preferredCompanyName.trim() ||
+      !newPreferences.preferredPosition.trim() ||
+      !newPreferences.expectedCTCRange.trim()
+    ) {
+      alert("Please fill all fields before adding a preference.");
+      return;
+    }
+
+    setProfileData((prevData) => ({
+      ...prevData,
+      preferences: [...prevData.preferences, newPreferences],
+    }));
+
+    // Reset input fields and hide form
+    setNewPreferences({
+      preferredCompanyName: "",
+      preferredPosition: "",
+      expectedCTCRange: "",
+    });
+    setShowForm(false); // Hide form after submission
+  };
+
+  // Update existing preference
+  const handleUpdatePreference = (index, field, value) => {
+    setProfileData((prevData) => {
+      const updatedPreferences = [...prevData.preferences];
+      updatedPreferences[index][field] = value;
+      return { ...prevData, preferences: updatedPreferences };
+    });
+  };
+
+  // Remove a preference
+  const handleRemovePreference = (index) => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      preferences: prevData.preferences.filter((_, i) => i !== index),
+    }));
+  };
+
+
 
   // Fetching the existing profile data
   useEffect(() => {
@@ -184,6 +304,8 @@ export default function EditProfile() {
         setProfileData(data);
         setOriginalCompanyEmail(data?.presentCompany?.companyEmail);
         setIsCompanyEmailVerified(data?.presentCompany?.CompanyEmailVerified);
+        // setOriginalMobileno(data?.mobileNumber);   //Phone verify
+        // setIsPhoneVerified(data?.mobileNumberVerified)  //Phone verify
       } catch (error) {
         console.error('Error fetching profile data:', error);
         toast.error(error.message);
@@ -255,15 +377,71 @@ export default function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
 
-      // Direct image upload if the profile photo is provided
-      if (profileData.profilePhoto) {
+      let updatedProfilePhoto = profileData.profilePhoto;
+
+      // Only upload if profilePhoto is a File (not a string URL)
+      if (profileData.profilePhoto && profileData.profilePhoto instanceof File) {
         const uploadResponse = await uploadImageToCloudinary(profileData.profilePhoto);
-        profileData.profilePhoto = uploadResponse.secure_url;
+        updatedProfilePhoto = uploadResponse.secure_url;
       }
+
+      const updatedProfileData = { ...profileData, profilePhoto: updatedProfilePhoto };
+
+      const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+      const yearPattern = /^(19|20)\d{2}$/; // Validates years like 1990-2099
+      const mobilePattern = /^[6-9]\d{9}$/; // Valid Indian mobile numbers
+      const numericPattern = /^\d+$/; // Only numbers
+
+      // **Mobile Number Validation**
+      if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
+        toast.error("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+
+      // **Year of Passing Validation**
+      if (profileData.education.some(edu => edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing))) {
+        toast.error("Please enter a valid year of passing.");
+        return;
+      }
+
+      // **Years of Experience Validation**
+      if (profileData.experience.some(exp => exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience))) {
+        toast.error("Years of experience must be a valid number.");
+        return;
+      }
+
+      // **Expected CTC Validation**
+      if (profileData.preferences.some(pref => pref.expectedCTCRange && isNaN(pref.expectedCTCRange))) {
+        toast.error("Expected CTC must be a valid number.");
+        return;
+      }
+
+      // **Repo & Live Link Validation**
+      if (profileData.project.some(proj => (proj.repoLink && !urlPattern.test(proj.repoLink)) ||
+        (proj.liveLink && !urlPattern.test(proj.liveLink)))) {
+        toast.error("Please enter valid URLs for repo or live links.");
+        return;
+      }
+
+      // **Social Media Links Validation**
+      Object.entries(profileData.links).forEach(([key, value]) => {
+        if (key !== "_id" && value && !urlPattern.test(value)) {
+          toast.error(`Please enter a valid URL for ${key}`);
+          return;
+        }
+      });
+
+      // **Resume Link Validation**
+      if (profileData.resume && !urlPattern.test(profileData.resume)) {
+        toast.error("Please enter a valid URL for the resume.");
+        return;
+      }
+
 
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
         method: 'PUT',
@@ -329,9 +507,42 @@ export default function EditProfile() {
     return data; // Return data containing URL and other metadata
   };
 
+  //sending sms to verify phone number
+  // const handlePhoneVerification = async (e) => {
+  //   // Prevent default form submission behavior
+  //   e.preventDefault();
+
+  //   try {
+  //     const bearerToken = localStorage.getItem('token');
+  //     const response = await fetch(`${Fronted_API_URL}/user/sendphoneOTP`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${bearerToken}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ mobileNumber: profileData.mobileNumber }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       setPhoneShowOtpModal(true);
+  //       toast.success("OTP sent successfully!");
+  //     } else {
+  //       if (response.status === 400) {
+  //         toast.error(data.message || "Phone is already verified.");
+  //       } else {
+  //         toast.error(data.message || "OTP send failed. Try again.");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toast.error("An error occurred. Please try again.");
+  //   }
+  // };
+
   return (
     <>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
@@ -374,15 +585,106 @@ export default function EditProfile() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Mobile Number <span className="text-red-500">*</span></label>
-                <input
-                  type="tel"
-                  name="mobileNumber"
-                  value={profileData.mobileNumber || ''}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  required
-                />
+
+                <div className="flex items-center">
+                  <input
+                    type="tel"
+                    name="mobileNumber"
+                    value={profileData.mobileNumber || ''}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    required
+                  />
+
+                  {/* <input
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        presentCompany: {
+                          ...profileData.presentCompany,
+                          companyEmail: e.target.value,
+                        },
+                      })
+                    }
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  /> */}
+
+
+                  {/*
+                  {profileData.mobileNumber === originalMobileno &&
+                    isPhoneVerified && (
+                      <FaCheckCircle
+                        className="ml-2"
+                        style={{ color: "#009fe3" }}
+                        size={30}
+                        title="Verified"
+                      />
+                    )}
+                  <button
+                    type="button"
+                    onClick={handlePhoneVerification}
+                    className="ml-2 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                  >
+                    Verify
+                  </button>
+                  */}
+                </div>
+
+
               </div>
+
+              {/* Phone OTP Modal */}
+              {/* {showPhoneOtpModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
+                  <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">Verify OTP</h3>
+                    <form onSubmit={handleOtpSubmit}>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Mobile Number
+                        </label>
+                        <input
+                          type="tel"
+                          value={profileData.mobileNumber}
+                          readOnly
+                          className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          OTP
+                        </label>
+                        <input
+                          type="text"
+                          value={otp}
+                          onChange={handleOtpChange}
+                          required
+                          className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleOtpSubmit}
+                        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500"
+                      >
+                        Verify OTP
+                      </button>
+                    </form>
+                    {resendTimer > 0 ? (
+                      <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
+                    ) : (
+                      <button
+                        onClick={handleResendOtp}
+                        className="mt-4 w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-400"
+                      >
+                        Resend OTP
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )} */}
+
+
               <div>
                 <label className="block text-sm font-medium text-gray-700">Gender <span className="text-red-500">*</span></label>
                 <select
@@ -486,8 +788,9 @@ export default function EditProfile() {
                   />
                   {profileData.presentCompany?.companyEmail === originalCompanyEmail &&
                     isCompanyEmailVerified && (
-                      <FaCheck
-                        className="ml-2 text-green-500"
+                      <FaCheckCircle
+                        className="ml-2"
+                        style={{ color: "#009fe3" }}
                         size={30}
                         title="Verified"
                       />
@@ -539,6 +842,17 @@ export default function EditProfile() {
                         Verify OTP
                       </button>
                     </form>
+                    {/* Resend OTP Button */}
+                    {resendTimer > 0 ? (
+                      <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
+                    ) : (
+                      <button
+                        onClick={handleResendOtp}
+                        className="mt-4 w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-400"
+                      >
+                        Resend OTP
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
@@ -805,64 +1119,266 @@ export default function EditProfile() {
                 </button>
               </div>
             )}
+
+            {/* Projects*/}
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Project</h3>
+            {profileData.project.map((project, index) => (
+              <div key={index} className="relative  mt-3 flex flex-col gap-6 p-4 border rounded-lg shadow-md bg-white">
+
+                {/* Delete Button in the Top-Right Corner */}
+                <button
+                  onClick={() => removeProject(index)}
+                  className="absolute top-2 right-2 text-black  "
+                >
+                  <FaTrash className="text-lg" />
+                </button>
+                <div className="flex gap-6">
+                  {/* Project Name */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Project Name</label>
+                    <input
+                      type="text"
+                      name="projectName"
+                      value={project.projectName || ''}
+                      onChange={(e) => {
+                        const updatedProjects = [...profileData.project];
+                        updatedProjects[index].projectName = e.target.value;
+                        setProfileData({ ...profileData, project: updatedProjects });
+                      }}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Repo Link */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Repo Link</label>
+                    <input
+                      type="text"
+                      name="repoLink"
+                      value={project.repoLink || ''}
+                      onChange={(e) => {
+                        const updatedProjects = [...profileData.project];
+                        updatedProjects[index].repoLink = e.target.value;
+                        setProfileData({ ...profileData, project: updatedProjects });
+                      }}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Live URL */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Live URL</label>
+                    <input
+                      type="text"
+                      name="liveLink"
+                      value={project.liveLink || ''}
+                      onChange={(e) => {
+                        const updatedProjects = [...profileData.project];
+                        updatedProjects[index].liveLink = e.target.value;
+                        setProfileData({ ...profileData, project: updatedProjects });
+                      }}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                </div>
+
+                {/* Project Description */}
+                <div className="flex">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea
+                      name="details"
+                      value={project.details || ''}
+                      onChange={(e) => {
+                        const updatedProjects = [...profileData.project];
+                        updatedProjects[index].details = e.target.value;
+                        setProfileData({ ...profileData, project: updatedProjects });
+                      }}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            ))}
+
+            {/* Add Project Button */}
+            <button
+              type="button"
+              onClick={() => setShowProjectForm(true)}
+              className="mt-4 p-2 bg-blue-500 text-white rounded"
+            >
+              Add Project
+            </button>
+
+            {/* New Project Form */}
+            {showProjectForm && (
+              <div className="mt-6 p-4 border border-gray-300 rounded">
+                <h4 className="text-lg font-medium text-gray-900">Add New Project</h4>
+                <div className="flex gap-6 mt-3">
+                  {/* Project Name */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Project Name</label>
+                    <input
+                      type="text"
+                      name="projectName"
+                      value={newProject.projectName}
+                      onChange={handleProjectChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Repo Link */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Repo Link</label>
+                    <input
+                      type="text"
+                      name="repoLink"
+                      value={newProject.repoLink}
+                      onChange={handleProjectChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Live URL */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Live URL</label>
+                    <input
+                      type="text"
+                      name="liveLink"
+                      value={newProject.liveLink}
+                      onChange={handleProjectChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                </div>
+
+                {/* Project Description */}
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <textarea
+                    name="details"
+                    value={newProject.details}
+                    onChange={handleProjectChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+
+                <button
+                  onClick={addProject}
+                  className="mt-4 p-2 bg-green-500 text-white rounded"
+                >
+                  Add Project Entry
+                </button>
+              </div>
+            )}
+
+
             {/* Preferences */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
-                <input
-                  type="text"
-                  name="preferredCompanyName"
-                  value={profileData.preferences?.preferredCompanyName || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      preferences: {
-                        ...profileData.preferences,
-                        preferredCompanyName: e.target.value,
-                      },
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
+            {profileData.preferences.map((preference, index) => (
+              <div key={index} className="mt-3 flex items-center gap-6">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
+                  <input
+                    type="text"
+                    name="preferredCompanyName"
+                    value={preference.preferredCompanyName || ''}
+                    onChange={(e) => {
+                      const updatedPreferences = [...profileData.preferences];
+                      updatedPreferences[index].preferredCompanyName = e.target.value;
+                      setProfileData({ ...profileData, preferences: updatedPreferences });
+                    }}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
+                  <input
+                    type="text"
+                    name="preferredPosition"
+                    value={preference.preferredPosition || ''}
+                    onChange={(e) => {
+                      const updatedPreferences = [...profileData.preferences];
+                      updatedPreferences[index].preferredPosition = e.target.value;
+                      setProfileData({ ...profileData, preferences: updatedPreferences });
+                    }}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
+                  <input
+                    type="text"
+                    name="expectedCTCRange"
+                    value={preference.expectedCTCRange || ''}
+                    onChange={(e) => {
+                      const updatedPreferences = [...profileData.preferences];
+                      updatedPreferences[index].expectedCTCRange = e.target.value;
+                      setProfileData({ ...profileData, preferences: updatedPreferences });
+                    }}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                {/* Remove Button in Same Row */}
+                <FaTrash onClick={() => handleRemovePreference(index)} className="m-2 mt-5 text-2xl cursor-pointer" />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
-                <input
-                  type="text"
-                  name="preferredPosition"
-                  value={profileData.preferences?.preferredPosition || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      preferences: {
-                        ...profileData.preferences,
-                        preferredPosition: e.target.value,
-                      },
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
+            ))}
+
+            {/* Add Preference Button */}
+            <button
+              type="button"
+              onClick={() => setShowForm(true)}
+              className="mt-4 p-2 bg-blue-500 text-white rounded"
+            >
+              Add Preference
+            </button>
+
+            {/* New Preference Form */}
+            {showForm && (
+              <div className="mt-6 p-4 border border-gray-300 rounded">
+                <h4 className="text-lg font-medium text-gray-900">Add New Preference</h4>
+                <div className="flex gap-6 mt-3">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
+                    <input
+                      type="text"
+                      name="preferredCompanyName"
+                      value={newPreferences.preferredCompanyName}
+                      onChange={handleChangeNew}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
+                    <input
+                      type="text"
+                      name="preferredPosition"
+                      value={newPreferences.preferredPosition}
+                      onChange={handleChangeNew}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
+                    <input
+                      type="text"
+                      name="expectedCTCRange"
+                      value={newPreferences.expectedCTCRange}
+                      onChange={handleChangeNew}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={handleAddPreference}
+                  className="mt-4 p-2 bg-green-500 text-white rounded"
+                >
+                  Add Preference Entry
+                </button>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
-                <input
-                  type="text"
-                  name="expectedCTCRange"
-                  value={profileData.preferences?.expectedCTCRange || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      preferences: {
-                        ...profileData.preferences,
-                        expectedCTCRange: e.target.value,
-                      },
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
-              </div>
-            </div>
+            )}
+
 
             {/* Links */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Links</h3>

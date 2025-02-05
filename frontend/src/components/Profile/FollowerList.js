@@ -4,6 +4,8 @@ import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
+import Loader from '../Loader';
+import busi from "../../assets/company.png";
 
 export default function FollowerList() {
   const [followers, setFollowers] = useState([]);
@@ -102,7 +104,7 @@ export default function FollowerList() {
         <div className="w-10/12 md:w-3/4 mx-auto">
           <div className="mt-2">
             {loading ? (
-              <p>Loading...</p>
+              <Loader />
             ) : error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : followers.length === 0 ? (
@@ -122,32 +124,49 @@ export default function FollowerList() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {followers.map((user) => (
-                        <tr key={user._id}>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <tr key={user._id}
+                          className='cursor-pointer hover:bg-gray-100'
+                        >
+                          <td
+                            onClick={() => handleViewUserProfile(user._id)}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                          >
                             <img
                               className="h-11 w-11 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
                               src={user.profilePhoto || "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
                               alt="avatar"
                             />
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
+                          <td
+                            onClick={() => handleViewUserProfile(user._id)}
+                            className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
                             {user.firstName || ''}
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
+                          <td
+                            onClick={() => handleViewUserProfile(user._id)}
+                            className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
                             {user.lastName || ''}
                           </td>
-
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.email || ''}</td>
-                          <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
+                          <td
+                            onClick={() => handleViewUserProfile(user._id)}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                          >
+                            {user.email || ''}
+                          </td>
+                          {/* <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <button
                               onClick={() => handleViewUserProfile(user._id)}
                               className="text-indigo-600 hover:text-indigo-900"
                             >
                               View Profile
                             </button>
-                          </td>
-                          <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                            <button onClick={() => handleShowJob(user._id)} className="text-indigo-600 hover:text-indigo-900">
+                          </td> */}
+                          <td className="relative py-4 pl-2 pr-2 text-sm font-medium sm:pr-6">
+                            <button onClick={(e) => {
+                              e.stopPropagation();
+                              handleShowJob(user._id)
+                            }}
+                              className="text-indigo-600 hover:text-indigo-900">
                               View Job Posted
                             </button>
                           </td>
@@ -164,7 +183,10 @@ export default function FollowerList() {
                       <div className="sticky top-0 bg-white z-10 border-b rounded-t-lg">
                         {/* Close Icon */}
                         <button
-                          onClick={() => setIsModalOpen(false)}
+                          onClick={() => {
+                            setIsModalOpen(false);
+                            setJobs([]); 
+                        }}
                           className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
                         >
                           <FaTimes className='w-6 h-6' />
@@ -177,21 +199,33 @@ export default function FollowerList() {
                         {jobs.length > 0 ? (
                           <ul className="space-y-2">
                             {jobs.map((job) => (
-                              <li key={job._id} className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between">
-                                <img src={job.companyLogoUrl} alt="" className="w-10 h-10 sm:w-16 sm:h-16 mr-4" />
+                              <li
+                                key={job._id}
+                                onClick={() => handleViewDetails(job._id)}
+                                className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer"
+                              >
+                                <img
+                                  src={job.companyLogoUrl || busi}
+                                  alt={job.companyName}
+                                  className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                                />
                                 <div className="flex-1">
-                                  <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                                  <div className="flex justify-between items-center">
+                                    <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                                    <span
+                                      className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+                                        }`}
+                                    >
+                                      {job.status === "active" ? "Active" : "Inactive"}
+                                    </span>
+                                  </div>
                                   <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
                                   <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                                  <p className="text-sm sm:text-base text-gray-500">End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}</p>
                                 </div>
-                                <button
-                                  className="ml-4 text-blue-500 underline decoration-[1.5px] decoration-blue-500 underline-offset-2 hover:text-blue-700 focus:outline-none text-xs sm:text-sm md:text-base"
-                                  onClick={() => handleViewDetails(job._id)}
-                                >
-                                  View Details
-                                </button>
                               </li>
                             ))}
+
 
                           </ul>
                         ) : (

@@ -14,6 +14,7 @@ import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import Loader from '../Loader';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -120,10 +121,9 @@ export default function ViewPostedJob() {
 
 
   if (!jobData) {
-    return
-    <div className="flex justify-center items-center">
-      <FaSpinner className="animate-spin text-xl" />
-    </div>
+    return(
+    <Loader />
+    );
   }
 
   return (

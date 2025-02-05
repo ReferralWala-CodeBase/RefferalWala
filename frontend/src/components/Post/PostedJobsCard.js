@@ -10,6 +10,7 @@ import ReportJob from './ReportJob';
 import React from 'react';
 import JobPostModal from './JobPostModal';
 import { LocationExport } from '../Location';
+import Loader from '../Loader';
 import SmallScreenNav from './SmallScreenNav';
 
 function classNames(...classes) {
@@ -549,10 +550,10 @@ export default function PostedJobsCard() {
           {/* Job Cards Section */}
           <div className='w-full max-w-6xl'>
             {/* Toggle Switch */}
-            <div className="flex justify-between items-end py-5 mx-2">
+            {/* <div className="flex justify-between items-end py-5 mx-2">
 
               <button onClick={() => navigate('/postjob')} className='py-1 px-5 bg-orange-400 text-white text-md font-light rounded-lg'>Add Post</button>
-            </div>
+            </div> */}
 
             {/* Conditional View Rendering */}
             <ul
@@ -560,9 +561,7 @@ export default function PostedJobsCard() {
               className="grid grid-cols-1 gap-x-2 gap-y-4 lg:grid-cols-3 xl:gap-x-3 px-4"
             >
               {loading ? (
-                <div className="flex justify-center items-center">
-                  <FaSpinner className="animate-spin text-xl" />
-                </div>
+                <Loader />
               ) : error ? (
                 <p className="text-red-500">{error}</p>
               ) : (
@@ -747,7 +746,7 @@ export default function PostedJobsCard() {
             </p>
             <div className="mt-4 flex justify-end">
               <button
-                onClick={() => navigate("/viewprofile")}
+                onClick={() => navigate("/editprofile")}
                 className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Go to Profile

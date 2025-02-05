@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
-import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow, FaGithub, FaLinkedin, FaGlobe, FaInstagram, FaFacebook, FaEnvelope, FaPhone, FaTimes } from "react-icons/fa";
+import { FaUniversity, FaBriefcase, FaBuilding, FaLocationArrow, FaGithub, FaLinkedin, FaGlobe, FaInstagram, FaFacebook, FaEnvelope, FaPhone, FaTimes, FaLaptopCode } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar";
+import Loader from '../Loader';
+import busi from "../../assets/company.png";
 
 export default function CheckUserProfile() {
   const navigate = useNavigate();
@@ -100,8 +102,10 @@ export default function CheckUserProfile() {
         body: JSON.stringify({ userId }),
       });
 
+      const data = await response.json(); 
+
       if (!response.ok) {
-        throw new Error('Failed to update follow status');
+        throw new Error(data.message);
       } else {
         toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successfully`);
       }
@@ -121,9 +125,7 @@ export default function CheckUserProfile() {
 
   if (!profileData) {
     return (
-      <div className="flex justify-center items-center">
-        <FaSpinner className="animate-spin text-xl" />
-      </div>
+      <Loader />
     );
   }
 
@@ -137,7 +139,7 @@ export default function CheckUserProfile() {
         <div className="w-11/12 md:w-3/4 px-4 sm:px-6 m-auto">
           <div className="mt-6 flex justify-end">
             <div>
-            {isFollowing && (
+              {isFollowing && (
                 <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   View Job Posted
                 </button>
@@ -155,7 +157,10 @@ export default function CheckUserProfile() {
                 <div className="sticky top-0 bg-white z-10 border-b rounded-t-lg">
                   {/* Close Icon */}
                   <button
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => {
+                      setIsModalOpen(false);
+                      setJobs([]); 
+                  }}
                     className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
                   >
                     <FaTimes className='w-6 h-6' />
@@ -165,29 +170,41 @@ export default function CheckUserProfile() {
 
                 {/* Modal Content */}
                 <div className="overflow-auto max-h-[70vh] p-4 hide-scrollbar">
-                {jobs.length > 0 ? (
-                          <ul className="space-y-2">
-                            {jobs.map((job) => (
-                              <li key={job._id} className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between">
-                                <img src={job.companyLogoUrl} alt="" className="w-10 h-10 sm:w-16 sm:h-16 mr-4" />
-                                <div className="flex-1">
-                                  <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
-                                  <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
-                                  <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
-                                </div>
-                                <button
-                                  className="ml-4 text-blue-500 underline decoration-[1.5px] decoration-blue-500 underline-offset-2 hover:text-blue-700 focus:outline-none text-xs sm:text-sm md:text-base"
-                                  onClick={() => handleViewDetails(job._id)}
-                                >
-                                  View Details
-                                </button>
-                              </li>
-                            ))}
+                  {jobs.length > 0 ? (
+                    <ul className="space-y-2">
+                      {jobs.map((job) => (
+                        <li
+                          key={job._id}
+                          onClick={() => handleViewDetails(job._id)}
+                          className="p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer"
+                        >
+                          <img
+                            src={job.companyLogoUrl || busi}
+                            alt={job.companyName}
+                            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                          />
+                          <div className="flex-1">
+                            <div className="flex justify-between items-center">
+                              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                              <span
+                                className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+                                  }`}
+                              >
+                                {job.status === "active" ? "Active" : "Inactive"}
+                              </span>
+                            </div>
+                            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
+                            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                            <p className="text-sm sm:text-base text-gray-500">End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}</p>
+                          </div>
+                        </li>
+                      ))}
 
-                          </ul>
-                        ) : (
-                          <p>No jobs posted by this user.</p>
-                        )}
+
+                    </ul>
+                  ) : (
+                    <p>No jobs posted by this user.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -433,47 +450,93 @@ export default function CheckUserProfile() {
               </div>
             )}
 
+
+            {/* Projects */}
+            <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Projects</h3>
+            {profileData.project?.length ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {profileData.project.map((project, index) => (
+                  <div
+                    key={index}
+                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-xl">
+                        <FaLaptopCode />
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          {project.projectName || "Project Name"}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {project.details || "Project Description"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      {/* Display Repo Link with FA Icon */}
+                      {project.repoLink && (
+                        <p className="text-blue-500 text-sm flex items-center">
+                          <FaGithub className="mr-2" />
+                          <span className="font-medium">Repository:</span>{" "}
+                          <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
+                            {project.repoLink}
+                          </a>
+                        </p>
+                      )}
+                    </div>
+                    <div className="mt-4">
+                      {/* Display Live Link with FA Icon */}
+                      {project.liveLink && (
+                        <p className="text-blue-500 text-sm flex items-center">
+                          <FaGlobe className="mr-2" />
+                          <span className="font-medium">Live Link:</span>{" "}
+                          <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                            {project.liveLink}
+                          </a>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-gray-600 mt-6">No projects added.</div>
+            )}
+
             {/* Preferences */}
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Preferences</h3>
-            <div className="border hover:shadow-xl transition-shadow bg-white border-gray-200 p-8 rounded-lg shadow-xl mt-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Preferred Company Name */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Preferred Company Name</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.preferredCompanyName ? (
-                      <span>{profileData.preferences.preferredCompanyName}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
+            {profileData.preferences?.length ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {profileData.preferences.map((pref, index) => (
+                  <div
+                    key={index}
+                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-xl">
+                        <FaLocationArrow />
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          {pref.preferredCompanyName || "Preferred Company Name"}
+                        </h3>
+                        <p className="text-sm text-gray-500">{pref.preferredPosition || "Preferred Position"}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <p className="text-gray-600">
+                        <span className="font-medium">Expected CTC Range:</span>{" "}
+                        {pref.expectedCTCRange || "Not Set"}
+                      </p>
+                    </div>
                   </div>
-                </div>
-
-                {/* Preferred Position */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Preferred Position</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.preferredPosition ? (
-                      <span>{profileData.preferences.preferredPosition}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Expected CTC Range */}
-                <div className="flex flex-col">
-                  <label className="text-base font-medium text-gray-700 mb-2">Expected CTC Range</label>
-                  <div className="flex items-center justify-between bg-gray-50 text-gray-700 p-4 rounded-lg shadow-sm border-2 border-gray-200 focus-within:border-blue-500 transition-all">
-                    {profileData.preferences?.expectedCTCRange ? (
-                      <span>{profileData.preferences.expectedCTCRange}</span>
-                    ) : (
-                      <span className="text-gray-400">Not Set</span>
-                    )}
-                  </div>
-                </div>
+                ))}
               </div>
-            </div>
+            ) : (
+              <p className="text-gray-500 mt-4">No Preferences Set</p>
+            )}
+
 
           </div>
         </div>

@@ -4,10 +4,12 @@ import axios from "axios";
 import { useGoogleLogin } from '@react-oauth/google';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API 
@@ -134,26 +136,33 @@ function Login() {
               </div>
 
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    autoComplete="current-password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
+      <label
+        htmlFor="password"
+        className="block text-sm font-medium leading-6 text-gray-900"
+      >
+        Password
+      </label>
+      <div className="mt-2 relative">
+        <input
+          id="password"
+          name="password"
+          type={showPassword ? "text" : "password"}
+          placeholder="Enter your password"
+          autoComplete="current-password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+        >
+          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
+      </div>
+    </div>
 
               {error && <p className="text-red-600">{error}</p>}
 
@@ -208,10 +217,9 @@ function Login() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-4">
+              <div className="mt-6 grid grid-cols-1">
                 <div
                   onClick={handleGoogleAuth}
-                  // href="#"
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer"
                 >
                   <svg
@@ -241,26 +249,6 @@ function Login() {
                   </span>
                 </div>
 
-                <a
-                  href="/"
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent cursor-pointer pointer-events-none"
-                >
-                  <svg
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 0C4.485 0 0 4.485 0 10c0 4.991 3.657 9.128 8.438 9.879v-6.989H5.896v-2.89h2.542V7.179c0-2.507 1.492-3.891 3.776-3.891 1.094 0 2.236.195 2.236.195v2.458h-1.258c-1.241 0-1.628.771-1.628 1.56v1.88h2.771l-.443 2.89h-2.328v6.989C16.343 19.128 20 14.991 20 10c0-5.515-4.485-10-10-10z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span className="text-sm font-semibold leading-6">
-                    Facebook
-                  </span>
-                </a>
               </div>
             </div>
           </div>

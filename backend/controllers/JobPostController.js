@@ -51,7 +51,7 @@ const sendEmailTemplate = async (recipient, subject, templateName, replacements 
 // @desc    Create a new job referral post
 exports.createJobPost = async (req, res) => {
   try {
-    const { userId, jobRole, jobUniqueId, endDate, companyName, companyLogoUrl,jobDescription, experienceRequired, location, workMode, employmentType, ctc, noOfReferrals, jobLink } = req.body;
+    const { userId, jobRole, jobUniqueId, endDate, companyName, companyLogoUrl, jobDescription, experienceRequired, location, workMode, employmentType, ctc, noOfReferrals, jobLink } = req.body;
 
     // Check if the user exists
     const user = await User.findById(userId);
@@ -518,7 +518,7 @@ exports.getJobsByJobUniqueId = async (req, res) => {
 exports.updateApplicantStatus = async (req, res) => {
   try {
     const { jobId, applicantId } = req.params; // Extract job ID and applicant ID from the parameters
-    const { status } = req.body; // New status for the applicant
+    const { status, uploadedFileUrl } = req.body; // New status for the applicant
 
     // Validate status
     const validStatuses = ['applied', 'selected', 'rejected', 'on hold'];
@@ -560,6 +560,7 @@ exports.updateApplicantStatus = async (req, res) => {
 
     // Update the status
     applicantStatus.status = status;
+    applicantStatus.employer_doc = uploadedFileUrl;
     await applicantStatus.save();
 
     // Optionally, create a notification about the status change
@@ -573,30 +574,63 @@ exports.updateApplicantStatus = async (req, res) => {
 
       await notification.save();
     }
- // Send email notification to the applicant
- try {
-  await sendEmailTemplate(
-    user.email,  // Recipient email
-    'Your Application Status Has Changed',  // Email subject
-    'status_update_template.html',  // Replace with your status update template filename
-    { 
-      applicantName: user.firstName,
-      jobRole: jobPost.jobRole,
-      companyName: jobPost.companyName,
-      status: status,
-    }  // Replace placeholders with actual values
-  );
-  console.log(`Status update email sent to ${user.email}`);
-} catch (err) {
-  console.error(`Failed to send status update email:`, err);
-  return res.status(500).json({ error: 'Failed to send status update email.' });
-}
+    // Send email notification to the applicant
+    try {
+      await sendEmailTemplate(
+        user.email,  // Recipient email
+        'Your Application Status Has Changed',  // Email subject
+        'status_update_template.html',  // Replace with your status update template filename
+        {
+          applicantName: user.firstName,
+          jobRole: jobPost.jobRole,
+          companyName: jobPost.companyName,
+          status: status,
+        }  // Replace placeholders with actual values
+      );
+      console.log(`Status update email sent to ${user.email}`);
+    } catch (err) {
+      console.error(`Failed to send status update email:`, err);
+      return res.status(500).json({ error: 'Failed to send status update email.' });
+    }
 
-res.status(200).json({ message: 'Applicant status updated successfully', applicantStatus });
-} catch (err) {
-console.error('Error updating applicant status:', err.message);
-res.status(500).send('Server Error');
-}
+    res.status(200).json({ message: 'Applicant status updated successfully', applicantStatus });
+  } catch (err) {
+    console.error('Error updating applicant status:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+//Uploading Document 
+exports.updateEmployeeDocument = async (req, res) => {
+  try {
+    const { jobId, userId } = req.params;
+    const { documentUrl } = req.body;
+
+    // Validate request
+    if (!documentUrl) {
+      return res.status(400).json({ message: "Document URL is required" });
+    }
+
+    // Find job and check if the applicant exists
+    const job = await JobPost.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const applicantStatus = await ApplicantStatus.findOne({ userId: userId, jobPostId: jobId });
+    if (!applicantStatus) {
+      return res.status(404).json({ message: 'Applicant not found' });
+    }
+
+    // Update document URL
+    applicantStatus.employee_doc = documentUrl;
+    await applicantStatus.save();
+
+    res.status(200).json({ message: "Document updated successfully", documentUrl });
+  } catch (error) {
+    console.error("Error updating document:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 //removing from applicatant list
@@ -611,12 +645,12 @@ exports.removeFromJobApplicants = async (req, res) => {
     // Loop through each job post and remove the user from applicants list if found
     for (const jobPost of jobPostsWithApplicant) {
       // Find the applicant's index by matching the userId with applicants array
-      const applicantIndex = jobPost.applicants.findIndex(applicant => 
+      const applicantIndex = jobPost.applicants.findIndex(applicant =>
         applicant.toString() === userId // Convert ObjectId to string and compare
       );
 
       if (applicantIndex !== -1) {
-        
+
         jobPost.applicants.pull(jobPost.applicants[applicantIndex]);  // Remove the userId from the applicants array
 
         // Save the updated job post
@@ -665,7 +699,7 @@ exports.withdrawFromJobApplicants = async (req, res) => {
     ]);
 
     // Response
-    return res.status(200).json({ message: `User with ID ${userId} withdrawn from job ${jobId}.`});
+    return res.status(200).json({ message: `User with ID ${userId} withdrawn from job ${jobId}.` });
   } catch (err) {
     console.error("Error withdrawing user from job applicants:", err.message);
     res.status(500).send("Server Error");

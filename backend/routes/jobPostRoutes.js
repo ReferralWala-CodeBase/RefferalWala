@@ -13,6 +13,7 @@ const {
   getJobsByJobUniqueId,
   getJobPostsByUser,
   withdrawApplication,
+  updateEmployeeDocument,
   addJobToWishlist, removeJobFromWishlist, getWishlistJobs
 } = require('../controllers/JobPostController');
 
@@ -49,6 +50,9 @@ router.get('/user/:userId/jobpost/:jobPostId/application/status', jwtMiddleware,
 
 // Update applicant status
 router.put('/:jobId/applicant/:applicantId/status',jwtMiddleware,updateApplicantStatus);
+
+// Upload verification document 
+router.put("/:jobId/applicant/:userId/document", jwtMiddleware, updateEmployeeDocument);
 
 // Update a job post
 router.put('/update/:id',jwtMiddleware, updateJobPost);
