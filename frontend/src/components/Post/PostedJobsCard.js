@@ -431,7 +431,7 @@ export default function PostedJobsCard() {
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <SmallScreenNav />
-      <div className="container mx-auto md:px-3 px-0 md:py-2 py-1">
+      <div className=" mx-auto md:px-3 px-0 md:py-2 py-1">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-1 mx-auto max-w-full">
 
@@ -547,7 +547,7 @@ export default function PostedJobsCard() {
           </div>
 
           {/* Job Cards Section */}
-          <div className='w-full max-w-4xl'>
+          <div className='w-full max-w-6xl'>
             {/* Toggle Switch */}
             <div className="flex justify-between items-end py-5 mx-2">
 
@@ -718,85 +718,6 @@ export default function PostedJobsCard() {
               )}
             </ul>
           </div>
-
-          {/* Right Side  */}
-          <div className="hidden lg:block w-1/5 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-            <div>
-              <div className="flex items-center gap-2 border-b pb-2 mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">Recruiter List</h3>
-              </div>
-
-              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-sm">
-                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
-                  <span className="text-gray-700">John Doe</span>
-                  <span className="text-gray-500 text-xs">HR Manager</span>
-                </li>
-                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
-                  <span className="text-gray-700">Jane Smith</span>
-                  <span className="text-gray-500 text-xs">Recruiter</span>
-                </li>
-                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
-                  <span className="text-gray-700">Michael Brown</span>
-                  <span className="text-gray-500 text-xs">Talent Acquisition</span>
-                </li>
-                <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
-                  <span className="text-gray-700">Emily Davis</span>
-                  <span className="text-gray-500 text-xs">Senior Recruiter</span>
-                </li>
-              </ul>
-
-            </div>
-
-            {/* Company List Section */}
-            <div className="mt-6">
-              <div className="flex items-center gap-2 border-b pb-2 mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">Company List</h3>
-              </div>
-              <ul className="space-y-1 max-h-64 overflow-y-auto custom-scrollbar text-sm">
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">TechCorp Solutions</span>
-                  <span className="text-gray-500 text-xs">IT</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">Innovatech Ltd.</span>
-                  <span className="text-gray-500 text-xs">Software</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">BrightFuture Inc.</span>
-                  <span className="text-gray-500 text-xs">Education</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">Green Energy Co.</span>
-                  <span className="text-gray-500 text-xs">Energy</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">HealthPlus Services</span>
-                  <span className="text-gray-500 text-xs">Healthcare</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">SmartBuild Group</span>
-                  <span className="text-gray-500 text-xs">Construction</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">Alpha Retail</span>
-                  <span className="text-gray-500 text-xs">Retail</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">NextGen Logistics</span>
-                  <span className="text-gray-500 text-xs">Logistics</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">CreativeDesign Studio</span>
-                  <span className="text-gray-500 text-xs">Design</span>
-                </li>
-                <li className="p-2 hover:bg-gray-100 rounded flex justify-between">
-                  <span className="text-gray-700">BlueOcean Tech</span>
-                  <span className="text-gray-500 text-xs">Technology</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
 
 
         </div>

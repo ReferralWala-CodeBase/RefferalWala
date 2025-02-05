@@ -90,7 +90,6 @@ export default function AppliedJobDetails() {
         }
       }
 
-      // On successful application, redirect to the "applied jobs" page
       toast.success("Successfully applied for the job!");
       navigate('/appliedjobs');
     } catch (error) {
