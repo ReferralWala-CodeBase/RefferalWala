@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, verifyOTP,verifyCompanyEmail, sendOTP,forgotPassword, getFollowers, getFollowing, resetPassword, resendOTP , getAllProfiles, getProfileById, getProfileByEmail, updateProfileById, followUser, unfollowUser, delectUserActivity, getNotifications, getDelect, searching} = require('../controllers/UserController');
+const { registerUser, loginUser, verifyOTP,verifyCompanyEmail, sendOTP,forgotPassword, getFollowers, getFollowing, resetPassword, resendOTP , getAllProfiles, getProfileById, getProfileByEmail, updateProfileById, followUser, unfollowUser, delectUserActivity, getNotifications, getDelect, searching, getDeactivated} = require('../controllers/UserController');
 
 const jwtMiddleware = require('../middleware/jwtMiddleware'); 
 
@@ -23,6 +23,7 @@ router.get('/notifications/:userId',jwtMiddleware, getNotifications);
 router.get('/:id/followers', jwtMiddleware, getFollowers);
 router.get('/:id/following', jwtMiddleware, getFollowing);
 router.delete('/delete/:id', getDelect); //to delete the user and it's activity
+router.put('/deactivate/:id', jwtMiddleware, getDeactivated); //to deactivate the user and it's activity
 router.post('/search', searching);
 
 

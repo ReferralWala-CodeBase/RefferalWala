@@ -15,11 +15,9 @@ export default function ViewProfile() {
   const [searchQuery, setSearchQuery] = useState('');
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
-
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-
         const bearerToken = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
         const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
@@ -66,7 +64,7 @@ export default function ViewProfile() {
           <SidebarNavigation />
         </div>
         <div className="w-11/12 md:w-3/4 px-4 sm:px-6 m-auto">
-          <div className="flex justify-end pt-2 pb-4 ml-4">
+          <div className="flex justify-end pt-2 pb-4 ml-4 gap-2">
             <button
               onClick={() => navigate(`/editprofile`)}
               className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -327,25 +325,23 @@ export default function ViewProfile() {
                     <div className="mt-4">
                       {/* Display Repo Link with FA Icon */}
                       {project.repoLink && (
-                        <p className="text-blue-500 text-sm flex items-center">
-                          <FaGithub className="mr-2" />
-                          <span className="font-medium">Repository:</span>{" "}
-                          <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
-                            {project.repoLink}
-                          </a>
-                        </p>
+                        <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
+                          <p className="text-blue-500 text-sm flex items-center">
+                            <FaGithub className="mr-2" />
+                            <span className="font-medium">Repository:</span>{" "}
+                          </p>
+                        </a>
                       )}
                     </div>
                     <div className="mt-4">
                       {/* Display Live Link with FA Icon */}
                       {project.liveLink && (
-                        <p className="text-blue-500 text-sm flex items-center">
-                          <FaGlobe className="mr-2" />
-                          <span className="font-medium">Live Link:</span>{" "}
-                          <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                            {project.liveLink}
-                          </a>
-                        </p>
+                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                          <p className="text-blue-500 text-sm flex items-center">
+                            <FaGlobe className="mr-2" />
+                            <span className="font-medium">Live Link:</span>{" "}
+                          </p>
+                        </a>
                       )}
                     </div>
                   </div>
@@ -388,7 +384,7 @@ export default function ViewProfile() {
               <p className="text-gray-500 mt-4">No Preferences Set</p>
             )}
 
-        
+
 
           </div>
         </div>

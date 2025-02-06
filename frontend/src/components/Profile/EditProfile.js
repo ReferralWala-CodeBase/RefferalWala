@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
 import { FaTrash, FaCheck, FaCheckCircle } from 'react-icons/fa';
 import Navbar from "../Navbar";
+import { PencilIcon, UserMinusIcon, UserPlusIcon } from '@heroicons/react/20/solid';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -36,6 +39,8 @@ export default function EditProfile() {
     aboutMe: ''
   });
 
+  const [open, setOpen] = useState(false);
+  const cancelButtonRef = useRef(null);
   const [newEducation, setNewEducation] = useState({ level: '', schoolName: '', yearOfPassing: '' });
   const [newExperience, setNewExperience] = useState({ companyName: '', position: '', yearsOfExperience: '' });
   const [showEducationForm, setShowEducationForm] = useState(false);
@@ -56,6 +61,35 @@ export default function EditProfile() {
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
+
+
+  const handleDeactivate = async () => {
+    try {
+      const bearerToken = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      const newStatus = profileData.isActivate ? false : true; // Toggle the status
+
+      const response = await fetch(`${Fronted_API_URL}/user/deactivate/${userId}`, {
+        method: "PUT", // Assuming deactivation requires an update
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ isActivate: newStatus })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      toast.success(`Account ${newStatus ? 'activated' : 'deactivated'} successfully`);
+      navigate('/viewprofile');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast.error(error.message);
+
+    };
+  }
 
   useEffect(() => {
     if (resendTimer > 0) {
@@ -548,7 +582,99 @@ export default function EditProfile() {
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
-          <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Edit Profile</h3>
+          <div className="flex justify-between w-full items-center mt-6 ">
+            
+          <h3 className="text-lg font-medium leading-7 text-gray-900 text-left">
+              Edit Profile
+            </h3>
+            <button
+              onClick={() => setOpen(true)}
+              className="inline-flex justify-center items-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              {profileData.isActivate === false ? (
+                <UserPlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+              ) : (
+                <UserMinusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+              )}
+              {profileData.isActivate === false ? "Activate" : "Deactivate"}
+            </button>
+          </div>
+
+
+                    {/* Delete Confirmation Modal */}
+                    <Transition.Root show={open} as={Fragment}>
+                      <Dialog
+                        as="div"
+                        className="relative z-10"
+                        initialFocus={cancelButtonRef}
+                        onClose={() => setOpen(false)}
+                      >
+                        <Transition.Child
+                          as={Fragment}
+                          enter="ease-out duration-300"
+                          enterFrom="opacity-0"
+                          enterTo="opacity-100"
+                          leave="ease-in duration-200"
+                          leaveFrom="opacity-100"
+                          leaveTo="opacity-0"
+                        >
+                          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                        </Transition.Child>
+          
+                        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                            <Transition.Child
+                              as={Fragment}
+                              enter="ease-out duration-300"
+                              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                              enterTo="opacity-100 translate-y-0 sm:scale-100"
+                              leave="ease-in duration-200"
+                              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            >
+                              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                                <div className="sm:flex sm:items-start">
+                                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                                  </div>
+                                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                      Delete Account
+                                    </Dialog.Title>
+                                    <div className="mt-2">
+                                      <p className="text-sm text-gray-500">
+                                        Are you sure you want to deactivate your account?
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                  <button
+                                    type="button"
+                                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                                    onClick={() => {
+                                      setOpen(false);
+                                      handleDeactivate();
+                                    }}
+                                  >
+                                    Confirm
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                    onClick={() => setOpen(false)}
+                                    ref={cancelButtonRef}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </Dialog.Panel>
+                            </Transition.Child>
+                          </div>
+                        </div>
+                      </Dialog>
+                    </Transition.Root>
+
           <form onSubmit={handleSubmit}>
             {/* Basic Information */}
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">

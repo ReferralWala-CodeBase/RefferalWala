@@ -581,7 +581,27 @@ exports.searching = async (req, res) => {
   }
 };
 
+exports.getDeactivated = async (req, res) => {
+  const { isActivate } = req.body;
 
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.isActivate = isActivate;
+    await user.save();
+
+    // Send response back to the client
+    res.status(200).json({ message: 'User deactivated successfully' });
+  }
+  catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Server error while deactivated user' });
+  }
+};
 
 exports.getDelect = async (req, res) => {
   const { email } = req.body; // Email of the user to be deleted
@@ -593,7 +613,6 @@ exports.getDelect = async (req, res) => {
   }
 
   try {
-
     const usersFollowing = await User.find({ following: id });  // Fetch users that the user is following
     const usersWithFollower = await User.find({ followers: id });  // Fetch users that follow the user
     const jobPosts = await JobPost.find();  // Fetch all job posts to check for applicants
