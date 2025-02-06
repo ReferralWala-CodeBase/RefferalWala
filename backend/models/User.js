@@ -50,6 +50,9 @@ const PresentCompanySchema = new mongoose.Schema({
   companyName: {
     type: String,
   },
+  companyLogoUrl: {
+    type: String,  
+  },
   companyEmail: {
     type: String,
   },

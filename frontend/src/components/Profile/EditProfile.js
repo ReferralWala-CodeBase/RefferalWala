@@ -8,10 +8,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { LocationExport } from "../Location";
 
 export default function EditProfile() {
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const Logo_Dev_Secret_key = process.env.REACT_APP_LOGO_DEV_SECRET_KEY; // Logo dev secret key
   const Cloudinary_URL = process.env.REACT_APP_CLOUDINARY_URL; // Cloudinary API
   const [profileData, setProfileData] = useState({
     firstName: '',
@@ -22,7 +24,7 @@ export default function EditProfile() {
     profilePhoto: '',
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
-    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', companyEmail: '', yearsOfExperience: '' }],
+    presentCompany: [{ role: '', companyName: '', companyLogoUrl: '', location: '', currentCTC: '', companyEmail: '', yearsOfExperience: '' }],
     preferences: [{ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
@@ -45,6 +47,9 @@ export default function EditProfile() {
   const [newExperience, setNewExperience] = useState({ companyName: '', position: '', yearsOfExperience: '' });
   const [showEducationForm, setShowEducationForm] = useState(false);
   const [showExperienceForm, setShowExperienceForm] = useState(false);
+  const [companySuggestions, setCompanySuggestions] = useState([]);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
@@ -262,9 +267,61 @@ export default function EditProfile() {
     });
   };
 
-  const handleChangeNew = (e) => {
-    setNewPreferences({ ...newPreferences, [e.target.name]: e.target.value });
+  const handleChangeNew = async (e) => {
+    const { name, value } = e.target;
+
+    setNewPreferences({ ...newPreferences, [name]: value });
+
+    if (value.length > 2) {
+      setLoading(true);
+
+      try {
+        if (name === "companyName") {
+          const response = await fetch(`https://api.logo.dev/search?q=${value}`, {
+            headers: {
+              Authorization: `Bearer ${Logo_Dev_Secret_key}`, // Corrected format
+            },
+          });
+          const data = await response.json();
+
+          setCompanySuggestions(data?.length > 0 ? data : []);
+        } else if (name === "location") {
+          const filteredLocations = LocationExport.filter((loc) =>
+            `${loc.city}, ${loc.state}`.toLowerCase().includes(value.toLowerCase())
+          );
+
+          setLocationSuggestions(
+            filteredLocations.map((loc) => ({
+              description: `${loc.city}, ${loc.state}`,
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        setCompanySuggestions([]);
+        setLocationSuggestions([]);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setCompanySuggestions([]);
+      setLocationSuggestions([]);
+    }
   };
+
+
+  const handleSuggestionClick = (company) => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      presentCompany: [{
+        ...prevData.presentCompany[0], // Preserve existing values
+        companyName: company.name,
+        companyLogoUrl: company.logo_url || null, // Set logo URL or null
+      }],
+    }));
+    setCompanySuggestions([]);
+  };
+  
 
   // Add new preference to the list
   const handleAddPreference = () => {
@@ -583,8 +640,8 @@ export default function EditProfile() {
         </div>
         <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
           <div className="flex justify-between w-full items-center mt-6 ">
-            
-          <h3 className="text-lg font-medium leading-7 text-gray-900 text-left">
+
+            <h3 className="text-lg font-medium leading-7 text-gray-900 text-left">
               Edit Profile
             </h3>
             <button
@@ -601,79 +658,79 @@ export default function EditProfile() {
           </div>
 
 
-                    {/* Delete Confirmation Modal */}
-                    <Transition.Root show={open} as={Fragment}>
-                      <Dialog
-                        as="div"
-                        className="relative z-10"
-                        initialFocus={cancelButtonRef}
-                        onClose={() => setOpen(false)}
-                      >
-                        <Transition.Child
-                          as={Fragment}
-                          enter="ease-out duration-300"
-                          enterFrom="opacity-0"
-                          enterTo="opacity-100"
-                          leave="ease-in duration-200"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                        </Transition.Child>
-          
-                        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                            <Transition.Child
-                              as={Fragment}
-                              enter="ease-out duration-300"
-                              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                              enterTo="opacity-100 translate-y-0 sm:scale-100"
-                              leave="ease-in duration-200"
-                              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            >
-                              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                                <div className="sm:flex sm:items-start">
-                                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                    <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
-                                  </div>
-                                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                      Delete Account
-                                    </Dialog.Title>
-                                    <div className="mt-2">
-                                      <p className="text-sm text-gray-500">
-                                        Are you sure you want to deactivate your account?
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                                  <button
-                                    type="button"
-                                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                    onClick={() => {
-                                      setOpen(false);
-                                      handleDeactivate();
-                                    }}
-                                  >
-                                    Confirm
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                    onClick={() => setOpen(false)}
-                                    ref={cancelButtonRef}
-                                  >
-                                    Cancel
-                                  </button>
-                                </div>
-                              </Dialog.Panel>
-                            </Transition.Child>
+          {/* Delete Confirmation Modal */}
+          <Transition.Root show={open} as={Fragment}>
+            <Dialog
+              as="div"
+              className="relative z-10"
+              initialFocus={cancelButtonRef}
+              onClose={() => setOpen(false)}
+            >
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    enterTo="opacity-100 translate-y-0 sm:scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                  >
+                    <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                      <div className="sm:flex sm:items-start">
+                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                          <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                        </div>
+                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                          <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                            Delete Account
+                          </Dialog.Title>
+                          <div className="mt-2">
+                            <p className="text-sm text-gray-500">
+                              Are you sure you want to deactivate your account?
+                            </p>
                           </div>
                         </div>
-                      </Dialog>
-                    </Transition.Root>
+                      </div>
+                      <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button
+                          type="button"
+                          className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                          onClick={() => {
+                            setOpen(false);
+                            handleDeactivate();
+                          }}
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          type="button"
+                          className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                          onClick={() => setOpen(false)}
+                          ref={cancelButtonRef}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition.Root>
 
           <form onSubmit={handleSubmit}>
             {/* Basic Information */}
@@ -856,7 +913,7 @@ export default function EditProfile() {
             {/* Present Company */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Present Company</h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
+              <div className='relative'>
                 <label className="block text-sm font-medium text-gray-700">Role</label>
                 <input
                   type="text"
@@ -874,6 +931,26 @@ export default function EditProfile() {
                   }
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
+                {companySuggestions.length > 0 && (
+                  <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
+                    {companySuggestions.map((company, index) => (
+                      <li
+                        key={index}
+                        className="cursor-pointer p-2 hover:bg-gray-200"
+                        onClick={() => handleSuggestionClick(company)}
+                      >
+                        <div className="flex items-center">
+                          <img
+                            src={company.logo_url}
+                            alt={company.name}
+                            className="h-6 w-6 object-contain mr-2"
+                          />
+                          <span>{company.name}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Company Name</label>
@@ -1040,6 +1117,7 @@ export default function EditProfile() {
                 />
               </div>
             </div>
+
             {/* Education Section */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education <span className="text-red-500">*</span></h3>
             {profileData.education.map((edu, index) => (
@@ -1465,7 +1543,7 @@ export default function EditProfile() {
               <div className="mt-6 p-4 border border-gray-300 rounded">
                 <h4 className="text-lg font-medium text-gray-900">Add New Preference</h4>
                 <div className="flex gap-6 mt-3">
-                  <div className="flex-1">
+                  <div className="flex-1 relative">
                     <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
                     <input
                       type="text"
@@ -1474,7 +1552,22 @@ export default function EditProfile() {
                       onChange={handleChangeNew}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />
+                    {companySuggestions.length > 0 && (
+                      <ul className="absolute w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto">
+                        {companySuggestions.map((company, index) => (
+                          <li
+                            key={index}
+                            className="cursor-pointer p-2 hover:bg-gray-200 flex items-center"
+                            onClick={() => handleSuggestionClick(company)}
+                          >
+                            <img src={company.logo_url} alt={company.name} className="h-6 w-6 object-contain mr-2" />
+                            <span>{company.name}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
+
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
                     <input

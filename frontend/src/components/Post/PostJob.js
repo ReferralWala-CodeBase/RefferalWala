@@ -52,7 +52,13 @@ export default function PostJob() {
       });
 
       if (!response.ok) {
-        throw new Error("Unable to fetch profile data.");
+        if (response.status === 401) {
+          // Unauthorized, remove the token and navigate to login
+          localStorage.removeItem('token');
+          navigate('/user-login');
+        } else {
+          throw new Error('Failed to fetch profile data');
+        }
       }
       const profileData = await response.json();
       const { mobileNumber, presentCompany } = profileData;
@@ -143,8 +149,6 @@ export default function PostJob() {
       setLocationSuggestions([]);  // Clear location suggestions if input length <= 2
     }
   };
-
-
 
   const handleSuggestionClick = (company) => {
     setFormData({

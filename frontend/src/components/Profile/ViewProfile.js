@@ -83,7 +83,7 @@ export default function ViewProfile() {
                 />
                 <h2 className="text-xl font-semibold text-gray-800">{profileData.firstName || <>&nbsp;</>} {profileData.lastName || <>&nbsp;</>}</h2>
                 <p className="text-sm text-gray-600 mb-3">{profileData.presentCompany?.role || <>&nbsp;</>}</p>
-                <div className="text-sm text-gray-700 leading-relaxed  flex items-center flex-wrap space-x-4">
+                <div className="text-sm text-gray-700 leading-relaxed block">
                   <div className="flex items-center space-x-1">
                     <FaEnvelope className="text-gray-500" />
                     <span>{profileData.email || <>&nbsp;</>}</span>
