@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Loader from '../Loader';
+import img2 from "../../assets/desjob.png";
+import img3 from "../../assets/2.png";
 
 export default function AppliedJobs() {
   const navigate = useNavigate();
@@ -142,11 +144,16 @@ export default function AppliedJobs() {
               <Loader />
             ) : error ? (
               error === "Make Your Career Dreams a Reality" ? ( // Handle specific 404 error message
-                <div className="flex mt-4">
-                  <p className="text-gray-700 mr-3 mt-1">{error}</p>
+                <div className="flex flex-col items-center mt-8 p-6 bg-gray-100 rounded-md shadow-md">
+                  <img
+                    src={img2}
+                    alt="No Jobs Found"
+                    className="mb-4 w-36"
+                  />
+                  <p className="text-gray-700 text-lg font-semibold mb-4">{error}</p>
                   <button
-                    onClick={() => navigate('/')} // Navigate to job creation
-                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                    onClick={() => navigate('/')}
+                    className="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-all shadow-lg"
                   >
                     Add Job
                   </button>
@@ -155,7 +162,14 @@ export default function AppliedJobs() {
                 <p className="text-red-500">{error}</p>
               )
             ) : filteredJobs.length === 0 ? (
-              <p>No applied jobs found.</p>
+              <div className="flex flex-col items-center mt-8 p-6 bg-gray-50 rounded-md shadow">
+                <img
+                  src={img3}
+                  alt="No Jobs Found"
+                  className="mb-4 w-36"
+                />
+                <p className="text-gray-500 text-lg">No applied jobs found.</p>
+              </div>
             ) : (
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Table View for Larger Screens */}

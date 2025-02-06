@@ -545,7 +545,7 @@ export default function PostedJobsCard() {
           </div>
 
           {/* Job Cards Section */}
-          <div className='w-full max-w-6xl h-screen overflow-y-auto'>
+          <div className='w-full max-w-6xl h-[90vh] overflow-y-auto'>
             {/* Toggle Switch */}
             {/* <div className="flex justify-between items-end py-5 mx-2">
 
