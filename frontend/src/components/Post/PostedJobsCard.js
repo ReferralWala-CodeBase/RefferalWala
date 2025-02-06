@@ -432,7 +432,7 @@ export default function PostedJobsCard() {
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <SmallScreenNav />
-      <div className=" mx-auto md:px-3 px-0 md:py-2 py-1">
+      <div className="x-auto md:px-3 px-0 md:py-2 py-1">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-1 mx-auto max-w-full">
 
@@ -449,13 +449,13 @@ export default function PostedJobsCard() {
 
             {/* Filter by Location */}
             <div className="mb-5 border py-3 px-2 rounded-lg">
-              <div className="flex items-center gap-2 border-b pb-2 mb-4">
+              {/* <div className="flex items-center gap-2 border-b pb-2 mb-4">
                 <FaMapMarkerAlt className="text-blue-500 text-lg" />
                 <h3 className="text-lg font-semibold text-gray-800">Location</h3>
-              </div>
+              </div> */}
               <input
                 type="text"
-                placeholder="Search locations..."
+                placeholder="📍 Search locations..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
@@ -490,7 +490,7 @@ export default function PostedJobsCard() {
                       onClick={() => handleLocationRemove(loc)}
                       className="text-white hover:text-red-300 transition"
                     >
-                      ×
+                      x
                     </button>
                   </span>
                 ))}
@@ -499,13 +499,10 @@ export default function PostedJobsCard() {
 
             {/* Filter by Company */}
             <div className="mb-5 border py-3 px-2 rounded-lg">
-              <div className="flex items-center gap-2 border-b pb-2 mb-4">
-                <FaBuilding className="text-blue-500 text-lg" />
-                <h3 className="text-lg font-semibold text-gray-800">Company</h3>
-              </div>
+
               <input
                 type="text"
-                placeholder="Search companies..."
+                placeholder="🏢 Search companies..."
                 value={companySearchTerm}
                 onChange={(e) => setCompanySearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
@@ -548,7 +545,7 @@ export default function PostedJobsCard() {
           </div>
 
           {/* Job Cards Section */}
-          <div className='w-full max-w-6xl'>
+          <div className='w-full max-w-6xl h-screen overflow-y-auto'>
             {/* Toggle Switch */}
             {/* <div className="flex justify-between items-end py-5 mx-2">
 
@@ -569,6 +566,7 @@ export default function PostedJobsCard() {
                   <motion.li
                     key={job._id}
                     className="relative max-w-lg w-full rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
+                    onClick={() => handleView(job._id)}
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.3 }}
                   >

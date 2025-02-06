@@ -6,6 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
+import image1 from "../../assets/1.png"
+
 
 export default function FollowingList() {
   const [following, setFollowing] = useState([]);
@@ -108,7 +110,12 @@ export default function FollowingList() {
             ) : error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : following.length === 0 ? (
-              <p>You are not following anyone.</p>
+              <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
+                <div>
+                  <img src={image1} className="w-48 h-56 mx-auto mb-4" alt="" />
+                  <p className='text-xl font-light underline underline-offset-4'>You are not following anyone</p>
+                </div>
+              </div>
             ) : (
               <div className="max-w-7xl">
                 {/* For large screens, show table layout */}
@@ -155,12 +162,12 @@ export default function FollowingList() {
                           >{user.email || ''}
                           </td>
                           <td className="relative py-4 pl-2 pr-2  text-sm font-medium sm:pr-6">
-                            <button onClick={(e) =>  { 
-                              e.stopPropagation(); 
+                            <button onClick={(e) => {
+                              e.stopPropagation();
                               handleShowJob(user._id)
-                            }} 
+                            }}
                               className="text-indigo-600 hover:text-indigo-900"
-                              >
+                            >
                               View Job Posted
                             </button>
                           </td>
@@ -179,8 +186,8 @@ export default function FollowingList() {
                         <button
                           onClick={() => {
                             setIsModalOpen(false);
-                            setJobs([]); 
-                        }}
+                            setJobs([]);
+                          }}
                           className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
                         >
                           <FaTimes className='w-6 h-6' />
