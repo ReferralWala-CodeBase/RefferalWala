@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
+import image1 from "../../assets/2.png"
 
 export default function FollowerList() {
   const [followers, setFollowers] = useState([]);
@@ -108,7 +109,12 @@ export default function FollowerList() {
             ) : error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : followers.length === 0 ? (
-              <p>You have no followers.</p>
+              <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
+                <div>
+                  <img src={image1} className="w-48 h-48 mx-auto mb-4" alt="" />
+                  <p className='text-xl font-light underline underline-offset-4'>You have no followers.</p>
+                </div>
+              </div>
             ) : (
               <div className="max-w-7xl">
                 <div className="hidden md:block">
@@ -185,8 +191,8 @@ export default function FollowerList() {
                         <button
                           onClick={() => {
                             setIsModalOpen(false);
-                            setJobs([]); 
-                        }}
+                            setJobs([]);
+                          }}
                           className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
                         >
                           <FaTimes className='w-6 h-6' />
