@@ -908,6 +908,7 @@ export default function EditProfile() {
                   name="firstName"
                   value={profileData.firstName || ''}
                   onChange={handleChange}
+                  required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
               </div>
@@ -1311,7 +1312,7 @@ export default function EditProfile() {
                   />
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">School Name</label>
+                  <label className="block text-sm font-medium text-gray-700">Institute Name</label>
                   <input
                     type="text"
                     name="schoolName"
@@ -1864,7 +1865,7 @@ export default function EditProfile() {
                       placeholder="Enter skill"
                       value={skill}
                       onChange={(e) => handleSkillChange(index, e.target.value)}
-                      className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm p-2"
+                      className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm p-2"    
                     />
                     {/* Trash Icon to Delete Skill */}
                     <FaTrash

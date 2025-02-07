@@ -567,9 +567,8 @@ exports.updateApplicantStatus = async (req, res) => {
     const user = await User.findById(applicantId);
     if (user) {
       const notification = new Notification({
-        user: jobPost.user,
-        message: `The status of ${user.firstName}'s application for ${jobPost.jobRole} at ${jobPost.companyName} has been updated to ${status}.`,
-        post: jobPost._id,
+        user: applicantId,
+        message: `Your application status for ${jobPost.jobRole} at ${jobPost.companyName} has been updated to ${status}.`,     post: jobPost._id,
       });
 
       await notification.save();

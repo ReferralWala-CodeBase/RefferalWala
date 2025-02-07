@@ -54,9 +54,9 @@ export default function AppliedJobDetails() {
           },
         });
 
-        if (!statusResponse.ok) {
-          throw new Error('Failed to fetch application status');
-        }
+        // if (!statusResponse.ok) {
+        //   throw new Error('Failed to fetch application status');
+        // }
 
         const statusData = await statusResponse.json();
         setApplicationStatus(statusData.status);

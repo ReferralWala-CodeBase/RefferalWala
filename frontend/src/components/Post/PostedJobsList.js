@@ -118,7 +118,7 @@ export default function PostedJobsList() {
                     <thead>
                       <tr>
                         <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                          Job Unique ID
+                          Job ID
                         </th>
                         <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Job Role
@@ -187,7 +187,7 @@ export default function PostedJobsList() {
                               }}
                               className="text-indigo-600 hover:text-indigo-900"
                             >
-                              View Applicants
+                              Applicants
                             </button>
                           </td>
                         </tr>

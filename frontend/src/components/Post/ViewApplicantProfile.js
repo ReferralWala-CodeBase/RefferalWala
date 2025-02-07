@@ -263,7 +263,7 @@ export default function ViewApplicantProfile() {
         <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
           <div className="col-span-2 flex justify-end p-4">
             <label htmlFor="status" className="mr-2 font-medium text-gray-700">
-              Status:
+              Update Status
             </label>
             <select
               id="status"
