@@ -83,7 +83,7 @@ export default function ViewProfile() {
                 />
                 <h2 className="text-xl font-semibold text-gray-800">{profileData.firstName || <>&nbsp;</>} {profileData.lastName || <>&nbsp;</>}</h2>
                 <p className="text-sm text-gray-600 mb-3">{profileData.presentCompany?.role || <>&nbsp;</>}</p>
-                <div className="text-sm text-gray-700 leading-relaxed  flex items-center flex-wrap space-x-4">
+                <div className="text-sm text-gray-700 leading-relaxed block">
                   <div className="flex items-center space-x-1">
                     <FaEnvelope className="text-gray-500" />
                     <span>{profileData.email || <>&nbsp;</>}</span>
@@ -226,33 +226,33 @@ export default function ViewProfile() {
               <div>
                 <div className="flex flex-row flex-wrap gap-10 md:gap-x-24 gap-y-10">
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Role:</span>
+                    <span className="block text-sm font-medium text-gray-700">Role</span>
                     <span className="text-gray-600">{profileData.presentCompany.role || '-'}</span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Company Name:</span>
+                    <span className="block text-sm font-medium text-gray-700">Company Name</span>
                     <span className="text-gray-600">
                       {profileData.presentCompany.companyName || '-'}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Company Email:</span>
+                    <span className="block text-sm font-medium text-gray-700">Company Email</span>
                     <span className="text-gray-600">
                       {profileData.presentCompany.companyEmail || '-'}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Years of Experience:</span>
+                    <span className="block text-sm font-medium text-gray-700">Years of Experience</span>
                     <span className="text-gray-600">
                       {profileData.presentCompany.yearsOfExperience || '-'}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Location:</span>
+                    <span className="block text-sm font-medium text-gray-700">Location</span>
                     <span className="text-gray-600">{profileData.presentCompany.location || '-'}</span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Current CTC:</span>
+                    <span className="block text-sm font-medium text-gray-700">Current CTC</span>
                     <span className="text-gray-600">
                       ₹{profileData.presentCompany.currentCTC || '-'} LPA
                     </span>

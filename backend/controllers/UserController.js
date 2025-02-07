@@ -189,11 +189,6 @@ exports.verifyCompanyEmail = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Check if the company email has already been verified
-    if (user.presentCompany.CompanyEmailVerified === email) {
-      return res.status(400).json({ error: 'Company email already verified' });
-    }
-
     // Check if OTP matches
     if (user.presentCompany.otp !== otp) {
       return res.status(400).json({ error: 'Invalid OTP' });
@@ -419,6 +414,7 @@ exports.updateProfileById = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };

@@ -50,6 +50,9 @@ const PresentCompanySchema = new mongoose.Schema({
   companyName: {
     type: String,
   },
+  companyLogoUrl: {
+    type: String,  
+  },
   companyEmail: {
     type: String,
   },
@@ -75,6 +78,9 @@ const PresentCompanySchema = new mongoose.Schema({
 // Preferences schema
 const PreferencesSchema = new mongoose.Schema({
   preferredCompanyName: {
+    type: String,
+  },
+  preferredCompanyURL:{
     type: String,
   },
   preferredPosition: {

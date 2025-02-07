@@ -401,7 +401,7 @@ export default function ViewApplicantProfile() {
                   className="w-36 h-36 rounded-full mx-auto mb-4"
                 />
                 <h2 className="text-xl font-semibold text-gray-800">{`${profileData.firstName || ''} ${profileData.lastName || ''}`.trim() || <>&nbsp;</>}</h2>
-                <div className="text-sm text-gray-700 leading-relaxed flex items-center flex-wrap space-x-4 justify-center">
+                <div className="text-sm text-gray-700 leading-relaxed block">
                   <div className="flex items-center space-x-1">
                     <FaEnvelope className="text-gray-500" />
                     <span>{profileData.email || <>&nbsp;</>}</span>

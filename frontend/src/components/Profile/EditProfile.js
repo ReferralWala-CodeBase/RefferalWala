@@ -8,10 +8,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { LocationExport } from "../Location";
+import { FaTimes } from "react-icons/fa";
 
 export default function EditProfile() {
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const Logo_Dev_Secret_key = process.env.REACT_APP_LOGO_DEV_SECRET_KEY; // Logo dev secret key
   const Cloudinary_URL = process.env.REACT_APP_CLOUDINARY_URL; // Cloudinary API
   const [profileData, setProfileData] = useState({
     firstName: '',
@@ -23,7 +26,7 @@ export default function EditProfile() {
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
     presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', companyEmail: '', yearsOfExperience: '' }],
-    preferences: [{ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' }],
+    preferences: [{ preferredCompanyName: '', preferredCompanyURL: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
       github: '',
@@ -45,6 +48,8 @@ export default function EditProfile() {
   const [newExperience, setNewExperience] = useState({ companyName: '', position: '', yearsOfExperience: '' });
   const [showEducationForm, setShowEducationForm] = useState(false);
   const [showExperienceForm, setShowExperienceForm] = useState(false);
+  const [companySuggestions, setCompanySuggestions] = useState([]);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
@@ -52,7 +57,7 @@ export default function EditProfile() {
   const [originalCompanyEmail, setOriginalCompanyEmail] = useState('');
   const [isCompanyEmailVerified, setIsCompanyEmailVerified] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [resendTimer, setResendTimer] = useState(60);
+  const [resendTimer, setResendTimer] = useState(0);
   const [projects, setProjects] = useState([]);
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [newProject, setNewProject] = useState({ name: "", repoLink: "", liveLink: "", description: "" });
@@ -155,7 +160,7 @@ export default function EditProfile() {
       if (response.ok) {
         toast.success("Company Email verified successfully! ");
         const isVerified = data?.presentCompany?.CompanyEmailVerified;
-        setIsCompanyEmailVerified(isVerified);
+        setIsCompanyEmailVerified(true);
         setOriginalCompanyEmail(profileData.presentCompany?.companyEmail);
         setShowOtpModal(false);
       } else {
@@ -169,6 +174,8 @@ export default function EditProfile() {
   const handleCompanyVerification = async (e) => {
     // Prevent default form submission behavior
     e.preventDefault();
+    setResendTimer(30);
+    setShowOtpModal(true);
 
     try {
       const bearerToken = localStorage.getItem('token');
@@ -184,7 +191,6 @@ export default function EditProfile() {
       const data = await response.json();
 
       if (response.ok) {
-        setShowOtpModal(true);
         toast.success("OTP sent successfully!");
       } else {
         if (response.status === 400) {
@@ -349,6 +355,7 @@ export default function EditProfile() {
     fetchProfileData();
   }, []);
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "mobileNumber" && !/^\d*$/.test(value)) {
@@ -360,6 +367,165 @@ export default function EditProfile() {
       [name]: value,
     }));
   };
+
+
+  const handlePresentChange = async (e) => {
+    const { name, value } = e.target;
+
+    // Update profileData for presentCompany or any other field
+    setProfileData((prevState) => {
+      return {
+        ...prevState,
+        presentCompany: {
+          ...prevState.presentCompany,
+          [name]: value,
+        },
+        [name]: name !== "companyName" && name !== "location" ? value : prevState[name], // Update non-company fields
+      };
+    });
+
+    // Fetch suggestions for companyName or location if value length > 2
+    if (value.length > 2) {
+      setLoading(true);
+
+      try {
+        if (name === "companyName") {
+          // Fetch company suggestions using the external API
+          const response = await fetch(`https://api.logo.dev/search?q=${value}`, {
+            headers: { Authorization: `Bearer ${Logo_Dev_Secret_key}` },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch company suggestions");
+          }
+
+          const data = await response.json();
+          setCompanySuggestions(data.length > 0 ? data : []);
+        } else if (name === "location") {
+          // Filter locations based on user input
+          const filteredLocations = LocationExport.filter((loc) =>
+            `${loc.city}, ${loc.state}`.toLowerCase().includes(value.toLowerCase())
+          );
+
+          setLocationSuggestions(
+            filteredLocations.map((loc) => ({
+              description: `${loc.city}, ${loc.state}`,
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        setCompanySuggestions([]);
+        setLocationSuggestions([]);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Clear suggestions if input length is less than 3
+      setCompanySuggestions([]);
+      setLocationSuggestions([]);
+    }
+  };
+
+  const handlePreferenceChange = async (e, index) => {
+    const { name, value } = e.target;
+
+    // Update specific preference entry
+    const updatedPreferences = [...profileData.preferences];
+    updatedPreferences[index] = {
+      ...updatedPreferences[index],
+      [name]: value,
+    };
+
+    setProfileData((prevState) => ({
+      ...prevState,
+      preferences: updatedPreferences,
+    }));
+
+    // Fetch suggestions for company name when input length > 2
+    if (name === "preferredCompanyName" && value.length > 2) {
+      setLoading(true);
+
+      try {
+        const response = await fetch(`https://api.logo.dev/search?q=${value}`, {
+          headers: { Authorization: `Bearer ${Logo_Dev_Secret_key}` },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch company suggestions");
+        }
+
+        const data = await response.json();
+
+        setCompanySuggestions((prevSuggestions) => {
+          const newSuggestions = [...prevSuggestions];
+          newSuggestions[index] = data.length > 0 ? data : [];
+          return newSuggestions;
+        });
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        setCompanySuggestions((prevSuggestions) => {
+          const newSuggestions = [...prevSuggestions];
+          newSuggestions[index] = [];
+          return newSuggestions;
+        });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Clear suggestions if input length is less than 3
+      setCompanySuggestions((prevSuggestions) => {
+        const newSuggestions = [...prevSuggestions];
+        newSuggestions[index] = [];
+        return newSuggestions;
+      });
+    }
+  };
+
+
+  const handleSuggestionClick = (company) => {
+    setProfileData((prevState) => ({
+      ...prevState,
+      presentCompany: {
+        ...prevState.presentCompany,
+        companyName: company.name,
+        companyLogoUrl: company.logo_url || null,
+      },
+    }));
+
+    setCompanySuggestions([]); // Clear suggestions
+  };
+
+  const handlePresentSuggestionClick = (company, index) => {
+    const updatedPreferences = [...profileData.preferences];
+    updatedPreferences[index].preferredCompanyName = company.name;
+    updatedPreferences[index].preferredCompanyURL = company.logo_url || null;
+
+    setProfileData((prevState) => ({
+      ...prevState,
+      preferences: updatedPreferences,
+    }));
+
+    setCompanySuggestions((prevSuggestions) => {
+      const newSuggestions = [...prevSuggestions];
+      newSuggestions[index] = [];
+      return newSuggestions;
+    });
+  };
+
+
+
+  const handleSelectSuggestion = (location) => {
+    setProfileData((prevState) => ({
+      ...profileData,
+      presentCompany: {
+        ...prevState.presentCompany,
+        location: location.description,
+      },
+    }));
+    setLocationSuggestions([]); // Clear suggestions after selection
+  };
+
   const handleEducationChange = (e) => {
     const { name, value } = e.target;
     setNewEducation((prev) => ({ ...prev, [name]: value }));
@@ -416,65 +582,55 @@ export default function EditProfile() {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
 
-      let updatedProfilePhoto = profileData.profilePhoto;
-
-      // Only upload if profilePhoto is a File (not a string URL)
-      if (profileData.profilePhoto && profileData.profilePhoto instanceof File) {
-        const uploadResponse = await uploadImageToCloudinary(profileData.profilePhoto);
-        updatedProfilePhoto = uploadResponse.secure_url;
-      }
-
-      const updatedProfileData = { ...profileData, profilePhoto: updatedProfilePhoto };
-
       const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
       const yearPattern = /^(19|20)\d{2}$/; // Validates years like 1990-2099
-      const mobilePattern = /^[6-9]\d{9}$/; // Valid Indian mobile numbers
+      const mobilePattern = /^\d{10}$/; // Valid Indian mobile numbers
       const numericPattern = /^\d+$/; // Only numbers
 
       // **Mobile Number Validation**
-      if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
-        toast.error("Please enter a valid 10-digit mobile number.");
-        return;
-      }
+      // if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
+      //   toast.error("Please enter a valid 10-digit mobile number.");
+      //   return;
+      // }
 
-      // **Year of Passing Validation**
-      if (profileData.education.some(edu => edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing))) {
-        toast.error("Please enter a valid year of passing.");
-        return;
-      }
+      // // **Year of Passing Validation**
+      // if (profileData.education.some(edu => edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing))) {
+      //   toast.error("Please enter a valid year of passing.");
+      //   return;
+      // }
 
-      // **Years of Experience Validation**
-      if (profileData.experience.some(exp => exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience))) {
-        toast.error("Years of experience must be a valid number.");
-        return;
-      }
+      // // **Years of Experience Validation**
+      // if (profileData.experience.some(exp => exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience))) {
+      //   toast.error("Years of experience must be a valid number.");
+      //   return;
+      // }
 
-      // **Expected CTC Validation**
-      if (profileData.preferences.some(pref => pref.expectedCTCRange && isNaN(pref.expectedCTCRange))) {
-        toast.error("Expected CTC must be a valid number.");
-        return;
-      }
+      // // **Expected CTC Validation**
+      // // if (profileData.preferences.some(pref => pref.expectedCTCRange && isNaN(pref.expectedCTCRange))) {
+      // //   toast.error("Expected CTC must be a valid number.");
+      // //   return;
+      // // }
 
-      // **Repo & Live Link Validation**
-      if (profileData.project.some(proj => (proj.repoLink && !urlPattern.test(proj.repoLink)) ||
-        (proj.liveLink && !urlPattern.test(proj.liveLink)))) {
-        toast.error("Please enter valid URLs for repo or live links.");
-        return;
-      }
+      // // **Repo & Live Link Validation**
+      // if (profileData.project.some(proj => (proj.repoLink && !urlPattern.test(proj.repoLink)) ||
+      //   (proj.liveLink && !urlPattern.test(proj.liveLink)))) {
+      //   toast.error("Please enter valid URLs for repo or live links.");
+      //   return;
+      // }
 
-      // **Social Media Links Validation**
-      Object.entries(profileData.links).forEach(([key, value]) => {
-        if (key !== "_id" && value && !urlPattern.test(value)) {
-          toast.error(`Please enter a valid URL for ${key}`);
-          return;
-        }
-      });
+      // // **Social Media Links Validation**
+      // Object.entries(profileData.links).forEach(([key, value]) => {
+      //   if (key !== "_id" && value && !urlPattern.test(value)) {
+      //     toast.error(`Please enter a valid URL for ${key}`);
+      //     return;
+      //   }
+      // });
 
-      // **Resume Link Validation**
-      if (profileData.resume && !urlPattern.test(profileData.resume)) {
-        toast.error("Please enter a valid URL for the resume.");
-        return;
-      }
+      // // **Resume Link Validation**
+      // if (profileData.resume && !urlPattern.test(profileData.resume)) {
+      //   toast.error("Please enter a valid URL for the resume.");
+      //   return;
+      // }
 
 
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
@@ -500,26 +656,34 @@ export default function EditProfile() {
     }
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       try {
-        // Create a preview URL for the selected image
+        // Show the image preview
         const previewURL = URL.createObjectURL(file);
-
-        // Show the image preview in the state
         setImagePreview(previewURL);
-
-        // Update profileData with the file (this is the file object, not the preview URL)
+  
+        // Upload to Cloudinary
+        const uploadResponse = await uploadImageToCloudinary(file);
+        const uploadedImageUrl = uploadResponse.secure_url; 
+  
+        if (!uploadedImageUrl) {
+          throw new Error("Failed to upload image");
+        }
+  
+        // Update profileData with the Cloudinary URL (not the file object)
         setProfileData((prevData) => ({
           ...prevData,
-          profilePhoto: file, // Store the actual file in profileData for uploading later
+          profilePhoto: uploadedImageUrl,
         }));
+  
       } catch (error) {
-        console.error('Error uploading image:', error.message);
+        console.error("Error uploading image:", error.message);
       }
     }
   };
+  
 
 
   const uploadImageToCloudinary = async (file) => {
@@ -539,6 +703,65 @@ export default function EditProfile() {
     }
 
     return data; // Return data containing URL and other metadata
+  };
+
+  const handleCompanyEmail = () => {
+    if (profileData.presentCompany?.companyEmail !== originalCompanyEmail) {
+      setIsCompanyEmailVerified(false);
+    }
+  };
+
+  const validation = () => {
+
+    // const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+    // const yearPattern = /^(19|20)\d{2}$/; // Validates years like 1990-2099
+    // const mobilePattern = /^\d{10}$/; // Valid Indian mobile numbers
+    // const numericPattern = /^\d+$/; // Only numbers
+
+    // // **Mobile Number Validation**
+    // if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
+    //   toast.error("Please enter a valid 10-digit mobile number.");
+    //   return;
+    // }
+
+    // // **Year of Passing Validation**
+    // if (profileData.education.some(edu => edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing))) {
+    //   toast.error("Please enter a valid year of passing.");
+    //   return;
+    // }
+
+    // // **Years of Experience Validation**
+    // if (profileData.experience.some(exp => exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience))) {
+    //   toast.error("Years of experience must be a valid number.");
+    //   return;
+    // }
+
+    // // **Expected CTC Validation**
+    // // if (profileData.preferences.some(pref => pref.expectedCTCRange && isNaN(pref.expectedCTCRange))) {
+    // //   toast.error("Expected CTC must be a valid number.");
+    // //   return;
+    // // }
+
+    // // **Repo & Live Link Validation**
+    // if (profileData.project.some(proj => (proj.repoLink && !urlPattern.test(proj.repoLink)) ||
+    //   (proj.liveLink && !urlPattern.test(proj.liveLink)))) {
+    //   toast.error("Please enter valid URLs for repo or live links.");
+    //   return;
+    // }
+
+    // // **Social Media Links Validation**
+    // Object.entries(profileData.links).forEach(([key, value]) => {
+    //   if (key !== "_id" && value && !urlPattern.test(value)) {
+    //     toast.error(`Please enter a valid URL for ${key}`);
+    //     return;
+    //   }
+    // });
+
+    // // **Resume Link Validation**
+    // if (profileData.resume && !urlPattern.test(profileData.resume)) {
+    //   toast.error("Please enter a valid URL for the resume.");
+    //   return;
+    // }
   };
 
   //sending sms to verify phone number
@@ -583,8 +806,8 @@ export default function EditProfile() {
         </div>
         <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
           <div className="flex justify-between w-full items-center mt-6 ">
-            
-          <h3 className="text-lg font-medium leading-7 text-gray-900 text-left">
+
+            <h3 className="text-lg font-medium leading-7 text-gray-900 text-left">
               Edit Profile
             </h3>
             <button
@@ -601,79 +824,79 @@ export default function EditProfile() {
           </div>
 
 
-                    {/* Delete Confirmation Modal */}
-                    <Transition.Root show={open} as={Fragment}>
-                      <Dialog
-                        as="div"
-                        className="relative z-10"
-                        initialFocus={cancelButtonRef}
-                        onClose={() => setOpen(false)}
-                      >
-                        <Transition.Child
-                          as={Fragment}
-                          enter="ease-out duration-300"
-                          enterFrom="opacity-0"
-                          enterTo="opacity-100"
-                          leave="ease-in duration-200"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                        </Transition.Child>
-          
-                        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                            <Transition.Child
-                              as={Fragment}
-                              enter="ease-out duration-300"
-                              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                              enterTo="opacity-100 translate-y-0 sm:scale-100"
-                              leave="ease-in duration-200"
-                              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            >
-                              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                                <div className="sm:flex sm:items-start">
-                                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                    <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
-                                  </div>
-                                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                      Delete Account
-                                    </Dialog.Title>
-                                    <div className="mt-2">
-                                      <p className="text-sm text-gray-500">
-                                        Are you sure you want to deactivate your account?
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                                  <button
-                                    type="button"
-                                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                    onClick={() => {
-                                      setOpen(false);
-                                      handleDeactivate();
-                                    }}
-                                  >
-                                    Confirm
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                    onClick={() => setOpen(false)}
-                                    ref={cancelButtonRef}
-                                  >
-                                    Cancel
-                                  </button>
-                                </div>
-                              </Dialog.Panel>
-                            </Transition.Child>
+          {/* Delete Confirmation Modal */}
+          <Transition.Root show={open} as={Fragment}>
+            <Dialog
+              as="div"
+              className="relative z-10"
+              initialFocus={cancelButtonRef}
+              onClose={() => setOpen(false)}
+            >
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    enterTo="opacity-100 translate-y-0 sm:scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                  >
+                    <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                      <div className="sm:flex sm:items-start">
+                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                          <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                        </div>
+                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                          <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                            Delete Account
+                          </Dialog.Title>
+                          <div className="mt-2">
+                            <p className="text-sm text-gray-500">
+                              Are you sure you want to deactivate your account?
+                            </p>
                           </div>
                         </div>
-                      </Dialog>
-                    </Transition.Root>
+                      </div>
+                      <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button
+                          type="button"
+                          className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                          onClick={() => {
+                            setOpen(false);
+                            handleDeactivate();
+                          }}
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          type="button"
+                          className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                          onClick={() => setOpen(false)}
+                          ref={cancelButtonRef}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition.Root>
 
           <form onSubmit={handleSubmit}>
             {/* Basic Information */}
@@ -875,24 +1098,37 @@ export default function EditProfile() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
               </div>
-              <div>
+              <div className='relative'>
                 <label className="block text-sm font-medium text-gray-700">Company Name</label>
                 <input
                   type="text"
                   name="companyName"
                   required
                   value={profileData.presentCompany?.companyName || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      presentCompany: {
-                        ...profileData.presentCompany,
-                        companyName: e.target.value,
-                      },
-                    })
-                  }
+                  onChange={handlePresentChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
+
+                {companySuggestions.length > 0 && (
+                  <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
+                    {companySuggestions.map((company, index) => (
+                      <li
+                        key={index}
+                        className="cursor-pointer p-2 hover:bg-gray-200"
+                        onClick={() => handleSuggestionClick(company)}
+                      >
+                        <div className="flex items-center">
+                          <img
+                            src={company.logo_url}
+                            alt={company.name}
+                            className="h-6 w-6 object-contain mr-2"
+                          />
+                          <span>{company.name}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Company Email</label>
@@ -910,17 +1146,18 @@ export default function EditProfile() {
                         },
                       })
                     }
+                    onBlur={handleCompanyEmail}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
-                  {profileData.presentCompany?.companyEmail === originalCompanyEmail &&
-                    isCompanyEmailVerified && (
-                      <FaCheckCircle
-                        className="ml-2"
-                        style={{ color: "#009fe3" }}
-                        size={30}
-                        title="Verified"
-                      />
-                    )}
+                  {isCompanyEmailVerified && (
+                    <FaCheckCircle
+                      className="ml-2"
+                      style={{ color: "#009fe3" }}
+                      size={30}
+                      title="Verified"
+                    />
+                  )}
+
                   <button
                     type="button"
                     onClick={handleCompanyVerification}
@@ -934,7 +1171,15 @@ export default function EditProfile() {
               {/* OTP Modal */}
               {showOtpModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
-                  <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                  <div className="relative bg-white p-6 rounded-lg shadow-lg w-96">
+                    <button
+                      onClick={() => {
+                        setShowOtpModal(false);
+                      }}
+                      className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                    >
+                      <FaTimes className="w-6 h-6" />
+                    </button>
                     <h3 className="text-lg font-bold text-gray-900 mb-4">Verify OTP</h3>
                     <form onSubmit={handleOtpSubmit}>
                       <div className="mb-4">
@@ -1002,23 +1247,28 @@ export default function EditProfile() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
               </div>
-              <div>
+              <div className='relative'>
                 <label className="block text-sm font-medium text-gray-700">Location</label>
                 <input
                   type="text"
                   name="location"
                   value={profileData.presentCompany?.location || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      presentCompany: {
-                        ...profileData.presentCompany,
-                        location: e.target.value,
-                      },
-                    })
-                  }
+                  onChange={handlePresentChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
+                {locationSuggestions.length > 0 && (
+                  <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-[250px] overflow-y-auto" style={{ top: '-100%' }}>
+                    {locationSuggestions.map((location, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleSelectSuggestion(location)}
+                        className="cursor-pointer p-2 hover:bg-black-800 rounded-md"
+                      >
+                        {location.description}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Current CTC (INR-Lakhs)</label>
@@ -1040,6 +1290,8 @@ export default function EditProfile() {
                 />
               </div>
             </div>
+
+
             {/* Education Section */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education <span className="text-red-500">*</span></h3>
             {profileData.education.map((edu, index) => (
@@ -1403,51 +1655,76 @@ export default function EditProfile() {
             {/* Preferences */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
             {profileData.preferences.map((preference, index) => (
-              <div key={index} className="mt-3 flex items-center gap-6">
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
-                  <input
-                    type="text"
-                    name="preferredCompanyName"
-                    value={preference.preferredCompanyName || ''}
-                    onChange={(e) => {
-                      const updatedPreferences = [...profileData.preferences];
-                      updatedPreferences[index].preferredCompanyName = e.target.value;
-                      setProfileData({ ...profileData, preferences: updatedPreferences });
-                    }}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+              <div key={index} className="mt-3 flex flex-col gap-2">
+                <div className="flex items-center gap-6">
+                  {/* Preferred Company Name with Suggestions */}
+                  <div className="flex-1 relative">
+                    <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
+                    <input
+                      type="text"
+                      name="preferredCompanyName"
+                      value={preference.preferredCompanyName || ''}
+                      onChange={(e) => handlePreferenceChange(e, index)}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                    {companySuggestions.length > 0 && (
+                      <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
+                        {companySuggestions.map((company, index) => (
+                          <li
+                            key={index}
+                            className="cursor-pointer p-2 hover:bg-gray-200"
+                            onClick={() => handleSuggestionClick(company)}
+                          >
+                            <div className="flex items-center">
+                              <img
+                                src={company.logo_url}
+                                alt={company.name}
+                                className="h-6 w-6 object-contain mr-2"
+                              />
+                              <span>{company.name}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  {/* Preferred Position */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
+                    <input
+                      type="text"
+                      name="preferredPosition"
+                      value={preference.preferredPosition || ''}
+                      onChange={(e) => handlePreferenceChange(e, index)}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+
+                  {/* Expected CTC Range */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
+                    <select
+                      name="expectedCTCRange"
+                      value={preference.expectedCTCRange || ''}
+                      onChange={(e) => handlePreferenceChange(e, index)}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    >
+                      <option value="">Select Salary Range</option>
+                      <option value="0-3 LPA">0-3 LPA</option>
+                      <option value="3-6 LPA">3-6 LPA</option>
+                      <option value="6-10 LPA">6-10 LPA</option>
+                      <option value="10-15 LPA">10-15 LPA</option>
+                      <option value="15+ LPA">15+ LPA</option>
+                    </select>
+                  </div>
+
+                  {/* Remove Button */}
+                  <FaTrash
+                    onClick={() => handleRemovePreference(index)}
+                    className="m-2 mt-5 text-2xl cursor-pointer text-red-500 hover:text-red-700"
                   />
                 </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
-                  <input
-                    type="text"
-                    name="preferredPosition"
-                    value={preference.preferredPosition || ''}
-                    onChange={(e) => {
-                      const updatedPreferences = [...profileData.preferences];
-                      updatedPreferences[index].preferredPosition = e.target.value;
-                      setProfileData({ ...profileData, preferences: updatedPreferences });
-                    }}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
-                  <input
-                    type="text"
-                    name="expectedCTCRange"
-                    value={preference.expectedCTCRange || ''}
-                    onChange={(e) => {
-                      const updatedPreferences = [...profileData.preferences];
-                      updatedPreferences[index].expectedCTCRange = e.target.value;
-                      setProfileData({ ...profileData, preferences: updatedPreferences });
-                    }}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  />
-                </div>
-                {/* Remove Button in Same Row */}
-                <FaTrash onClick={() => handleRemovePreference(index)} className="m-2 mt-5 text-2xl cursor-pointer" />
               </div>
             ))}
 
@@ -1459,6 +1736,7 @@ export default function EditProfile() {
             >
               Add Preference
             </button>
+
 
             {/* New Preference Form */}
             {showForm && (
@@ -1487,13 +1765,19 @@ export default function EditProfile() {
                   </div>
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
-                    <input
-                      type="text"
+                    <select
                       name="expectedCTCRange"
                       value={newPreferences.expectedCTCRange}
                       onChange={handleChangeNew}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                    />
+                    >
+                      <option value="">Select Salary Range</option>
+                      <option value="0-3 LPA">0-3 LPA</option>
+                      <option value="3-6 LPA">3-6 LPA</option>
+                      <option value="6-10 LPA">6-10 LPA</option>
+                      <option value="10-15 LPA">10-15 LPA</option>
+                      <option value="15+ LPA">15+ LPA</option>
+                    </select>
                   </div>
                 </div>
                 <button
@@ -1504,6 +1788,7 @@ export default function EditProfile() {
                 </button>
               </div>
             )}
+
 
 
             {/* Links */}

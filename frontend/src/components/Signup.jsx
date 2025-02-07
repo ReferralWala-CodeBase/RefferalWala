@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleLogin } from '@react-oauth/google';
 import { Eye, EyeOff } from "lucide-react";
+import { FaTimes } from "react-icons/fa";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
-  const [resendTimer, setResendTimer] = useState(60);
+  const [resendTimer, setResendTimer] = useState(0);
 
   useEffect(() => {
     if (resendTimer > 0) {
@@ -27,9 +28,25 @@ function Signup() {
     }
   }, [resendTimer]);
 
-  const handleResendOtp = async() => {
-    setResendTimer(60); 
-    
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+
+    if (value.trim() === "") return; // Skip validation if the field is empty
+
+    if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      toast.error("Please enter a valid email address");
+    }
+
+    if (name === "mobileNumber" && !/^\d{10}$/.test(value)) {
+      toast.error("Please enter a valid 10-digit phone number");
+    }
+  };
+
+
+
+  const handleResendOtp = async () => {
+    setResendTimer(60);
+
     try {
       const response = await fetch(
         `${Fronted_API_URL}/user/resend-otp`,
@@ -52,7 +69,7 @@ function Signup() {
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     }
-    
+
   };
 
   const handleChange = (e) => {
@@ -102,6 +119,8 @@ function Signup() {
   });
 
   const handleSubmit = async (e) => {
+    setResendTimer(30);
+    setShowOtpModal(true); // Open OTP modal
     e.preventDefault();
     try {
       const response = await fetch(
@@ -120,7 +139,6 @@ function Signup() {
       if (response.ok) {
         setSuccess("Registration successful! Please verify OTP.");
         toast.success("Registration successful! OTP sent.");
-        setShowOtpModal(true); // Open OTP modal
       } else {
         toast.error(data.message || "Registration failed. Please try again.");
       }
@@ -181,6 +199,7 @@ function Signup() {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     required
                     placeholder="Enter your email address"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
@@ -202,6 +221,7 @@ function Signup() {
                     type="text"
                     value={formData.mobileNumber}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     required
                     placeholder="Enter your mobile number"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
@@ -210,32 +230,32 @@ function Signup() {
               </div>
 
               <div>
-      <label
-        htmlFor="password"
-        className="block text-sm font-medium leading-6 text-gray-900"
-      >
-        Password
-      </label>
-      <div className="mt-2 relative">
-        <input
-          id="password"
-          name="password"
-          type={showPassword ? "text" : "password"}
-          value={formData.password}
-          onChange={handleChange}
-          required
-          placeholder="Enter your password"
-          className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
-        >
-          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-        </button>
-      </div>
-    </div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Password
+                </label>
+                <div className="mt-2 relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your password"
+                    className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
 
               <div>
                 <button
@@ -314,7 +334,15 @@ function Signup() {
       {/* OTP Modal */}
       {showOtpModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-96">
+            <button
+              onClick={() => {
+                setShowOtpModal(false);
+              }}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              <FaTimes className="w-6 h-6" />
+            </button>
             <h3 className="text-lg font-bold text-gray-900 mb-4">Verify OTP</h3>
             <form onSubmit={handleOtpSubmit}>
               <div className="mb-4">
