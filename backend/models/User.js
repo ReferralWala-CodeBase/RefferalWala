@@ -80,6 +80,9 @@ const PreferencesSchema = new mongoose.Schema({
   preferredCompanyName: {
     type: String,
   },
+  preferredCompanyURL:{
+    type: String,
+  },
   preferredPosition: {
     type: String,
   },

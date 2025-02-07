@@ -226,33 +226,33 @@ export default function ViewProfile() {
               <div>
                 <div className="flex flex-row flex-wrap gap-10 md:gap-x-24 gap-y-10">
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Role:</span>
+                    <span className="block text-sm font-medium text-gray-700">Role</span>
                     <span className="text-gray-600">{profileData.presentCompany.role || '-'}</span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Company Name:</span>
+                    <span className="block text-sm font-medium text-gray-700">Company Name</span>
                     <span className="text-gray-600">
                       {profileData.presentCompany.companyName || '-'}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Company Email:</span>
+                    <span className="block text-sm font-medium text-gray-700">Company Email</span>
                     <span className="text-gray-600">
                       {profileData.presentCompany.companyEmail || '-'}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Years of Experience:</span>
+                    <span className="block text-sm font-medium text-gray-700">Years of Experience</span>
                     <span className="text-gray-600">
                       {profileData.presentCompany.yearsOfExperience || '-'}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Location:</span>
+                    <span className="block text-sm font-medium text-gray-700">Location</span>
                     <span className="text-gray-600">{profileData.presentCompany.location || '-'}</span>
                   </div>
                   <div>
-                    <span className="block text-sm font-medium text-gray-700">Current CTC:</span>
+                    <span className="block text-sm font-medium text-gray-700">Current CTC</span>
                     <span className="text-gray-600">
                       ₹{profileData.presentCompany.currentCTC || '-'} LPA
                     </span>

@@ -150,6 +150,8 @@ export default function PostJob() {
     }
   };
 
+
+
   const handleSuggestionClick = (company) => {
     setFormData({
       ...formData,
