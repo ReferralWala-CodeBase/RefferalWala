@@ -16,8 +16,8 @@ export default function AppliedJobs() {
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [refresh, setRefresh] = useState(false); // to refresh
-  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [refresh, setRefresh] = useState(false);
+  const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const [searchQuery, setSearchQuery] = useState('');
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
@@ -37,7 +37,7 @@ export default function AppliedJobs() {
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       const bearerToken = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId'); // Assuming userId is stored in localStorage
+      const userId = localStorage.getItem('userId');
 
       try {
         const response = await fetch(`${Fronted_API_URL}/job/user/${userId}/applications/statuses`, {
@@ -51,7 +51,6 @@ export default function AppliedJobs() {
         if (!response.ok) {
           const errorData = await response.json();
           if (response.status === 401) {
-            // Unauthorized, remove the token and navigate to login
             localStorage.removeItem('token');
             navigate('/user-login');
           } else {

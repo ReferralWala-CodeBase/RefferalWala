@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router-dom';
 import { FaBuilding, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
@@ -42,6 +42,25 @@ export default function PostedJobsCard() {
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
+  const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
+  const [isCompanyDropdownOpen, setCompanyDropdownOpen] = useState(false);
+
+  const [isLocationDropdownVisible, setLocationDropdownVisible] = useState(false);
+  const [isCompanyDropdownVisible, setCompanyDropdownVisible] = useState(false);
+
+
+  const [selectedExperience, setSelectedExperience] = useState([]);
+  const [ctcRange, setCtcRange] = useState([0, 50]);
+
+  const handleExperienceChange = (value) => {
+    setSelectedExperience((prev) =>
+      prev.includes(value) ? prev.filter((exp) => exp !== value) : [...prev, value]
+    );
+  };
+
+  const handleCtcRangeChange = (value) => {
+    setCtcRange(value);
+  };
 
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
@@ -375,6 +394,8 @@ export default function PostedJobsCard() {
     if (!selectedLocations.some((selected) => selected.city === loc.city)) {
       setSelectedLocations((prev) => [...prev, loc]);
     }
+
+    setLocationDropdownOpen(false);
   };
 
   const handleLocationRemove = (location) => {
@@ -396,13 +417,28 @@ export default function PostedJobsCard() {
     if (!selectedCompanies.includes(company)) {
       setSelectedCompanies([...selectedCompanies, company]);
     }
+
+    setCompanyDropdownOpen(false);
   };
 
   const handleCompanyRemove = (company) => {
     setSelectedCompanies(selectedCompanies.filter(item => item !== company));
   };
 
-  const toggleFilterVisibility = () => setFilterVisible(!filterVisible);
+
+  const handleOutsideClick = (ref, callback) => {
+    document.addEventListener("click", (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        callback();
+      }
+    });
+  };
+
+  const locationRef = useRef(null);
+  const companyRef = useRef(null);
+
+  handleOutsideClick(locationRef, () => setLocationDropdownOpen(false));
+  handleOutsideClick(companyRef, () => setCompanyDropdownOpen(false));
 
   const filteredJobs = jobs && Object.fromEntries(
     Object.entries(jobs).filter(([id, job]) => {
@@ -420,6 +456,21 @@ export default function PostedJobsCard() {
 
   const toggleView = () => setIsTableView((prev) => !prev);
 
+  const handleLocationFocus = () => setLocationDropdownVisible(true);
+  const handleCompanyFocus = () => setCompanyDropdownVisible(true);
+  const handleClickOutside = (e) => {
+    if (!e.target.closest(".dropdown")) {
+      setLocationDropdownVisible(false);
+      setCompanyDropdownVisible(false);
+    }
+  };
+
+  // Add this useEffect to handle clicks outside
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
 
 
   // Notify parent about the selected locations
@@ -436,37 +487,27 @@ export default function PostedJobsCard() {
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-1 mx-auto max-w-full">
 
-          <div
-            className="w-full md:w-1/4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 md:block hidden"
-          >
-            {/* Main Heading */}
+          <div className="w-full md:w-1/4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 md:block hidden">
             <div className="flex items-center gap-2 mb-3 justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 text-blue-500">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
-              </svg>
               <h1 className="text-md font-bold text-gray-800">Filters</h1>
             </div>
 
-            {/* Filter by Location */}
-            <div className="mb-5 border py-3 px-2 rounded-lg">
-              {/* <div className="flex items-center gap-2 border-b pb-2 mb-4">
-                <FaMapMarkerAlt className="text-blue-500 text-lg" />
-                <h3 className="text-lg font-semibold text-gray-800">Location</h3>
-              </div> */}
+            {/* Location Filter */}
+            <div className="mb-5 border py-3 px-2 rounded-lg dropdown">
               <input
                 type="text"
                 placeholder="📍 Search locations..."
                 value={searchTerm}
+                onFocus={() => setLocationDropdownVisible(true)}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
-              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs">
-                {LocationExport
-                  .filter((loc) =>
+              {isLocationDropdownVisible && (
+                <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs border border-gray-300 rounded-lg bg-white shadow-md absolute z-10">
+                  {LocationExport.filter((loc) =>
                     loc.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     loc.state.toLowerCase().includes(searchTerm.toLowerCase())
-                  )
-                  .map((loc) => (
+                  ).map((loc) => (
                     <li
                       key={loc.city}
                       onClick={() => handleLocationSelect(loc)}
@@ -478,53 +519,57 @@ export default function PostedJobsCard() {
                       {loc.city}, {loc.state}
                     </li>
                   ))}
-              </ul>
+                </ul>
+              )}
+
               <div className="mt-4 flex flex-wrap gap-2">
                 {selectedLocations.map((loc) => (
                   <span
                     key={loc.city}
                     className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1"
                   >
-                    {loc.city},{loc.state}
+                    {loc.city}, {loc.state}
                     <button
-                      onClick={() => handleLocationRemove(loc)}
+                      onClick={() =>
+                        setSelectedLocations(selectedLocations.filter((item) => item.city !== loc.city))
+                      }
                       className="text-white hover:text-red-300 transition"
                     >
-                      x
+                      ×
                     </button>
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* Filter by Company */}
-            <div className="mb-5 border py-3 px-2 rounded-lg">
-
+            <div className="mb-5 border py-3 px-2 rounded-lg dropdown">
               <input
                 type="text"
                 placeholder="🏢 Search companies..."
                 value={companySearchTerm}
+                onFocus={() => setCompanyDropdownVisible(true)}
                 onChange={(e) => setCompanySearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
-              <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs">
-                {companies
-                  .filter((comp) =>
-                    comp.toLowerCase().includes(companySearchTerm.toLowerCase())
-                  )
-                  .map((comp) => (
-                    <li
-                      key={comp}
-                      onClick={() => handleCompanySelect(comp)}
-                      className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedCompanies.includes(comp)
-                        ? "bg-blue-100 text-blue-700 font-medium"
-                        : "hover:bg-gray-100"
-                        }`}
-                    >
-                      {comp}
-                    </li>
-                  ))}
-              </ul>
+              {isCompanyDropdownVisible && (
+                <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs border border-gray-300 rounded-lg bg-white shadow-md absolute z-10">
+                  {companies
+                    .filter((comp) => comp.toLowerCase().includes(companySearchTerm.toLowerCase()))
+                    .map((comp) => (
+                      <li
+                        key={comp}
+                        onClick={() => handleCompanySelect(comp)}
+                        className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedCompanies.includes(comp)
+                          ? "bg-blue-100 text-blue-700 font-medium"
+                          : "hover:bg-gray-100"
+                          }`}
+                      >
+                        {comp}
+                      </li>
+                    ))}
+                </ul>
+              )}
+
               <div className="mt-4 flex flex-wrap gap-2">
                 {selectedCompanies.map((comp) => (
                   <span
@@ -533,7 +578,9 @@ export default function PostedJobsCard() {
                   >
                     {comp}
                     <button
-                      onClick={() => handleCompanyRemove(comp)}
+                      onClick={() =>
+                        setSelectedCompanies(selectedCompanies.filter((item) => item !== comp))
+                      }
                       className="text-white hover:text-red-300 transition"
                     >
                       ×
@@ -541,6 +588,44 @@ export default function PostedJobsCard() {
                   </span>
                 ))}
               </div>
+            </div>
+
+
+
+            <div className="mb-5 border py-3 px-2 rounded-lg">
+              <h2 className="text-sm font-semibold text-gray-700 mb-3">Experience</h2>
+              <div className="space-y-2">
+                {["0-1 year", "2-5 years", "6-10 years", "10+ years"].map((exp) => (
+                  <label key={exp} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      value={exp}
+                      checked={selectedExperience.includes(exp)}
+                      onChange={(e) => handleExperienceChange(e.target.value)}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-gray-700">{exp}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* CTC Filter */}
+            <div className="mb-5 border py-3 px-2 rounded-lg">
+              <h2 className="text-sm font-semibold text-gray-700 mb-3">CTC (in LPA)</h2>
+              <div className="flex items-center justify-between text-xs text-gray-500">
+                <span>{ctcRange[0]} LPA</span>
+                <span>{ctcRange[1]} LPA</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="50"
+                step="1"
+                value={ctcRange}
+                onChange={(e) => handleCtcRangeChange(e.target.value)}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
           </div>
 
