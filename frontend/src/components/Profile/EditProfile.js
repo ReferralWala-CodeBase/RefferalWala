@@ -49,6 +49,7 @@ export default function EditProfile() {
   const [showEducationForm, setShowEducationForm] = useState(false);
   const [showExperienceForm, setShowExperienceForm] = useState(false);
   const [companySuggestions, setCompanySuggestions] = useState([]);
+  const [preferencecompanySuggestions, setPreferenceCompanySuggestions] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
@@ -268,8 +269,36 @@ export default function EditProfile() {
     });
   };
 
-  const handleChangeNew = (e) => {
+  const handleChangeNew = async (e) => {
+    const { name, value } = e.target;
     setNewPreferences({ ...newPreferences, [e.target.name]: e.target.value });
+
+    if (name === "preferredCompanyName" && value.length > 2) {
+      setLoading(true);
+
+      try {
+        const response = await fetch(`https://api.logo.dev/search?q=${value}`, {
+          headers: { Authorization: `Bearer ${Logo_Dev_Secret_key}` },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch company suggestions");
+        }
+
+        const data = await response.json();
+
+        setPreferenceCompanySuggestions(data.length > 0 ? data : []);
+
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        setPreferenceCompanySuggestions([]);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Clear suggestions if input length is less than 3
+      setPreferenceCompanySuggestions([]);
+    }
   };
 
   // Add new preference to the list
@@ -295,15 +324,6 @@ export default function EditProfile() {
       expectedCTCRange: "",
     });
     setShowForm(false); // Hide form after submission
-  };
-
-  // Update existing preference
-  const handleUpdatePreference = (index, field, value) => {
-    setProfileData((prevData) => {
-      const updatedPreferences = [...prevData.preferences];
-      updatedPreferences[index][field] = value;
-      return { ...prevData, preferences: updatedPreferences };
-    });
   };
 
   // Remove a preference
@@ -356,7 +376,7 @@ export default function EditProfile() {
   }, []);
 
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
     if (name === "mobileNumber" && !/^\d*$/.test(value)) {
       // If value is not numeric, don't update the state
@@ -366,6 +386,7 @@ export default function EditProfile() {
       ...prevState,
       [name]: value,
     }));
+
   };
 
 
@@ -430,7 +451,7 @@ export default function EditProfile() {
   const handlePreferenceChange = async (e, index) => {
     const { name, value } = e.target;
 
-    // Update specific preference entry
+    // Update preference state
     const updatedPreferences = [...profileData.preferences];
     updatedPreferences[index] = {
       ...updatedPreferences[index],
@@ -442,7 +463,7 @@ export default function EditProfile() {
       preferences: updatedPreferences,
     }));
 
-    // Fetch suggestions for company name when input length > 2
+    // Fetch suggestions if input length > 2
     if (name === "preferredCompanyName" && value.length > 2) {
       setLoading(true);
 
@@ -457,14 +478,14 @@ export default function EditProfile() {
 
         const data = await response.json();
 
-        setCompanySuggestions((prevSuggestions) => {
+        setPreferenceCompanySuggestions((prevSuggestions) => {
           const newSuggestions = [...prevSuggestions];
           newSuggestions[index] = data.length > 0 ? data : [];
           return newSuggestions;
         });
       } catch (error) {
         console.error("Error fetching suggestions:", error);
-        setCompanySuggestions((prevSuggestions) => {
+        setPreferenceCompanySuggestions((prevSuggestions) => {
           const newSuggestions = [...prevSuggestions];
           newSuggestions[index] = [];
           return newSuggestions;
@@ -473,15 +494,14 @@ export default function EditProfile() {
         setLoading(false);
       }
     } else {
-      // Clear suggestions if input length is less than 3
-      setCompanySuggestions((prevSuggestions) => {
+      // Clear suggestions when input is less than 3 characters
+      setPreferenceCompanySuggestions((prevSuggestions) => {
         const newSuggestions = [...prevSuggestions];
         newSuggestions[index] = [];
         return newSuggestions;
       });
     }
   };
-
 
   const handleSuggestionClick = (company) => {
     setProfileData((prevState) => ({
@@ -496,23 +516,16 @@ export default function EditProfile() {
     setCompanySuggestions([]); // Clear suggestions
   };
 
-  const handlePresentSuggestionClick = (company, index) => {
-    const updatedPreferences = [...profileData.preferences];
-    updatedPreferences[index].preferredCompanyName = company.name;
-    updatedPreferences[index].preferredCompanyURL = company.logo_url || null;
-
-    setProfileData((prevState) => ({
-      ...prevState,
-      preferences: updatedPreferences,
+  const handlePreferencecompanyClick = (company) => {
+    setNewPreferences((prev) => ({
+      ...prev,
+      preferredCompanyName: company.name,
+      preferredCompanyURL: company.logo_url || null,
     }));
 
-    setCompanySuggestions((prevSuggestions) => {
-      const newSuggestions = [...prevSuggestions];
-      newSuggestions[index] = [];
-      return newSuggestions;
-    });
+    // Clear suggestions after selection
+    setPreferenceCompanySuggestions([]);
   };
-
 
 
   const handleSelectSuggestion = (location) => {
@@ -582,57 +595,6 @@ export default function EditProfile() {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
 
-      const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
-      const yearPattern = /^(19|20)\d{2}$/; // Validates years like 1990-2099
-      const mobilePattern = /^\d{10}$/; // Valid Indian mobile numbers
-      const numericPattern = /^\d+$/; // Only numbers
-
-      // **Mobile Number Validation**
-      // if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
-      //   toast.error("Please enter a valid 10-digit mobile number.");
-      //   return;
-      // }
-
-      // // **Year of Passing Validation**
-      // if (profileData.education.some(edu => edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing))) {
-      //   toast.error("Please enter a valid year of passing.");
-      //   return;
-      // }
-
-      // // **Years of Experience Validation**
-      // if (profileData.experience.some(exp => exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience))) {
-      //   toast.error("Years of experience must be a valid number.");
-      //   return;
-      // }
-
-      // // **Expected CTC Validation**
-      // // if (profileData.preferences.some(pref => pref.expectedCTCRange && isNaN(pref.expectedCTCRange))) {
-      // //   toast.error("Expected CTC must be a valid number.");
-      // //   return;
-      // // }
-
-      // // **Repo & Live Link Validation**
-      // if (profileData.project.some(proj => (proj.repoLink && !urlPattern.test(proj.repoLink)) ||
-      //   (proj.liveLink && !urlPattern.test(proj.liveLink)))) {
-      //   toast.error("Please enter valid URLs for repo or live links.");
-      //   return;
-      // }
-
-      // // **Social Media Links Validation**
-      // Object.entries(profileData.links).forEach(([key, value]) => {
-      //   if (key !== "_id" && value && !urlPattern.test(value)) {
-      //     toast.error(`Please enter a valid URL for ${key}`);
-      //     return;
-      //   }
-      // });
-
-      // // **Resume Link Validation**
-      // if (profileData.resume && !urlPattern.test(profileData.resume)) {
-      //   toast.error("Please enter a valid URL for the resume.");
-      //   return;
-      // }
-
-
       const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
         method: 'PUT',
         headers: {
@@ -663,27 +625,27 @@ export default function EditProfile() {
         // Show the image preview
         const previewURL = URL.createObjectURL(file);
         setImagePreview(previewURL);
-  
+
         // Upload to Cloudinary
         const uploadResponse = await uploadImageToCloudinary(file);
-        const uploadedImageUrl = uploadResponse.secure_url; 
-  
+        const uploadedImageUrl = uploadResponse.secure_url;
+
         if (!uploadedImageUrl) {
           throw new Error("Failed to upload image");
         }
-  
+
         // Update profileData with the Cloudinary URL (not the file object)
         setProfileData((prevData) => ({
           ...prevData,
           profilePhoto: uploadedImageUrl,
         }));
-  
+
       } catch (error) {
         console.error("Error uploading image:", error.message);
       }
     }
   };
-  
+
 
 
   const uploadImageToCloudinary = async (file) => {
@@ -713,56 +675,51 @@ export default function EditProfile() {
 
   const validation = () => {
 
-    // const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
-    // const yearPattern = /^(19|20)\d{2}$/; // Validates years like 1990-2099
-    // const mobilePattern = /^\d{10}$/; // Valid Indian mobile numbers
-    // const numericPattern = /^\d+$/; // Only numbers
+    const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+    const yearPattern = /^(19|20)\d{2}$/; // 1990-2099
+    const mobilePattern = /^\d{10}$/; // 10-digit mobile number
+    const numericPattern = /^\d+$/; // Only numbers
 
-    // // **Mobile Number Validation**
-    // if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
-    //   toast.error("Please enter a valid 10-digit mobile number.");
-    //   return;
-    // }
+    // **Mobile Number Validation**
+    if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
+      return toast.error("Please enter a valid 10-digit mobile number.");
+    }
 
-    // // **Year of Passing Validation**
-    // if (profileData.education.some(edu => edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing))) {
-    //   toast.error("Please enter a valid year of passing.");
-    //   return;
-    // }
+    // **Year of Passing Validation**
+    for (const edu of profileData.education ?? []) {
+      if (edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing)) {
+        return toast.error("Please enter a valid year of passing.");
+      }
+    }
 
-    // // **Years of Experience Validation**
-    // if (profileData.experience.some(exp => exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience))) {
-    //   toast.error("Years of experience must be a valid number.");
-    //   return;
-    // }
+    // **Years of Experience Validation**
+    for (const exp of profileData.experience ?? []) {
+      if (exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience)) {
+        return toast.error("Years of experience must be a valid number.");
+      }
+    }
 
-    // // **Expected CTC Validation**
-    // // if (profileData.preferences.some(pref => pref.expectedCTCRange && isNaN(pref.expectedCTCRange))) {
-    // //   toast.error("Expected CTC must be a valid number.");
-    // //   return;
-    // // }
+    // **Repo & Live Link Validation**
+    for (const proj of profileData.project ?? []) {
+      if ((proj.repoLink && !urlPattern.test(proj.repoLink)) ||
+        (proj.liveLink && !urlPattern.test(proj.liveLink))) {
+        return toast.error("Please enter valid URLs for repo or live links.");
+      }
+    }
 
-    // // **Repo & Live Link Validation**
-    // if (profileData.project.some(proj => (proj.repoLink && !urlPattern.test(proj.repoLink)) ||
-    //   (proj.liveLink && !urlPattern.test(proj.liveLink)))) {
-    //   toast.error("Please enter valid URLs for repo or live links.");
-    //   return;
-    // }
+    // **Social Media Links Validation**
+    for (const [key, value] of Object.entries(profileData.links ?? {})) {
+      if (key !== "_id" && value && !urlPattern.test(value)) {
+        return toast.error(`Please enter a valid URL for ${key}`);
+      }
+    }
 
-    // // **Social Media Links Validation**
-    // Object.entries(profileData.links).forEach(([key, value]) => {
-    //   if (key !== "_id" && value && !urlPattern.test(value)) {
-    //     toast.error(`Please enter a valid URL for ${key}`);
-    //     return;
-    //   }
-    // });
-
-    // // **Resume Link Validation**
-    // if (profileData.resume && !urlPattern.test(profileData.resume)) {
-    //   toast.error("Please enter a valid URL for the resume.");
-    //   return;
-    // }
+    // **Resume Link Validation**
+    if (profileData.resume && !urlPattern.test(profileData.resume)) {
+      return toast.error("Please enter a valid URL for the resume.");
+    }
   };
+
 
   //sending sms to verify phone number
   // const handlePhoneVerification = async (e) => {
@@ -942,6 +899,7 @@ export default function EditProfile() {
                     name="mobileNumber"
                     value={profileData.mobileNumber || ''}
                     onChange={handleChange}
+                    onBlur={validation}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     required
                   />
@@ -1336,6 +1294,7 @@ export default function EditProfile() {
                       updatedEducation[index].yearOfPassing = e.target.value;
                       setProfileData({ ...profileData, education: updatedEducation });
                     }}
+                    onBlur={validation}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                 </div>
@@ -1439,6 +1398,7 @@ export default function EditProfile() {
                       updatedExperience[index].yearsOfExperience = e.target.value;
                       setProfileData({ ...profileData, experience: updatedExperience });
                     }}
+                    onBlur={validation}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                 </div>
@@ -1540,6 +1500,7 @@ export default function EditProfile() {
                         updatedProjects[index].repoLink = e.target.value;
                         setProfileData({ ...profileData, project: updatedProjects });
                       }}
+                      onBlur={validation}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />
                   </div>
@@ -1556,6 +1517,7 @@ export default function EditProfile() {
                         updatedProjects[index].liveLink = e.target.value;
                         setProfileData({ ...profileData, project: updatedProjects });
                       }}
+                      onBlur={validation}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />
                   </div>
@@ -1615,6 +1577,7 @@ export default function EditProfile() {
                       name="repoLink"
                       value={newProject.repoLink}
                       onChange={handleProjectChange}
+                      onBlur={validation}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />
                   </div>
@@ -1627,6 +1590,7 @@ export default function EditProfile() {
                       name="liveLink"
                       value={newProject.liveLink}
                       onChange={handleProjectChange}
+                      onBlur={validation}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />
                   </div>
@@ -1668,26 +1632,6 @@ export default function EditProfile() {
                       onChange={(e) => handlePreferenceChange(e, index)}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />
-                    {companySuggestions.length > 0 && (
-                      <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
-                        {companySuggestions.map((company, index) => (
-                          <li
-                            key={index}
-                            className="cursor-pointer p-2 hover:bg-gray-200"
-                            onClick={() => handleSuggestionClick(company)}
-                          >
-                            <div className="flex items-center">
-                              <img
-                                src={company.logo_url}
-                                alt={company.name}
-                                className="h-6 w-6 object-contain mr-2"
-                              />
-                              <span>{company.name}</span>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
                   </div>
 
                   {/* Preferred Position */}
@@ -1744,7 +1688,7 @@ export default function EditProfile() {
               <div className="mt-6 p-4 border border-gray-300 rounded">
                 <h4 className="text-lg font-medium text-gray-900">Add New Preference</h4>
                 <div className="flex gap-6 mt-3">
-                  <div className="flex-1">
+                  <div className="relative flex-1">
                     <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
                     <input
                       type="text"
@@ -1753,6 +1697,26 @@ export default function EditProfile() {
                       onChange={handleChangeNew}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />
+                    {preferencecompanySuggestions.length > 0 && (
+                      <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
+                        {preferencecompanySuggestions.map((company, index) => (
+                          <li
+                            key={index}
+                            className="cursor-pointer p-2 hover:bg-gray-200"
+                            onClick={() => handlePreferencecompanyClick(company)}
+                          >
+                            <div className="flex items-center">
+                              <img
+                                src={company.logo_url}
+                                alt={company.name}
+                                className="h-6 w-6 object-contain mr-2"
+                              />
+                              <span>{company.name}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
@@ -1813,6 +1777,7 @@ export default function EditProfile() {
                         },
                       })
                     }
+                    onBlur={validation}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                 </div>
@@ -1865,7 +1830,7 @@ export default function EditProfile() {
                       placeholder="Enter skill"
                       value={skill}
                       onChange={(e) => handleSkillChange(index, e.target.value)}
-                      className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm p-2"    
+                      className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm p-2"
                     />
                     {/* Trash Icon to Delete Skill */}
                     <FaTrash
@@ -1897,6 +1862,7 @@ export default function EditProfile() {
                 name="resume"
                 value={profileData.resume || ''}
                 onChange={handleChange}
+                onBlur={validation}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
               />
             </div>
