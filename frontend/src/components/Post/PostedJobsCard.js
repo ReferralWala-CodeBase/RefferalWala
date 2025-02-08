@@ -590,13 +590,11 @@ export default function PostedJobsCard() {
               </div>
             </div>
 
-
-
             <div className="mb-5 border py-3 px-2 rounded-lg">
               <h2 className="text-sm font-semibold text-gray-700 mb-3">Experience</h2>
-              <div className="space-y-2">
+              <div className="flex flex-wrap gap-2">
                 {["0-1 year", "2-5 years", "6-10 years", "10+ years"].map((exp) => (
-                  <label key={exp} className="flex items-center gap-2">
+                  <label key={exp} className="flex items-center gap-2 w-1/2">
                     <input
                       type="checkbox"
                       value={exp}
@@ -610,23 +608,31 @@ export default function PostedJobsCard() {
               </div>
             </div>
 
-            {/* CTC Filter */}
             <div className="mb-5 border py-3 px-2 rounded-lg">
               <h2 className="text-sm font-semibold text-gray-700 mb-3">CTC (in LPA)</h2>
-              <div className="flex items-center justify-between text-xs text-gray-500">
-                <span>{ctcRange[0]} LPA</span>
-                <span>{ctcRange[1]} LPA</span>
+              <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+                <span>0 LPA</span>
+                <span>100 LPA</span>
               </div>
-              <input
-                type="range"
-                min="0"
-                max="50"
-                step="1"
-                value={ctcRange}
-                onChange={(e) => handleCtcRangeChange(e.target.value)}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="relative">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={ctcRange}
+                  onChange={(e) => handleCtcRangeChange(parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div
+                  className="absolute top-[-24px] left-0 transform -translate-x-1/2 text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                  style={{ left: `${(ctcRange / 100) * 100}%` }}
+                >
+                  {ctcRange} LPA
+                </div>
+              </div>
             </div>
+
           </div>
 
           {/* Job Cards Section */}
@@ -651,7 +657,6 @@ export default function PostedJobsCard() {
                   <motion.li
                     key={job._id}
                     className="relative max-w-lg w-full rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
-                    onClick={() => handleView(job._id)}
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -703,7 +708,7 @@ export default function PostedJobsCard() {
                       </span>
 
                       {/* Job Title */}
-                      <h3 className="text-lg font-semibold text-blue-600 hover:underline">
+                      <h3 onClick={() => handleView(job._id)} className="text-lg font-semibold text-blue-600 hover:underline">
                         {job.jobRole}
                       </h3>
 
