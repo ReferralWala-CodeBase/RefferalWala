@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
-import image1 from "../../assets/1.png"
+import vid1 from "../../assets/vid4.mp4"
 
 
 export default function FollowingList() {
@@ -112,9 +112,17 @@ export default function FollowingList() {
             ) : following.length === 0 ? (
               <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
                 <div>
-                  <img src={image1} className="w-48 h-56 mx-auto mb-4" alt="" />
-                  <p className='text-xl font-light underline underline-offset-4'>You are not following anyone</p>
+                  <video
+                    src={vid1}
+                    className="w-60 h-60 mx-auto mb-4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                  <p className="text-xl font-light">You are not following anyone !</p>
                 </div>
+
               </div>
             ) : (
               <div className="max-w-7xl">
