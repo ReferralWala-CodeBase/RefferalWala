@@ -242,7 +242,7 @@ export default function AppliedJobDetails() {
                         <FaTimes className="w-6 h-6" />
                       </button>
 
-                      <h2 className="text-lg font-semibold mb-2 text-center">Selected Document</h2>
+                      <h2 className="text-lg font-medium mb-2 text-center">Selected Document</h2>
 
                       <div className="border p-2 flex-grow flex justify-center items-center h-full overflow-hidden">
                         {/* Image (Prevents Overflow) */}
@@ -260,7 +260,7 @@ export default function AppliedJobDetails() {
                 {isDialogOpen && (
                   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                      <h2 className="text-lg font-semibold mb-4">Upload Document</h2>
+                      <h2 className="text-lg font-medium mb-4">Upload Document</h2>
 
                       {/* File Input */}
                       <input
@@ -311,8 +311,8 @@ export default function AppliedJobDetails() {
 
               <div className='flex mb-2 justify-between'>
                 <p className="flex gap-1 text-xs px-6 w-fit bg-gray-200 items-center rounded-full text-gray-700">
-                  <img src={jobData.companyLogoUrl} className='h-6 w-6 items-center border rounded-full' alt="" />
-                  <span className="font-medium text-gray-800">Posted By:</span> {jobData.jobUniqueId}
+                  <img src={jobData?.companyLogoUrl} className='h-6 w-6 items-center border rounded-full' alt="" />
+                  <span className="font-medium text-gray-800">Posted By:</span> {jobData.user?.firstName}
                 </p>
                 <img className='hidden lg:block h-10 w-10' src={company} alt="" />
               </div>
@@ -324,8 +324,8 @@ export default function AppliedJobDetails() {
                   </svg>
 
                   <h3 class="mb-1 text-blue-700 font-bold">Job Role</h3>
-                  <span class="flex items-center font-semibold text-sm text-gray-900"
-                  >{jobData.jobRole}
+                  <span class="flex items-center font-medium text-sm text-gray-900"
+                  >{jobData?.jobRole}
                   </span>
                 </div>
 
@@ -335,8 +335,8 @@ export default function AppliedJobDetails() {
                   </svg>
 
                   <h3 class="mb-1 text-blue-700 font-bold">Employement Type</h3>
-                  <span class="flex items-center font-semibold text-sm text-gray-900"
-                  >{jobData.employmentType}
+                  <span class="flex items-center font-medium text-sm text-gray-900"
+                  >{jobData?.employmentType}
                   </span>
                 </div>
 
@@ -346,8 +346,8 @@ export default function AppliedJobDetails() {
                   </svg>
 
                   <h3 class="mb-1 text-blue-700 font-bold">Company</h3>
-                  <span class="flex items-center font-semibold text-sm text-gray-900"
-                  >{jobData.companyName}
+                  <span class="flex items-center font-medium text-sm text-gray-900"
+                  >{jobData?.companyName}
                   </span>
                 </div>
 
@@ -357,8 +357,8 @@ export default function AppliedJobDetails() {
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
                   </svg>
                   <h3 class="mb-1 text-blue-700 font-bold">Location</h3>
-                  <span class="flex items-center font-semibold text-sm text-gray-900"
-                  >{jobData.location}
+                  <span class="flex items-center font-medium text-sm text-gray-900"
+                  >{jobData?.location}
                   </span>
                 </div>
 
@@ -367,24 +367,24 @@ export default function AppliedJobDetails() {
                 <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
                   <div class="space-y-4">
                     <div class="flex space-x-4">
-                      <img class="h-20 w-20 border-8 border-blue-700 rounded-full" src={jobData.companyLogoUrl} alt="Company" />
+                      <img class="h-20 w-20 border-8 border-blue-700 rounded-full" src={jobData?.companyLogoUrl} alt="Company" />
 
                     </div>
                     <dl class="">
                       <dt class="mb-1 text-blue-700 font-bold">Job ID</dt>
-                      <dd class="font-semibold text-sm text-gray-900">{jobData.jobUniqueId}</dd>
+                      <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
                     </dl>
                     <dl class="">
                       <dt class="mb-1 text-blue-700 font-bold">CTC</dt>
-                      <dd class="font-semibold text-sm text-gray-900">{jobData.ctc}</dd>
+                      <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
                     </dl>
 
 
                     <dl>
                       <dt class="mb-1 text-blue-700 font-bold">Job Link</dt>
-                      <dd class="flex items-center gap-1 font-light hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
+                      <dd class="flex items-center gap-1 font-medium hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
 
-                        {jobData.jobLink}
+                        {jobData?.jobLink}
                       </dd>
                     </dl>
 
@@ -392,29 +392,29 @@ export default function AppliedJobDetails() {
                   <div class="space-y-4">
                     <dl class="">
                       <dt class="mb-1 text-blue-700 font-bold">Experience Required (Years)</dt>
-                      <dd class="font-semibold text-sm text-gray-900">{jobData.experienceRequired}</dd>
+                      <dd class="font-medium text-sm text-gray-900">{jobData?.experienceRequired}</dd>
                     </dl>
                     <dl>
                       <dt class="mb-1 text-blue-700 font-bold">Number of Referrals</dt>
-                      <dd class="font-semibold text-sm text-gray-900">{jobData.noOfReferrals}</dd>
+                      <dd class="font-medium text-sm text-gray-900">{jobData?.noOfReferrals}</dd>
                     </dl>
                     <dl>
                       <dt class="mb-1 mb-1 text-blue-700 font-bold">End Date</dt>
-                      <dd class="flex items-center space-x-4 font-semibold text-sm text-gray-900">
+                      <dd class="flex items-center space-x-4 font-medium text-sm text-gray-900">
                         <div>
                           <div class="text-sm">
-                            <p class="mb-0.5 font-medium text-gray-900">{getDate(jobData.endDate)}</p>
+                            <p class="mb-0.5 font-medium text-gray-900">{getDate(jobData?.endDate)}</p>
                           </div>
                         </div>
                       </dd>
                     </dl>
                     <dl>
                       <dt class="mb-1 text-blue-700 font-bold">Work Mode</dt>
-                      <dd class="flex items-center gap-1 font-semibold text-sm text-gray-900">
+                      <dd class="flex items-center gap-1 font-medium text-sm text-gray-900">
                         <svg class="hidden h-5 w-5 shrink-0 text-gray-400  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
                         </svg>
-                        {jobData.workMode}
+                        {jobData?.workMode}
                       </dd>
                     </dl>
                   </div>
@@ -424,7 +424,7 @@ export default function AppliedJobDetails() {
 
                 <div className="col-span-2 pb-4">
                   <label className="block text-sm font-bold text-blue-700">Job Description</label>
-                  <div className="mt-1 text-xs block w-full rounded-none">{jobData.jobDescription}</div>
+                  <div className="mt-1 text-sm text-justify block w-full rounded-none">{jobData?.jobDescription}</div>
                 </div>
                 <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto">
                   <svg class="-ms-0.5 me-1.5 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

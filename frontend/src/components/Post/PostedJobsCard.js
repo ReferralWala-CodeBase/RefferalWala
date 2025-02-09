@@ -21,7 +21,7 @@ export default function PostedJobsCard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [showReportDialog, setShowReportDialog] = useState(false);
-
+  const [selectedCtc, setSelectedCtc] = useState("");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -49,18 +49,63 @@ export default function PostedJobsCard() {
   const [isCompanyDropdownVisible, setCompanyDropdownVisible] = useState(false);
 
 
-  const [selectedExperience, setSelectedExperience] = useState([]);
-  const [ctcRange, setCtcRange] = useState([0, 50]);
+  const [selectedExperience, setSelectedExperience] = useState("");
+
+  const handleCtcFilterChange = (value) => {
+    setSelectedCtc(value);
+  };
+
+  const handleCtcFilter = (jobCtc, selectedCtc) => {
+    if (!selectedCtc) return true; // No filter applied, return all jobs
+  
+    return jobCtc === selectedCtc; // Direct match
+  };
+
+  const handleLocationFilter = (jobLocation, selectedLocations) => {
+    // If no location is selected, return true (no filtering)
+    if (!selectedLocations || selectedLocations.length === 0) return true;
+    
+    // Lowercase the job location for case-insensitive comparison
+    const lowerJobLocation = jobLocation.toLowerCase();
+  
+    // Check if the job's location contains any selected city's or state's name
+    return selectedLocations.some(loc => {
+      return lowerJobLocation.includes(loc.city.toLowerCase()) || 
+             lowerJobLocation.includes(loc.state.toLowerCase());
+    });
+  };
 
   const handleExperienceChange = (value) => {
-    setSelectedExperience((prev) =>
-      prev.includes(value) ? prev.filter((exp) => exp !== value) : [...prev, value]
-    );
+    setSelectedExperience(value);
   };
+  
+  
+  const handleExperienceFilter = (jobExperience, selectedExperience) => {
+    // No filter applied: return true for all jobs
+    if (!selectedExperience) return true;
+  
+    // Map the selected experience range to numeric boundaries.
+    // Adjust the boundaries based on your requirements.
+    const experienceRangeMapping = {
+      "0-1 year": [0, 1],
+      "2-5 years": [2, 5],
+      "6-10 years": [6, 10],
+      "10+ years": [10, Infinity]
+    };
+  
+    // Retrieve the min and max for the selected range.
+    const [minExp, maxExp] = experienceRangeMapping[selectedExperience] || [0, Infinity];
+  
+    // Convert jobExperience to a number.
+    // If job.experienceRequired is stored as "3" or "3 yrs", parseFloat works correctly.
+    const numericExp = parseFloat(jobExperience);
+  
+    // Return true if the job's experience is within the inclusive range.
+    return numericExp >= minExp && numericExp <= maxExp;
+  };
+  
+  
 
-  const handleCtcRangeChange = (value) => {
-    setCtcRange(value);
-  };
 
   const locations = [
     "Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Kolkata",
@@ -68,6 +113,7 @@ export default function PostedJobsCard() {
   const companies = [
     "LSEG", "Boeing", "Synchron", "Google", "Cognizant", "Microsoft", "Meta",
   ];
+
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -334,6 +380,8 @@ export default function PostedJobsCard() {
     return false;
   }
 
+  
+  
   const isLoggedIn = !!localStorage.getItem('token');
 
   const handleReportClick = (jobId) => {
@@ -447,15 +495,22 @@ export default function PostedJobsCard() {
 
   const filteredJobs = jobs && Object.fromEntries(
     Object.entries(jobs).filter(([id, job]) => {
-      return !job.hidden && (
-        job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      ) && handleFilter(job.location.toString().toLowerCase(), selectedLocations)
-        && handleFilter(job.companyName.toString().toLowerCase(), selectedCompanies);
+      return (
+        !job.hidden &&
+        (
+          job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        ) &&
+        handleLocationFilter(job.location, selectedLocations) &&
+        handleFilter(job.companyName.toString().toLowerCase(), selectedCompanies) &&
+        handleCtcFilter(job.ctc, selectedCtc) &&
+        handleExperienceFilter(job.experienceRequired, selectedExperience)
+      );
     })
   );
+  
 
   const [isTableView, setIsTableView] = useState(false);
 
@@ -498,7 +553,8 @@ export default function PostedJobsCard() {
             </div>
 
             {/* Location Filter */}
-            <div className="mb-5 border py-3 px-2 rounded-lg dropdown">
+            <div className="mb-2 border pt-3 px-2 rounded-lg dropdown">
+            <h2 className="text-sm font-semibold text-gray-700 mb-3">Locations</h2>
               <input
                 type="text"
                 placeholder="📍 Search locations..."
@@ -594,49 +650,44 @@ export default function PostedJobsCard() {
                 ))}
               </div>
             </div>
+            
+            <div className="mb-5 border py-3 px-2 rounded-lg">
+  <h2 className="text-sm font-semibold text-gray-700 mb-3">Experience</h2>
+  <select
+    value={selectedExperience}
+    onChange={(e) => handleExperienceChange(e.target.value)}
+    className="mt-1 block w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="">Select Experience</option>
+    <option value="0-1 year">0-1 year</option>
+    <option value="2-5 years">2-5 years</option>
+    <option value="6-10 years">6-10 years</option>
+    <option value="10+ years">10+ years</option>
+  </select>
+</div>
+
+
+
+
 
             <div className="mb-5 border py-3 px-2 rounded-lg">
-              <h2 className="text-sm font-semibold text-gray-700 mb-3">Experience</h2>
-              <div className="flex flex-wrap gap-2">
-                {["0-1 year", "2-5 years", "6-10 years", "10+ years"].map((exp) => (
-                  <label key={exp} className="flex items-center gap-2 w-1/2">
-                    <input
-                      type="checkbox"
-                      value={exp}
-                      checked={selectedExperience.includes(exp)}
-                      onChange={(e) => handleExperienceChange(e.target.value)}
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    />
-                    <span className="text-sm text-gray-700">{exp}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+  <h2 className="text-sm font-semibold text-gray-700 mb-3">CTC (in LPA)</h2>
+  <select
+    value={selectedCtc}
+    onChange={(e) => handleCtcFilterChange(e.target.value)}
+    className="mt-1 block w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="">Select Salary Range</option>
+    <option value="3-5 LPA">3-5 LPA</option>
+    <option value="5-8 LPA">5-8 LPA</option>
+    <option value="8-12 LPA">8-12 LPA</option>
+    <option value="12-15 LPA">12-15 LPA</option>
+    <option value="15-20 LPA">15-20 LPA</option>
+    <option value="20-25 LPA">20-25 LPA</option>
+    <option value="25+ LPA">25+ LPA</option>
+  </select>
+</div>
 
-            <div className="mb-5 border py-3 px-2 rounded-lg">
-              <h2 className="text-sm font-semibold text-gray-700 mb-3">CTC (in LPA)</h2>
-              <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-                <span>0 LPA</span>
-                <span>100 LPA</span>
-              </div>
-              <div className="relative">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="1"
-                  value={ctcRange}
-                  onChange={(e) => handleCtcRangeChange(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <div
-                  className="absolute top-[-24px] left-0 transform -translate-x-1/2 text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
-                  style={{ left: `${(ctcRange / 100) * 100}%` }}
-                >
-                  {ctcRange} LPA
-                </div>
-              </div>
-            </div>
 
           </div>
 
@@ -732,7 +783,7 @@ export default function PostedJobsCard() {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
                           </svg>
 
-                          <p className="text-xs text-gray-700 mt-1">{job.experienceRequired}</p>
+                          <p className="text-xs text-gray-700 mt-1">{job.experienceRequired} yrs</p>
                         </div>
                       </div>
 

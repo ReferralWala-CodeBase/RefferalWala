@@ -448,7 +448,8 @@ export default function PostJob() {
                   <option value="8-12 LPA">8-12 LPA</option>
                   <option value="12-15 LPA">12-15 LPA</option>
                   <option value="15-20 LPA">15-20 LPA</option>
-                  <option value="20+ LPA">20+ LPA</option>
+                  <option value="20-25 LPA">15-20 LPA</option>
+                  <option value="25+ LPA">25+ LPA</option>
                 </select>
 
               </div>
