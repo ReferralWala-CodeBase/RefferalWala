@@ -279,31 +279,36 @@ export default function PostedJobsCard() {
     }
   };
 
-  const handleView = async (jobId) => {
-    if (localStorage.getItem('token') === null) {
-      navigate('/user-login');
-    } else {
-      try {
-        const profile = await fetchProfileData();
-        if (
-          profile.firstName == null ||
-          profile.lastName == null ||
-          profile.mobileNumber == null ||
-          profile.education?.length === 0 ||
-          profile.skills?.length === 0 ||
-          !profile.resume ||
-          !profile.aboutMe
-        ) {
-          setProfileIncomplete(true);
-        } else {
-          setProfileIncomplete(false);
-          navigate(`/appliedjobdetails/${jobId}`)
-        }
-      } catch (error) {
-        console.error('Error in handleView:', error);
-      }
-    }
+  // const handleView = async (jobId) => {
+  //   if (localStorage.getItem('token') === null) {
+  //     navigate('/user-login');
+  //   } else {
+  //     try {
+  //       const profile = await fetchProfileData();
+  //       if (
+  //         profile.firstName == null ||
+  //         profile.lastName == null ||
+  //         profile.mobileNumber == null ||
+  //         profile.education?.length === 0 ||
+  //         profile.skills?.length === 0 ||
+  //         !profile.resume ||
+  //         !profile.aboutMe
+  //       ) {
+  //         setProfileIncomplete(true);
+  //       } else {
+  //         setProfileIncomplete(false);
+  //         navigate(`/appliedjobdetails/${jobId}`)
+  //       }
+  //     } catch (error) {
+  //       console.error('Error in handleView:', error);
+  //     }
+  //   }
+  // };
+
+  const handleView = (jobId) => {
+    navigate(`/appliedjobdetails/${jobId}`);
   };
+
 
   function getDate(endDate_param) {
     var tempDate = endDate_param + "";

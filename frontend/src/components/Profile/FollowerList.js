@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
-import image1 from "../../assets/2.png"
+import vid1 from "../../assets/vid1.mp4"
 
 export default function FollowerList() {
   const [followers, setFollowers] = useState([]);
@@ -111,8 +111,15 @@ export default function FollowerList() {
             ) : followers.length === 0 ? (
               <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
                 <div>
-                  <img src={image1} className="w-48 h-48 mx-auto mb-4" alt="" />
-                  <p className='text-xl font-light underline underline-offset-4'>You have no followers.</p>
+                  <video
+                    src={vid1}
+                    className="w-60 h-60 mx-auto mb-4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                  <p className="text-xl font-light">You have no followers !</p>
                 </div>
               </div>
             ) : (
