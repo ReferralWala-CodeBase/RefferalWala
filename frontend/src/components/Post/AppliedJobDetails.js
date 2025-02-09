@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import company from "../../assets/company.png";
 import Loader from '../Loader';
+import { FaTimes } from "react-icons/fa";
 
 export default function AppliedJobDetails() {
   const { jobId } = useParams(); // Extract jobId from URL
@@ -23,6 +24,8 @@ export default function AppliedJobDetails() {
   const [uploading, setUploading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isDocumentOpen, setIsDocumentOpen] = useState(false);
+  const [verifyFile, setVerifyFile] = useState(null);
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -54,13 +57,10 @@ export default function AppliedJobDetails() {
           },
         });
 
-        // if (!statusResponse.ok) {
-        //   throw new Error('Failed to fetch application status');
-        // }
-
         const statusData = await statusResponse.json();
         setApplicationStatus(statusData.status);
         setVerified(!!statusData.employee_doc);
+        setVerifyFile(statusData.employer_doc);
 
       } catch (error) {
         console.error('Error fetching job data or application status:', error);
@@ -217,7 +217,12 @@ export default function AppliedJobDetails() {
               <p className="text-blue-600 font-medium">You have applied for this job.</p>
             ) : applicationStatus === 'selected' ? (
               <div>
-                <p className="text-green-600 font-medium">You have been selected for this job!</p>
+                <p className="text-green-600 font-medium text-center">You have been selected for this job!</p>
+                <button onClick={() => setIsDocumentOpen(true)}
+                  className="mt-2 mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  View Selected Document
+                </button>
                 {!verified && (
                   <button
                     onClick={() => setIsDialogOpen(true)}
@@ -225,6 +230,30 @@ export default function AppliedJobDetails() {
                   >
                     {uploading ? 'Uploading...' : 'Uploading Selected Document'}
                   </button>
+                )}
+                {/*Selected Document*/}
+                {isDocumentOpen && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                    <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-[600px] h-[400px] relative flex flex-col overflow-hidden">
+                      <button
+                        onClick={() => setIsDocumentOpen(false)}
+                        className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                      >
+                        <FaTimes className="w-6 h-6" />
+                      </button>
+
+                      <h2 className="text-lg font-semibold mb-2 text-center">Selected Document</h2>
+
+                      <div className="border p-2 flex-grow flex justify-center items-center h-full overflow-hidden">
+                        {/* Image (Prevents Overflow) */}
+                        <img
+                          src={verifyFile}
+                          alt="Selected"
+                          className="max-w-full max-h-full object-contain h-full w-full"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 )}
 
                 {/* Dialog Box */}
