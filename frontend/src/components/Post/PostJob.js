@@ -179,20 +179,6 @@ export default function PostJob() {
       return;
     }
 
-    if (formData.jobLink) {
-      const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
-      if (!urlPattern.test(formData.jobLink)) {
-        toast.error("Please enter a valid URL for the job link.");
-        return;
-      }
-    }
-
-    // Validate experienceRequired
-    if (formData.experienceRequired && !/^\d+$/.test(formData.experienceRequired)) {
-      toast.error("Experience required must be a number.");
-      return;
-    }
-
     // Add userId from local storage to formData
     const bearerToken = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
@@ -239,6 +225,22 @@ export default function PostJob() {
     }
   };
 
+  const validation = () => {
+
+    const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+    const numericPattern = /^\d+$/; // Only numbers
+
+    if (!urlPattern.test(formData.jobLink)) {
+      return toast.error("Please enter a valid URL for the job link.");
+    }
+
+    // Validate experienceRequired
+    if (!numericPattern.test(formData.experienceRequired)) {
+      return toast.error("Experience required must be a number.");
+
+    }
+  };
+
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -282,6 +284,7 @@ export default function PostJob() {
                   name="jobLink"
                   value={formData.jobLink}
                   onChange={handleChange}
+                  onBlur={validation}
                   required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
@@ -350,6 +353,7 @@ export default function PostJob() {
                   name="experienceRequired"
                   value={formData.experienceRequired}
                   onChange={handleChange}
+                  onBlur={validation}
                   required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />

@@ -671,7 +671,11 @@ export default function ViewApplicantProfile() {
                   >
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-xl">
-                        <FaLocationArrow />
+                        {pref.preferredCompanyURL ? (
+                          <img src={pref.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
+                        ) : (
+                          <FaLocationArrow />
+                        )}
                       </div>
                       <div className="ml-4">
                         <h3 className="text-lg font-semibold text-gray-800">

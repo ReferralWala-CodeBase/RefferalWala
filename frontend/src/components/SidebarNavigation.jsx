@@ -304,8 +304,8 @@ export default function SidebarNa() {
                     <img
                       src={
                         profileData?.profilePhoto ||
-                        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      }
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"
+                        }
                       alt="Profile"
                       className="h-8 w-8 rounded-full bg-gray-50 border-gray-500  shadow-lg hover:shadow-xl transition-shadow duration-300"
                     />
