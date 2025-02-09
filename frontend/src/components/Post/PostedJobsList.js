@@ -269,7 +269,7 @@ export default function PostedJobsList() {
                         <span className="inline-flex items-center gap-1 bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full mb-2">
                           <FaCircle
                             className={job.status === "inactive" ? "text-red-500" : "text-green-500"}
-                            size={10}
+                            size={5}
                           />
                           <span>{job.status === "inactive" ? "Closed" : job.status}</span>
                         </span>
