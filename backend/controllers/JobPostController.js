@@ -128,7 +128,8 @@ exports.getAllJobPosts = async (req, res) => {
     );
 
     // Retrieve all job posts with the updated statuses
-    const jobPosts = await JobPost.find().populate('user', 'firstName lastName email');
+    const jobPosts = await JobPost.find({ status: 'active' })
+      .populate('user', 'firstName lastName email');
     res.status(200).json(jobPosts);
   } catch (err) {
     console.error('Error fetching job posts:', err.message);
@@ -468,7 +469,7 @@ exports.getApplicationStatusForJobPost = async (req, res) => {
 
     // Find the applicant status for the specified user and job post
     const applicantStatus = await ApplicantStatus.findOne({ userId, jobPostId })
-      .populate('jobPostId', 'jobRole companyName jobUniqueId'); // Populate job details
+      .populate('jobPostId', 'jobRole companyName jobUniqueId companyLogoUrl location workMode'); // Populate job details
 
     if (!applicantStatus) {
       return res.status(404).json({ message: 'No application found for this job post' });

@@ -76,7 +76,7 @@ export default function EditProfile() {
       const newStatus = profileData.isActivate ? false : true; // Toggle the status
 
       const response = await fetch(`${Fronted_API_URL}/user/deactivate/${userId}`, {
-        method: "PUT", // Assuming deactivation requires an update
+        method: "PUT", 
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           "Content-Type": "application/json",
@@ -767,7 +767,8 @@ export default function EditProfile() {
             <h3 className="text-lg font-medium leading-7 text-gray-900 text-left">
               Edit Profile
             </h3>
-            <button
+            
+            {/* <button
               onClick={() => setOpen(true)}
               className="inline-flex justify-center items-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
@@ -777,7 +778,7 @@ export default function EditProfile() {
                 <UserMinusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
               )}
               {profileData.isActivate === false ? "Activate" : "Deactivate"}
-            </button>
+            </button> */}
           </div>
 
 
@@ -1043,7 +1044,6 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="role"
-                  required
                   value={profileData.presentCompany?.role || ''}
                   onChange={(e) =>
                     setProfileData({
@@ -1062,7 +1062,6 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="companyName"
-                  required
                   value={profileData.presentCompany?.companyName || ''}
                   onChange={handlePresentChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
@@ -1160,7 +1159,6 @@ export default function EditProfile() {
                           type="text"
                           value={otp}
                           onChange={handleOtpChange}
-                          required
                           className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         />
                       </div>
@@ -1299,7 +1297,7 @@ export default function EditProfile() {
                   />
                 </div>
                 {/* Remove Button in Same Row */}
-                <FaTrash onClick={() => removeEducation(index)} className="m-2 mt-5 text-2xl" />
+                <FaTrash onClick={() => removeEducation(index)} className="m-2 mt-5 text-xl text-red-500 hover:text-red-700" />
               </div>
             ))}
             <button
@@ -1403,7 +1401,7 @@ export default function EditProfile() {
                   />
                 </div>
                 {/* Remove Button in Same Row */}
-                <FaTrash onClick={() => removeExperience(index)} className="m-2 mt-5 text-2xl" />
+                <FaTrash onClick={() => removeExperience(index)} className="m-2 mt-5 text-xl text-red-500 hover:text-red-700" />
               </div>
             ))}
             <button
@@ -1469,7 +1467,7 @@ export default function EditProfile() {
                   onClick={() => removeProject(index)}
                   className="absolute top-2 right-2 text-black  "
                 >
-                  <FaTrash className="text-lg" />
+                  <FaTrash className="text-xl text-red-500 hover:text-red-700" />
                 </button>
                 <div className="flex gap-6">
                   {/* Project Name */}
@@ -1667,7 +1665,7 @@ export default function EditProfile() {
                   {/* Remove Button */}
                   <FaTrash
                     onClick={() => handleRemovePreference(index)}
-                    className="m-2 mt-5 text-2xl cursor-pointer text-red-500 hover:text-red-700"
+                    className="ml-2 mt-5 text-xl cursor-pointer text-red-500 hover:text-red-700"
                   />
                 </div>
               </div>
@@ -1801,7 +1799,7 @@ export default function EditProfile() {
                     {/* Trash Icon to Delete Achievement */}
                     <FaTrash
                       onClick={() => removeAchievement(index)}
-                      className="ml-2 cursor-pointer"
+                      className="ml-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
                     />
                   </div>
                 ))}
@@ -1835,7 +1833,7 @@ export default function EditProfile() {
                     {/* Trash Icon to Delete Skill */}
                     <FaTrash
                       onClick={() => removeSkill(index)}
-                      className="ml-2 cursor-pointer"
+                      className="ml-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
                     />
                   </div>
                 ))}
@@ -1877,6 +1875,7 @@ export default function EditProfile() {
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 rows="4"
+                required
               ></textarea>
             </div>
 

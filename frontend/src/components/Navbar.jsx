@@ -29,18 +29,18 @@ const userNavigation = [
   { name: "Homepage", href: "/", icon: HomeIcon, current: false },
   // { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
-  {
-    name: "Followers",
-    href: "/followerlist",
-    icon: DocumentDuplicateIcon,
-    current: false,
-  },
-  {
-    name: "Following",
-    href: "/followinglist",
-    icon: ChartPieIcon,
-    current: false,
-  },
+  // {
+  //   name: "Followers",
+  //   href: "/followerlist",
+  //   icon: DocumentDuplicateIcon,
+  //   current: false,
+  // },
+  // {
+  //   name: "Following",
+  //   href: "/followinglist",
+  //   icon: ChartPieIcon,
+  //   current: false,
+  // },
   {
     name: "Post Job",
     href: "/postjob",

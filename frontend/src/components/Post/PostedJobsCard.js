@@ -132,8 +132,9 @@ export default function PostedJobsCard() {
         }
 
         const data = await response.json();
-        const activeJobs = data.filter((job) => job.status === 'active');
-        setJobs(activeJobs);
+        // const activeJobs = data.filter((job) => job.status === 'active');
+        // setJobs(activeJobs);
+        setJobs(data);
       } catch (error) {
         setError(error.message);
       } finally {
