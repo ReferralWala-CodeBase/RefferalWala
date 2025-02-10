@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaBuilding, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
 import Navbar from '../Navbar';
 import { motion } from "framer-motion";
@@ -35,7 +35,7 @@ export default function PostedJobsCard() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
   const [wishlistJobs, setWishlistJobs] = useState([]);
-
+    const location = useLocation();
   const [profileData, setProfileData] = useState(null);
   const [profileIncomplete, setProfileIncomplete] = useState(false);
   const bearerToken = localStorage.getItem('token');
@@ -51,6 +51,12 @@ export default function PostedJobsCard() {
 
 
   const [selectedExperience, setSelectedExperience] = useState("");
+
+  useEffect(() => {
+    if (location.state?.searchQuery) {
+      setSearchQuery(location.state.searchQuery);
+    }
+  }, [location.state?.searchQuery]);
 
   const handleCtcFilterChange = (value) => {
     setSelectedCtc(value);

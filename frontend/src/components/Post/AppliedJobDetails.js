@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import company from "../../assets/company.png";
 import Loader from '../Loader';
 import { FaTimes } from "react-icons/fa";
+import { UserPlus, UserX } from "lucide-react";
 
 export default function AppliedJobDetails() {
   const { jobId } = useParams(); // Extract jobId from URL
@@ -26,6 +27,8 @@ export default function AppliedJobDetails() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDocumentOpen, setIsDocumentOpen] = useState(false);
   const [verifyFile, setVerifyFile] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(null);
+  const [usertofollow, setUsertofollow] = useState("");
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -47,6 +50,15 @@ export default function AppliedJobDetails() {
 
         const jobData = await jobResponse.json();
         setJobData(jobData); // Set the job data
+
+
+        setIsFollowing(jobData.user.followers?.includes(userId) || false);
+
+        console.log(jobData.user);
+
+        if (jobData?.user?._id) {
+          setUsertofollow(jobData.user._id); // Ensure _id exists before setting state
+        }
 
         // Now fetch the application status
         const statusResponse = await fetch(`${Fronted_API_URL}/job/user/${userId}/jobpost/${jobId}/application/status`, {
@@ -101,6 +113,39 @@ export default function AppliedJobDetails() {
       toast.success("Successfully applied for the job!");
       navigate('/appliedjobs');
     } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleFollowUnfollow = async () => {
+    const bearerToken = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    try {
+      const action = isFollowing ? 'unfollow' : 'follow';
+      const response = await fetch(`${Fronted_API_URL}/user/${action}/${usertofollow}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      } else {
+        toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successfully`);
+
+        // Update state and fetch updated profile data
+        setIsFollowing(!isFollowing);
+      }
+
+      // Update state and fetch updated profile data
+      setIsFollowing(!isFollowing);
+    } catch (error) {
+      console.error('Error updating follow status:', error);
       toast.error(error.message);
     }
   };
@@ -208,10 +253,10 @@ export default function AppliedJobDetails() {
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
-        <div className="w-2/12 md:w-1/5 border">
+        <div className="w-2/12 md:w-1/5 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-4 sm:px-6">
+        <div className="w-10/12 md:w-3/4 m-auto">
           <div className="col-span-2 flex justify-end p-4">
             {applicationStatus === 'applied' ? (
               <p className="text-blue-600 font-medium">You have applied for this job.</p>
@@ -298,10 +343,10 @@ export default function AppliedJobDetails() {
             ) : applicationStatus === 'on hold' ? (
               <p className="text-yellow-600 font-medium">Your application is on hold.</p>
             ) : (
-              <div className='md:flex gap-2 flex-none'>
+              <div className='md:flex gap-2 flex-none mx-auto md:mx-0'>
                 <button
                   onClick={handleApply}
-                  className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
+                  className="mr-1 inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
                 >
                   Apply
                 </button>
@@ -317,10 +362,16 @@ export default function AppliedJobDetails() {
             <div class="mx-auto px-1 2xl:px-0">
 
               <div className='flex mb-2 justify-between'>
-                <p className="flex gap-1 text-xs px-6 w-fit bg-gray-200 items-center rounded-full text-gray-700">
-                  <img src={jobData?.companyLogoUrl} className='h-6 w-6 items-center border rounded-full' alt="" />
-                  <span className="font-medium text-gray-800">Posted By:</span> {jobData.user?.firstName}
-                </p>
+                <div className='flex gap-2'>
+                  <p className="flex gap-1 text-xs px-6 w-fit bg-gray-200 items-center rounded-full text-gray-700">
+                    <img src={jobData?.companyLogoUrl} className='h-6 w-6 items-center border rounded-full' alt="" />
+                    <span className="font-medium text-gray-800">Posted By:</span> {jobData.user?.firstName}
+                  </p>
+                  <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center border border-transparent rounded-full bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
+                    {isFollowing ? 'Unfollow' : 'Follow'}
+                  </button>
+                </div>
                 <img className='hidden lg:block h-10 w-10' src={company} alt="" />
               </div>
 
@@ -373,15 +424,24 @@ export default function AppliedJobDetails() {
               <div class="py-4 md:py-8">
                 <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
                   <div class="space-y-4">
-                    <div class="flex space-x-4">
+                    <div class="flex space-x-4 gap-[20%]">
                       <img class="h-20 w-20 border-8 border-blue-700 rounded-full" src={jobData?.companyLogoUrl} alt="Company" />
-
+                      <div className="flex flex-col">
+                        <dl class="block sm:hidden">
+                          <dt class="mb-1 text-blue-700 font-bold">Job ID</dt>
+                          <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
+                        </dl>
+                        <dl class="block sm:hidden">
+                          <dt class="mb-1 text-blue-700 font-bold">CTC</dt>
+                          <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
+                        </dl>
+                      </div>
                     </div>
-                    <dl class="">
+                    <dl class="hidden sm:block">
                       <dt class="mb-1 text-blue-700 font-bold">Job ID</dt>
                       <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
                     </dl>
-                    <dl class="">
+                    <dl class="hidden sm:block">
                       <dt class="mb-1 text-blue-700 font-bold">CTC</dt>
                       <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
                     </dl>

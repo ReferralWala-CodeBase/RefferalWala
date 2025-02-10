@@ -58,7 +58,6 @@ const PresentCompanySchema = new mongoose.Schema({
   },
   CompanyEmailVerified: {
     type: Boolean,
-    default: false
   },
   yearsOfExperience: {
     type: Number,
