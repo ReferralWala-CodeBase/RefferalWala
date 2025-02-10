@@ -669,10 +669,10 @@ export default function PostedJobsCard() {
 
 
 
-            <CtcRangeSlider />
+            {/* <CtcRangeSlider /> */}
 
 
-            {/* <div className="mb-5 border py-3 px-2 rounded-lg">
+            <div className="mb-5 border py-3 px-2 rounded-lg">
               <h2 className="text-sm font-semibold text-gray-700 mb-3">CTC (in LPA)</h2>
               <select
                 value={selectedCtc}
@@ -688,7 +688,7 @@ export default function PostedJobsCard() {
                 <option value="20-25 LPA">20-25 LPA</option>
                 <option value="25+ LPA">25+ LPA</option>
               </select>
-            </div> */}
+            </div>
 
 
           </div>

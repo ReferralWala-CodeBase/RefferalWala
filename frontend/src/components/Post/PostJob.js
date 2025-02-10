@@ -69,7 +69,7 @@ export default function PostJob() {
         !presentCompany?.companyName ||
         !presentCompany?.CompanyEmailVerified
       ) {
-        setProfileIncomplete(true);
+        setProfileIncomplete(false);
       } else {
         setProfileIncomplete(false);
       }

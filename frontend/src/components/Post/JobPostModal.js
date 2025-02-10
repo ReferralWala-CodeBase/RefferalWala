@@ -66,14 +66,14 @@ const JobPostModal = ({ isOpen, onClose }) => {
                 }
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
-                setCompanySuggestions([]);  // Clear company suggestions on error
-                setLocationSuggestions([]);  // Clear location suggestions on error
+                setCompanySuggestions([]);
+                setLocationSuggestions([]);
             } finally {
                 setLoading(false);
             }
         } else {
-            setCompanySuggestions([]);  // Clear company suggestions if input length <= 2
-            setLocationSuggestions([]);  // Clear location suggestions if input length <= 2
+            setCompanySuggestions([]);
+            setLocationSuggestions([]);
         }
     };
 

@@ -24,6 +24,7 @@ export default function AppliedJobs() {
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState('applied');
 
+
   const handleOpenModal = (jobId) => {
     setSelectedJobId(jobId);
     setOpen(true);
@@ -132,18 +133,46 @@ export default function AppliedJobs() {
               {['applied', 'selected', 'rejected', 'on hold'].map(status => (
                 <button
                   key={status}
-                  onClick={() => setSelectedStatus(status)}
+                  onClick={() => {
+                    setLoading(true);
+                    setSelectedStatus(status);
+                    setTimeout(() => setLoading(false), 1000); // Simulate loading delay
+                  }}
                   className={`px-4 py-2 text-sm font-medium rounded-md ${selectedStatus === status ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                  disabled={loading}
                 >
+                  {loading && selectedStatus === status ? (
+                    <svg
+                      className="animate-spin h-4 w-4 text-white inline-block mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 100 8H4z"
+                      ></path>
+                    </svg>
+                  ) : null}
                   {status.charAt(0).toUpperCase() + status.slice(1)}
                 </button>
               ))}
             </div>
+
             {loading ? (
               <Loader />
             ) : error ? (
               error === "Make Your Career Dreams a Reality" ? ( // Handle specific 404 error message
-                <div className="flex flex-col items-center mt-8 p-6 bg-gray-100 rounded-md shadow-md">
+                <div className="flex flex-col items-center mt-8 p-6 bg-gray-100 rounded-md">
                   <img
                     src={img2}
                     alt="No Jobs Found"
@@ -152,9 +181,9 @@ export default function AppliedJobs() {
                   <p className="text-gray-700 text-lg font-semibold mb-4">{error}</p>
                   <button
                     onClick={() => navigate('/')}
-                    className="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-all shadow-lg"
+                    className="px-6 py-1 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all shadow-lg"
                   >
-                    Add Job
+                    + Add Job
                   </button>
                 </div>
               ) : (
