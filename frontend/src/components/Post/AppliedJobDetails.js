@@ -298,12 +298,19 @@ export default function AppliedJobDetails() {
             ) : applicationStatus === 'on hold' ? (
               <p className="text-yellow-600 font-medium">Your application is on hold.</p>
             ) : (
-              <button
-                onClick={handleApply}
-                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
-              >
-                Apply
-              </button>
+              <div className='md:flex gap-2 flex-none'>
+                <button
+                  onClick={handleApply}
+                  className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
+                >
+                  Apply
+                </button>
+                <button
+                  className="inline-flex justify-center rounded-full border border-transparent bg-red-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 items-center focus:ring-offset-2 "
+                >
+                  Report
+                </button>
+              </div>
             )}
           </div>
           <section class="bg-white py-4 antialiased md:py-6">

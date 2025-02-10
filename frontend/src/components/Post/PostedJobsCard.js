@@ -12,6 +12,7 @@ import JobPostModal from './JobPostModal';
 import { LocationExport } from '../Location';
 import Loader from '../Loader';
 import SmallScreenNav from './SmallScreenNav';
+import CtcRangeSlider from './CtcRangerSlider';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -57,33 +58,33 @@ export default function PostedJobsCard() {
 
   const handleCtcFilter = (jobCtc, selectedCtc) => {
     if (!selectedCtc) return true; // No filter applied, return all jobs
-  
+
     return jobCtc === selectedCtc; // Direct match
   };
 
   const handleLocationFilter = (jobLocation, selectedLocations) => {
     // If no location is selected, return true (no filtering)
     if (!selectedLocations || selectedLocations.length === 0) return true;
-    
+
     // Lowercase the job location for case-insensitive comparison
     const lowerJobLocation = jobLocation.toLowerCase();
-  
+
     // Check if the job's location contains any selected city's or state's name
     return selectedLocations.some(loc => {
-      return lowerJobLocation.includes(loc.city.toLowerCase()) || 
-             lowerJobLocation.includes(loc.state.toLowerCase());
+      return lowerJobLocation.includes(loc.city.toLowerCase()) ||
+        lowerJobLocation.includes(loc.state.toLowerCase());
     });
   };
 
   const handleExperienceChange = (value) => {
     setSelectedExperience(value);
   };
-  
-  
+
+
   const handleExperienceFilter = (jobExperience, selectedExperience) => {
     // No filter applied: return true for all jobs
     if (!selectedExperience) return true;
-  
+
     // Map the selected experience range to numeric boundaries.
     // Adjust the boundaries based on your requirements.
     const experienceRangeMapping = {
@@ -92,19 +93,19 @@ export default function PostedJobsCard() {
       "6-10 years": [6, 10],
       "10+ years": [10, Infinity]
     };
-  
+
     // Retrieve the min and max for the selected range.
     const [minExp, maxExp] = experienceRangeMapping[selectedExperience] || [0, Infinity];
-  
+
     // Convert jobExperience to a number.
     // If job.experienceRequired is stored as "3" or "3 yrs", parseFloat works correctly.
     const numericExp = parseFloat(jobExperience);
-  
+
     // Return true if the job's experience is within the inclusive range.
     return numericExp >= minExp && numericExp <= maxExp;
   };
-  
-  
+
+
 
 
   const locations = [
@@ -380,8 +381,8 @@ export default function PostedJobsCard() {
     return false;
   }
 
-  
-  
+
+
   const isLoggedIn = !!localStorage.getItem('token');
 
   const handleReportClick = (jobId) => {
@@ -510,7 +511,7 @@ export default function PostedJobsCard() {
       );
     })
   );
-  
+
 
   const [isTableView, setIsTableView] = useState(false);
 
@@ -554,7 +555,7 @@ export default function PostedJobsCard() {
 
             {/* Location Filter */}
             <div className="mb-2 border pt-3 px-2 rounded-lg dropdown">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">Locations</h2>
+              <h2 className="text-sm font-semibold text-gray-700 mb-3">Locations</h2>
               <input
                 type="text"
                 placeholder="📍 Search locations..."
@@ -650,43 +651,44 @@ export default function PostedJobsCard() {
                 ))}
               </div>
             </div>
-            
-            <div className="mb-5 border py-3 px-2 rounded-lg">
-  <h2 className="text-sm font-semibold text-gray-700 mb-3">Experience</h2>
-  <select
-    value={selectedExperience}
-    onChange={(e) => handleExperienceChange(e.target.value)}
-    className="mt-1 block w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-  >
-    <option value="">Select Experience</option>
-    <option value="0-1 year">0-1 year</option>
-    <option value="2-5 years">2-5 years</option>
-    <option value="6-10 years">6-10 years</option>
-    <option value="10+ years">10+ years</option>
-  </select>
-</div>
-
-
-
-
 
             <div className="mb-5 border py-3 px-2 rounded-lg">
-  <h2 className="text-sm font-semibold text-gray-700 mb-3">CTC (in LPA)</h2>
-  <select
-    value={selectedCtc}
-    onChange={(e) => handleCtcFilterChange(e.target.value)}
-    className="mt-1 block w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-  >
-    <option value="">Select Salary Range</option>
-    <option value="3-5 LPA">3-5 LPA</option>
-    <option value="5-8 LPA">5-8 LPA</option>
-    <option value="8-12 LPA">8-12 LPA</option>
-    <option value="12-15 LPA">12-15 LPA</option>
-    <option value="15-20 LPA">15-20 LPA</option>
-    <option value="20-25 LPA">20-25 LPA</option>
-    <option value="25+ LPA">25+ LPA</option>
-  </select>
-</div>
+              <h2 className="text-sm font-semibold text-gray-700 mb-3">Experience</h2>
+              <select
+                value={selectedExperience}
+                onChange={(e) => handleExperienceChange(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Experience</option>
+                <option value="0-1 year">0-1 year</option>
+                <option value="2-5 years">2-5 years</option>
+                <option value="6-10 years">6-10 years</option>
+                <option value="10+ years">10+ years</option>
+              </select>
+            </div>
+
+
+
+            <CtcRangeSlider />
+
+
+            {/* <div className="mb-5 border py-3 px-2 rounded-lg">
+              <h2 className="text-sm font-semibold text-gray-700 mb-3">CTC (in LPA)</h2>
+              <select
+                value={selectedCtc}
+                onChange={(e) => handleCtcFilterChange(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Salary Range</option>
+                <option value="3-5 LPA">3-5 LPA</option>
+                <option value="5-8 LPA">5-8 LPA</option>
+                <option value="8-12 LPA">8-12 LPA</option>
+                <option value="12-15 LPA">12-15 LPA</option>
+                <option value="15-20 LPA">15-20 LPA</option>
+                <option value="20-25 LPA">20-25 LPA</option>
+                <option value="25+ LPA">25+ LPA</option>
+              </select>
+            </div> */}
 
 
           </div>
@@ -841,20 +843,20 @@ export default function PostedJobsCard() {
                         </svg>
 
                         </button>
-                        <button className="p-1 text-xs rounded-full bg-gray-200" onClick={() => handleReportClick(job._id)}>
+                        {/* <button className="p-1 text-xs rounded-full bg-gray-200" onClick={() => handleReportClick(job._id)}>
                           <ExclamationTriangleIcon className="h-5 w-5 text-gray-700" />
-                        </button>
+                        </button> */}
                       </div>
                     </div>
 
-                    {showReportDialog && selectedJobId === job._id && (
+                    {/* {showReportDialog && selectedJobId === job._id && (
                       <ReportJob
                         jobId={selectedJobId}
                         isLoggedIn={isLoggedIn}
                         onReportSuccess={handleReportSuccess}
                         onCancel={() => setShowReportDialog(false)}
                       />
-                    )}
+                    )} */}
 
                   </motion.li>
                 ))
