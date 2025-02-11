@@ -25,7 +25,7 @@ export default function EditProfile() {
     profilePhoto: '',
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
-    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', companyEmail: '', yearsOfExperience: '' }],
+    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: '',  companyEmail: '', yearsOfExperience: '' }],
     preferences: [{ preferredCompanyName: '', preferredCompanyURL: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
@@ -141,6 +141,7 @@ export default function EditProfile() {
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const bearerToken = localStorage.getItem('token');
       const response = await fetch(
@@ -162,6 +163,11 @@ export default function EditProfile() {
         toast.success("Company Email verified successfully! ");
         const isVerified = data?.presentCompany?.CompanyEmailVerified;
         setIsCompanyEmailVerified(true);
+        setProfileData(prevState => ({
+          ...prevState,
+          presentCompany: { ...prevState.presentCompany, CompanyEmailVerified: isVerified }
+      }));
+      
         setOriginalCompanyEmail(profileData.presentCompany?.companyEmail);
         setShowOtpModal(false);
       } else {

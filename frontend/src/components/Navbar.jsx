@@ -210,7 +210,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
 
       // Navigate based on available results
       if (jobResults.length > 0) {
-        navigate("/search", { state: { jobData: jobResults } });
+        navigate("/", { state: { jobData: jobResults, searchQuery } });
       } else if (userResults.length > 0) {
         navigate("/search", { state: { userData: userResults } });
       }

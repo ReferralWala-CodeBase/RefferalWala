@@ -38,6 +38,7 @@ export default function Search() {
         if (location.state?.jobData) {
             setData(location.state.jobData);
             setShowJobData(true);
+            navigate("/")
         } else if (location.state?.userData) {
             setData(location.state.userData);
         }

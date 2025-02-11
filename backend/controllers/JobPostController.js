@@ -167,7 +167,7 @@ exports.getJobPostsByUser = async (req, res) => {
 exports.getJobPostById = async (req, res) => {
   try {
     const { id } = req.params;
-    const jobPost = await JobPost.findById(id).populate('user', 'firstName lastName email');
+    const jobPost = await JobPost.findById(id).populate('user', 'firstName lastName email followers');
 
     if (!jobPost) {
       return res.status(404).json({ message: 'Job post not found' });
