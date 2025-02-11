@@ -8,6 +8,7 @@ import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from '../Loader';
+import person from '../../assets/person.png'
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ export default function ViewProfile() {
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-11/12 md:w-3/4 px-4 sm:px-6 m-auto">
+        <div className="w-11/12 md:w-3/4 px-0 sm:px-6 m-auto">
           <div className="flex justify-end pt-2 pb-4 ml-4 gap-2">
             <button
               onClick={() => navigate(`/editprofile`)}
@@ -77,7 +78,7 @@ export default function ViewProfile() {
             <div className="flex flex-col lg:flex-row">
               <div className="lg:w-1/3 text-center lg:pr-6 lg:border-r border-gray-300 mb-6 lg:mb-0">
                 <img
-                  src={profileData.profilePhoto || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"}
+                  src={profileData.profilePhoto || person}
                   alt="Profile"
                   className="w-36 h-36 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
                 />

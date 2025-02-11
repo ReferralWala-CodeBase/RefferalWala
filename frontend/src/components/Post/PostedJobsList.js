@@ -83,15 +83,15 @@ export default function PostedJobsList() {
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 m-auto">
-          {/* Table */}
-          <input
+          {/* Searching */}
+          {/* <input
             type="text"
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             // className="m-4 ml-10 px-4 py-3 border-2 rounded w-3/4 bg-[#FFFFFF] border-none text-black p-8"
             className="m-4 ml-10 px-4 py-3 rounded w-3/4 border-1 border-blue-500 focus:outline-none text-black"
-          />
+          /> */}
           <div className="mt-2 flow-root">
             {loading ? (
               <Loader />
@@ -112,7 +112,7 @@ export default function PostedJobsList() {
             ) : jobs.length === 0 ? (
               <p>No jobs found.</p>
             ) : (
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
                 {/* Display Table View for Larger Screens */}
                 <div className="hidden lg:block overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-300">
@@ -242,7 +242,7 @@ export default function PostedJobsList() {
                   {Object.entries(filteredJobs).map(([id, job]) => (
                     <motion.li
                       key={job._id}
-                      className="relative max-w-lg w-full list-none rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
+                      className="relative mb-4 max-w-lg w-full list-none rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.3 }}
                     >

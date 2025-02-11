@@ -6,7 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
-import vid1 from "../../assets/vid1.mp4"
+import vid1 from "../../assets/vid1.mp4";
+import person from '../../assets/person.png'
 
 export default function FollowerList() {
   const [followers, setFollowers] = useState([]);
@@ -146,7 +147,7 @@ export default function FollowerList() {
                           >
                             <img
                               className="h-11 w-11 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                              src={user.profilePhoto || "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
+                              src={user.profilePhoto || person}
                               alt="avatar"
                             />
                           </td>
@@ -209,47 +210,45 @@ export default function FollowerList() {
 
                       {/* Modal Content */}
                       <div className="overflow-auto max-h-[70vh] p-4 hide-scrollbar">
-  {jobs.length > 0 ? (
-    <ul className="space-y-2">
-      {jobs.map((job) => (
-        <li
-          key={job._id}
-          onClick={() => job.status === "active" && handleViewDetails(job._id)}
-          className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${
-            job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
-          }`}
-        >
-          <img
-            src={job.companyLogoUrl || busi}
-            alt={job.companyName}
-            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
-          />
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
-              <span
-                className={`px-2 py-1 text-xs font-medium rounded-full ${
-                  job.status === "active"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-600"
-                }`}
-              >
-                {job.status === "active" ? "Active" : "Inactive"}
-              </span>
-            </div>
-            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
-            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
-            <p className="text-sm sm:text-base text-gray-500">
-              End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>No jobs posted by this user.</p>
-  )}
-</div>
+                        {jobs.length > 0 ? (
+                          <ul className="space-y-2">
+                            {jobs.map((job) => (
+                              <li
+                                key={job._id}
+                                onClick={() => job.status === "active" && handleViewDetails(job._id)}
+                                className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
+                                  }`}
+                              >
+                                <img
+                                  src={job.companyLogoUrl || busi}
+                                  alt={job.companyName}
+                                  className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                                />
+                                <div className="flex-1">
+                                  <div className="flex justify-between items-center">
+                                    <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                                    <span
+                                      className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active"
+                                          ? "bg-green-100 text-green-600"
+                                          : "bg-red-100 text-red-600"
+                                        }`}
+                                    >
+                                      {job.status === "active" ? "Active" : "Inactive"}
+                                    </span>
+                                  </div>
+                                  <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
+                                  <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                                  <p className="text-sm sm:text-base text-gray-500">
+                                    End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
+                                  </p>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>No jobs posted by this user.</p>
+                        )}
+                      </div>
 
                     </div>
                   </div>
@@ -262,7 +261,7 @@ export default function FollowerList() {
                       <div className="flex items-center">
                         <img
                           className="h-16 w-16 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                          src={user.profilePhoto || "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
+                          src={user.profilePhoto || person}
                           alt="avatar"
                         />
                         <div className="ml-4">

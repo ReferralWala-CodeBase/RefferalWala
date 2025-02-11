@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
+import person from '../assets/person.png'
 import {
   Bars3Icon,
   CalendarIcon,
@@ -304,7 +305,7 @@ export default function SidebarNa() {
                     <img
                       src={
                         profileData?.profilePhoto ||
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"
+                        person
                         }
                       alt="Profile"
                       className="h-8 w-8 rounded-full bg-gray-50 border-gray-500  shadow-lg hover:shadow-xl transition-shadow duration-300"

@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
 import { UserPlus, UserX } from "lucide-react";
+import person from '../../assets/person.png';
 
 export default function ViewApplicantProfile() {
   const navigate = useNavigate();
@@ -260,7 +261,7 @@ export default function ViewApplicantProfile() {
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
+        <div className="w-10/12 md:w-3/4 px-0 sm:px-6 mx-auto">
           <div className="col-span-2 flex justify-end p-4">
             <label htmlFor="status" className="mr-2 font-medium text-gray-700">
               Update Status
@@ -352,47 +353,45 @@ export default function ViewApplicantProfile() {
 
                 {/* Modal Content */}
                 <div className="overflow-auto max-h-[70vh] p-4 hide-scrollbar">
-  {jobs.length > 0 ? (
-    <ul className="space-y-2">
-      {jobs.map((job) => (
-        <li
-          key={job._id}
-          onClick={() => job.status === "active" && handleViewDetails(job._id)}
-          className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${
-            job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
-          }`}
-        >
-          <img
-            src={job.companyLogoUrl || busi}
-            alt={job.companyName}
-            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
-          />
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
-              <span
-                className={`px-2 py-1 text-xs font-medium rounded-full ${
-                  job.status === "active"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-600"
-                }`}
-              >
-                {job.status === "active" ? "Active" : "Inactive"}
-              </span>
-            </div>
-            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
-            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
-            <p className="text-sm sm:text-base text-gray-500">
-              End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>No jobs posted by this user.</p>
-  )}
-</div>
+                  {jobs.length > 0 ? (
+                    <ul className="space-y-2">
+                      {jobs.map((job) => (
+                        <li
+                          key={job._id}
+                          onClick={() => job.status === "active" && handleViewDetails(job._id)}
+                          className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
+                            }`}
+                        >
+                          <img
+                            src={job.companyLogoUrl || busi}
+                            alt={job.companyName}
+                            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                          />
+                          <div className="flex-1">
+                            <div className="flex justify-between items-center">
+                              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                              <span
+                                className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active"
+                                    ? "bg-green-100 text-green-600"
+                                    : "bg-red-100 text-red-600"
+                                  }`}
+                              >
+                                {job.status === "active" ? "Active" : "Inactive"}
+                              </span>
+                            </div>
+                            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
+                            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                            <p className="text-sm sm:text-base text-gray-500">
+                              End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No jobs posted by this user.</p>
+                  )}
+                </div>
 
               </div>
             </div>
@@ -402,7 +401,7 @@ export default function ViewApplicantProfile() {
             <div className="flex flex-col md:flex-row">
               <div className="w-full md:w-1/3 text-center pr-6 md:border-r border-gray-300 mb-6 md:mb-0">
                 <img
-                  src={profileData.profilePhoto || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"}
+                  src={profileData.profilePhoto || person}
                   alt="Profile"
                   className="w-36 h-36 rounded-full mx-auto mb-4"
                 />
