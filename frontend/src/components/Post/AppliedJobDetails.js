@@ -27,11 +27,10 @@ export default function AppliedJobDetails() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDocumentOpen, setIsDocumentOpen] = useState(false);
   const [verifyFile, setVerifyFile] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(null);
+  const [usertofollow, setUsertofollow] = useState("");
    const [profileData, setProfileData] = useState(null);
    const [profileIncomplete, setProfileIncomplete] = useState(false);
-   const [isFollowing, setIsFollowing] = useState(null);
-   const [usertofollow, setUsertofollow] = useState("");
- 
 
   useEffect(() => {
     const fetchJobData = async () => {
