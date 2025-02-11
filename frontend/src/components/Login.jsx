@@ -250,10 +250,8 @@ function Login() {
                 </div>
 
               </div>
-            </div>
-          </div>
 
-          <p className="mt-5 text-center text-sm text-gray-500">
+              <p className="mt-5 text-center text-sm text-gray-500">
             Not a member?{" "}
             <Link
               to="/signup"
@@ -262,6 +260,10 @@ function Login() {
               Register
             </Link>
           </p>
+            </div>
+          </div>
+
+        
         </div>
       </div>
 
