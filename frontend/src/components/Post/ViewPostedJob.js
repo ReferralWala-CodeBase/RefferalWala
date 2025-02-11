@@ -121,8 +121,8 @@ export default function ViewPostedJob() {
 
 
   if (!jobData) {
-    return(
-    <Loader />
+    return (
+      <Loader />
     );
   }
 
@@ -132,164 +132,184 @@ export default function ViewPostedJob() {
 
       <div>
         <SidebarNavigation />
-        <main className="py-2 lg:pl-72">
-          <div className="lg:flex lg:justify-between bg-gray-800 p-6">
-            <div className="min-w-0 flex-1">
-              <h2 className="text-2xl font-bold leading-7 text-white sm:truncate sm:text-2xl sm:tracking-tight">
+        <main className="py-4 lg:pl-72 min-h-screen">
+          <div className="mt-5 flex justify-end gap-2 px-4 lg:ml-4 lg:mt-0">
+            <button
+              type="button"
+              onClick={() => navigate(`/editpostedjob/${jobId}`)}
+              className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
+            >
+              <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+              Edit
+            </button>
+
+            <button
+              onClick={() => setOpen(true)}
+              className="inline-flex justify-center rounded-full border border-transparent bg-red-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 items-center focus:ring-offset-2"
+            >
+              Close Job
+            </button>
+          </div>
+
+          {/* Modal for Closing Job */}
+          <Transition.Root show={open} as={Fragment}>
+            <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={() => setOpen(false)}>
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    enterTo="opacity-100 translate-y-0 sm:scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                  >
+                    <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                      <div className="sm:flex sm:items-start">
+                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                          <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                        </div>
+                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                          <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                            Close Job
+                          </Dialog.Title>
+                          <div className="mt-2">
+                            <p className="text-sm text-gray-500">
+                              Are you sure you want to close this job? This action cannot be undone.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button
+                          type="button"
+                          className="inline-flex w-full justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                          onClick={inactivate}
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          type="button"
+                          className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                          onClick={() => setOpen(false)}
+                          ref={cancelButtonRef}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition.Root>
+          <div className="lg:flex lg:justify-between p-4 md:p-8">
+            <div className="min-w-0 flex-1 border-b pb-4">
+              <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
                 {jobData.jobRole}
               </h2>
-              <h3 className="text-xl leading-7 text-white sm:truncate sm:text-xl sm:tracking-tight">
+              <h3 className="text-xl leading-7 text-gray-700 sm:truncate sm:text-xl sm:tracking-tight">
                 @{jobData.companyName}
               </h3>
-              <div className="mt-2 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
-                <div className="mt-2 flex items-center text-sm text-gray-300">
-                  <BriefcaseIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-500" aria-hidden="true" />
+              <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6 mb-4">
+                <div className="mt-2 flex items-center text-sm text-gray-600">
+                  <BriefcaseIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   {jobData.workMode}
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-300">
-                  <MapPinIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-500" aria-hidden="true" />
+                <div className="mt-2 flex items-center text-sm text-gray-600">
+                  <MapPinIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   {jobData.location}
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-300">
-                  <CurrencyDollarIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-500" aria-hidden="true" />
+                <div className="mt-2 flex items-center text-sm text-gray-600">
+                  <CurrencyDollarIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   {jobData.ctc} LPA
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-300">
-                  <CalendarIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-500" aria-hidden="true" />
+                <div className="mt-2 flex items-center text-sm text-gray-600">
+                  <CalendarIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   Closing on {getDate(jobData.endDate)}
                 </div>
               </div>
 
-              <div className="col-span-2 py-4 text-white">
-                <label className="block text-sm font-medium text-gray-500">Job Description</label>
-                {jobData.jobDescription}
-              </div>
-              <div className="col-span-2 pb-4 text-white">
-                <label className="block text-sm font-medium text-gray-500">Experience Required (Years)</label>
-                {jobData.experienceRequired}
-              </div>
-              <div className="col-span-2 pb-4 text-white">
-                <label className="block text-sm font-medium text-gray-500">Employment Type</label>
-                {jobData.employmentType}
-              </div>
-              <div className="col-span-2 pb-4 text-white">
-                <label className="block text-sm font-medium text-gray-500">Number of Referrals</label>
-                {jobData.noOfReferrals}
-              </div>
-              <div className="col-span-2 pb-4 text-white">
-                <label className="block text-sm font-medium text-gray-500">Job Link</label>
-                {jobData.jobLink}
-              </div>
-              <div className="col-span-2 pb-4 text-white">
-                <label className="block text-sm font-medium text-gray-500">Job ID</label>
-                {jobData.jobUniqueId}
-              </div>
+              <hr />
 
+              {/* Job Details */}
+              <div class="mb-4 mt-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
+                <div class="space-y-4">
+
+                  <dl class="">
+                    <dt class="mb-1 text-blue-700 font-bold">Job ID</dt>
+                    <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
+                  </dl>
+
+                  <dl>
+                    <dt class="mb-1 text-blue-700 font-bold">Experience Required (Years)</dt>
+                    <dd class="flex items-center gap-1 font-medium hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
+
+                      {jobData?.experienceRequired}
+                    </dd>
+                  </dl>
+
+                  <dl>
+                    <dt class="mb-1 text-blue-700 font-bold">Job Link</dt>
+                    <dd class="flex items-center gap-1 font-medium hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
+
+                      {jobData?.jobLink}
+                    </dd>
+                  </dl>
+
+
+                </div>
+                <div class="space-y-4">
+
+                  <dl>
+                    <dt class="mb-1 text-blue-700 font-bold">Number of Referrals</dt>
+                    <dd class="font-medium text-sm text-gray-900">{jobData?.noOfReferrals}</dd>
+                  </dl>
+                  <dl>
+                    <dt class="mb-1 mb-1 text-blue-700 font-bold">End Date</dt>
+                    <dd class="flex items-center space-x-4 font-medium text-sm text-gray-900">
+                      <div>
+                        <div class="text-sm">
+                          <p class="mb-0.5 font-medium text-gray-900">{getDate(jobData?.endDate)}</p>
+                        </div>
+                      </div>
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt class="mb-1 text-blue-700 font-bold">Work Mode</dt>
+                    <dd class="flex items-center gap-1 font-medium text-sm text-gray-900">
+                      <svg class="hidden h-5 w-5 shrink-0 text-gray-400  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                      </svg>
+                      {jobData?.workMode}
+                    </dd>
+                  </dl>
+                </div>
+              </div>
             </div>
-            <div className="mt-5 flex lg:ml-4 lg:mt-0">
-              <span className="hidden sm:block">
-                <button
-                  type="button"
-                  onClick={() => navigate(`/editpostedjob/${jobId}`)}
-                  className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
-                >
-                  <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
-                  Edit
-                </button>
 
-                <button
-                  // onClick={inactivate}
-                  onClick={() => setOpen(true)}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 mx-2 rounded"
-                >Close Job
-                </button>
-              </span>
-
-              <Transition.Root show={open} as={Fragment}>
-                <Dialog
-                  as="div"
-                  className="relative z-10"
-                  initialFocus={cancelButtonRef}
-                  onClose={() => setOpen(false)}
-                >
-                  <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                  </Transition.Child>
-
-                  <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                    <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                      <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        enterTo="opacity-100 translate-y-0 sm:scale-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                        leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                      >
-                        <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                          <div className="sm:flex sm:items-start">
-                            <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                              <ExclamationTriangleIcon
-                                className="h-6 w-6 text-red-600"
-                                aria-hidden="true"
-                              />
-                            </div>
-                            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                              <Dialog.Title
-                                as="h3"
-                                className="text-base font-semibold leading-6 text-gray-900"
-                              >
-                                Close Job
-                              </Dialog.Title>
-                              <div className="mt-2">
-                                <p className="text-sm text-gray-500">
-                                  Are you sure you want to close this job? This action
-                                  cannot be undone.
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                            <button
-                              type="button"
-                              className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                              onClick={inactivate}
-                            >
-                              Confirm
-                            </button>
-                            <button
-                              type="button"
-                              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                              onClick={() => setOpen(false)}
-                              ref={cancelButtonRef}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </Dialog.Panel>
-                      </Transition.Child>
-                    </div>
-                  </div>
-                </Dialog>
-              </Transition.Root>
-
-            </div>
+            {/* Buttons */}
 
           </div>
-        </main >
+        </main>
+
+
+
       </div >
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </>
-
-
   );
 }

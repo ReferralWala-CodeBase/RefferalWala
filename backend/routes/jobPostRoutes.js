@@ -31,7 +31,7 @@ router.get('/all',getAllJobPosts);
 router.get('/user/:userId',jwtMiddleware, getJobPostsByUser);
 
 // Get a job post by ID
-router.get('/:id', jwtMiddleware,getJobPostById);
+router.get('/:id', getJobPostById);
 
 // Apply for a job post
 router.post('/apply/:id',jwtMiddleware, applyForJobPost);

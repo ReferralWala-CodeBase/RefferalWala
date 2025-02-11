@@ -212,11 +212,11 @@ export default function AppliedJobs() {
                           Company Name
                         </th>
                         <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Job Unique ID
+                          Location
                         </th>
-                        {/* <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Status
-                        </th> */}
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          Work Mode
+                        </th>
                         <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Applied On
                         </th>
@@ -245,7 +245,13 @@ export default function AppliedJobs() {
                             onClick={() => handleViewJobDetails(job.jobPostId._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {job.jobPostId.jobUniqueId}
+                            {job.jobPostId.Location}
+                          </td>
+                          <td
+                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                          >
+                            {job.jobPostId.workMode}
                           </td>
                           <td
                             onClick={() => handleViewJobDetails(job.jobPostId._id)}
@@ -259,7 +265,7 @@ export default function AppliedJobs() {
                                 e.stopPropagation(); // Prevent triggering the row click
                                 handleOpenModal(job.jobPostId._id);
                               }}
-                              className="m-2 mt-2 text-xl cursor-pointer text-gray-700 hover:text-gray-800"
+                              className="m-2 mt-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
                             />
                           </td>
                         </tr>
@@ -284,11 +290,11 @@ export default function AppliedJobs() {
                         <strong>Company Name:</strong> {job.jobPostId.companyName}
                       </p>
                       <p className="text-sm text-gray-700">
-                        <strong>Job Unique ID:</strong> {job.jobPostId.jobUniqueId}
+                        <strong>Location:</strong> {job.jobPostId.location}
                       </p>
-                      {/* <p className="text-sm text-gray-700">
-                        <strong>Status:</strong> {job.status}
-                      </p> */}
+                      <p className="text-sm text-gray-700">
+                        <strong>Work Mode:</strong> {job.jobPostId.workMode}
+                      </p>
                       <p className="text-sm text-gray-700">
                         <strong>Applied On:</strong> {new Date(job.appliedAt).toLocaleDateString()}
                       </p>
@@ -300,10 +306,10 @@ export default function AppliedJobs() {
                           View Job
                         </button>
                         <FaTrash
-                          // onClick={() => withdrawApplication(job.jobPostId._id)}
-                          onClick={() => handleOpenModal(job.jobPostId._id)}
-                          className="text-xl cursor-pointer text-gray-700 hover:text-gray-800"
-                        />
+  onClick={() => handleOpenModal(job.jobPostId._id)}
+  className="text-xl cursor-pointer text-red-500 hover:text-red-700"
+/>
+
                       </div>
                     </div>
                   ))}
@@ -358,7 +364,7 @@ export default function AppliedJobs() {
                                   </Dialog.Title>
                                   <div className="mt-2">
                                     <p className="text-sm text-gray-500">
-                                      Are you sure you want to close this job? This action
+                                      Are you sure you want to withdraw? This action
                                       cannot be undone.
                                     </p>
                                   </div>

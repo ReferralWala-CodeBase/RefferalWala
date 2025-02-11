@@ -27,8 +27,11 @@ export default function AppliedJobDetails() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDocumentOpen, setIsDocumentOpen] = useState(false);
   const [verifyFile, setVerifyFile] = useState(null);
-  const [isFollowing, setIsFollowing] = useState(null);
-  const [usertofollow, setUsertofollow] = useState("");
+   const [profileData, setProfileData] = useState(null);
+   const [profileIncomplete, setProfileIncomplete] = useState(false);
+   const [isFollowing, setIsFollowing] = useState(null);
+   const [usertofollow, setUsertofollow] = useState("");
+ 
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -39,7 +42,7 @@ export default function AppliedJobDetails() {
         const jobResponse = await fetch(`${Fronted_API_URL}/job/${jobId}`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${bearerToken}`,
+            // Authorization: `Bearer ${bearerToken}`,
             'Content-Type': 'application/json',
           },
         });
@@ -85,11 +88,52 @@ export default function AppliedJobDetails() {
     fetchJobData();
   }, [jobId]);
 
+
+  const fetchProfileData = async () => {
+      try {
+        const bearerToken = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        return await response.json(); // Return the fetched data directly
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+        toast.error(error.message);
+        throw error; // Rethrow the error to handle it in the calling function
+      }
+    };
+
   const handleApply = async () => {
     try {
       const bearerToken = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId'); // Get current user's ID
-
+      const userId = localStorage.getItem('userId');
+  
+      // Check if user is logged in
+      if (!bearerToken) {
+        navigate('/user-login');
+        return;
+      }
+  
+      // Fetch the user profile
+      const profile = await fetchProfileData();
+  
+      // Check for profile completeness
+      if (
+        !profile.firstName ||
+        !profile.lastName ||
+        !profile.mobileNumber ||
+        !profile.aboutMe
+      ) {
+        setProfileIncomplete(true); // Show dialog box for profile completion
+        return;
+      }
+  
+      // If profile is complete, proceed with job application
       const response = await fetch(`${Fronted_API_URL}/job/apply/${jobId}`, {
         method: 'POST',
         headers: {
@@ -98,24 +142,25 @@ export default function AppliedJobDetails() {
         },
         body: JSON.stringify({ userId }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         if (response.status === 401) {
-          // Unauthorized, remove the token and navigate to login
+          // Unauthorized, remove token and navigate to login
           localStorage.removeItem('token');
           navigate('/user-login');
         } else {
           throw new Error(errorData.msg || response.statusText);
         }
       }
-
+  
       toast.success("Successfully applied for the job!");
       navigate('/appliedjobs');
     } catch (error) {
       toast.error(error.message);
     }
   };
+  
 
   const handleFollowUnfollow = async () => {
     const bearerToken = localStorage.getItem('token');
@@ -504,8 +549,28 @@ export default function AppliedJobDetails() {
             </div>
           </section>
         </div>
-      </div>
+
+        {profileIncomplete && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
+            <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Please fill in your profile details, including your mobile number,skills, description and other information, before applying for a job.
+            </p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => navigate("/editprofile")}
+                className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Go to Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+      </div>
+      
     </>
   );
 }
