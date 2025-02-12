@@ -146,7 +146,7 @@ export default function JobApplicantsList() {
                     <div key={applicant._id} className="mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg">
                       <div className="flex items-center space-x-4">
                         <img
-                          className="h-16 w-16 rounded-full border-2 border-gray-500"
+                          className="h-12 w-12 sm:h-16 sm:w-16 rounded-full border-2 border-gray-500"
                           src={applicant.userId.profilePhoto || person}
                           alt=""
                         />
@@ -154,7 +154,7 @@ export default function JobApplicantsList() {
                           <h3 className="text-lg font-semibold text-gray-900">
                             {applicant.userId.firstName} {applicant.userId.lastName}
                           </h3>
-                          <p className="text-sm text-gray-500">{applicant.userId.email}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">{applicant.userId.email}</p>
                           <p className="text-xs text-gray-400">Applied On: {new Date(applicant.appliedAt).toLocaleDateString("en-GB")}</p>
                           <p className="text-xs text-gray-500">Status: {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}</p>
                         </div>

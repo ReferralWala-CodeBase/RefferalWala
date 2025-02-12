@@ -25,7 +25,7 @@ export default function EditProfile() {
     profilePhoto: '',
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
-    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: '', companyEmail: '', yearsOfExperience: '' }],
+    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', yearsOfExperience: '' }],
     preferences: [{ preferredCompanyName: '', preferredCompanyURL: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
@@ -64,6 +64,7 @@ export default function EditProfile() {
   const [newProject, setNewProject] = useState({ name: "", repoLink: "", liveLink: "", description: "" });
   const [newPreferences, setNewPreferences] = useState({ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' });
   const [showForm, setShowForm] = useState(false); // To show the input form
+  const [isVerified, setIsVerified] = useState(false);
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
@@ -161,12 +162,16 @@ export default function EditProfile() {
 
       if (response.ok) {
         toast.success("Company Email verified successfully! ");
-        const isVerified = data?.presentCompany?.CompanyEmailVerified;
+        setIsVerified(true);
         setIsCompanyEmailVerified(true);
         setProfileData(prevState => ({
           ...prevState,
-          presentCompany: { ...prevState.presentCompany, CompanyEmailVerified: isVerified }
+          presentCompany: {
+            ...prevState.presentCompany,
+            CompanyEmailVerified: true // ✅ Directly setting it to true
+          }
         }));
+
 
         setOriginalCompanyEmail(profileData.presentCompany?.companyEmail);
         setShowOtpModal(false);
