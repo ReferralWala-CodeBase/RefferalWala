@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from "@react-oauth/google";
 import { Eye, EyeOff } from "lucide-react";
 import { FaTimes } from "react-icons/fa";
 
@@ -42,22 +42,17 @@ function Signup() {
     }
   };
 
-
-
   const handleResendOtp = async () => {
     setResendTimer(60);
 
     try {
-      const response = await fetch(
-        `${Fronted_API_URL}/user/resend-otp`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${Fronted_API_URL}/user/resend-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
 
@@ -69,7 +64,6 @@ function Signup() {
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     }
-
   };
 
   const handleChange = (e) => {
@@ -87,35 +81,41 @@ function Signup() {
   const handleGoogleAuth = useGoogleLogin({
     onSuccess: async (authResult) => {
       try {
-        if (authResult['code']) {
-          const response = await fetch(`${Fronted_API_URL}/googleauth/googleLogin`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: authResult.code }),
-          });
+        if (authResult["code"]) {
+          const response = await fetch(
+            `${Fronted_API_URL}/googleauth/googleLogin`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ code: authResult.code }),
+            }
+          );
 
           const data = await response.json();
 
           if (!response.ok) {
-            toast.error(data.message || "An error occurred during signup/login");
+            toast.error(
+              data.message || "An error occurred during signup/login"
+            );
             return;
           }
 
           const { token, userId } = data;
-          console.log(token)
+          console.log(token);
 
           // Store token in localStorage and navigate to profile
-          localStorage.setItem('token', token);
-          localStorage.setItem('userId', userId);
+          localStorage.setItem("token", token);
+          localStorage.setItem("userId", userId);
           toast.success("Register successfully");
-          navigate('/viewprofile');
+          navigate("/viewprofile");
         }
       } catch (error) {
-        console.error('Error during Google authentication:', error);
+        console.error("Error during Google authentication:", error);
       }
     },
-    onError: () => toast.error('Google Sign up was unsuccessful. Try again later.'),
-    flow: 'auth-code',
+    onError: () =>
+      toast.error("Google Sign up was unsuccessful. Try again later."),
+    flow: "auth-code",
   });
 
   const handleSubmit = async (e) => {
@@ -123,16 +123,13 @@ function Signup() {
     setShowOtpModal(true); // Open OTP modal
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${Fronted_API_URL}/user/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${Fronted_API_URL}/user/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
 
@@ -150,23 +147,20 @@ function Signup() {
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${Fronted_API_URL}/user/verify-otp`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: formData.email, otp }),
-        }
-      );
+      const response = await fetch(`${Fronted_API_URL}/user/verify-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: formData.email, otp }),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
         toast.success("OTP verified successfully! You can now log in.");
         setShowOtpModal(false);
-        localStorage.setItem('firstTimeLogin', true)
+        localStorage.setItem("firstTimeLogin", true);
         navigate("/user-login");
       } else {
         toast.error(data.message || "OTP verification failed. Try again.");
@@ -178,7 +172,7 @@ function Signup() {
 
   return (
     <section className="min-h-screen bg-slate-200/90">
-      <div className="flex min-h-full flex-1 flex-col justify-center sm:px-6 lg:px-8">
+      <div className="flex min-h-full flex-1 flex-col justify-center pt-0 md:pt-4 sm:px-6 lg:px-8">
         <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <h2 className="mb-3 text-start text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -265,11 +259,21 @@ function Signup() {
                   Sign Up
                 </button>
               </div>
+
+              <p className="text-center text-xs text-gray-700">
+                Continue without login ?{" "}
+                <Link
+                  to={`/`}
+                  className="font-semibold leading-6 text-blue-600 hover:text-blue-500"
+                >
+                  Click Here
+                </Link>
+              </p>
             </form>
 
             {/*Registration Using Google*/}
             <div>
-              <div className="relative mt-10">
+              <div className="relative mt-4">
                 <div
                   className="absolute inset-0 flex items-center"
                   aria-hidden="true"
@@ -325,8 +329,6 @@ function Signup() {
                 Sign in
               </Link>
             </p>
-
-
           </div>
         </div>
       </div>
@@ -377,7 +379,12 @@ function Signup() {
             </form>
             {/* Resend OTP Button */}
             {resendTimer > 0 ? (
-              <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
+              <p className="text-sm text-gray-600 mt-4">
+                <span className="text-blue-600 cursor-pointer underline">
+                  Resend OTP
+                </span>{" "}
+                in {resendTimer}s
+              </p>
             ) : (
               <button
                 onClick={handleResendOtp}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from "@react-oauth/google";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Eye, EyeOff } from "lucide-react";
@@ -12,31 +12,27 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API 
+  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
     const rememberedPassword = localStorage.getItem("rememberedPassword");
-  
+
     if (rememberedEmail && rememberedPassword) {
       setEmail(rememberedEmail);
       setPassword(rememberedPassword);
     }
   }, []);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.post(
-        `${Fronted_API_URL}/user/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${Fronted_API_URL}/user/login`, {
+        email,
+        password,
+      });
 
       const { token, isOTPVerified, userId } = response.data;
 
@@ -51,12 +47,14 @@ function Login() {
       }
 
       if (isOTPVerified) {
-        if (localStorage.getItem('firstTimeLogin') !== null && localStorage.getItem('firstTimeLogin') === "true") {
-          localStorage.removeItem('firstTimeLogin');
+        if (
+          localStorage.getItem("firstTimeLogin") !== null &&
+          localStorage.getItem("firstTimeLogin") === "true"
+        ) {
+          localStorage.removeItem("firstTimeLogin");
           navigate("/viewprofile");
-        }
-        else {
-          navigate("/")
+        } else {
+          navigate("/");
         }
       } else {
         setError("OTP verification is pending.");
@@ -70,43 +68,46 @@ function Login() {
   const handleGoogleAuth = useGoogleLogin({
     onSuccess: async (authResult) => {
       try {
-        if (authResult['code']) {
-          const response = await fetch(`${Fronted_API_URL}/googleauth/googleLogin`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: authResult.code }),
-          });
+        if (authResult["code"]) {
+          const response = await fetch(
+            `${Fronted_API_URL}/googleauth/googleLogin`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ code: authResult.code }),
+            }
+          );
 
           const data = await response.json();
 
           if (!response.ok) {
-            toast.error(data.message || "An error occurred during signup/login");
+            toast.error(
+              data.message || "An error occurred during signup/login"
+            );
             return;
           }
 
           const { token, userId } = data;
-          console.log(token)
+          console.log(token);
 
           // Store token in localStorage and navigate to profile
-          localStorage.setItem('token', token);
-          localStorage.setItem('userId', userId);
+          localStorage.setItem("token", token);
+          localStorage.setItem("userId", userId);
           toast.success("Login successfully");
-          navigate('/viewprofile');
+          navigate("/viewprofile");
         }
       } catch (error) {
-        console.error('Error during Google authentication:', error);
+        console.error("Error during Google authentication:", error);
       }
     },
-    onError: () => toast.error('Google Sign In was unsuccessful. Try again later.'),
-    flow: 'auth-code',
+    onError: () =>
+      toast.error("Google Sign In was unsuccessful. Try again later."),
+    flow: "auth-code",
   });
-
-
 
   return (
     <section className="min-h-screen bg-slate-200/90">
-      <div className="flex min-h-full flex-1 flex-col justify-center  sm:px-6 lg:px-8">
-
+      <div className="flex min-h-full flex-1 flex-col justify-center pt-0 md:pt-4 sm:px-6 lg:px-8">
         <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12 mt-4">
             <h2 className="mb-3 text-start text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -136,33 +137,33 @@ function Login() {
               </div>
 
               <div>
-      <label
-        htmlFor="password"
-        className="block text-sm font-medium leading-6 text-gray-900"
-      >
-        Password
-      </label>
-      <div className="mt-2 relative">
-        <input
-          id="password"
-          name="password"
-          type={showPassword ? "text" : "password"}
-          placeholder="Enter your password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
-        >
-          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-        </button>
-      </div>
-    </div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Password
+                </label>
+                <div className="mt-2 relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
 
               {error && <p className="text-red-600">{error}</p>}
 
@@ -248,25 +249,31 @@ function Login() {
                     Google
                   </span>
                 </div>
-
               </div>
 
               <p className="mt-5 text-center text-sm text-gray-500">
-            Not a member?{" "}
-            <Link
-              to="/signup"
-              className="font-semibold leading-6 text-blue-600 hover:text-blue-500"
-            >
-              Register
-            </Link>
-          </p>
+                Not a member?{" "}
+                <Link
+                  to="/signup"
+                  className="font-semibold leading-6 text-blue-600 hover:text-blue-500"
+                >
+                  Register
+                </Link>
+              </p>
+
+              <p className="text-center text-xs text-gray-700">
+                Continue without login ?{" "}
+                <Link
+                  to={`/`}
+                  className="font-semibold leading-6 text-blue-600 hover:text-blue-500"
+                >
+                  Click Here
+                </Link>
+              </p>
             </div>
           </div>
-
-        
         </div>
       </div>
-
     </section>
   );
 }
