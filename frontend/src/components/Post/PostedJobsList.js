@@ -5,6 +5,7 @@ import { FaSpinner, FaCircle } from "react-icons/fa";
 import Navbar from "../Navbar";
 import Loader from '../Loader';
 import { motion } from "framer-motion";
+import vid2 from "../../assets/vid2.mp4";
 
 export default function PostedJobsList() {
   const [jobs, setJobs] = useState([]);
@@ -110,7 +111,20 @@ export default function PostedJobsList() {
                 <p className="text-red-500">{error}</p>
               )
             ) : jobs.length === 0 ? (
-              <p>No jobs found.</p>
+
+              <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
+                <div>
+                  <video
+                    src={vid2}
+                    className="w-60 h-60 mx-auto mb-4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                  <p className="text-xl font-light">No jobs found !</p>
+                </div>
+              </div>
             ) : (
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Display Table View for Larger Screens */}
