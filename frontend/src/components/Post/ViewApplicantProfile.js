@@ -262,7 +262,7 @@ export default function ViewApplicantProfile() {
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 px-0 sm:px-6 mx-auto">
-          <div className="col-span-2 flex justify-end items-center py-4 gap-1">
+          <div className={`col-span-2 flex justify-end items-center py-4 gap-1 ${isFollowing ? "flex-row gap-2 flex-wrap" : ""}`}>
             <label htmlFor="status" className="font-medium text-gray-700">
               Update Status
             </label>
@@ -315,18 +315,15 @@ export default function ViewApplicantProfile() {
             )}
 
             <div className="flex justify-end">
-              <div>
+              <div className='flex'>
                 {isFollowing && (
-                  <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                  <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-xs sm:text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     View Job Posted
                   </button>
                 )}
-                {/* <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                {isFollowing ? 'Unfollow' : 'Follow'}
-              </button> */}
                 <button
                   onClick={handleFollowUnfollow}
-                  className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                  className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-xs sm:text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
                   {isFollowing ? "Unfollow" : "Follow"}
                 </button>

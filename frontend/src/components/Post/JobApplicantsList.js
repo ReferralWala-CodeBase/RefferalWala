@@ -78,7 +78,7 @@ export default function JobApplicantsList() {
 
   return (
     <>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
@@ -143,7 +143,9 @@ export default function JobApplicantsList() {
 
                 <div className="block lg:hidden">
                   {Object.entries(filteredApplicants).map(([id, applicant]) => (
-                    <div key={applicant._id} className="mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg">
+                    <div key={applicant._id} className="mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg"
+                      onClick={() => handleViewApplicantDetails(applicant.userId._id)}
+                    >
                       <div className="flex items-center space-x-4">
                         <img
                           className="h-12 w-12 sm:h-16 sm:w-16 rounded-full border-2 border-gray-500"
@@ -159,14 +161,14 @@ export default function JobApplicantsList() {
                           <p className="text-xs text-gray-500">Status: {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}</p>
                         </div>
                       </div>
-                      <div className="mt-4 text-right">
+                      {/* <div className="mt-4 text-right">
                         <button
                           onClick={() => handleViewApplicantDetails(applicant.userId._id)}
                           className="text-indigo-600 hover:text-indigo-900 text-sm"
                         >
                           View Full Profile
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   ))}
                 </div>

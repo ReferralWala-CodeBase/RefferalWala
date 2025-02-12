@@ -80,10 +80,10 @@ export default function PostedJobsList() {
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
-        <div className="w-2/12 md:w-1/4 fixed lg:relative" >
+        <div className="w-1/12 md:w-1/4 fixed lg:relative" >
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 m-auto">
+        <div className="w-11/12 md:w-3/4 m-auto">
           {/* Searching */}
           {/* <input
             type="text"
