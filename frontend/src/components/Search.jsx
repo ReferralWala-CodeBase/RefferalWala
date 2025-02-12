@@ -270,7 +270,7 @@ export default function Search() {
                 <div className="w-1/12 md:w-1/4 fixed lg:relative">
                     <SidebarNavigation />
                 </div>
-                <div className="w-11/12 md:w-3/4 px-2 sm:px-6 m-auto">
+                <div className="w-11/12 md:w-3/4 px-0 sm:px-6 m-auto">
                     <h1 class="text-xl font-semibold text-gray-900 mb-6 mt-5">Search Results</h1>
                     {data ? (
                         // If ShowJobData is false, show user data
@@ -283,7 +283,7 @@ export default function Search() {
                                         return (
                                             <div
                                                 key={user._id}
-                                                className="p-4 sm:p-6 border rounded-lg shadow-md w-full max-w-xs sm:max-w-3xl bg-white cursor-pointer hover:shadow-lg transition-shadow duration-300"
+                                                className="p-2 sm:p-6 border rounded-lg shadow-md w-full max-w-xs sm:max-w-3xl bg-white cursor-pointer hover:shadow-lg transition-shadow duration-300"
                                                 onClick={() => handleViewUserProfile(user._id)}
                                             >
                                                 <div className="flex items-center justify-between">
@@ -295,9 +295,9 @@ export default function Search() {
                                                     />
 
                                                     {/* User Details */}
-                                                    <div className="flex-1 ml-3 sm:ml-4">
+                                                    <div className="flex-1 ml-2 sm:ml-4">
                                                         <h3 className="text-sm sm:text-lg font-semibold text-gray-900">{user.firstName} {user.lastName}</h3>
-                                                        <p className="text-[11px] sm:text-sm text-gray-500">{user.email}</p>
+                                                        <p className="text-[9.5px] sm:text-sm text-gray-500">{user.email}</p>
                                                         <p className="text-[11px] sm:text-sm text-gray-500">{user.mobileNumber}</p>
                                                         <p className="text-[11px] sm:text-sm text-gray-500">
                                                             {user.presentCompany?.role ? `${user.presentCompany?.role} at ` : ''}{user.presentCompany?.companyName || ''}
@@ -323,7 +323,7 @@ export default function Search() {
                                                                     handleFollow(user._id); // Follow the user
                                                                     setFollowingStatus((prevStatus) => ({ ...prevStatus, [user._id]: true })); // Update state to show "Posted Job"
                                                                 }}
-                                                                className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                                className="gap-1 px-1 py-1 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 sm:py-2 sm:px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                                                 <UserPlus size={17} />
                                                                 Follow
                                                             </button>

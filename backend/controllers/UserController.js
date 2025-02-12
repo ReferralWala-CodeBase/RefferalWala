@@ -195,6 +195,7 @@ exports.verifyCompanyEmail = async (req, res) => {
     }
 
     // Verify company email
+    user.presentCompany.companyEmail = email;
     user.presentCompany.CompanyEmailVerified = true;
     user.presentCompany.otp = null; // Clear OTP after verification
     await user.save();
@@ -372,7 +373,6 @@ exports.getProfileById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    console.log()
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -411,7 +411,7 @@ exports.updateProfileById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
+console.log("storing : "+user);
     res.status(200).json(user);
   } catch (error) {
     console.log(error);

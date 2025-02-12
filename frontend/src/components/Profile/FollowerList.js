@@ -260,7 +260,7 @@ export default function FollowerList() {
                     <div key={user._id} className="p-4 border rounded-lg shadow-sm">
                       <div className="flex items-center">
                         <img
-                          className="h-16 w-16 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                          className="h-12 w-12 sm:h-16 sm:w-16 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
                           src={user.profilePhoto || person}
                           alt="avatar"
                         />

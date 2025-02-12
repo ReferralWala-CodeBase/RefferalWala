@@ -5,13 +5,20 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import profile from "../assets/profile-icon-user.png";
+import { 
+  UserGroupIcon,  // About Us (Team Representation)
+  PhoneIcon,  // Contact Us (Phone Representation)
+  ShieldCheckIcon,  // Privacy Policy (Security Representation)
+  DocumentTextIcon, // Terms & Conditions (Document Representation)
+  KeyIcon , // Login (Arrow entering a rectangle)
+  IdentificationIcon  // Signup (User with a plus sign)
+} from "@heroicons/react/24/outline";
 
 
 import {
   CalendarIcon,
   ChartPieIcon,
   DocumentDuplicateIcon,
-  FolderIcon,
   HomeIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
@@ -95,6 +102,16 @@ const teams = [
   },
 ];
 
+const sidenavigationlogout = [
+  { name: "Homepage", href: "/", icon: HomeIcon, current: false },
+  { name: "About Us", icon: UserGroupIcon, href: "/about-us" },
+  { name: "Contact Us", icon: PhoneIcon, href: "/contact-us" },
+  { name: "Privacy Policy", icon: ShieldCheckIcon, href: "/privacy-policy" },
+  { name: "Terms & Conditions", icon: DocumentTextIcon, href: "/terms-conditions" },
+  { name: "Login", icon: KeyIcon , href: "/user-login" },
+  { name: "Sign up", icon: IdentificationIcon , href: "/signup" },
+];
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -110,6 +127,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const [profileData, setProfileData] = useState(null);
+  const hamburger = loggedIn ? sidenavigation : sidenavigationlogout;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -224,7 +242,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
 
   const handleSignOut = async () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userId"); 
+    localStorage.removeItem("userId");
 
     if ("caches" in window) {
       try {
@@ -248,8 +266,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
             <div className="relative flex h-16 justify-between">
-            
-            
+
+
               <div className="relative z-10 flex items-center lg:hidden">
                 <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                   <span className="absolute -inset-0.5" />
@@ -263,11 +281,11 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               </div>
               <div className="relative z-10 flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
-                <Link to="/" onClick={() => console.log("Navigating to Home!")}>
-  <h1 className="font-bold tracking-wider text-sm lg:text-lg text-blue-600">
-    ReferralWala
-  </h1>
-</Link>
+                  <Link to="/" onClick={() => console.log("Navigating to Home!")}>
+                    <h1 className="font-bold tracking-wider text-sm lg:text-lg text-blue-600">
+                      ReferralWala
+                    </h1>
+                  </Link>
                 </div>
               </div>
               <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
@@ -300,8 +318,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 </div>
               </div>
               <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-              <div className="flex-shrink-0 mr-2">
-              <button onClick={() => navigate('/postjob')}
+                <div className="flex-shrink-0 mr-2">
+                  <button onClick={() => navigate('/postjob')}
                     type="button"
                     className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
@@ -311,7 +329,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 </div>
                 {loggedIn ? (
                   <>
-                 
+
                     <button
                       type="button"
                       onClick={() => setOpenNotifications(true)}
@@ -331,7 +349,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full border-2 border-gray-800 p-[1px]"
-                            src={profileData?.profilePhoto  || profile } 
+                            src={profileData?.profilePhoto || profile}
                             alt="User"
                           />
                         </Menu.Button>
@@ -439,9 +457,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
           >
             <div className="flex h-full flex-col gap-y-5 overflow-y-auto px-4 pb-2">
               {/* Navigation Items */}
+
               <nav className="flex-1 mt-16">
                 <ul role="list" className="space-y-1 mb-5">
-                  {sidenavigation.map((item) => (
+                  {hamburger.map((item) => (
                     <li key={item.name}>
                       <Disclosure.Button
                         as={Link}
@@ -453,64 +472,75 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
                         )}
                       >
-                        <item.icon
-                          className={classNames(
-                            item.current
-                              ? "text-indigo-600"
-                              : "text-gray-400 group-hover:text-indigo-600",
-                            "h-6 w-6"
-                          )}
-                          aria-hidden="true"
-                        />
+                        {item.icon && (
+                          <item.icon
+                            className={classNames(
+                              item.current
+                                ? "text-indigo-600"
+                                : "text-gray-400 group-hover:text-indigo-600",
+                              "h-6 w-6"
+                            )}
+                            aria-hidden="true"
+                          />
+                        )}
                         {item.name}
                       </Disclosure.Button>
                     </li>
                   ))}
-                  {/* Notifications */}
-                  <li>
-                    <Disclosure.Button
-                      as={Link}
-                      to="/notifications"
-                      className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
-                    >
-                      <BellIcon className="h-6 w-6 text-gray-400 group-hover:text-indigo-600" />
-                      Notifications
-                    </Disclosure.Button>
-                  </li>
-                </ul>
 
-                <div className="text-xs font-semibold leading-6 text-gray-400 ml-4">
-                  Your teams
-                </div>
-                <ul role="list" className="mt-2 space-y-1">
-                  {teams.map((team) => (
-                    <li key={team.name}>
+                  {/* Notifications (Only if logged in) */}
+                  {loggedIn && (
+                    <li>
                       <Disclosure.Button
                         as={Link}
-                        to={team.href}
-                        className={classNames(
-                          team.current
-                            ? "bg-gray-50 text-indigo-600"
-                            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
-                        )}
+                        to="/notifications"
+                        className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                       >
-                        <span
-                          className={classNames(
-                            team.current
-                              ? "text-indigo-600 border-indigo-600"
-                              : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
-                            "flex h-6 w-6 items-center justify-center rounded-lg border text-xs font-medium bg-white"
-                          )}
-                        >
-                          {team.initial}
-                        </span>
-                        {team.name}
+                        <BellIcon className="h-6 w-6 text-gray-400 group-hover:text-indigo-600" />
+                        Notifications
                       </Disclosure.Button>
                     </li>
-                  ))}
+                  )}
                 </ul>
+
+                {/* "Your teams" section (Only if logged in) */}
+                {loggedIn && teams.length > 0 && (
+                  <>
+                    <div className="text-xs font-semibold leading-6 text-gray-400 ml-4">
+                      Your teams
+                    </div>
+                    <ul role="list" className="mt-2 space-y-1">
+                      {teams.map((team) => (
+                        <li key={team.name}>
+                          <Disclosure.Button
+                            as={Link}
+                            to={team.href}
+                            className={classNames(
+                              team.current
+                                ? "bg-gray-50 text-indigo-600"
+                                : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                              "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                            )}
+                          >
+                            <span
+                              className={classNames(
+                                team.current
+                                  ? "text-indigo-600 border-indigo-600"
+                                  : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
+                                "flex h-6 w-6 items-center justify-center rounded-lg border text-xs font-medium bg-white"
+                              )}
+                            >
+                              {team.initial}
+                            </span>
+                            {team.name}
+                          </Disclosure.Button>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </nav>
+
 
               {/* Sign Out */}
               {loggedIn && (
@@ -525,6 +555,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
             </div>
           </Disclosure.Panel>
 
+          {/* Notification Page */}
           <Transition.Root show={openNotifications} as={Fragment}>
             <Dialog
               as="div"

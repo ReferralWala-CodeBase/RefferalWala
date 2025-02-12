@@ -262,15 +262,15 @@ export default function ViewApplicantProfile() {
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 px-0 sm:px-6 mx-auto">
-          <div className="col-span-2 flex justify-end p-4">
-            <label htmlFor="status" className="mr-2 font-medium text-gray-700">
+          <div className="col-span-2 flex justify-end items-center py-4 gap-1">
+            <label htmlFor="status" className="font-medium text-gray-700">
               Update Status
             </label>
             <select
               id="status"
               value={status}
               onChange={(e) => handleStatusChange(e.target.value)}
-              className="inline-flex rounded-md border border-gray-300 bg-white py-2 px-4 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="inline-flex rounded-md border border-gray-300 bg-white py-2 px-4 pr-6 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               disabled={updatingStatus} // Disable while updating
             >
               {statusOptions.map((option) => (
@@ -280,56 +280,57 @@ export default function ViewApplicantProfile() {
               ))}
             </select>
             {updatingStatus && <FaSpinner className="ml-4 animate-spin text-indigo-600" />}
-          </div>
 
-          {/* File Uploading */}
-          {isDialogOpen && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 className="text-lg font-semibold mb-4">Uploading Select Document</h2>
-                <input
-                  type="file"
-                  accept="image/*,application/pdf"
-                  onChange={handleFileChange}
-                  className="mb-4 w-full border border-gray-300 p-2 rounded-md"
-                />
-                <div className="flex justify-end space-x-2">
-                  <button
-                    onClick={() => setIsDialogOpen(false)}
-                    className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={uploadAndConfirmSelection}
-                    disabled={!selectedFile || updatingStatus}
-                    className={`px-4 py-2 rounded-md text-white ${updatingStatus || !selectedFile ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
-                      }`}
-                  >
-                    {updatingStatus ? "Uploading..." : "Confirm Selection"}
-                  </button>
 
+            {/* File Uploading */}
+            {isDialogOpen && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                  <h2 className="text-lg font-semibold mb-4">Uploading Select Document</h2>
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={handleFileChange}
+                    className="mb-4 w-full border border-gray-300 p-2 rounded-md"
+                  />
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={() => setIsDialogOpen(false)}
+                      className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={uploadAndConfirmSelection}
+                      disabled={!selectedFile || updatingStatus}
+                      className={`px-4 py-2 rounded-md text-white ${updatingStatus || !selectedFile ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+                        }`}
+                    >
+                      {updatingStatus ? "Uploading..." : "Confirm Selection"}
+                    </button>
+
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          <div className="mt-4 mb-4 flex justify-end">
-            <div>
-              {isFollowing && (
-                <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                  View Job Posted
-                </button>
-              )}
-              {/* <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <div className="flex justify-end">
+              <div>
+                {isFollowing && (
+                  <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    View Job Posted
+                  </button>
+                )}
+                {/* <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 {isFollowing ? 'Unfollow' : 'Follow'}
               </button> */}
-              <button
-                onClick={handleFollowUnfollow}
-                className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
-                {isFollowing ? "Unfollow" : "Follow"}
-              </button>
+                <button
+                  onClick={handleFollowUnfollow}
+                  className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                  {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -372,8 +373,8 @@ export default function ViewApplicantProfile() {
                               <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
                               <span
                                 className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active"
-                                    ? "bg-green-100 text-green-600"
-                                    : "bg-red-100 text-red-600"
+                                  ? "bg-green-100 text-green-600"
+                                  : "bg-red-100 text-red-600"
                                   }`}
                               >
                                 {job.status === "active" ? "Active" : "Inactive"}
