@@ -613,7 +613,7 @@ export default function PostedJobsCard() {
                 type="text"
                 placeholder="📍 Search locations..."
                 value={searchTerm}
-                onFocus={() => setLocationDropdownVisible(true)}
+                onFocus={() => (setCompanyDropdownVisible(false), setLocationDropdownVisible(true))}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
@@ -662,7 +662,7 @@ export default function PostedJobsCard() {
                 type="text"
                 placeholder="🏢 Search companies..."
                 value={companySearchTerm}
-                onFocus={() => setCompanyDropdownVisible(true)}
+                onFocus={() => (setLocationDropdownVisible(false), setCompanyDropdownVisible(true))}
                 onChange={handleInputChange} // API call happens here
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />

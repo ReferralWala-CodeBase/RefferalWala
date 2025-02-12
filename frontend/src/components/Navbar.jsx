@@ -281,11 +281,11 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               </div>
               <div className="relative z-10 flex px-2 lg:px-0">
                 <div className="flex flex-shrink-0 items-center">
-                  <Link to="/" onClick={() => console.log("Navigating to Home!")}>
-                    <h1 className="font-bold tracking-wider text-sm lg:text-lg text-blue-600">
-                      ReferralWala
-                    </h1>
-                  </Link>
+                <Link to="/" onClick={() => console.log("Navigating to Home!")}>
+  <h1 className="font-bold tracking-wider text-sm lg:text-lg text-white">
+    ReferralWala
+  </h1>
+</Link>
                 </div>
               </div>
               <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
@@ -321,7 +321,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 <div className="flex-shrink-0 mr-2">
                   <button onClick={() => navigate('/postjob')}
                     type="button"
-                    className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
+
                   >
                     <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                     Post Job
@@ -333,7 +334,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                     <button
                       type="button"
                       onClick={() => setOpenNotifications(true)}
-                      className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="relative flex-shrink-0 rounded-full bg-gradient-to-r from-gray-100 to-gray-300 p-1.5 text-gray-500 shadow-md transition duration-300 hover:text-gray-700 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
                     >
                       <Link>
                         <span className="absolute -inset-1.5" />
@@ -344,12 +345,13 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
 
                     <Menu as="div" className="relative ml-4 flex-shrink-0">
                       <div>
-                        <Menu.Button className="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        <Menu.Button className="relative flex rounded-full bg-gradient-to-r from-gray-100 to-gray-300 p-1 shadow-md transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
+                        >
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Open user menu</span>
                           <img
-                            className="h-8 w-8 rounded-full border-2 border-gray-800 p-[1px]"
-                            src={profileData?.profilePhoto || profile}
+                            className="h-8 w-8 rounded-full border-0 border-gray-800 "
+                            src={profileData?.profilePhoto  || profile } 
                             alt="User"
                           />
                         </Menu.Button>
