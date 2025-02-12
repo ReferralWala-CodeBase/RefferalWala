@@ -35,13 +35,18 @@ export default function PostedJobsCard() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
   const [wishlistJobs, setWishlistJobs] = useState([]);
-    const location = useLocation();
+  const location = useLocation();
   const [profileData, setProfileData] = useState(null);
   const [profileIncomplete, setProfileIncomplete] = useState(false);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  const Logo_Dev_Secret_key = process.env.REACT_APP_LOGO_DEV_SECRET_KEY; // Logo dev secret key
   const navigate = useNavigate();
+  const [companySuggestions, setCompanySuggestions] = useState([]);
+
+
+
 
   const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const [isCompanyDropdownOpen, setCompanyDropdownOpen] = useState(false);
@@ -112,6 +117,46 @@ export default function PostedJobsCard() {
   };
 
 
+  const fetchCompanies = async (searchTerm) => {
+    if (searchTerm.length < 2) {
+      setCompanySuggestions([]); // Clear suggestions when input is less than 2 characters
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.logo.dev/search?q=${searchTerm}`,
+        {
+          headers: { Authorization: `Bearer ${Logo_Dev_Secret_key}` },
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch company suggestions");
+
+      const data = await response.json();
+      setCompanySuggestions(data.length > 0 ? data : []);
+    } catch (error) {
+      console.error(error);
+      setCompanySuggestions([]);
+    }
+  };
+
+  // Handle input change and fetch API
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setCompanySearchTerm(value);
+    fetchCompanies(value); // Fetch companies on every keystroke
+    setCompanyDropdownVisible(true);
+  };
+
+  // Handle company selection
+  const handleCompanySelect = (comp) => {
+    if (!selectedCompanies.includes(comp.name)) {
+      setSelectedCompanies([...selectedCompanies, comp.name]);
+    }
+    setCompanySearchTerm(""); // Clear input after selection
+    setCompanyDropdownVisible(false); // Hide dropdown
+  };
 
 
   const locations = [
@@ -227,6 +272,7 @@ export default function PostedJobsCard() {
       toast.error("Failed to add to wishlist.");
     }
   };
+
   const handleRemoveFromWishlist = async (jobId) => {
     try {
       const response = await fetch(
@@ -474,13 +520,13 @@ export default function PostedJobsCard() {
     setCompanySearchTerm(e.target.value);
   };
 
-  const handleCompanySelect = (company) => {
-    if (!selectedCompanies.includes(company)) {
-      setSelectedCompanies([...selectedCompanies, company]);
-    }
+  // const handleCompanySelect = (company) => {
+  //   if (!selectedCompanies.includes(company)) {
+  //     setSelectedCompanies([...selectedCompanies, company]);
+  //   }
 
-    setCompanyDropdownOpen(false);
-  };
+  //   setCompanyDropdownOpen(false);
+  // };
 
   const handleCompanyRemove = (company) => {
     setSelectedCompanies(selectedCompanies.filter(item => item !== company));
@@ -617,27 +663,34 @@ export default function PostedJobsCard() {
                 placeholder="🏢 Search companies..."
                 value={companySearchTerm}
                 onFocus={() => setCompanyDropdownVisible(true)}
-                onChange={(e) => setCompanySearchTerm(e.target.value)}
+                onChange={handleInputChange} // API call happens here
                 className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
-              {isCompanyDropdownVisible && (
-                <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs border border-gray-300 rounded-lg bg-white shadow-md absolute z-10">
-                  {companies
-                    .filter((comp) => comp.toLowerCase().includes(companySearchTerm.toLowerCase()))
-                    .map((comp) => (
+              {isCompanyDropdownVisible &&
+                companySearchTerm.length >= 2 &&
+                companySuggestions.length > 0 && (
+                  <ul className="absolute space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs border border-gray-300 rounded-lg bg-white shadow-md z-10 max-w-64">
+                    {companySuggestions.map((comp) => (
                       <li
-                        key={comp}
+                        key={comp.name}
                         onClick={() => handleCompanySelect(comp)}
-                        className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedCompanies.includes(comp)
+                        className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedCompanies.includes(comp.name)
                           ? "bg-blue-100 text-blue-700 font-medium"
                           : "hover:bg-gray-100"
                           }`}
                       >
-                        {comp}
+                        <div className="flex items-center">
+                          <img
+                            src={comp.logo_url}
+                            alt={comp.name}
+                            className="h-6 w-6 object-contain mr-2"
+                          />
+                          {comp.name}
+                        </div>
                       </li>
                     ))}
-                </ul>
-              )}
+                  </ul>
+                )}
 
               <div className="mt-4 flex flex-wrap gap-2">
                 {selectedCompanies.map((comp) => (

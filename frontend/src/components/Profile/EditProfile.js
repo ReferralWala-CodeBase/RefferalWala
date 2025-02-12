@@ -25,7 +25,7 @@ export default function EditProfile() {
     profilePhoto: '',
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
-    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: '',  companyEmail: '', yearsOfExperience: '' }],
+    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: '', companyEmail: '', yearsOfExperience: '' }],
     preferences: [{ preferredCompanyName: '', preferredCompanyURL: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
@@ -76,7 +76,7 @@ export default function EditProfile() {
       const newStatus = profileData.isActivate ? false : true; // Toggle the status
 
       const response = await fetch(`${Fronted_API_URL}/user/deactivate/${userId}`, {
-        method: "PUT", 
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           "Content-Type": "application/json",
@@ -166,8 +166,8 @@ export default function EditProfile() {
         setProfileData(prevState => ({
           ...prevState,
           presentCompany: { ...prevState.presentCompany, CompanyEmailVerified: isVerified }
-      }));
-      
+        }));
+
         setOriginalCompanyEmail(profileData.presentCompany?.companyEmail);
         setShowOtpModal(false);
       } else {
@@ -181,11 +181,11 @@ export default function EditProfile() {
   const handleCompanyVerification = async (e) => {
     // Prevent default form submission behavior
     e.preventDefault();
+    const bearerToken = localStorage.getItem('token');
     setResendTimer(30);
     setShowOtpModal(true);
 
     try {
-      const bearerToken = localStorage.getItem('token');
       const response = await fetch(`${Fronted_API_URL}/user/sendOTP`, {
         method: "POST",
         headers: {
@@ -767,13 +767,13 @@ export default function EditProfile() {
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-4 sm:px-6 mx-auto">
+        <div className="w-10/12 md:w-3/4 px-0 sm:px-6 mx-auto">
           <div className="flex justify-between w-full items-center mt-6 ">
 
             <h3 className="text-lg font-medium leading-7 text-gray-900 text-left">
               Edit Profile
             </h3>
-            
+
             {/* <button
               onClick={() => setOpen(true)}
               className="inline-flex justify-center items-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -1258,8 +1258,8 @@ export default function EditProfile() {
             {/* Education Section */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education <span className="text-red-500">*</span></h3>
             {profileData.education.map((edu, index) => (
-              <div key={index} className="mt-3 flex items-center gap-6">
-                <div className="flex-1">
+              <div key={index} className="mt-3 flex items-center gap-6 flex-col sm:flex-row">
+                <div className="w-full sm:flex-1">
                   <label className="block text-sm font-medium text-gray-700">Level</label>
                   <input
                     type="text"
@@ -1273,7 +1273,7 @@ export default function EditProfile() {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                 </div>
-                <div className="flex-1">
+                <div className="w-full sm:flex-1">
                   <label className="block text-sm font-medium text-gray-700">Institute Name</label>
                   <input
                     type="text"
@@ -1287,23 +1287,25 @@ export default function EditProfile() {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                 </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">Year of Passing</label>
-                  <input
-                    type="text"
-                    name="yearOfPassing"
-                    value={edu.yearOfPassing}
-                    onChange={(e) => {
-                      const updatedEducation = [...profileData.education];
-                      updatedEducation[index].yearOfPassing = e.target.value;
-                      setProfileData({ ...profileData, education: updatedEducation });
-                    }}
-                    onBlur={validation}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  />
+                <div className="w-full sm:flex-1 flex items-center gap-3">
+                  <div className="w-[80%] sm:flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Year of Passing</label>
+                    <input
+                      type="text"
+                      name="yearOfPassing"
+                      value={edu.yearOfPassing}
+                      onChange={(e) => {
+                        const updatedEducation = [...profileData.education];
+                        updatedEducation[index].yearOfPassing = e.target.value;
+                        setProfileData({ ...profileData, education: updatedEducation });
+                      }}
+                      onBlur={validation}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                  {/* Remove Button in Same Row */}
+                  <FaTrash onClick={() => removeEducation(index)} className="m-2 sm:mt-5 mt-6 text-xl text-red-500 hover:text-red-700" />
                 </div>
-                {/* Remove Button in Same Row */}
-                <FaTrash onClick={() => removeEducation(index)} className="m-2 mt-5 text-xl text-red-500 hover:text-red-700" />
               </div>
             ))}
             <button
@@ -1318,7 +1320,7 @@ export default function EditProfile() {
             {showEducationForm && (
               <div className="mt-6 p-4 border border-gray-300 rounded">
                 <h4 className="text-lg font-medium text-gray-900">Add New Education</h4>
-                <div className="flex gap-6 mt-3">
+                <div className="flex gap-6 mt-3 flex-col sm:flex-row">
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Level</label>
                     <input
@@ -1362,8 +1364,8 @@ export default function EditProfile() {
             {/* Experience Section */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Experience</h3>
             {profileData.experience.map((exp, index) => (
-              <div key={index} className="mt-3 flex items-center gap-6">
-                <div className="flex-1">
+              <div key={index} className="mt-3 flex items-center gap-6 flex-col sm:flex-row">
+                <div className="w-full sm:flex-1">
                   <label className="block text-sm font-medium text-gray-700">Company Name</label>
                   <input
                     type="text"
@@ -1377,7 +1379,7 @@ export default function EditProfile() {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                 </div>
-                <div className="flex-1">
+                <div className="w-full sm:flex-1">
                   <label className="block text-sm font-medium text-gray-700">Position</label>
                   <input
                     type="text"
@@ -1391,23 +1393,26 @@ export default function EditProfile() {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                 </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
-                  <input
-                    type="text"
-                    name="yearsOfExperience"
-                    value={exp.yearsOfExperience || ''}
-                    onChange={(e) => {
-                      const updatedExperience = [...profileData.experience];
-                      updatedExperience[index].yearsOfExperience = e.target.value;
-                      setProfileData({ ...profileData, experience: updatedExperience });
-                    }}
-                    onBlur={validation}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  />
+
+                <div className="w-full sm:flex-1 flex items-center gap-3">
+                  <div className="w-[80%] sm:flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
+                    <input
+                      type="text"
+                      name="yearsOfExperience"
+                      value={exp.yearsOfExperience || ''}
+                      onChange={(e) => {
+                        const updatedExperience = [...profileData.experience];
+                        updatedExperience[index].yearsOfExperience = e.target.value;
+                        setProfileData({ ...profileData, experience: updatedExperience });
+                      }}
+                      onBlur={validation}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                  {/* Remove Button in Same Row */}
+                  <FaTrash onClick={() => removeExperience(index)} className="m-2 mt-6 sm:mt-5 text-xl text-red-500 hover:text-red-700" />
                 </div>
-                {/* Remove Button in Same Row */}
-                <FaTrash onClick={() => removeExperience(index)} className="m-2 mt-5 text-xl text-red-500 hover:text-red-700" />
               </div>
             ))}
             <button
@@ -1422,7 +1427,7 @@ export default function EditProfile() {
             {showExperienceForm && (
               <div className="mt-6 p-4 border border-gray-300 rounded">
                 <h4 className="text-lg font-medium text-gray-900">Add New Experience</h4>
-                <div className="flex gap-6 mt-3">
+                <div className="flex gap-6 mt-3 flex-col sm:flex-row">
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Company Name</label>
                     <input
@@ -1466,7 +1471,7 @@ export default function EditProfile() {
             {/* Projects*/}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Project</h3>
             {profileData.project.map((project, index) => (
-              <div key={index} className="relative  mt-3 flex flex-col gap-6 p-4 border rounded-lg shadow-md bg-white">
+              <div key={index} className="relative mt-3 flex flex-col gap-6 p-4 border rounded-lg shadow-md bg-white">
 
                 {/* Delete Button in the Top-Right Corner */}
                 <button
@@ -1475,7 +1480,7 @@ export default function EditProfile() {
                 >
                   <FaTrash className="text-xl text-red-500 hover:text-red-700" />
                 </button>
-                <div className="flex gap-6">
+                <div className="flex flex-col gap-6 sm:flex-row">
                   {/* Project Name */}
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Project Name</label>
@@ -1560,7 +1565,7 @@ export default function EditProfile() {
             {showProjectForm && (
               <div className="mt-6 p-4 border border-gray-300 rounded">
                 <h4 className="text-lg font-medium text-gray-900">Add New Project</h4>
-                <div className="flex gap-6 mt-3">
+                <div className="flex gap-6 mt-3 flex-col sm:flex-row">
                   {/* Project Name */}
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Project Name</label>
@@ -1625,9 +1630,9 @@ export default function EditProfile() {
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
             {profileData.preferences.map((preference, index) => (
               <div key={index} className="mt-3 flex flex-col gap-2">
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-6 flex-col sm:flex-row">
                   {/* Preferred Company Name with Suggestions */}
-                  <div className="flex-1 relative">
+                  <div className="w-full sm:flex-1 relative">
                     <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
                     <input
                       type="text"
@@ -1639,7 +1644,7 @@ export default function EditProfile() {
                   </div>
 
                   {/* Preferred Position */}
-                  <div className="flex-1">
+                  <div className="w-full sm:flex-1">
                     <label className="block text-sm font-medium text-gray-700">Preferred Position</label>
                     <input
                       type="text"
@@ -1651,28 +1656,30 @@ export default function EditProfile() {
                   </div>
 
                   {/* Expected CTC Range */}
-                  <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
-                    <select
-                      name="expectedCTCRange"
-                      value={preference.expectedCTCRange || ''}
-                      onChange={(e) => handlePreferenceChange(e, index)}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                    >
-                      <option value="">Select Salary Range</option>
-                      <option value="0-3 LPA">0-3 LPA</option>
-                      <option value="3-6 LPA">3-6 LPA</option>
-                      <option value="6-10 LPA">6-10 LPA</option>
-                      <option value="10-15 LPA">10-15 LPA</option>
-                      <option value="15+ LPA">15+ LPA</option>
-                    </select>
-                  </div>
+                  <div className="w-full sm:flex-1 flex items-center gap-3">
+                    <div className="w-[80%] sm:flex-1">
+                      <label className="block text-sm font-medium text-gray-700">Expected CTC Range</label>
+                      <select
+                        name="expectedCTCRange"
+                        value={preference.expectedCTCRange || ''}
+                        onChange={(e) => handlePreferenceChange(e, index)}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                      >
+                        <option value="">Select Salary Range</option>
+                        <option value="0-3 LPA">0-3 LPA</option>
+                        <option value="3-6 LPA">3-6 LPA</option>
+                        <option value="6-10 LPA">6-10 LPA</option>
+                        <option value="10-15 LPA">10-15 LPA</option>
+                        <option value="15+ LPA">15+ LPA</option>
+                      </select>
+                    </div>
 
-                  {/* Remove Button */}
-                  <FaTrash
-                    onClick={() => handleRemovePreference(index)}
-                    className="ml-2 mt-5 text-xl cursor-pointer text-red-500 hover:text-red-700"
-                  />
+                    {/* Remove Button */}
+                    <FaTrash
+                      onClick={() => handleRemovePreference(index)}
+                      className="ml-2 mt-5 text-xl cursor-pointer text-red-500 hover:text-red-700"
+                    />
+                  </div>
                 </div>
               </div>
             ))}
@@ -1691,7 +1698,7 @@ export default function EditProfile() {
             {showForm && (
               <div className="mt-6 p-4 border border-gray-300 rounded">
                 <h4 className="text-lg font-medium text-gray-900">Add New Preference</h4>
-                <div className="flex gap-6 mt-3">
+                <div className="flex gap-6 mt-3  flex-col sm:flex-row">
                   <div className="relative flex-1">
                     <label className="block text-sm font-medium text-gray-700">Preferred Company Name</label>
                     <input

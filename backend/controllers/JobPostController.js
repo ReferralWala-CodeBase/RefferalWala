@@ -443,7 +443,7 @@ exports.getUserApplicationStatuses = async (req, res) => {
 
     // Find all applicant statuses for the given user
     const applicantStatuses = await ApplicantStatus.find({ userId })
-      .populate('jobPostId', 'jobRole companyName jobUniqueId') // Populate job details
+      .populate('jobPostId', 'jobRole companyName jobUniqueId location companyLogoUrl experienceRequired ctc workMode status') // Populate job details
       .exec();
 
     if (applicantStatuses.length === 0) {

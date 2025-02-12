@@ -9,6 +9,7 @@ import Navbar from "../Navbar";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
 import { UserPlus, UserX } from "lucide-react";
+import person from '../../assets/person.png';
 
 export default function CheckUserProfile() {
   const navigate = useNavigate();
@@ -137,8 +138,8 @@ export default function CheckUserProfile() {
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-11/12 md:w-3/4 px-4 sm:px-6 m-auto">
-          <div className="mt-6 flex justify-end">
+        <div className="w-11/12 md:w-3/4 px-0 sm:px-6 m-auto">
+          <div className="mt-6 flex justify-end mb-2">
             <div>
               {isFollowing && (
                 <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -172,47 +173,45 @@ export default function CheckUserProfile() {
 
                 {/* Modal Content */}
                 <div className="overflow-auto max-h-[70vh] p-4 hide-scrollbar">
-  {jobs.length > 0 ? (
-    <ul className="space-y-2">
-      {jobs.map((job) => (
-        <li
-          key={job._id}
-          onClick={() => job.status === "active" && handleViewDetails(job._id)}
-          className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${
-            job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
-          }`}
-        >
-          <img
-            src={job.companyLogoUrl || busi}
-            alt={job.companyName}
-            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
-          />
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
-              <span
-                className={`px-2 py-1 text-xs font-medium rounded-full ${
-                  job.status === "active"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-600"
-                }`}
-              >
-                {job.status === "active" ? "Active" : "Inactive"}
-              </span>
-            </div>
-            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
-            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
-            <p className="text-sm sm:text-base text-gray-500">
-              End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>No jobs posted by this user.</p>
-  )}
-</div>
+                  {jobs.length > 0 ? (
+                    <ul className="space-y-2">
+                      {jobs.map((job) => (
+                        <li
+                          key={job._id}
+                          onClick={() => job.status === "active" && handleViewDetails(job._id)}
+                          className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
+                            }`}
+                        >
+                          <img
+                            src={job.companyLogoUrl || busi}
+                            alt={job.companyName}
+                            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                          />
+                          <div className="flex-1">
+                            <div className="flex justify-between items-center">
+                              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                              <span
+                                className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active"
+                                    ? "bg-green-100 text-green-600"
+                                    : "bg-red-100 text-red-600"
+                                  }`}
+                              >
+                                {job.status === "active" ? "Active" : "Inactive"}
+                              </span>
+                            </div>
+                            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
+                            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                            <p className="text-sm sm:text-base text-gray-500">
+                              End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No jobs posted by this user.</p>
+                  )}
+                </div>
 
               </div>
             </div>
@@ -235,7 +234,7 @@ export default function CheckUserProfile() {
             <div className="flex flex-col lg:flex-row">
               <div className="lg:w-1/3 text-center lg:pr-6 lg:border-r border-gray-300 mb-6 lg:mb-0">
                 <img
-                  src={profileData.profilePhoto || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"}
+                  src={profileData.profilePhoto || person}
                   alt="Profile"
                   className="w-36 h-36 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
                 />

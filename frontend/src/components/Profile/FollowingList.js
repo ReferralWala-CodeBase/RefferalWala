@@ -6,7 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import Loader from '../Loader';
 import busi from "../../assets/company.png";
-import vid1 from "../../assets/vid4.mp4"
+import vid1 from "../../assets/vid4.mp4";
+import person from '../../assets/person.png'
 
 
 export default function FollowingList() {
@@ -148,7 +149,7 @@ export default function FollowingList() {
                           >
                             <img
                               className="h-11 w-11 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                              src={user.profilePhoto || "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
+                              src={user.profilePhoto || person}
                               alt="avatar"
                             />
                           </td>
@@ -258,7 +259,7 @@ export default function FollowingList() {
                       <div className="flex items-center">
                         <img
                           className="h-16 w-16 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                          src={user.profilePhoto || "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
+                          src={user.profilePhoto || person}
                           alt="avatar"
                         />
                         <div className="ml-4">

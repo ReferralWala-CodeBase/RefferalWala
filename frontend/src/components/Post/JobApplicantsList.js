@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import Loader from '../Loader';
+import person from '../../assets/person.png'
 
 export default function JobApplicantsList() {
   const { jobId } = useParams(); // Get jobId from URL params
@@ -116,7 +117,7 @@ export default function JobApplicantsList() {
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {Object.entries(filteredApplicants).map(([id, applicant]) => (
                         <tr key={applicant._id}>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"> <img className="h-11 w-11 rounded-full" src={applicant.userId.profilePhoto || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'} alt="" />
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"> <img className="h-11 w-11 rounded-full" src={applicant.userId.profilePhoto || person} alt="" />
                           </td>
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
 
@@ -139,13 +140,14 @@ export default function JobApplicantsList() {
                     </tbody>
                   </table>
                 </div>
+
                 <div className="block lg:hidden">
                   {Object.entries(filteredApplicants).map(([id, applicant]) => (
-                    <div key={applicant._id} className="flex flex-col p-4 bg-white shadow-lg rounded-lg">
+                    <div key={applicant._id} className="mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg">
                       <div className="flex items-center space-x-4">
                         <img
                           className="h-16 w-16 rounded-full border-2 border-gray-500"
-                          src={applicant.userId.profilePhoto || 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
+                          src={applicant.userId.profilePhoto || person}
                           alt=""
                         />
                         <div>
