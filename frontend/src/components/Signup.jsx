@@ -43,7 +43,7 @@ function Signup() {
   };
 
   const handleResendOtp = async () => {
-    setResendTimer(60);
+    setResendTimer(30);
 
     try {
       const response = await fetch(`${Fronted_API_URL}/user/resend-otp`, {
@@ -119,8 +119,6 @@ function Signup() {
   });
 
   const handleSubmit = async (e) => {
-    setResendTimer(30);
-    setShowOtpModal(true); // Open OTP modal
     e.preventDefault();
     try {
       const response = await fetch(`${Fronted_API_URL}/user/register`, {
@@ -136,8 +134,10 @@ function Signup() {
       if (response.ok) {
         setSuccess("Registration successful! Please verify OTP.");
         toast.success("Registration successful! OTP sent.");
+        setResendTimer(30); 
+        setShowOtpModal(true);
       } else {
-        toast.error(data.message || "Registration failed. Please try again.");
+        toast.error(data.error || data.message || "Registration failed. Please try again.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -158,6 +158,7 @@ function Signup() {
       const data = await response.json();
 
       if (response.ok) {
+        setSuccess("OTP verified successfully! You can now log in.");
         toast.success("OTP verified successfully! You can now log in.");
         setShowOtpModal(false);
         localStorage.setItem("firstTimeLogin", true);

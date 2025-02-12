@@ -297,9 +297,7 @@ exports.resetPassword = async (req, res) => {
 };
 
 
-
 exports.resendOTP = async (req, res) => {
-  // Implementation of resendOTP function
   try {
     const { email } = req.body;
 
@@ -309,22 +307,30 @@ exports.resendOTP = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Generate new OTP and send it via email
-    const otp = generateOTP();
-    await sendEmail(email, otp);
+    // Generate new OTP
+    const otp = generateOTP();  // Ensure generateOTP() returns a correct value
 
-    // Save the new OTP to the user document
-    user.otp = otp;
-    await user.save();
-    console.log("otp saved")
+    // Update the OTP in the database
+    user.otp = otp; 
+    await user.save();  // Ensure the new OTP is saved before sending it
 
-    res.json({ message: 'OTP sent to your email.' });
+    console.log("New OTP saved:", otp);
+
+    // Send the new OTP via email
+    try {
+      await sendEmail(email, otp);
+      console.log(`New OTP email sent to ${email}`);
+      return res.json({ message: 'New OTP sent to your email.' });
+    } catch (emailError) {
+      console.error(`Failed to send OTP email to ${email}:`, emailError);
+      return res.status(500).json({ error: 'Failed to send OTP email.' });
+    }
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 
 
 exports.sendOTP = async (req, res) => {

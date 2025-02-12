@@ -824,6 +824,9 @@ export default function PostedJobsCard() {
                       <span className="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full inline-block mb-2">
                         {job.workMode}
                       </span>
+                      <span className="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full inline-block mx-2 mb-2">
+                        {job.employmentType}
+                      </span>
 
                       {/* Job Title */}
                       <h3 onClick={() => handleView(job._id)} className="text-lg font-semibold text-blue-600 hover:underline">
