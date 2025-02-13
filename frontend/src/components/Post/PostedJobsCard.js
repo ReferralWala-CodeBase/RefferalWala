@@ -13,6 +13,8 @@ import { LocationExport } from '../Location';
 import Loader from '../Loader';
 import SmallScreenNav from './SmallScreenNav';
 import CtcRangeSlider from './CtcRangerSlider';
+import no_data_img from "../../assets/no_data_img.jpg";
+import noSignal from "../../assets/noSignal.jpg";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -288,7 +290,7 @@ export default function PostedJobsCard() {
       );
       if (response.ok) {
         setWishlistJobs((prev) => prev.filter((id) => id !== jobId)); // Remove job ID from local state
-        toast.success("Successfully removed from wishlist!");
+        toast.warning("Removed from wishlist!");
       }
     } catch (error) {
       toast.error("Failed to remove from wishlist.");
@@ -601,24 +603,24 @@ export default function PostedJobsCard() {
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-1 mx-auto max-w-full">
 
-          <div className="w-full md:w-1/4 bg-white p-2 rounded-lg shadow-lg border border-gray-200 md:block hidden">
-            <div className="flex items-center gap-2 mb-3 justify-center">
-              <h1 className="text-md font-bold text-gray-800">Filters</h1>
+        <div className="w-full md:w-1/4 bg-white p-4 rounded-2xl shadow-lg border border-gray-300 md:block hidden">
+            <div className="flex items-center gap-2 mb-4 justify-center">
+              <h1 className="text-lg font-bold text-gray-900">Filters</h1>
             </div>
 
             {/* Location Filter */}
-            <div className="mb-2 border pt-3 px-2 rounded-lg dropdown">
-              <h2 className="text-sm font-semibold text-gray-700 mb-3">Locations</h2>
+            <div className="mb-3 border pt-3 px-3 rounded-lg dropdown relative bg-gray-50">
+              <h2 className="text-sm font-semibold text-gray-700 mb-2">📍 Locations</h2>
               <input
                 type="text"
-                placeholder="📍 Search locations..."
+                placeholder="Search locations..."
                 value={searchTerm}
                 onFocus={() => (setCompanyDropdownVisible(false), setLocationDropdownVisible(true))}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full mb-3 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-white"
               />
               {isLocationDropdownVisible && (
-                <ul className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs border border-gray-300 rounded-lg bg-white shadow-md absolute z-10">
+                <ul className="absolute left-0 w-full space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs border border-gray-300 rounded-lg bg-white shadow-md z-10">
                   {LocationExport.filter((loc) =>
                     loc.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     loc.state.toLowerCase().includes(searchTerm.toLowerCase())
@@ -626,28 +628,26 @@ export default function PostedJobsCard() {
                     <li
                       key={loc.city}
                       onClick={() => handleLocationSelect(loc)}
-                      className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedLocations.some((selected) => selected.city === loc.city)
-                        ? "bg-blue-100 text-blue-700 font-medium"
-                        : "hover:bg-gray-100"
-                        }`}
+                      className={`px-3 py-2 cursor-pointer rounded-md transition ${
+                        selectedLocations.some((selected) => selected.city === loc.city)
+                          ? "bg-blue-100 text-blue-700 font-medium"
+                          : "hover:bg-gray-200"
+                      }`}
                     >
                       {loc.city}, {loc.state}
                     </li>
                   ))}
                 </ul>
               )}
-
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {selectedLocations.map((loc) => (
                   <span
                     key={loc.city}
-                    className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1"
+                    className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-xs gap-1 shadow-md"
                   >
                     {loc.city}, {loc.state}
                     <button
-                      onClick={() =>
-                        setSelectedLocations(selectedLocations.filter((item) => item.city !== loc.city))
-                      }
+                      onClick={() => setSelectedLocations(selectedLocations.filter((item) => item.city !== loc.city))}
                       className="text-white hover:text-red-300 transition"
                     >
                       ×
@@ -657,52 +657,46 @@ export default function PostedJobsCard() {
               </div>
             </div>
 
-            <div className="mb-5 border py-3 px-2 rounded-lg dropdown">
+            {/* Company Filter */}
+            <div className="mb-3 border py-3 px-3 rounded-lg dropdown relative bg-gray-50">
+              <h2 className="text-sm font-semibold text-gray-700 mb-2">🏢 Companies</h2>
               <input
                 type="text"
-                placeholder="🏢 Search companies..."
+                placeholder="Search companies..."
                 value={companySearchTerm}
                 onFocus={() => (setLocationDropdownVisible(false), setCompanyDropdownVisible(true))}
-                onChange={handleInputChange} // API call happens here
-                className="w-full mb-4 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                onChange={handleInputChange}
+                className="w-full mb-3 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-white"
               />
-              {isCompanyDropdownVisible &&
-                companySearchTerm.length >= 2 &&
-                companySuggestions.length > 0 && (
-                  <ul className="absolute space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs border border-gray-300 rounded-lg bg-white shadow-md z-10 max-w-64">
-                    {companySuggestions.map((comp) => (
-                      <li
-                        key={comp.name}
-                        onClick={() => handleCompanySelect(comp)}
-                        className={`px-3 py-2 cursor-pointer rounded-lg transition ${selectedCompanies.includes(comp.name)
+              {isCompanyDropdownVisible && companySearchTerm.length >= 2 && companySuggestions.length > 0 && (
+                <ul className="absolute left-0 w-full space-y-1 max-h-40 overflow-y-auto custom-scrollbar text-xs border border-gray-300 rounded-lg bg-white shadow-md z-10">
+                  {companySuggestions.map((comp) => (
+                    <li
+                      key={comp.name}
+                      onClick={() => handleCompanySelect(comp)}
+                      className={`px-3 py-2 cursor-pointer rounded-md transition ${
+                        selectedCompanies.includes(comp.name)
                           ? "bg-blue-100 text-blue-700 font-medium"
-                          : "hover:bg-gray-100"
-                          }`}
-                      >
-                        <div className="flex items-center">
-                          <img
-                            src={comp.logo_url}
-                            alt={comp.name}
-                            className="h-6 w-6 object-contain mr-2"
-                          />
-                          {comp.name}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-              <div className="mt-4 flex flex-wrap gap-2">
+                          : "hover:bg-gray-200"
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <img src={comp.logo_url} alt={comp.name} className="h-6 w-6 object-contain mr-2" />
+                        {comp.name}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="mt-3 flex flex-wrap gap-2">
                 {selectedCompanies.map((comp) => (
                   <span
                     key={comp}
-                    className="inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1"
+                    className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-xs gap-1 shadow-md"
                   >
                     {comp}
                     <button
-                      onClick={() =>
-                        setSelectedCompanies(selectedCompanies.filter((item) => item !== comp))
-                      }
+                      onClick={() => setSelectedCompanies(selectedCompanies.filter((item) => item !== comp))}
                       className="text-white hover:text-red-300 transition"
                     >
                       ×
@@ -712,8 +706,9 @@ export default function PostedJobsCard() {
               </div>
             </div>
 
-            <div className="mb-5 border py-3 px-2 rounded-lg">
-              <h2 className="text-sm font-semibold text-gray-700 mb-3">Experience</h2>
+            {/* Experience Filter */}
+            <div className="mb-3 border py-3 px-3 rounded-lg bg-gray-50">
+              <h2 className="text-sm font-semibold text-gray-700 mb-2">📅 Experience</h2>
               <select
                 value={selectedExperience}
                 onChange={(e) => handleExperienceChange(e.target.value)}
@@ -727,13 +722,9 @@ export default function PostedJobsCard() {
               </select>
             </div>
 
-
-
-            {/* <CtcRangeSlider /> */}
-
-
-            <div className="mb-5 border py-3 px-2 rounded-lg">
-              <h2 className="text-sm font-semibold text-gray-700 mb-3">CTC (in LPA)</h2>
+            {/* CTC Filter */}
+            <div className="mb-3 border py-3 px-3 rounded-lg bg-gray-50">
+              <h2 className="text-sm font-semibold text-gray-700 mb-2">💰 CTC (in LPA)</h2>
               <select
                 value={selectedCtc}
                 onChange={(e) => handleCtcFilterChange(e.target.value)}
@@ -749,9 +740,8 @@ export default function PostedJobsCard() {
                 <option value="25+ LPA">25+ LPA</option>
               </select>
             </div>
-
-
           </div>
+
 
           {/* Job Cards Section */}
           <div className='w-full max-w-6xl h-[90vh] overflow-y-auto'>
@@ -769,7 +759,21 @@ export default function PostedJobsCard() {
               {loading ? (
                 <Loader />
               ) : error ? (
-                <p className="text-red-500">{error}</p>
+                <p className="text-red-500 flex justify-center mx-auto">
+                  <img
+                    src={noSignal}
+                    alt="Server Error"
+                    className="mb-4 w-36"
+                  />
+                </p>
+              ) : filteredJobs.length === 0 ? (
+              <p className="text-red-500 flex justify-center mx-auto"> 
+                <img
+                src={no_data_img}
+                alt="No data found"
+                className="mb-4 w-36"
+                /> 
+              </p>
               ) : (
                 Object.entries(filteredJobs).map(([id, job]) => (
                   <motion.li
@@ -964,7 +968,7 @@ export default function PostedJobsCard() {
           </div>
         </div>
       )}
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+      <ToastContainer position="top-right" autoClose={1500} hideProgressBar />
     </div>
   );
 }
