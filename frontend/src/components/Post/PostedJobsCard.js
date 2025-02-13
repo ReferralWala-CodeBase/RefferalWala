@@ -598,12 +598,53 @@ export default function PostedJobsCard() {
     <div className="min-h-screen bg-gray-100/70">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      <SmallScreenNav />
+      <SmallScreenNav
+        setSelectedCompanies={setSelectedCompanies}
+        setSelectedLocations={setSelectedLocations}
+      />
+
+      {/* Selected Companies */}
+      <div className="block md:hidden mt-1 mb-1 flex flex-wrap gap-2 px-6">
+        {selectedCompanies.map((comp) => (
+          <span
+            key={comp}
+            className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-xs gap-1 shadow-md"
+          >
+            {comp}
+            <button
+              onClick={() => setSelectedCompanies(selectedCompanies.filter((item) => item !== comp))}
+              className="text-white hover:text-red-300 transition"
+            >
+              ×
+            </button>
+          </span>
+        ))}
+      </div>
+
+      {/* Selected Locations */}
+      <div className="block md:hidden mt-1 mb-1 flex flex-wrap gap-2 px-6">
+        {selectedLocations.map((loc) => (
+          <span
+            key={loc.city}
+            className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-xs gap-1 shadow-md"
+          >
+            {loc.city}, {loc.state}
+            <button
+              onClick={() => setSelectedLocations(selectedLocations.filter((item) => item.city !== loc.city))}
+              className="text-white hover:text-red-300 transition"
+            >
+              ×
+            </button>
+          </span>
+        ))}
+      </div>
+
+
       <div className="x-auto md:px-3 px-0 md:py-2 py-1">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-1 mx-auto max-w-full">
 
-        <div className="w-full md:w-1/4 bg-white p-4 rounded-2xl shadow-lg border border-gray-300 md:block hidden">
+          <div className="w-full md:w-1/4 bg-white p-4 rounded-2xl shadow-lg border border-gray-300 md:block hidden">
             <div className="flex items-center gap-2 mb-4 justify-center">
               <h1 className="text-lg font-bold text-gray-900">Filters</h1>
             </div>
@@ -628,11 +669,10 @@ export default function PostedJobsCard() {
                     <li
                       key={loc.city}
                       onClick={() => handleLocationSelect(loc)}
-                      className={`px-3 py-2 cursor-pointer rounded-md transition ${
-                        selectedLocations.some((selected) => selected.city === loc.city)
-                          ? "bg-blue-100 text-blue-700 font-medium"
-                          : "hover:bg-gray-200"
-                      }`}
+                      className={`px-3 py-2 cursor-pointer rounded-md transition ${selectedLocations.some((selected) => selected.city === loc.city)
+                        ? "bg-blue-100 text-blue-700 font-medium"
+                        : "hover:bg-gray-200"
+                        }`}
                     >
                       {loc.city}, {loc.state}
                     </li>
@@ -674,11 +714,10 @@ export default function PostedJobsCard() {
                     <li
                       key={comp.name}
                       onClick={() => handleCompanySelect(comp)}
-                      className={`px-3 py-2 cursor-pointer rounded-md transition ${
-                        selectedCompanies.includes(comp.name)
-                          ? "bg-blue-100 text-blue-700 font-medium"
-                          : "hover:bg-gray-200"
-                      }`}
+                      className={`px-3 py-2 cursor-pointer rounded-md transition ${selectedCompanies.includes(comp.name)
+                        ? "bg-blue-100 text-blue-700 font-medium"
+                        : "hover:bg-gray-200"
+                        }`}
                     >
                       <div className="flex items-center">
                         <img src={comp.logo_url} alt={comp.name} className="h-6 w-6 object-contain mr-2" />
@@ -767,13 +806,13 @@ export default function PostedJobsCard() {
                   />
                 </p>
               ) : filteredJobs.length === 0 ? (
-              <p className="text-red-500 flex justify-center mx-auto"> 
-                <img
-                src={no_data_img}
-                alt="No data found"
-                className="mb-4 w-36"
-                /> 
-              </p>
+                <p className="text-red-500 flex justify-center mx-auto">
+                  <img
+                    src={no_data_img}
+                    alt="No data found"
+                    className="mb-4 w-36"
+                  />
+                </p>
               ) : (
                 Object.entries(filteredJobs).map(([id, job]) => (
                   <motion.li
