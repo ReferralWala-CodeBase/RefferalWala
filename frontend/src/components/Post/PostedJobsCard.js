@@ -757,20 +757,20 @@ export default function PostedJobsCard() {
               {loading ? (
                 <Loader />
               ) : error ? (
-                <p className="text-red-500 flex justify-center mx-auto">
+                <div className="text-red-500 w-full h-screen flex justify-center items-center">
                   <img
                     src={noSignal}
                     alt="Server Error"
-                    className="mb-4 w-36"
+                    className="mb-4 mx-auto block" 
                   />
-                </p>
+                </div>
               ) :
 
                 (
                   Object.entries(filteredJobs).length === 0 ? (
-                    <p className="text-red-500 flex justify-center mx-auto items-center">
-                      <img src={no_data_img} alt="No data found" className="mb-4 w-36" />
-                    </p>
+                    <div className="text-red-500 w-full h-screen flex justify-center items-center">
+                      <img src={no_data_img} alt="No data found" className="mb-4 mx-auto block" />
+                    </div>
                   ) :
                     Object.entries(filteredJobs).map(([id, job]) => (
                       <motion.li
