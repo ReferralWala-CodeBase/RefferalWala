@@ -228,6 +228,7 @@ export default function AppliedJobDetails() {
     }
   };
 
+
   const uploadImageToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -268,6 +269,10 @@ export default function AppliedJobDetails() {
     setEmployeeDoc(fileUrl); // Update state with new document URL
   };
 
+  const handleViewUserProfile = (userId) => {
+    navigate(`/checkuserprofile/${userId}`);
+  };
+  
 
   function getDate(endDate_param) {
     var tempDate = endDate_param + "";
@@ -292,6 +297,8 @@ export default function AppliedJobDetails() {
       </div>
     );
   }
+
+
 
   return (
     <>
@@ -406,16 +413,27 @@ export default function AppliedJobDetails() {
             <div class="mx-auto px-1 2xl:px-0">
 
               <div className='flex mb-2 justify-between'>
-                <div className='flex gap-2'>
-                  <p className="flex gap-1 text-xs px-6 w-fit bg-gray-200 items-center rounded-full text-gray-700">
-                    <img src={jobData?.companyLogoUrl} className='h-6 w-6 items-center border rounded-full' alt="" />
-                    <span className="font-medium text-gray-800">Posted By:</span> {jobData.user?.firstName}
-                  </p>
-                  <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center border border-transparent rounded-full bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              <div 
+  className="flex gap-2 cursor-pointer px-6 w-fit bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition"
+  onClick={() => handleViewUserProfile(jobData.user?._id)}
+>
+  <img 
+    src={jobData?.companyLogoUrl} 
+    className='h-6 w-6 border rounded-full' 
+    alt="" 
+  />
+  <span className="font-medium text-gray-800">
+    Posted By:
+  </span>
+  <span className="text-blue-600 hover:underline ml-1">
+    {jobData.user?.firstName}
+  </span>
+</div>
+
+                 {/* <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center border border-transparent rounded-full bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
                     {isFollowing ? 'Unfollow' : 'Follow'}
-                  </button>
-                </div>
+                  </button> */}
                 <img className='hidden lg:block h-10 w-10' src={company} alt="" />
               </div>
 

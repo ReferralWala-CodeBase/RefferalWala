@@ -72,7 +72,14 @@ export default function PostJob() {
         setProfileIncomplete(true);
       } else {
         setProfileIncomplete(false);
-      }
+      
+
+      setFormData((prevData) => ({
+        ...prevData,
+        companyName: presentCompany.companyName || "",
+        companyLogoUrl: presentCompany.companyLogoUrl || "",
+      }));
+    }
 
     } catch (error) {
       console.error("Error checking profile:", error);
@@ -176,8 +183,16 @@ export default function PostJob() {
 
     if (profileIncomplete) {
       toast.error("Please complete your profile before posting a job.");
+      setLoading(false);
       return;
     }
+  
+    // Run validation before submitting
+    if (!validate()) {
+      setLoading(false);
+      return;
+    }
+  
 
     // Add userId from local storage to formData
     const bearerToken = localStorage.getItem('token');
@@ -201,6 +216,7 @@ export default function PostJob() {
           // Unauthorized, remove the token and navigate to login
           localStorage.removeItem('token');
           navigate('/user-login');
+          throw new Error("Session expired. Please log in again.");
         } else {
           // throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
           throw new Error(errorData.msg || response.statusText);
@@ -222,23 +238,27 @@ export default function PostJob() {
     } catch (error) {
       console.error('Error posting job:', error.message);
       toast.error(error.message);
+    }finally {
+      setLoading(false); // Ensure loading is stopped in all cases
     }
   };
+  
 
-  const validation = () => {
-
+  const validate = () => {
     const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
-    const numericPattern = /^\d+$/; // Only numbers
+    const numericPattern = /^\d+$/;
 
     if (!urlPattern.test(formData.jobLink)) {
-      return toast.error("Please enter a valid URL for the job link.");
+      toast.error("Please enter a valid URL for the job link.");
+      return false;
     }
 
-    // Validate experienceRequired
     if (!numericPattern.test(formData.experienceRequired)) {
-      return toast.error("Experience required must be a number.");
-
+      toast.error("Experience required must be a number.");
+      return false;
     }
+
+    return true;
   };
 
   return (
@@ -284,7 +304,6 @@ export default function PostJob() {
                   name="jobLink"
                   value={formData.jobLink}
                   onChange={handleChange}
-                  onBlur={validation}
                   required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
@@ -317,6 +336,7 @@ export default function PostJob() {
                   value={formData.companyName}
                   onChange={handleChange}
                   required
+                  disabled
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
                 {companySuggestions.length > 0 && (
@@ -353,7 +373,6 @@ export default function PostJob() {
                   name="experienceRequired"
                   value={formData.experienceRequired}
                   onChange={handleChange}
-                  onBlur={validation}
                   required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />

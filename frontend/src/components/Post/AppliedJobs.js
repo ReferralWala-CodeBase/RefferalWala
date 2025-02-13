@@ -246,7 +246,7 @@ export default function AppliedJobs() {
                             onClick={() => handleViewJobDetails(job.jobPostId._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {job.jobPostId.Location}
+                            {job.jobPostId.location}
                           </td>
                           <td
                             onClick={() => handleViewJobDetails(job.jobPostId._id)}
@@ -258,7 +258,7 @@ export default function AppliedJobs() {
                             onClick={() => handleViewJobDetails(job.jobPostId._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {new Date(job.appliedAt).toLocaleDateString()}
+                            {new Date(job.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                           </td>
                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <FaTrash
@@ -349,7 +349,7 @@ export default function AppliedJobs() {
                         </span> */}
 
                         <span className="inline-flex items-center gap-1 bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full mb-2">
-                          <span>Applied On: {new Date(job.appliedAt).toLocaleDateString()}</span>
+                        <span>Applied On: {new Date(job.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                         </span>
 
                         {/* Job Title */}

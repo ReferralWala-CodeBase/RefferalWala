@@ -261,7 +261,7 @@ function Signup() {
                 </button>
               </div>
 
-              <p className="text-center text-xs text-gray-700">
+              {/* <p className="text-center text-xs text-gray-700">
                 Continue without login ?{" "}
                 <Link
                   to={`/`}
@@ -269,7 +269,7 @@ function Signup() {
                 >
                   Click Here
                 </Link>
-              </p>
+              </p> */}
             </form>
 
             {/*Registration Using Google*/}
