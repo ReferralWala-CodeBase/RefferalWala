@@ -8,6 +8,7 @@ import { FaBuilding, FaFilter, FaMapMarkerAlt, FaSpinner, FaTimes } from "react-
 import ReportJob from './Post/ReportJob';
 import SidebarNavigation from '../components/SidebarNavigation';
 import busi from "../assets/company.png";
+import person from "../assets/person.png";
 import { UserPlus, UserX } from "lucide-react";
 
 export default function Search() {
@@ -290,7 +291,7 @@ export default function Search() {
                                                     {/* Profile Image */}
                                                     <img
                                                         className="h-12 w-12 md:h-20 md:w-20 rounded-full border-2 p-1 border-gray-500 shadow-md object-cover"
-                                                        src={user.profilePhoto || "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
+                                                        src={user.profilePhoto || person}
                                                         alt="avatar"
                                                     />
 

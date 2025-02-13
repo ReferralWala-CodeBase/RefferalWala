@@ -124,14 +124,14 @@ export default function AppliedJobs() {
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
-        <div className="w-2/12 md:w-1/4 fixed lg:relative">
+        <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 m-auto">
+        <div className="w-11/12 md:w-3/4 m-auto">
           <div className="mt-4 flow-root">
             {/* Tabs for status */}
             <div className="flex space-x-4 mb-6">
-              {['applied', 'selected', 'rejected'].map(status => (
+              {['applied', 'selected', 'rejected', 'on hold'].map(status => (
                 <button
                   key={status}
                   onClick={() => {
@@ -139,7 +139,7 @@ export default function AppliedJobs() {
                     setSelectedStatus(status);
                     setTimeout(() => setLoading(false), 1000); // Simulate loading delay
                   }}
-                  className={`px-2 py-1 md:px-4 md:py-2 text-sm font-medium rounded-md ${selectedStatus === status ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                  className={`px-2 py-1 md:px-4 md:py-2 text-xs sm:text-sm font-medium rounded-md ${selectedStatus === status ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                   disabled={loading}
                 >
                   {loading && selectedStatus === status ? (
