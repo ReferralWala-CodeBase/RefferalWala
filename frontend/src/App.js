@@ -25,6 +25,10 @@ import FollowerList from "./components/Profile/FollowerList";
 import CheckUserProfile from "./components/Profile/CheckUserProfile";
 import NotificationsPage from "./components/Profile/NotificationsPage";
 import SearchPage from "./components/Search";
+import WhyDifferent from "./components/LandingPage/WhyDifferent";
+import Faq from "./components/LandingPage/Faq";
+import About from "./components/LandingPage/About";
+import Stats from "./components/LandingPage/Stats";
 function App() {
   return (
     <>
@@ -53,6 +57,10 @@ function App() {
         <Route path="/followerlist" element={<FollowerList />} />
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/whyDifferent" element={<WhyDifferent/>}/>
+        <Route path="/faq" element={<Faq/>}/>
+        <Route path="/about" element={<About/>}/>
+        <Route path="/stats" element={<Stats/>}/>
 
       </Routes>
     </>

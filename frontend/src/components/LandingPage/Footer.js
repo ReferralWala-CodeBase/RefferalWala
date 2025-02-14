@@ -14,28 +14,28 @@
 */
 const navigation = {
     solutions: [
-      { name: 'Marketing', href: '#' },
-      { name: 'Analytics', href: '#' },
+      { name: 'Find Job Referrals', href: '/' },
+      { name: 'Provide Referrals', href: '/postJob' },
       { name: 'Commerce', href: '#' },
       { name: 'Insights', href: '#' },
     ],
     support: [
-      { name: 'Pricing', href: '#' },
-      { name: 'Documentation', href: '#' },
+      { name: 'Why Different', href: '/whyDifferent' },
+      { name: 'FAQ', href: '/faq' },
       { name: 'Guides', href: '#' },
       { name: 'API Status', href: '#' },
     ],
     company: [
-      { name: 'About', href: '#' },
-      { name: 'Blog', href: '#' },
+      { name: 'About', href: '/about' },
+      { name: 'Stats', href: '/stats' },
       { name: 'Jobs', href: '#' },
       { name: 'Press', href: '#' },
       { name: 'Partners', href: '#' },
     ],
     legal: [
-      { name: 'Claim', href: '#' },
-      { name: 'Privacy', href: '#' },
-      { name: 'Terms', href: '#' },
+      // { name: 'Claim', href: '#' },
+      { name: 'Privacy', href: '/privacy-policy' },
+      { name: 'Terms', href: '/terms-conditions' },
     ],
     social: [
       {
@@ -193,7 +193,7 @@ const navigation = {
               </form>
             </div>
           </div>
-          <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-24">
+          {/* <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-24">
             <div className="flex space-x-6 md:order-2">
               {navigation.social.map((item) => (
                 <a key={item.name} href={item.href} className="text-gray-500 hover:text-gray-400">
@@ -205,7 +205,7 @@ const navigation = {
             <p className="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">
               &copy; 2020 Your Company, Inc. All rights reserved.
             </p>
-          </div>
+          </div> */}
         </div>
       </footer>
     )
