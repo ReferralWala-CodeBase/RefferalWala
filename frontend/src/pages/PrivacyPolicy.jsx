@@ -1,243 +1,141 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import { useLocation, useNavigate } from "react-router-dom";
+
 
 function PrivacyPolicy() {
+  const navigate = useNavigate();
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
-      <div className="container bg-white text-black mt-8 px-4 max-w-7xl mx-auto py-8">
-        <p className="mb-4">Effective Date: 2024-10-01</p>
-        <div className="w-full flex">
-          <h1 className="text-3xl font-bold mb-4 text-blue-600">
-            Privacy Policy{" "}
-          </h1>
-        </div>
-        <br />
-        <p className="mb-4 text-base">
-          At ReferralWala, your privacy is our top priority. We are committed to
-          safeguarding your personal data and ensuring that it is used
-          responsibly. This Privacy Policy explains how we collect, use, store,
-          and protect your information when you visit and interact with our
-          platform. We only use your data to enhance your experience and never
-          share or sell it without your explicit consent.
-        </p>
-        <br />
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">
-            1. Information We Collect
-          </h2>
-          <br />
-          <p className="text-base">
-            We collect several types of information from and about users of our
-            platform, including:
+      <div className="container mx-auto px-6 py-10 max-w-4xl">
+        {/* Page Header */}
+        <div className="bg-white shadow-md rounded-lg p-5">
+          <p className="text-xs text-gray-600">Effective Date: October 1, 2024</p>
+          <h1 className="text-2xl font-bold text-gray-900 mt-2">Privacy Policy</h1>
+          
+          {/* Introduction */}
+          <p className="mt-4 text-sm text-gray-900 leading-relaxed">
+            Welcome to <span className="font-semibold">ReferralWala</span>. Your privacy is important to us. 
+            This Privacy Policy explains how we collect, use, and protect your personal information 
+            when you interact with our platform. By using ReferralWala, you agree to the terms outlined below.
           </p>
-          <br />
-          <ul>
-            <li className="list-disc">
-              <p className="text-base">
-                Personal Information: When you sign up or use our services, we
-                may collect your name, email address, phone number, and other
-                contact details.
+  
+          {/* Privacy Sections */}
+          <div className="mt-6 space-y-6">
+            
+            {/* Section 1 - Information We Collect */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900">1. Information We Collect</h2>
+              <p className="text-sm text-gray-900 mt-1">
+                We collect various types of data to improve our services:
               </p>
-            </li>
-
-            <li className="list-disc">
-              <p className="text-base">
-                Referral Information: Details about the referrals you post,
-                including the names and contact information of individuals or
-                businesses you refer.
+              <ul className="mt-2 list-disc list-inside text-sm text-gray-900 space-y-1">
+                <li><strong>Personal Information:</strong> Name, email, phone number, and account details.</li>
+                <li><strong>Referral Data:</strong> Contact details and referral information shared through the platform.</li>
+                <li><strong>Transaction Data:</strong> Payment details, rewards, and payout history.</li>
+                <li><strong>Technical Data:</strong> IP address, browser type, device information, and website analytics.</li>
+                <li><strong>Cookies & Tracking:</strong> Data collected via cookies to improve site functionality.</li>
+              </ul>
+            </section>
+  
+            {/* Section 2 - How We Use Your Information */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900">2. How We Use Your Information</h2>
+              <p className="text-sm text-gray-900 mt-1">
+                Your information is used for the following purposes:
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                Transaction Information: Data related to any transactions made
-                through the platform, such as reward tracking and payouts.
+              <ul className="mt-2 list-disc list-inside text-sm text-gray-900 space-y-1">
+                <li><strong>Providing Services:</strong> Facilitating referrals, tracking rewards, and managing accounts.</li>
+                <li><strong>Customer Support:</strong> Assisting with queries and resolving issues.</li>
+                <li><strong>Platform Improvement:</strong> Enhancing features based on usage trends.</li>
+                <li><strong>Legal Compliance:</strong> Ensuring adherence to applicable laws and regulations.</li>
+                <li><strong>Marketing (Opt-in Only):</strong> Sending updates, promotions, and offers.</li>
+              </ul>
+            </section>
+  
+            {/* Section 3 - Data Sharing */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900">3. Data Sharing</h2>
+              <p className="text-sm text-gray-900 mt-1">
+                We do not sell your personal information. However, we may share data in the following situations:
               </p>
-            </li>
-
-            <li className="list-disc">
-              <p className="text-base">
-                Technical Data: This includes your IP address, browser type,
-                operating system, and other data collected automatically when
-                you access our website (via cookies and similar technologies).
+              <ul className="mt-2 list-disc list-inside text-sm text-gray-900 space-y-1">
+                <li><strong>With Referral Partners:</strong> To facilitate the referral process.</li>
+                <li><strong>With Service Providers:</strong> Such as payment processors, hosting services, and analytics tools.</li>
+                <li><strong>For Legal Reasons:</strong> In response to law enforcement requests or to prevent fraud.</li>
+              </ul>
+            </section>
+  
+            {/* Section 4 - Data Security */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900">4. Data Security</h2>
+              <p className="text-sm text-gray-900 mt-1">
+                We implement industry-standard security measures, including encryption, access controls, and secure 
+                storage, to protect your data. However, no system is entirely foolproof. Please use strong passwords 
+                and avoid sharing account credentials.
               </p>
-            </li>
-          </ul>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">
-            2. How We Use Your Information
-          </h2>
-          <br />
-          <p className="text-base">The data we collect is used to:</p>
-          <br />
-          <ul>
-            <li className="list-disc">
-              <p className="text-base">
-                Provide Services: Facilitate the referral process, track
-                progress, and deliver rewards.
+            </section>
+  
+            {/* Section 5 - Data Retention */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900">5. Data Retention</h2>
+              <p className="text-sm text-gray-900 mt-1">
+                We retain your data for as long as necessary to fulfill the purposes outlined in this policy. If you 
+                wish to delete your data, contact us at <span className="font-semibold">referralwala.tech@gmail.com</span>. 
+                Some legal requirements may require longer retention.
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                Improve User Experience: Understand how users interact with our
-                platform and enhance its functionality.
+            </section>
+  
+            {/* Section 6 - User Rights */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900">6. Your Rights</h2>
+              <p className="text-sm text-gray-900 mt-1">
+                You may have the following rights depending on applicable laws:
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                Communicate with You: Send notifications about your account,
-                referrals, rewards, and other important updates.
+              <ul className="mt-2 list-disc list-inside text-sm text-gray-900 space-y-1">
+                <li><strong>Access:</strong> Request a copy of your data.</li>
+                <li><strong>Correction:</strong> Update incorrect or incomplete information.</li>
+                <li><strong>Deletion:</strong> Request data removal (subject to legal obligations).</li>
+                <li><strong>Restriction:</strong> Limit how we process your data.</li>
+                <li><strong>Objection:</strong> Opt-out of certain processing activities.</li>
+              </ul>
+              <p className="mt-2 text-xs text-gray-700">
+                To exercise these rights, email us at <span className="font-semibold">[Your Contact Email]</span>.
               </p>
-            </li>
-
-            <li className="list-disc">
-              <p className="text-base">
-                Promotional Purposes: If you opt-in, we may send you promotional
-                materials about new features or offers on the platform.
+            </section>
+  
+            {/* Section 7 - Cookies & Tracking */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900">7. Cookies and Tracking</h2>
+              <p className="text-sm text-gray-900 mt-1">
+                We use cookies to enhance user experience. You can manage cookie settings in your browser.
               </p>
-            </li>
-          </ul>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">3. Data Sharing </h2>
-          <br />
-          <p className="text-base">
-            We do not sell or rent your personal data to third parties. However,
-            we may share your data in the following situations:
-          </p>
-          <br />
-          <ul>
-            <li className="list-disc">
-              <p className="text-base">
-                Referral Partners: When you post a referral, we may share
-                relevant information with the referred business or individual to
-                facilitate the process.
+            </section>
+  
+            {/* Section 8 - Policy Updates */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-gray-900">8. Changes to This Policy</h2>
+              <p className="text-sm text-gray-900 mt-1">
+                This Privacy Policy may be updated periodically. Any significant changes will be communicated via email 
+                or platform notifications.
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                Service Providers: We work with third-party providers (e.g.,
-                payment processors, cloud services) who assist us in operating
-                the platform. These providers only use your data as needed to
-                provide services to ReferralWala.
-              </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                Legal Obligations: We may disclose your information if required
-                by law or in response to legal processes such as subpoenas or
-                government requests.
-              </p>
-            </li>
-          </ul>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600">4. Data Security</h2>
-          <br />
-          <p className="text-base">
-            We take appropriate technical and organizational measures to protect
-            your personal data from unauthorized access, alteration, disclosure,
-            or destruction. While we strive to ensure the security of your
-            information, no method of transmission over the internet is 100%
-            secure. We encourage you to take precautions, such as using a strong
-            password and not sharing account details.
-          </p>
-        </div>
-
-        {/* Section 5 */}
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600">5. Data Retention</h2>
-          <br />
-          <p className="text-base">
-            We retain your personal data for as long as necessary to provide our
-            services and comply with legal obligations. You can request deletion
-            of your data by contacting us at [Contact Information], and we will
-            take reasonable steps to delete your information unless it is
-            required to be retained for legal purposes.
-          </p>
-        </div>
-
-        {/* Section 6 */}
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600">6. Your Rights</h2>
-          <br />
-          <p className="text-base">
-            Depending on your location and applicable laws, you may have the
-            following rights regarding your personal data:
-          </p>
-          <br />
-          <ul>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Access:</strong> Request a copy of the personal
-                information we hold about you.
-              </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Correction:</strong> Request to correct any inaccurate
-                or incomplete data.
-              </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Deletion:</strong> Request deletion of your personal
-                information.
-              </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Restriction:</strong> Request to restrict the processing
-                of your data.
-              </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Data Portability:</strong> Request a copy of your data
-                in a structured, commonly used format.
-              </p>
-            </li>
-          </ul>
-          <p className="text-base mt-2">
-            To exercise any of these rights, please contact us at [Contact
-            Information].
-          </p>
-        </div>
-
-        {/* Section 7 */}
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600">
-            7. Cookies and Tracking Technologies
-          </h2>
-          <br />
-          <p className="text-base">
-            We use cookies and similar technologies to collect information about
-            your interactions with our website. Cookies help us analyze website
-            traffic, improve functionality, and provide personalized content.
-            You can control cookie settings through your browser, but disabling
-            cookies may affect the performance of our website.
-          </p>
-        </div>
-
-        {/* Section 8 */}
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600">8. Changes to This Policy</h2>
-          <br />
-          <p className="text-base">
-            We may update this Privacy Policy from time to time to reflect
-            changes in our practices or for legal, regulatory, or operational
-            reasons. If we make any material changes, we will notify you by
-            email or through a notice on our website. Please review this policy
-            periodically for any updates.
-          </p>
+            </section>
+          </div>
+  
+          {/* Contact Button */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => navigate("/contact")}
+              className="bg-blue-700 text-white px-5 py-2 rounded shadow-md hover:bg-gray-800 transition-all text-sm"
+            >
+              Contact Us
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  );
+  );  
 }
 
 export default PrivacyPolicy;

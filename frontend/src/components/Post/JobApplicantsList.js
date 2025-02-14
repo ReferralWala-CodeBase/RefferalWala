@@ -4,6 +4,8 @@ import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import Loader from '../Loader';
 import person from '../../assets/person.png'
+import noApplicants from "../../assets/noApplicants.png";
+import noSignal from "../../assets/noSignal.jpg";
 
 export default function JobApplicantsList() {
   const { jobId } = useParams(); // Get jobId from URL params
@@ -97,9 +99,20 @@ export default function JobApplicantsList() {
             {loading ? (
               <Loader />
             ) : error ? (
-              <p className="text-red-500">Error: {error}</p>
+              <div className="text-red-500 w-full h-screen flex justify-center items-center">
+                <img
+                  src={noSignal}
+                  alt="Server Error"
+                  className="mb-4 mx-auto block" 
+                />
+              </div>
             ) : applicants.length === 0 ? (
-              <p>No applicants found for this job.</p>
+              <>
+              <p className="text-black-500 flex justify-center mx-auto">No Applicants!</p>
+              <div className="text-red-500 w-full h-full flex justify-center items-center">
+                <img src={noApplicants} alt="No Applicants" className="mb-4 mx-auto block" />
+              </div>
+              </>
             ) : (
               <div className="max-w-7xl">
                 <div className="hidden lg:block">
