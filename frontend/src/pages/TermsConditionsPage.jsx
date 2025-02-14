@@ -1,198 +1,143 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function TermsConditionsPage() {
+  const navigate = useNavigate();
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
-      <div className="container bg-white text-black mt-8 px-4 max-w-7xl mx-auto py-8">
-        <p className="mb-4">Effective Date: 2024-10-01</p>
-        <div className="w-full flex">
-          <h1 className="text-3xl font-bold mb-4 text-blue-600">
-            Terms & Conditions
-          </h1>
-        </div>
-        <br />
-        <p className="mb-4 text-base">
-          By accessing and using ReferralWala, you agree to comply with and be
-          bound by the following Terms & Conditions. These terms outline your
-          rights, responsibilities, and obligations when using our platform. Our
-          aim is to ensure a secure and rewarding experience for all users.
-          Please read these terms carefully before using our services.
-        </p>
-        <br />
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">1. Acceptance of Terms</h2>
-          <br />
-          <p className="text-base">
-            By using ReferralWala, you accept and agree to abide by these Terms
-            & Conditions. If you do not agree with any part of these terms, you
-            must discontinue use of the platform immediately.
+      <div className="container mx-auto px-6 py-10 max-w-6xl">
+        {/* Page Header */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <p className="text-xs text-gray-600">Effective Date: October 1, 2024</p>
+          <h1 className="text-3xl font-bold text-black mt-2">Terms & Conditions</h1>
+  
+          {/* Introduction */}
+          <p className="mt-4 text-sm text-black leading-relaxed">
+            Welcome to <span className="font-semibold">ReferralWala</span>. By accessing and using our platform, you agree to 
+            the following Terms & Conditions. These govern your rights, obligations, and responsibilities while using our services. 
+            Please read these terms carefully before continuing.
           </p>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">2. User Responsibilities</h2>
-          <br />
-          <ul>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Account Creation:</strong> To access certain features of
-                ReferralWala, you must create an account. You are responsible
-                for maintaining the confidentiality of your account credentials
-                and for all activities that occur under your account.
+  
+          {/* Terms Sections */}
+          <div className="mt-6 space-y-6">
+            
+            {/* Section 1 - Acceptance of Terms */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">1. Acceptance of Terms</h2>
+              <p className="text-sm text-black mt-1">
+                By using ReferralWala, you confirm that you accept these Terms & Conditions and agree to comply with them. If you 
+                do not agree, you must stop using our platform immediately.
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Accuracy of Information:</strong> You agree to provide
-                accurate, current, and complete information when posting
-                referrals, updating your profile, or using any other services on
-                our platform.
+            </section>
+  
+            {/* Section 2 - User Responsibilities */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">2. User Responsibilities</h2>
+              <ul className="mt-2 list-disc list-inside text-sm text-black space-y-1">
+                <li><strong>Account Creation:</strong> You must provide accurate details and keep your account credentials secure.</li>
+                <li><strong>Accuracy of Information:</strong> Information provided for referrals, profiles, or services must be truthful.</li>
+                <li><strong>Acceptable Use:</strong> You may only use ReferralWala for legal and ethical purposes.</li>
+                <li><strong>Prohibited Activities:</strong> Engaging in fraud, hacking, or spamming is strictly forbidden.</li>
+                <li><strong>Compliance:</strong> Users must follow all applicable laws and platform policies.</li>
+              </ul>
+            </section>
+  
+            {/* Section 3 - Referrals and Rewards */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">3. Referrals and Rewards</h2>
+              <ul className="mt-2 list-disc list-inside text-sm text-black space-y-1">
+                <li><strong>Posting Referrals:</strong> All referrals must be genuine and align with our guidelines.</li>
+                <li><strong>Earning Rewards:</strong> Rewards depend on successful referral completions and our set policies.</li>
+                <li><strong>Referral Tracking:</strong> We track referrals accurately, but issues beyond our control are not our liability.</li>
+                <li><strong>Fraud Prevention:</strong> Any attempts to game the referral system will result in account suspension.</li>
+              </ul>
+            </section>
+  
+            {/* Section 4 - Intellectual Property */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">4. Intellectual Property</h2>
+              <p className="text-sm text-black mt-1">
+                All platform content—including logos, text, and software—belongs to ReferralWala and is protected under intellectual property laws.
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Acceptable Use:</strong> You agree to use ReferralWala
-                only for lawful purposes and in accordance with our guidelines.
-                You must not engage in any activities that could harm the
-                platform or interfere with other users’ experience.
+            </section>
+  
+            {/* Section 5 - Privacy & Data Protection */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">5. Privacy & Data Protection</h2>
+              <p className="text-sm text-black mt-1">
+                Your privacy is a priority. Please read our <a href="/privacy-policy" className="text-blue-600 font-semibold underline">Privacy Policy</a> to understand how we handle your data.
               </p>
-            </li>
-          </ul>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">3. Referrals and Rewards</h2>
-          <br />
-          <ul>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Posting Referrals:</strong> When you post a referral,
-                you must ensure that the information is truthful and complies
-                with our guidelines. Misleading or fraudulent referrals are
-                strictly prohibited.
+            </section>
+  
+            {/* Section 6 - Refund & Cancellation Policy */}
+            {/* <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">6. Refund & Cancellation Policy</h2>
+              <p className="text-sm text-black mt-1">
+                Users can request a refund within <strong>7 days</strong> of completing a referral transaction, subject to our refund guidelines. Refunds will be processed within <strong>5-10 business days</strong>.
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Earning Rewards:</strong> Rewards are earned based on
-                the successful completion of referral activities as outlined in
-                our referral program. Specific details about reward eligibility,
-                tracking, and payout will be provided on our Rewards page.
+            </section> */}
+  
+            {/* Section 7 - Limitations of Liability */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">6. Limitations of Liability</h2>
+              <p className="text-sm text-black mt-1">
+                ReferralWala is provided "as is." We are not responsible for any direct or indirect damages arising from platform use.
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Referral Tracking:</strong> We will make reasonable
-                efforts to track and process referrals accurately, but we are
-                not liable for any errors or issues beyond our control.
+            </section>
+  
+            {/* Section 8 - Termination of Use */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">7. Termination</h2>
+              <p className="text-sm text-black mt-1">
+                We may suspend or terminate your access if you violate these terms. Upon termination, you must cease all use of the platform.
               </p>
-            </li>
-          </ul>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">4. Intellectual Property</h2>
-          <br />
-          <ul>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>Ownership:</strong> All content on ReferralWala,
-                including text, graphics, logos, and software, is the property
-                of ReferralWala or its licensors and is protected by
-                intellectual property laws.
+            </section>
+  
+            {/* Section 9 - Dispute Resolution */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">8. Dispute Resolution</h2>
+              <p className="text-sm text-black mt-1">
+                Any disputes arising from these Terms will be resolved through mediation.
               </p>
-            </li>
-            <li className="list-disc">
-              <p className="text-base">
-                <strong>License:</strong> We grant you a limited, non-exclusive,
-                and non-transferable license to access and use the platform for
-                personal and lawful purposes, subject to these Terms &
-                Conditions.
+            </section>
+  
+            {/* Section 10 - Changes to Terms */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">9. Changes to Terms</h2>
+              <p className="text-sm text-black mt-1">
+                We may modify these Terms & Conditions periodically. Any updates will be posted, and continued use implies acceptance.
               </p>
-            </li>
-          </ul>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">
-            5. Privacy and Data Protection
-          </h2>
-          <br />
-          <p className="text-base">
-            Your privacy is important to us. Please refer to our Privacy Policy
-            to understand how we collect, use, and protect your personal
-            information.
-          </p>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">
-            6. Limitations of Liability
-          </h2>
-          <br />
-          <p className="text-base">
-            ReferralWala is not liable for any direct, indirect, incidental, or
-            consequential damages arising from your use of the platform or any
-            content posted by users. We provide the platform “as is” and do not
-            guarantee that it will be error-free or uninterrupted.
-          </p>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">7. Termination</h2>
-          <br />
-          <p className="text-base">
-            We reserve the right to suspend or terminate your access to
-            ReferralWala if you violate these Terms & Conditions or for any
-            reason at our discretion. Upon termination, you must cease all use
-            of the platform and destroy any materials obtained from it.
-          </p>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">8. Changes to Terms</h2>
-          <br />
-          <p className="text-base">
-            We may update these Terms & Conditions from time to time to reflect
-            changes in our practices or legal requirements. Any modifications
-            will be posted on this page with an updated effective date.
-            Continued use of the platform constitutes acceptance of the revised
-            terms.
-          </p>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">9. Governing Law</h2>
-          <br />
-          <p className="text-base">
-            These Terms & Conditions are governed by and construed in accordance
-            with the laws of [Jurisdiction]. Any disputes arising from these
-            terms or your use of the platform will be subject to the exclusive
-            jurisdiction of the courts in [Jurisdiction].
-          </p>
-        </div>
-
-        <div className="pb-5">
-          <h2 className="font-bold text-blue-600 ">10. Contact Us</h2>
-          <br />
-          <p className="text-base">
-            If you have any questions or concerns about these Terms &
-            Conditions, please contact us at:
-          </p>
-          <br />
-          <ul>
-            <li className="list-disc text-base">
-              Email: support@referralwala.com
-            </li>
-            <li className="list-disc text-base">Phone: +[Contact Number]</li>
-            <li className="list-disc text-base">Address: [Company Address]</li>
-          </ul>
+            </section>
+  
+            {/* Section 11 - Contact Information */}
+            <section className="p-4 bg-gray-50 rounded-lg shadow">
+              <h2 className="text-lg font-semibold text-black">10. Contact Us</h2>
+              <p className="text-sm text-black mt-1">
+                For any questions about these Terms & Conditions, reach us at:
+              </p>
+              <ul className="mt-2 list-disc list-inside text-sm text-black space-y-1">
+                <li><strong>Email:</strong> referralwala.tech@gmail.com</li>
+                <li><strong>Phone:</strong> +91[7992244398]</li>
+                {/* <li><strong>Address:</strong> [Your Business Address]</li> */}
+              </ul>
+            </section>
+          </div>
+  
+          {/* Contact Button */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => navigate("/contact")}
+              className="bg-blue-700 text-white px-5 py-2 rounded shadow-md hover:bg-gray-800 transition-all text-sm"
+            >
+              Contact Us
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  );
+  );  
 }
 
 export default TermsConditionsPage;
