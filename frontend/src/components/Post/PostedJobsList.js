@@ -5,7 +5,8 @@ import { FaSpinner, FaCircle } from "react-icons/fa";
 import Navbar from "../Navbar";
 import Loader from '../Loader';
 import { motion } from "framer-motion";
-import vid2 from "../../assets/vid2.mp4";
+import noJobsPosted from "../../assets/noJobsPosted.png";
+import noSignal from "../../assets/noSignal.jpg";
 
 export default function PostedJobsList() {
   const [jobs, setJobs] = useState([]);
@@ -108,20 +109,19 @@ export default function PostedJobsList() {
                   </button>
                 </div>
               ) : (
-                <p className="text-red-500">{error}</p>
+                <div className="text-red-500">
+                  <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
+                    <div>
+                      <img src={noSignal} alt="Server Error" className="mb-4 mx-auto block" />
+                    </div>
+                  </div>
+                </div>
               )
             ) : jobs.length === 0 ? (
 
               <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
                 <div>
-                  <video
-                    src={vid2}
-                    className="w-60 h-60 mx-auto mb-4"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                  />
+                  <img src={noJobsPosted} alt="No data found" className="mb-4 mx-auto block" />
                   <p className="text-xl font-light">No jobs found !</p>
                 </div>
               </div>

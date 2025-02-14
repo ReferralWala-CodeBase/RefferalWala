@@ -65,14 +65,15 @@ export default function ViewProfile() {
           <SidebarNavigation />
         </div>
         <div className="w-11/12 md:w-3/4 px-0 sm:px-6 m-auto">
-          <div className="flex justify-end pt-2 pb-4 ml-4 gap-2">
-            <button
-              onClick={() => navigate(`/editprofile`)}
-              className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" /> Edit
-            </button>
-          </div>
+        <div className="flex justify-end pt-2 pb-4 ml-4 gap-2">
+  <button
+    onClick={() => navigate(`/editprofile`)}
+    className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:from-indigo-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2"
+  >
+    <PencilIcon className="h-5 w-5" aria-hidden="true" /> Edit Profile
+  </button>
+</div>
+
 
           <div className="p-6 sm:mr-0 font-sans rounded-lg shadow-lg bg-gray-50">
             <div className="flex flex-col lg:flex-row">
