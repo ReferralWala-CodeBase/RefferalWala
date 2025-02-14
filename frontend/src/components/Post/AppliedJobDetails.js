@@ -54,13 +54,13 @@ export default function AppliedJobDetails() {
         setJobData(jobData); // Set the job data
 
 
-        setIsFollowing(jobData.user.followers?.includes(userId) || false);
+        // setIsFollowing(jobData.user.followers?.includes(userId) || false);
 
-        console.log(jobData.user);
+        // console.log(jobData.user);
 
-        if (jobData?.user?._id) {
-          setUsertofollow(jobData.user._id); // Ensure _id exists before setting state
-        }
+        // if (jobData?.user?._id) {
+        //   setUsertofollow(jobData.user._id); // Ensure _id exists before setting state
+        // }
 
         // Now fetch the application status
         const statusResponse = await fetch(`${Fronted_API_URL}/job/user/${userId}/jobpost/${jobId}/application/status`, {
@@ -149,7 +149,7 @@ export default function AppliedJobDetails() {
           localStorage.removeItem('token');
           navigate('/user-login');
         } else {
-          throw new Error(errorData.msg || response.statusText);
+          throw new Error(errorData.message || response.statusText);
         }
       }
 
@@ -308,135 +308,58 @@ export default function AppliedJobDetails() {
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 m-auto">
-          <div className="col-span-2 flex justify-end p-4">
-            {applicationStatus === 'applied' ? (
-              <p className="text-blue-600 font-medium">You have applied for this job.</p>
-            ) : applicationStatus === 'selected' ? (
-              <div>
-                <p className="text-green-600 font-medium text-center">You have been selected for this job!</p>
-                <button onClick={() => setIsDocumentOpen(true)}
-                  className="mt-2 mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                  View Selected Document
-                </button>
-                {!verified && (
-                  <button
-                    onClick={() => setIsDialogOpen(true)}
-                    className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  >
-                    {uploading ? 'Uploading...' : 'Uploading Selected Document'}
-                  </button>
-                )}
-                {/*Selected Document*/}
-                {isDocumentOpen && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                    <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-[600px] h-[400px] relative flex flex-col overflow-hidden">
-                      <button
-                        onClick={() => setIsDocumentOpen(false)}
-                        className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-                      >
-                        <FaTimes className="w-6 h-6" />
-                      </button>
+        <div className="col-span-2 flex justify-between p-4 items-center flex-wrap gap-2">
+  {/* Posted By Section (Always Visible) */}
+  <div
+    className="flex gap-2 cursor-pointer px-4 py-2 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300"
+    onClick={() => handleViewUserProfile(jobData.user?._id)}
+  >
+    <img
+      src={jobData?.companyLogoUrl}
+      className="h-6 w-6 border rounded-full object-cover"
+      alt=""
+    />
+    <span className="font-medium text-gray-800">Posted By:</span>
+    <span className="text-blue-600 hover:underline">{jobData.user?.firstName}</span>
+  </div>
 
-                      <h2 className="text-lg font-medium mb-2 text-center">Selected Document</h2>
+  {/* Application Status & Buttons */}
+  {applicationStatus === "applied" ? (
+    <p className="text-blue-600 font-medium">You have applied for this job.</p>
+  ) : applicationStatus === "selected" ? (
+    <div>
+      <p className="text-green-600 font-medium text-center">You have been selected for this job!</p>
+      <button
+        onClick={() => setIsDocumentOpen(true)}
+        className="mt-2 mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        View Selected Document
+      </button>
+      {!verified && (
+        <button
+          onClick={() => setIsDialogOpen(true)}
+          className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          {uploading ? "Uploading..." : "Uploading Selected Document"}
+        </button>
+      )}
+    </div>
+  ) : applicationStatus === "rejected" ? (
+    <p className="text-red-600 font-medium">Your application was rejected.</p>
+  ) : applicationStatus === "on hold" ? (
+    <p className="text-yellow-600 font-medium">Your application is on hold.</p>
+  ) : (
+    <button
+      onClick={handleApply}
+      className="w-full md:w-auto text-center rounded-full border border-transparent bg-blue-600 py-2 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+    >
+      Apply
+    </button>
+  )}
+</div>
 
-                      <div className="border p-2 flex-grow flex justify-center items-center h-full overflow-hidden">
-                        {/* Image (Prevents Overflow) */}
-                        <img
-                          src={verifyFile}
-                          alt="Selected"
-                          className="max-w-full max-h-full object-contain h-full w-full"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Dialog Box */}
-                {isDialogOpen && (
-                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                      <h2 className="text-lg font-medium mb-4">Upload Document</h2>
-
-                      {/* File Input */}
-                      <input
-                        type="file"
-                        accept="image/*,application/pdf"
-                        onChange={handleFileChange}
-                        className="mb-4 w-full border border-gray-300 p-2 rounded-md"
-                      />
-
-                      {/* Action Buttons */}
-                      <div className="flex justify-end space-x-2">
-                        <button
-                          onClick={() => setIsDialogOpen(false)}
-                          className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
-                        >
-                          Cancel
-                        </button>
-
-                        <button
-                          onClick={uploadAndConfirmSelection}
-                          disabled={!selectedFile || uploading}
-                          className={`px-4 py-2 rounded-md text-white ${uploading || !selectedFile ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
-                            }`}
-                        >
-                          {uploading ? "Uploading..." : "Confirm Selection"}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-              </div>
-            ) : applicationStatus === 'rejected' ? (
-              <p className="text-red-600 font-medium">Your application was rejected.</p>
-            ) : applicationStatus === 'on hold' ? (
-              <p className="text-yellow-600 font-medium">Your application is on hold.</p>
-            ) : (
-              <div className='md:flex gap-2 flex-none mx-auto md:mx-0'>
-                <button
-                  onClick={handleApply}
-                  className="mr-1 inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
-                >
-                  Apply
-                </button>
-                <button
-                  className="inline-flex justify-center rounded-full border border-transparent bg-red-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 items-center focus:ring-offset-2 "
-                >
-                  Report
-                </button>
-              </div>
-            )}
-          </div>
           <section class="bg-white py-4 antialiased md:py-6">
             <div class="mx-auto px-1 2xl:px-0">
-
-              <div className='flex mb-2 justify-between'>
-                <div
-                  className="flex gap-2 cursor-pointer px-6 w-fit bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition"
-                  onClick={() => handleViewUserProfile(jobData.user?._id)}
-                >
-                  <img
-                    src={jobData?.companyLogoUrl}
-                    className='h-6 w-6 border rounded-full'
-                    alt=""
-                  />
-                  <span className="font-medium text-gray-800">
-                    Posted By:
-                  </span>
-                  <span className="text-blue-600 hover:underline ml-1">
-                    {jobData.user?.firstName}
-                  </span>
-                </div>
-
-                {/* <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center border border-transparent rounded-full bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
-                    {isFollowing ? 'Unfollow' : 'Follow'}
-                  </button> */}
-                <img className='hidden lg:block h-10 w-10' src={company} alt="" />
-              </div>
-
               <div class="grid grid-cols-2 gap-4 border-b-2 border-t border-gray-300/80 py-3 md:py-4 lg:grid-cols-4 xl:gap-6">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline">
