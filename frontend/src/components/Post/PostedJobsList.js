@@ -110,18 +110,18 @@ export default function PostedJobsList() {
                 </div>
               ) : (
                 <div className="text-red-500">
-                  <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
+                  <div className="flex w-full justify-center items-center h-[70vh] mx-auto text-center">
                     <div>
-                      <img src={noSignal} alt="Server Error" className="mb-4 mx-auto block" />
+                      <img src={noSignal} alt="Server Error" className="mb-4 mx-auto block rounded-full" />
                     </div>
                   </div>
                 </div>
               )
             ) : jobs.length === 0 ? (
 
-              <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
+              <div className="flex w-full justify-center items-center h-auto mx-auto text-center">
                 <div>
-                  <img src={noJobsPosted} alt="No data found" className="mb-4 mx-auto block" />
+                  <img src={noJobsPosted} alt="No data found" className="mb-4 mx-auto block rounded-full" />
                   <p className="text-xl font-light">No jobs found !</p>
                 </div>
               </div>

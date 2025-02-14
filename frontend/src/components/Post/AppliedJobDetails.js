@@ -29,8 +29,8 @@ export default function AppliedJobDetails() {
   const [verifyFile, setVerifyFile] = useState(null);
   const [isFollowing, setIsFollowing] = useState(null);
   const [usertofollow, setUsertofollow] = useState("");
-   const [profileData, setProfileData] = useState(null);
-   const [profileIncomplete, setProfileIncomplete] = useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const [profileIncomplete, setProfileIncomplete] = useState(false);
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -89,38 +89,38 @@ export default function AppliedJobDetails() {
 
 
   const fetchProfileData = async () => {
-      try {
-        const bearerToken = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-        const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        return await response.json(); // Return the fetched data directly
-      } catch (error) {
-        console.error('Error fetching profile data:', error);
-        toast.error(error.message);
-        throw error; // Rethrow the error to handle it in the calling function
-      }
-    };
+    try {
+      const bearerToken = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      return await response.json(); // Return the fetched data directly
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+      toast.error(error.message);
+      throw error; // Rethrow the error to handle it in the calling function
+    }
+  };
 
   const handleApply = async () => {
     try {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
-  
+
       // Check if user is logged in
       if (!bearerToken) {
         navigate('/user-login');
         return;
       }
-  
+
       // Fetch the user profile
       const profile = await fetchProfileData();
-  
+
       // Check for profile completeness
       if (
         !profile.firstName ||
@@ -131,7 +131,7 @@ export default function AppliedJobDetails() {
         setProfileIncomplete(true); // Show dialog box for profile completion
         return;
       }
-  
+
       // If profile is complete, proceed with job application
       const response = await fetch(`${Fronted_API_URL}/job/apply/${jobId}`, {
         method: 'POST',
@@ -141,7 +141,7 @@ export default function AppliedJobDetails() {
         },
         body: JSON.stringify({ userId }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         if (response.status === 401) {
@@ -152,14 +152,14 @@ export default function AppliedJobDetails() {
           throw new Error(errorData.msg || response.statusText);
         }
       }
-  
+
       toast.success("Successfully applied for the job!");
       navigate('/appliedjobs');
     } catch (error) {
       toast.error(error.message);
     }
   };
-  
+
 
   const handleFollowUnfollow = async () => {
     const bearerToken = localStorage.getItem('token');
@@ -272,7 +272,7 @@ export default function AppliedJobDetails() {
   const handleViewUserProfile = (userId) => {
     navigate(`/checkuserprofile/${userId}`);
   };
-  
+
 
   function getDate(endDate_param) {
     var tempDate = endDate_param + "";
@@ -413,24 +413,24 @@ export default function AppliedJobDetails() {
             <div class="mx-auto px-1 2xl:px-0">
 
               <div className='flex mb-2 justify-between'>
-              <div 
-  className="flex gap-2 cursor-pointer px-6 w-fit bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition"
-  onClick={() => handleViewUserProfile(jobData.user?._id)}
->
-  <img 
-    src={jobData?.companyLogoUrl} 
-    className='h-6 w-6 border rounded-full' 
-    alt="" 
-  />
-  <span className="font-medium text-gray-800">
-    Posted By:
-  </span>
-  <span className="text-blue-600 hover:underline ml-1">
-    {jobData.user?.firstName}
-  </span>
-</div>
+                <div
+                  className="flex gap-2 cursor-pointer px-6 w-fit bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition"
+                  onClick={() => handleViewUserProfile(jobData.user?._id)}
+                >
+                  <img
+                    src={jobData?.companyLogoUrl}
+                    className='h-6 w-6 border rounded-full'
+                    alt=""
+                  />
+                  <span className="font-medium text-gray-800">
+                    Posted By:
+                  </span>
+                  <span className="text-blue-600 hover:underline ml-1">
+                    {jobData.user?.firstName}
+                  </span>
+                </div>
 
-                 {/* <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center border border-transparent rounded-full bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                {/* <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center border border-transparent rounded-full bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
                     {isFollowing ? 'Unfollow' : 'Follow'}
                   </button> */}
@@ -487,30 +487,30 @@ export default function AppliedJobDetails() {
                 <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
                   <div class="space-y-4">
                     <div class="flex space-x-4 gap-[20%]">
-                      <img class="h-20 w-20 border-8 border-blue-700 rounded-full" src={jobData?.companyLogoUrl} alt="Company" />
+                      <img class="h-24 w-24 border-4 border-blue-700 rounded-full" src={jobData?.companyLogoUrl} alt="Company" />
                       <div className="flex flex-col">
                         <dl class="block sm:hidden">
-                          <dt class="mb-1 text-blue-700 font-bold">Job ID</dt>
+                          <dt class="mb-1 text-gray-700 font-normal">Job ID</dt>
                           <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
                         </dl>
                         <dl class="block sm:hidden">
-                          <dt class="mb-1 text-blue-700 font-bold">CTC</dt>
+                          <dt class="mb-1 text-gray-700 font-normal">CTC</dt>
                           <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
                         </dl>
                       </div>
                     </div>
                     <dl class="hidden sm:block">
-                      <dt class="mb-1 text-blue-700 font-bold">Job ID</dt>
+                      <dt class="mb-1 text-gray-700 font-normal">Job ID</dt>
                       <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
                     </dl>
                     <dl class="hidden sm:block">
-                      <dt class="mb-1 text-blue-700 font-bold">CTC</dt>
+                      <dt class="mb-1 text-gray-700 font-normal">CTC</dt>
                       <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
                     </dl>
 
 
                     <dl>
-                      <dt class="mb-1 text-blue-700 font-bold">Job Link</dt>
+                      <dt class="mb-1 text-gray-700 font-normal">Job Link</dt>
                       <dd class="flex items-center gap-1 font-medium hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
 
                         {jobData?.jobLink}
@@ -520,15 +520,15 @@ export default function AppliedJobDetails() {
                   </div>
                   <div class="space-y-4">
                     <dl class="">
-                      <dt class="mb-1 text-blue-700 font-bold">Experience Required (Years)</dt>
+                      <dt class="mb-1 text-gray-700 font-normal">Experience Required (Years)</dt>
                       <dd class="font-medium text-sm text-gray-900">{jobData?.experienceRequired}</dd>
                     </dl>
                     <dl>
-                      <dt class="mb-1 text-blue-700 font-bold">Number of Referrals</dt>
+                      <dt class="mb-1 text-gray-700 font-normal">Number of Referrals</dt>
                       <dd class="font-medium text-sm text-gray-900">{jobData?.noOfReferrals}</dd>
                     </dl>
                     <dl>
-                      <dt class="mb-1 mb-1 text-blue-700 font-bold">End Date</dt>
+                      <dt class="mb-1 mb-1 text-gray-700 font-normal">End Date</dt>
                       <dd class="flex items-center space-x-4 font-medium text-sm text-gray-900">
                         <div>
                           <div class="text-sm">
@@ -538,7 +538,7 @@ export default function AppliedJobDetails() {
                       </dd>
                     </dl>
                     <dl>
-                      <dt class="mb-1 text-blue-700 font-bold">Work Mode</dt>
+                      <dt class="mb-1 text-gray-700 font-normal">Work Mode</dt>
                       <dd class="flex items-center gap-1 font-medium text-sm text-gray-900">
                         <svg class="hidden h-5 w-5 shrink-0 text-gray-400  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
@@ -568,26 +568,26 @@ export default function AppliedJobDetails() {
         </div>
 
         {profileIncomplete && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
-            <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Please fill in your profile details, including your mobile number,skills, description and other information, before applying for a job.
-            </p>
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={() => navigate("/editprofile")}
-                className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Go to Profile
-              </button>
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
+              <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
+              <p className="mt-2 text-sm text-gray-600">
+                Please fill in your profile details, including your mobile number,skills, description and other information, before applying for a job.
+              </p>
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => navigate("/editprofile")}
+                  className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Go to Profile
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+        )}
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       </div>
-      
+
     </>
   );
 }

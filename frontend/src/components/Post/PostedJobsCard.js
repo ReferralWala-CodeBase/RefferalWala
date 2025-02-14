@@ -761,7 +761,7 @@ export default function PostedJobsCard() {
                   <img
                     src={noSignal}
                     alt="Server Error"
-                    className="mb-4 mx-auto block" 
+                    className="mb-4 mx-auto block"
                   />
                 </div>
               ) :
@@ -769,7 +769,7 @@ export default function PostedJobsCard() {
                 (
                   Object.entries(filteredJobs).length === 0 ? (
                     <div className="text-red-500 w-full h-screen flex justify-center items-center">
-                      <img src={no_data_img} alt="No data found" className="mb-4 mx-auto block" />
+                      <img src={no_data_img} alt="No data found" className="mb-4 mx-auto block" />
                     </div>
                   ) :
                     Object.entries(filteredJobs).map(([id, job]) => (

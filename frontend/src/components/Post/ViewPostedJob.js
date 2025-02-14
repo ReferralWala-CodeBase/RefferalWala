@@ -218,26 +218,26 @@ export default function ViewPostedJob() {
           </Transition.Root>
           <div className="lg:flex lg:justify-between p-4 md:p-8">
             <div className="min-w-0 flex-1 border-b pb-4">
-              <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight">
+              <h2 className="text-2xl font-bold leading-7 text-blue-700 sm:truncate sm:text-2xl sm:tracking-tight">
                 {jobData.jobRole}
               </h2>
               <h3 className="text-xl leading-7 text-gray-700 sm:truncate sm:text-xl sm:tracking-tight">
                 @{jobData.companyName}
               </h3>
               <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6 mb-4">
-                <div className="mt-2 flex items-center text-sm text-gray-600">
+                <div className="mt-2 flex items-center text-xs text-gray-600 bg-gray-200/70 px-2 md:px-4 rounded-full py-1">
                   <BriefcaseIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   {jobData.workMode}
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-600">
+                <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
                   <MapPinIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   {jobData.location}
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-600">
+                <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
                   <CurrencyDollarIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   {jobData.ctc} LPA
                 </div>
-                <div className="mt-2 flex items-center text-sm text-gray-600">
+                <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
                   <CalendarIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   Closing on {getDate(jobData.endDate)}
                 </div>
@@ -250,21 +250,21 @@ export default function ViewPostedJob() {
                 <div class="space-y-4">
 
                   <dl class="">
-                    <dt class="mb-1 text-blue-700 font-bold">Job ID</dt>
-                    <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
+                    <dt class="mb-1 text-gray-800 font-bold">Job ID</dt>
+                    <dd class="font-light text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
                   </dl>
 
                   <dl>
-                    <dt class="mb-1 text-blue-700 font-bold">Experience Required (Years)</dt>
-                    <dd class="flex items-center gap-1 font-medium hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
+                    <dt class="mb-1 text-gray-800 font-bold">Experience Required</dt>
+                    <dd class="flex items-center gap-1 font-light hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
 
-                      {jobData?.experienceRequired}
+                      {jobData?.experienceRequired} (Years)
                     </dd>
                   </dl>
 
                   <dl>
-                    <dt class="mb-1 text-blue-700 font-bold">Job Link</dt>
-                    <dd class="flex items-center gap-1 font-medium hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
+                    <dt class="mb-1 text-gray-800 font-bold">Job Link</dt>
+                    <dd class="flex items-center gap-1 font-normal underline underline-offset-2 hover:text-blue-500 cursor-pointer transition text-sm text-blue-500">
 
                       {jobData?.jobLink}
                     </dd>
@@ -275,11 +275,11 @@ export default function ViewPostedJob() {
                 <div class="space-y-4">
 
                   <dl>
-                    <dt class="mb-1 text-blue-700 font-bold">Number of Referrals</dt>
-                    <dd class="font-medium text-sm text-gray-900">{jobData?.noOfReferrals}</dd>
+                    <dt class="mb-1 text-gray-800 font-bold">Number of Referrals</dt>
+                    <dd class="font-light text-sm text-gray-900">{jobData?.noOfReferrals}</dd>
                   </dl>
                   <dl>
-                    <dt class="mb-1 mb-1 text-blue-700 font-bold">End Date</dt>
+                    <dt class="mb-1 text-gray-800 font-bold">End Date</dt>
                     <dd class="flex items-center space-x-4 font-medium text-sm text-gray-900">
                       <div>
                         <div class="text-sm">
@@ -289,8 +289,8 @@ export default function ViewPostedJob() {
                     </dd>
                   </dl>
                   <dl>
-                    <dt class="mb-1 text-blue-700 font-bold">Work Mode</dt>
-                    <dd class="flex items-center gap-1 font-medium text-sm text-gray-900">
+                    <dt class="mb-1 text-gray-800 font-bold">Work Mode</dt>
+                    <dd class="flex items-center gap-1 font-normal text-sm text-gray-900">
                       <svg class="hidden h-5 w-5 shrink-0 text-gray-400  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
                       </svg>
@@ -298,12 +298,19 @@ export default function ViewPostedJob() {
                     </dd>
                   </dl>
                 </div>
+
+                <div className="col-span-2 pb-1 border-t py-2 md:py-4 border-gray-200">
+                  <label className="block text-sm font-bold text-blue-700">Job Description</label>
+                  <div className="mt-1 text-sm text-justify block w-full rounded-none">{jobData?.jobDescription}</div>
+
+                </div>
               </div>
             </div>
 
-            {/* Buttons */}
 
           </div>
+
+
         </main>
 
 
