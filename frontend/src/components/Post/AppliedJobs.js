@@ -12,6 +12,7 @@ import img2 from "../../assets/desjob.png";
 import img3 from "../../assets/2.png";
 import noSignal from "../../assets/noSignal.jpg";
 import { motion } from "framer-motion";
+import ServerError from '../ServerError';
 
 export default function AppliedJobs() {
   const navigate = useNavigate();
@@ -174,11 +175,11 @@ export default function AppliedJobs() {
               <Loader />
             ) : error ? (
               error === "Make Your Career Dreams a Reality" ? ( // Handle specific 404 error message
-                <div className="flex flex-col items-center mt-8 p-6 bg-gray-100 rounded-md">
+                <div className="flex flex-col items-center mt-8 p-6 rounded-md">
                   <img
                     src={img2}
                     alt="No Jobs Found"
-                    className="mb-4 w-36"
+                    className="w-36"
                   />
                   <p className="text-gray-700 text-lg font-semibold mb-4">{error}</p>
                   <button
@@ -189,20 +190,14 @@ export default function AppliedJobs() {
                   </button>
                 </div>
               ) : (
-                <div className="text-red-500">
-                  <div className="flex justify-center items-center  mx-auto text-center">
-                    <div>
-                      <img src={noSignal} alt="Server Error" className="mb-4 mx-auto block" />
-                    </div>
-                  </div>
-                </div>
+                <ServerError/>
               )
             ) : filteredJobs.length === 0 ? (
-              <div className="flex flex-col items-center mt-8 p-6 bg-gray-50 rounded-md shadow">
+              <div className="flex flex-col items-center mt-8 p-6 rounded-md">
                 <img
                   src={img3}
                   alt="No Jobs Found"
-                  className="mb-4 w-36"
+                  className="w-36"
                 />
                 <p className="text-gray-500 text-lg">No applied jobs found.</p>
               </div>

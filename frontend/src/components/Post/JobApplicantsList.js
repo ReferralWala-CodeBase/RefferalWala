@@ -6,6 +6,7 @@ import Loader from '../Loader';
 import person from '../../assets/person.png'
 import noApplicants from "../../assets/noApplicants.png";
 import noSignal from "../../assets/noSignal.jpg";
+import ServerError from '../ServerError';
 
 export default function JobApplicantsList() {
   const { jobId } = useParams(); // Get jobId from URL params
@@ -99,18 +100,18 @@ export default function JobApplicantsList() {
             {loading ? (
               <Loader />
             ) : error ? (
-              <div className="text-red-500 w-full h-screen flex justify-center items-center">
-                <img
-                  src={noSignal}
-                  alt="Server Error"
-                  className="mb-4 mx-auto block" 
-                />
-              </div>
+              <ServerError/>
             ) : applicants.length === 0 ? (
               <>
-              <p className="text-black-500 flex justify-center mx-auto">No Applicants!</p>
-              <div className="text-red-500 w-full h-full flex justify-center items-center">
-                <img src={noApplicants} alt="No Applicants" className="mb-4 mx-auto block" />
+              <div className="w-full h-full flex justify-center items-center">
+                <div className="bg-white  rounded-2xl p-6 flex flex-col items-center">
+                  <img 
+                    src={noApplicants} 
+                    alt="No Applicants" 
+                    className="w-32 h-32 opacity-80"
+                  />
+                  <p className="text-gray-600 text-lg font-semibold">No Applicants Found</p>
+                </div>
               </div>
               </>
             ) : (

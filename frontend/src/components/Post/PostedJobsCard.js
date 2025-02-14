@@ -15,6 +15,7 @@ import SmallScreenNav from './SmallScreenNav';
 import CtcRangeSlider from './CtcRangerSlider';
 import no_data_img from "../../assets/no_data_img.jpg";
 import noSignal from "../../assets/noSignal.jpg";
+import ServerError from '../ServerError';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -798,20 +799,21 @@ export default function PostedJobsCard() {
               {loading ? (
                 <Loader />
               ) : error ? (
-                <div className="text-red-500 w-full h-screen flex justify-center items-center">
-                  <img
-                    src={noSignal}
-                    alt="Server Error"
-                    className="mb-4 mx-auto block"
-                  />
-                </div>
+                <ServerError/>
               ) :
 
                 (
                   Object.entries(filteredJobs).length === 0 ? (
-                    <div className="text-red-500 w-full h-screen flex justify-center items-center">
-                      <img src={no_data_img} alt="No data found" className="mb-4 mx-auto block" />
-                    </div>
+                    <div className="w-full h-full flex justify-center items-center">
+                                    <div className="bg-white  rounded-2xl p-6 flex flex-col items-center">
+                                      <img 
+                                        src={no_data_img} 
+                                        alt="No post found" 
+                                        className="w-32 h-32 opacity-80"
+                                      />
+                                      <p className="text-gray-600 text-lg font-semibold">No Posts Found</p>
+                                    </div>
+                                  </div>
                   ) :
                     Object.entries(filteredJobs).map(([id, job]) => (
                       <motion.li

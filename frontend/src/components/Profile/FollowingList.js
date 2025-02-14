@@ -8,7 +8,8 @@ import Loader from '../Loader';
 import busi from "../../assets/company.png";
 import vid1 from "../../assets/vid4.mp4";
 import person from '../../assets/person.png'
-
+import noSignal from "../../assets/noSignal.jpg";
+import ServerError from '../ServerError';
 
 export default function FollowingList() {
   const [following, setFollowing] = useState([]);
@@ -109,7 +110,7 @@ export default function FollowingList() {
             {loading ? (
               <Loader />
             ) : error ? (
-              <p className="text-red-500">Error: {error}</p>
+              <ServerError/>
             ) : following.length === 0 ? (
               <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
                 <div>
