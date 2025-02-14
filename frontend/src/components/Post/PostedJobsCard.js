@@ -598,7 +598,48 @@ export default function PostedJobsCard() {
     <div className="min-h-screen bg-gray-100/70">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      <SmallScreenNav />
+      <SmallScreenNav
+        setSelectedCompanies={setSelectedCompanies}
+        setSelectedLocations={setSelectedLocations}
+      />
+
+      {/* Selected Companies */}
+      <div className="block md:hidden mt-1 mb-1 flex flex-wrap gap-2 px-6">
+        {selectedCompanies.map((comp) => (
+          <span
+            key={comp}
+            className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-xs gap-1 shadow-md"
+          >
+            {comp}
+            <button
+              onClick={() => setSelectedCompanies(selectedCompanies.filter((item) => item !== comp))}
+              className="text-white hover:text-red-300 transition"
+            >
+              ×
+            </button>
+          </span>
+        ))}
+      </div>
+
+      {/* Selected Locations */}
+      <div className="block md:hidden mt-1 mb-1 flex flex-wrap gap-2 px-6">
+        {selectedLocations.map((loc) => (
+          <span
+            key={loc.city}
+            className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-xs gap-1 shadow-md"
+          >
+            {loc.city}, {loc.state}
+            <button
+              onClick={() => setSelectedLocations(selectedLocations.filter((item) => item.city !== loc.city))}
+              className="text-white hover:text-red-300 transition"
+            >
+              ×
+            </button>
+          </span>
+        ))}
+      </div>
+
+
       <div className="x-auto md:px-3 px-0 md:py-2 py-1">
         {/* Main Layout */}
         <div className="flex flex-col md:flex-row gap-1 mx-auto max-w-full">
