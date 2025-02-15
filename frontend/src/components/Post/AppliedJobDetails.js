@@ -308,55 +308,55 @@ export default function AppliedJobDetails() {
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 m-auto">
-        <div className="col-span-2 flex justify-between p-4 items-center flex-wrap gap-2">
-  {/* Posted By Section (Always Visible) */}
-  <div
-    className="flex gap-2 cursor-pointer px-4 py-2 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300"
-    onClick={() => handleViewUserProfile(jobData.user?._id)}
-  >
-    <img
-      src={jobData?.companyLogoUrl}
-      className="h-6 w-6 border rounded-full object-cover"
-      alt=""
-    />
-    <span className="font-medium text-gray-800">Posted By:</span>
-    <span className="text-blue-600 hover:underline">{jobData.user?.firstName}</span>
-  </div>
+          <div className="col-span-2 flex md:justify-between justify-center p-4 items-center flex-wrap gap-2">
+            {/* Posted By Section (Always Visible) */}
+            <div
+              className="flex gap-2 cursor-pointer px-4 py-1 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300 md:text-sm text-xs"
+              onClick={() => handleViewUserProfile(jobData.user?._id)}
+            >
+              <img
+                src={jobData?.companyLogoUrl}
+                className="h-6 w-6 border rounded-full object-cover"
+                alt=""
+              />
+              <span className="font-medium text-gray-800">Posted By:</span>
+              <span className="text-blue-600 hover:underline">{jobData.user?.firstName}</span>
+            </div>
 
-  {/* Application Status & Buttons */}
-  {applicationStatus === "applied" ? (
-    <p className="text-blue-600 font-medium">You have applied for this job.</p>
-  ) : applicationStatus === "selected" ? (
-    <div>
-      <p className="text-green-600 font-medium text-center">You have been selected for this job!</p>
-      <button
-        onClick={() => setIsDocumentOpen(true)}
-        className="mt-2 mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-      >
-        View Selected Document
-      </button>
-      {!verified && (
-        <button
-          onClick={() => setIsDialogOpen(true)}
-          className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          {uploading ? "Uploading..." : "Uploading Selected Document"}
-        </button>
-      )}
-    </div>
-  ) : applicationStatus === "rejected" ? (
-    <p className="text-red-600 font-medium">Your application was rejected.</p>
-  ) : applicationStatus === "on hold" ? (
-    <p className="text-yellow-600 font-medium">Your application is on hold.</p>
-  ) : (
-    <button
-      onClick={handleApply}
-      className="w-full md:w-auto text-center rounded-full border border-transparent bg-blue-600 py-2 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-    >
-      Apply
-    </button>
-  )}
-</div>
+            {/* Application Status & Buttons */}
+            {applicationStatus === "applied" ? (
+              <p className="text-blue-600 font-medium">You have applied for this job.</p>
+            ) : applicationStatus === "selected" ? (
+              <div>
+                <p className="text-green-600 font-medium text-center">You have been selected for this job!</p>
+                <button
+                  onClick={() => setIsDocumentOpen(true)}
+                  className="mt-2 mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  View Selected Document
+                </button>
+                {!verified && (
+                  <button
+                    onClick={() => setIsDialogOpen(true)}
+                    className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    {uploading ? "Uploading..." : "Uploading Selected Document"}
+                  </button>
+                )}
+              </div>
+            ) : applicationStatus === "rejected" ? (
+              <p className="text-red-600 font-medium">Your application was rejected.</p>
+            ) : applicationStatus === "on hold" ? (
+              <p className="text-yellow-600 font-medium">Your application is on hold.</p>
+            ) : (
+              <button
+                onClick={handleApply}
+                className="w-full md:w-auto text-center rounded-full border border-transparent bg-blue-600 py-2 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Apply
+              </button>
+            )}
+          </div>
 
           <section class="bg-white py-4 antialiased md:py-6">
             <div class="mx-auto px-1 2xl:px-0">

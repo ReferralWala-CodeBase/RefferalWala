@@ -237,51 +237,51 @@ const SmallScreenNav = ({ setSelectedCompanies, setSelectedLocations, setSelecte
       </div>
 
       {ModalComponent && (
-  <div
-    style={{
-      position: "absolute",
-      top: modalPosition.top, 
-      left: "50%", 
-      transform: "translateX(-50%)", 
-      zIndex: 50,
-      minWidth: "250px", 
-      maxWidth: "90vw",
-      backgroundColor: "white", // Ensure the modal has a background
-      borderRadius: "8px",       // Optional for rounded corners
-    }}
-  >
-    <div className="relative">
-      {/* Close Button */}
-      <button
-  onClick={() => setModalType(null)}
-  className="absolute top-2 right-2 text-3xl text-gray-500 hover:text-red-500 p-2"
-  style={{
-    zIndex: 1000, // Set a very high z-index to bring it forward
-    backgroundColor: "white", // Ensure it has a visible background
-    borderRadius: "50%", // Optional: make it round
-    width: "30px", // Adjust size
-    height: "30px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)", // Add slight shadow for visibility
-  }}
->
-  ×
-</button>
+        <div
+          style={{
+            position: "absolute",
+            top: modalPosition.top,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 50,
+            minWidth: "250px",
+            maxWidth: "90vw",
+            backgroundColor: "white", // Ensure the modal has a background
+            borderRadius: "8px",       // Optional for rounded corners
+          }}
+        >
+          <div className="relative">
+            {/* Close Button */}
+            <button
+              onClick={() => setModalType(null)}
+              className="absolute top-2 right-2 text-3xl text-gray-500 hover:text-red-500 p-2"
+              style={{
+                zIndex: 1000, // Set a very high z-index to bring it forward
+                backgroundColor: "white", // Ensure it has a visible background
+                borderRadius: "50%", // Optional: make it round
+                width: "30px", // Adjust size
+                height: "30px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)", // Add slight shadow for visibility
+              }}
+            >
+              ×
+            </button>
 
 
-      {/* Modal Component */}
-      <ModalComponent
-        onClose={() => setModalType(null)}
-        onCompanySelect={(comp) => setSelectedCompanies((prev) => [...prev, comp])}
-        onLocationSelect={(loc) => setSelectedLocations((prev) => [...prev, loc])}
-        onCtcSelect={(ctc) => setSelectedCtc(ctc)} 
-        onExperienceSelect={(experience) => setSelectedExperience(experience)} 
-      />
-    </div>
-  </div>
-)}
+            {/* Modal Component */}
+            <ModalComponent
+              onClose={() => setModalType(null)}
+              onCompanySelect={(comp) => setSelectedCompanies((prev) => [...prev, comp])}
+              onLocationSelect={(loc) => setSelectedLocations((prev) => [...prev, loc])}
+              onCtcSelect={(ctc) => setSelectedCtc(ctc)}
+              onExperienceSelect={(experience) => setSelectedExperience(experience)}
+            />
+          </div>
+        </div>
+      )}
 
 
 

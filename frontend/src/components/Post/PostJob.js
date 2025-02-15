@@ -72,14 +72,14 @@ export default function PostJob() {
         setProfileIncomplete(true);
       } else {
         setProfileIncomplete(false);
-      
 
-      setFormData((prevData) => ({
-        ...prevData,
-        companyName: presentCompany.companyName || "",
-        companyLogoUrl: presentCompany.companyLogoUrl || "",
-      }));
-    }
+
+        setFormData((prevData) => ({
+          ...prevData,
+          companyName: presentCompany.companyName || "",
+          companyLogoUrl: presentCompany.companyLogoUrl || "",
+        }));
+      }
 
     } catch (error) {
       console.error("Error checking profile:", error);
@@ -186,13 +186,13 @@ export default function PostJob() {
       setLoading(false);
       return;
     }
-  
+
     // Run validation before submitting
     if (!validate()) {
       setLoading(false);
       return;
     }
-  
+
 
     // Add userId from local storage to formData
     const bearerToken = localStorage.getItem('token');
@@ -238,11 +238,11 @@ export default function PostJob() {
     } catch (error) {
       console.error('Error posting job:', error.message);
       toast.error(error.message);
-    }finally {
+    } finally {
       setLoading(false); // Ensure loading is stopped in all cases
     }
   };
-  
+
 
   const validate = () => {
     const urlPattern = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
@@ -548,26 +548,30 @@ export default function PostJob() {
           <div className="bg-white p-6 rounded-md shadow-md">
 
             <h2 className="text-lg font-semibold text-gray-900">
-
               Complete Your Profile
-
             </h2>
-
             <p className="mt-2 text-sm text-gray-600">
-
               Please fill in your profile details, including your mobile number
-
               and company information, before posting a job.
 
             </p>
 
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-between items-center">
+
+              <button
+                onClick={() => navigate("/")}
+                className="inline-flex gap-1 items-center justify-center rounded-md bg-indigo-600 px-2 py-1 text-xs font-normal text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                {/* Home Icon */}
+                Go Back
+              </button>
+
 
               <button
 
                 onClick={() => navigate("/editprofile")}
 
-                className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-1 text-xs font-normal text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 
               >
                 Go to Profile
