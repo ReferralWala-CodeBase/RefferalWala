@@ -186,11 +186,11 @@ export default function AppliedJobs() {
                     onClick={() => navigate('/')}
                     className="px-6 py-1 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all shadow-lg"
                   >
-                    + Add Job
+                    + Apply Job
                   </button>
                 </div>
               ) : (
-                <ServerError/>
+                <ServerError />
               )
             ) : filteredJobs.length === 0 ? (
               <div className="flex flex-col items-center mt-8 p-6 rounded-md">
@@ -351,7 +351,7 @@ export default function AppliedJobs() {
                         </span> */}
 
                         <span className="inline-flex items-center gap-1 bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full mb-2">
-                        <span>Applied On: {new Date(job.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                          <span>Applied On: {new Date(job.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                         </span>
 
                         {/* Job Title */}
