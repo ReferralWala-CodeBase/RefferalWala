@@ -26,7 +26,7 @@ const navigation = [
   { name: "Login", href: "/user-login", current: true },
   { name: "Sign up", href: "/signup", current: false },
   { name: "About Us", href: "/about-us" },
-  { name: "Contact Us", href: "/contact-us" },
+  // { name: "Contact Us", href: "/contact-us" },
   { name: "Privacy Policy", href: "/privacy-policy" },
   { name: "Terms & Conditions", href: "/terms-conditions" },
 ];
@@ -54,7 +54,7 @@ const userNavigation = [
     current: false,
   },
   { name: "About Us", href: "/about-us" },
-  { name: "Contact Us", href: "/contact-us" },
+  // { name: "Contact Us", href: "/contact-us" },
   { name: "Privacy Policy", href: "/privacy-policy" },
   { name: "Terms & Conditions", href: "/terms-conditions" },
   { name: "Sign out", href: "#" },
