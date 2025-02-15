@@ -908,7 +908,7 @@ export default function PostedJobsCard() {
                       </span>
 
                       {/* Job Title */}
-                      <h3 onClick={() => handleView(job._id)} className="text-lg font-semibold text-blue-600 hover:underline">
+                      <h3 onClick={() => handleView(job._id)} className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer">
                         {job.jobRole}
                       </h3>
 

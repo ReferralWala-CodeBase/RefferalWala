@@ -241,6 +241,11 @@ export default function ViewPostedJob() {
                   <CalendarIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
                   Closing on {getDate(jobData.endDate)}
                 </div>
+                <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
+                  <svg class="hidden h-5 w-5 shrink-0 text-gray-700  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                  </svg>                  {jobData?.workMode}
+                </div>
               </div>
 
               <hr />
@@ -251,12 +256,12 @@ export default function ViewPostedJob() {
 
                   <dl class="">
                     <dt class="mb-1 text-gray-800 font-bold">Job ID</dt>
-                    <dd class="font-light text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
+                    <dd class="font-normal text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
                   </dl>
 
                   <dl>
                     <dt class="mb-1 text-gray-800 font-bold">Experience Required</dt>
-                    <dd class="flex items-center gap-1 font-light hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
+                    <dd class="flex items-center gap-1 font-normal hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
 
                       {jobData?.experienceRequired} (Years)
                     </dd>
@@ -264,7 +269,7 @@ export default function ViewPostedJob() {
 
                   <dl>
                     <dt class="mb-1 text-gray-800 font-bold">Job Link</dt>
-                    <dd class="flex items-center gap-1 font-normal underline underline-offset-2 hover:text-blue-500 cursor-pointer transition text-sm text-blue-500">
+                    <dd class="flex items-center gap-1 font-normal underline underline-offset-2 hover:text-blue-500 cursor-pointer transition text-sm text-blue-500 max-w-7xl">
 
                       {jobData?.jobLink}
                     </dd>
@@ -280,23 +285,15 @@ export default function ViewPostedJob() {
                   </dl>
                   <dl>
                     <dt class="mb-1 text-gray-800 font-bold">End Date</dt>
-                    <dd class="flex items-center space-x-4 font-medium text-sm text-gray-900">
+                    <dd class="flex items-center space-x-4 font-normal text-sm text-gray-900">
                       <div>
                         <div class="text-sm">
-                          <p class="mb-0.5 font-medium text-gray-900">{getDate(jobData?.endDate)}</p>
+                          <p class="mb-0.5 font-normal text-gray-900">{getDate(jobData?.endDate)}</p>
                         </div>
                       </div>
                     </dd>
                   </dl>
-                  <dl>
-                    <dt class="mb-1 text-gray-800 font-bold">Work Mode</dt>
-                    <dd class="flex items-center gap-1 font-normal text-sm text-gray-900">
-                      <svg class="hidden h-5 w-5 shrink-0 text-gray-400  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                      </svg>
-                      {jobData?.workMode}
-                    </dd>
-                  </dl>
+
                 </div>
 
                 <div className="col-span-2 pb-1 border-t py-2 md:py-4 border-gray-200">
