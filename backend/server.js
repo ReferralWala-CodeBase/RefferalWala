@@ -17,7 +17,7 @@ require('./config/passport');
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://referralwala-deployment-frontend.vercel.app', 'https://referralwala.com','http://65.0.127.240' ]
+  origin: ['http://localhost:3000', 'https://referralwala-deployment-frontend.vercel.app', 'https://referralwala.com','http://3.109.97.10' ]
 }));
 app.use(express.json());
 

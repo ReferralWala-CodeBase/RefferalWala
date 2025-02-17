@@ -370,6 +370,7 @@ const JobPostModal = ({ isOpen, onClose }) => {
                             name="endDate"
                             value={formData.endDate}
                             onChange={handleChange}
+                            min={new Date().toISOString().split("T")[0]}
                             required
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />

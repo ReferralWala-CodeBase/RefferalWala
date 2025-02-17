@@ -34,6 +34,11 @@ export default function PostedJobsCard() {
   const [companySearchTerm, setCompanySearchTerm] = useState("");
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
+  const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
+  const [isCompanyDropdownOpen, setCompanyDropdownOpen] = useState(false);
+  const [isLocationDropdownVisible, setLocationDropdownVisible] = useState(false);
+  const [isCompanyDropdownVisible, setCompanyDropdownVisible] = useState(false);
+  const [selectedExperience, setSelectedExperience] = useState("");
   const [filterVisible, setFilterVisible] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [followingList, setFollowingList] = useState([]);
@@ -58,17 +63,25 @@ export default function PostedJobsCard() {
     setIsNavOpen(false); // Close Navbar when opening SmallScreenNav
   };
 
+  const clearAllFilters = () => {
+    setSearchTerm("");
+    setCompanySearchTerm("");
+    setSelectedLocations([]);
+    setSelectedCompanies([]);
+    setSelectedExperience("");
+    setSelectedCtc("");
+  };
+
+  const isAnyFilterSelected =
+  searchTerm ||
+  companySearchTerm ||
+  selectedLocations.length > 0 ||
+  selectedCompanies.length > 0 ||
+  selectedExperience ||
+  selectedCtc;
 
 
-  const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
-  const [isCompanyDropdownOpen, setCompanyDropdownOpen] = useState(false);
-
-  const [isLocationDropdownVisible, setLocationDropdownVisible] = useState(false);
-  const [isCompanyDropdownVisible, setCompanyDropdownVisible] = useState(false);
-
-
-  const [selectedExperience, setSelectedExperience] = useState("");
-
+ 
   useEffect(() => {
     if (location.state?.searchQuery) {
       setSearchQuery(location.state.searchQuery);
@@ -690,6 +703,11 @@ export default function PostedJobsCard() {
           <div className="w-full md:w-1/4 bg-white p-4 rounded-2xl shadow-lg border border-gray-300 md:block hidden">
             <div className="flex items-center gap-2 mb-4 justify-center">
               <h1 className="text-lg font-bold text-gray-900">Filters</h1>
+              {isAnyFilterSelected && (
+          <button onClick={clearAllFilters} className="text-red-500 text-sm font-semibold hover:underline">
+            Clear All
+          </button>
+        )}
             </div>
 
             {/* Location Filter */}
