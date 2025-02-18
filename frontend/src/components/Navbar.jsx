@@ -104,7 +104,6 @@ const teams = [
 const sidenavigationlogout = [
   { name: "Homepage", href: "/", icon: HomeIcon, current: false },
   { name: "About Us", icon: UserGroupIcon, href: "/about-us" },
-  { name: "Contact Us", icon: PhoneIcon, href: "/contact-us" },
   { name: "Privacy Policy", icon: ShieldCheckIcon, href: "/privacy-policy" },
   {
     name: "Terms & Conditions",
