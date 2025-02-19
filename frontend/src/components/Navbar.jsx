@@ -130,6 +130,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const [profileData, setProfileData] = useState(null);
   const hamburger = loggedIn ? sidenavigation : sidenavigationlogout;
+  const bearerToken = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -138,8 +140,6 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     }
     const fetchProfileData = async () => {
       try {
-        const bearerToken = localStorage.getItem("token");
-        const userId = localStorage.getItem("userId");
         const response = await fetch(
           `${Fronted_API_URL}/user/profile/${userId}`,
           {
@@ -325,7 +325,26 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
               <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
                 <div className="flex-shrink-0 mr-2">
                   <button
-                    onClick={() => navigate("/postjob")}
+                    onClick={() => {
+                      if (!bearerToken || !userId) {
+                        toast.error(
+                          <div>
+                            <p>Please log in to post a job.</p>
+                            <button
+                              onClick={() => navigate("/user-login")}
+                              type="button"
+                              className="relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
+                            >
+                              Log In
+                            </button>
+                          </div>
+                        );
+                        return; // Prevent further action if not logged in
+                      }
+                
+                      // Navigate to the post job page if logged in
+                      navigate("/postjob");
+                    }}
                     type="button"
                     className="relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
                   >

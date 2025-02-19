@@ -276,7 +276,25 @@ export default function PostedJobsCard() {
     fetchWishlistJobs();
   }, []);
 
+
   const handleAddToWishlist = async (jobId) => {
+    
+    if (!bearerToken || !userId) {
+      toast.error(
+        <div>
+          <p>Please log in to add jobs to your wishlist.</p>
+          <button
+            onClick={() => navigate("/user-login")}
+            type="button"
+            className="relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
+          >
+            Log In
+          </button>
+        </div>
+      );
+      return;
+    }
+
     try {
       const response = await fetch(
         `${Fronted_API_URL}/job/wishlist/add`,
