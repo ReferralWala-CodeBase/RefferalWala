@@ -5,12 +5,14 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Eye, EyeOff } from "lucide-react";
+import SectorSelectionModal from "../components/Profile/SectorSelectionModal";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [showSectorModal, setShowSectorModal] = useState(false);
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
 
@@ -51,8 +53,7 @@ function Login() {
           localStorage.getItem("firstTimeLogin") !== null &&
           localStorage.getItem("firstTimeLogin") === "true"
         ) {
-          localStorage.removeItem("firstTimeLogin");
-          navigate("/viewprofile");
+          setShowSectorModal(true);
         } else {
           navigate("/");
         }
@@ -62,6 +63,26 @@ function Login() {
     } catch (error) {
       console.error("Login failed:", error);
       setError("Invalid email or password");
+    }
+  };
+
+  const updatePreferredSectors = async (selectedSectors) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `${Fronted_API_URL}/user/profile/${userId}`,
+        { preferredSectors: selectedSectors },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      toast.success("Preferred sectors updated successfully");
+      setShowSectorModal(false);
+      navigate("/viewprofile"); // Redirect after modal closes
+    } catch (error) {
+      console.error("Error updating preferred sectors:", error);
+      toast.error("Failed to update sectors");
     }
   };
 
@@ -274,7 +295,16 @@ function Login() {
           </div>
         </div>
       </div>
+
+      {showSectorModal && (
+  <SectorSelectionModal
+    onSave={(selectedSectors) => updatePreferredSectors(selectedSectors)}
+    onClose={() => setShowSectorModal(false)}
+  />
+)}
     </section>
+
+
   );
 }
 

@@ -202,7 +202,12 @@ const userSchema = new mongoose.Schema({
   isActivate:{
     type: Boolean,
     default: true
-  }
+  },
+  preferredSectors: [
+    {
+      type: String, 
+    },
+  ],
 });
 
 const User = mongoose.model('User', userSchema);

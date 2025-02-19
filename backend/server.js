@@ -11,6 +11,7 @@ const contactRoutes = require('./routes/contactRoutes');
 const cron = require('node-cron');
 const Notification = require('./models/Notification');
 const jobReportRoutes = require('./routes/jobReport');
+const locationRoutes = require('./routes/locationRoutes');
 dotenv.config();
 require('./config/passport');
 
@@ -44,6 +45,7 @@ app.use('/job', jobPostRoutes);
 app.use('/contact', contactRoutes);
 app.use('/googleauth',authRoutes);
 app.use('/job-reports', jobReportRoutes);
+app.use('/locationlist',locationRoutes)
 
 const PORT = process.env.PORT || 5000;
 

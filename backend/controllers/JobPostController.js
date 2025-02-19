@@ -62,8 +62,6 @@ exports.createJobPost = async (req, res) => {
     // to avoid duplicates job posting
     const duplicateJob = await JobPost.findOne({
       user: userId,
-      jobRole,
-      companyName,
       jobUniqueId,
     });
 

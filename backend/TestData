@@ -64,3 +64,13 @@ JOBS
     "endDate": "2024-04-24T00:00:00.000Z",
     "jobuniqueId": "1234Syncri"
 },            
+
+
+<div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+<div className="bg-white p-6 rounded-lg shadow-lg w-120">
+
+
+<section className="min-h-screen bg-slate-200/90">
+<div className="flex min-h-full flex-1 flex-col justify-center pt-0 md:pt-4 sm:px-6 lg:px-8">
+<div className="mt-4 sm:mx-auto sm:w-full sm:max-w-[480px]">
+<div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12 mt-4">

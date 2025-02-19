@@ -6,6 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Eye, EyeOff } from "lucide-react";
 import { FaTimes } from "react-icons/fa";
+import axios from "axios";
+import SectorSelectionModal from "../components/Profile/SectorSelectionModal";
+
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -20,7 +23,8 @@ function Signup() {
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const [resendTimer, setResendTimer] = useState(0);
-
+  const [showSectorModal, setShowSectorModal] = useState(false);
+ 
   useEffect(() => {
     if (resendTimer > 0) {
       const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
@@ -107,7 +111,8 @@ function Signup() {
           localStorage.setItem("token", token);
           localStorage.setItem("userId", userId);
           toast.success("Register successfully");
-          navigate("/viewprofile");
+          // navigate("/viewprofile");
+          setShowSectorModal(true);
         }
       } catch (error) {
         console.error("Error during Google authentication:", error);
@@ -168,6 +173,26 @@ function Signup() {
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }
+  };
+
+  const updatePreferredSectors = async (selectedSectors) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `${Fronted_API_URL}/user/profile/${userId}`,
+        { preferredSectors: selectedSectors },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      toast.success("Preferred sectors updated successfully");
+      setShowSectorModal(false);
+      navigate("/viewprofile"); // Redirect after modal closes
+    } catch (error) {
+      console.error("Error updating preferred sectors:", error);
+      toast.error("Failed to update sectors");
     }
   };
 
@@ -396,6 +421,13 @@ function Signup() {
             )}
           </div>
         </div>
+      )}
+
+        {showSectorModal && (
+        <SectorSelectionModal
+          onSave={(selectedSectors) => updatePreferredSectors(selectedSectors)}
+          onClose={() => setShowSectorModal(false)}
+        />
       )}
 
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
