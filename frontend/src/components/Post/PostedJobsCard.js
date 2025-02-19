@@ -73,15 +73,15 @@ export default function PostedJobsCard() {
   };
 
   const isAnyFilterSelected =
-  searchTerm ||
-  companySearchTerm ||
-  selectedLocations.length > 0 ||
-  selectedCompanies.length > 0 ||
-  selectedExperience ||
-  selectedCtc;
+    searchTerm ||
+    companySearchTerm ||
+    selectedLocations.length > 0 ||
+    selectedCompanies.length > 0 ||
+    selectedExperience ||
+    selectedCtc;
 
 
- 
+
   useEffect(() => {
     if (location.state?.searchQuery) {
       setSearchQuery(location.state.searchQuery);
@@ -276,7 +276,25 @@ export default function PostedJobsCard() {
     fetchWishlistJobs();
   }, []);
 
+
   const handleAddToWishlist = async (jobId) => {
+    
+    if (!bearerToken || !userId) {
+      toast.error(
+        <div>
+          <p>Please log in to add jobs to your wishlist.</p>
+          <button
+            onClick={() => navigate("/user-login")}
+            type="button"
+            className="relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
+          >
+            Log In
+          </button>
+        </div>
+      );
+      return;
+    }
+
     try {
       const response = await fetch(
         `${Fronted_API_URL}/job/wishlist/add`,
@@ -704,10 +722,10 @@ export default function PostedJobsCard() {
             <div className="flex items-center gap-2 mb-4 justify-center">
               <h1 className="text-lg font-bold text-gray-900">Filters</h1>
               {isAnyFilterSelected && (
-          <button onClick={clearAllFilters} className="text-red-500 text-sm font-semibold hover:underline">
-            Clear All
-          </button>
-        )}
+                <button onClick={clearAllFilters} className="text-red-500 text-sm font-semibold hover:underline">
+                  Clear All
+                </button>
+              )}
             </div>
 
             {/* Location Filter */}
@@ -872,9 +890,10 @@ export default function PostedJobsCard() {
                 {Object.entries(filteredJobs).map(([id, job]) => (
                   <motion.li
                     key={job._id}
-                    className="relative max-w-lg w-full rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
+                    className="relative max-w-lg w-full rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white cursor-pointer"
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.3 }}
+                    onClick={() => handleView(job._id)}
                   >
                     <div className="absolute top-2 left-2 z-10">
                       <button className="flex items-center justify-center w-8 h-8 hover:text-red-600 hover: transition">
@@ -884,7 +903,10 @@ export default function PostedJobsCard() {
                             fill="currentColor"
                             viewBox="0 0 24 24"
                             className="w-8 h-8 text-red-500"
-                            onClick={() => handleRemoveFromWishlist(job._id)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemoveFromWishlist(job._id)
+                            }}
                           >
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                           </svg>
@@ -894,7 +916,10 @@ export default function PostedJobsCard() {
                             fill="currentColor"
                             viewBox="0 0 24 24"
                             className="w-5 h-5 text-white"
-                            onClick={() => handleAddToWishlist(job._id)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToWishlist(job._id)
+                            }}
                           >
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                           </svg>
@@ -994,9 +1019,14 @@ export default function PostedJobsCard() {
                       </div>
 
                       <div className='flex justify-end gap-1 mt-1 px-2 py-3'>
-                        <button className='p-1 text-xs rounded-full bg-gray-200' onClick={() => handleShare(job._id)}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                        </svg>
+                        <button className='p-1 text-xs rounded-full bg-gray-200'
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleShare(job._id)
+                          }}>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                          </svg>
 
                         </button>            </div>
                     </div>

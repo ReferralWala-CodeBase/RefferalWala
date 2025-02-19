@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,14 +11,53 @@ function ForgotPassword() {
   const [step, setStep] = useState(1); // Step 1: Request OTP, Step 2: Verify OTP & Reset Password
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [resendTimer, setResendTimer] = useState(0);
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleOtpChange = (e) => setOtp(e.target.value);
   const handleNewPasswordChange = (e) => setNewPassword(e.target.value);
 
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
+
+  const handleResendOtp = async () => {
+    setResendTimer(60);
+
+    try {
+      const bearerToken = localStorage.getItem('token');
+      const response = await fetch(
+        `${Fronted_API_URL}/user/resend-otp`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Resend OTP sent successfully!!!.");
+      } else {
+        toast.error(data.message || "OTP send failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+
+  };
+
   // Step 1: Request OTP
   const handleRequestOtp = async (e) => {
     e.preventDefault();
+    setResendTimer(30);
     try {
       const response = await fetch(
         `${Fronted_API_URL}/user/forgot-password`,
@@ -77,13 +116,13 @@ function ForgotPassword() {
   return (
     <section className="min-h-screen bg-slate-200/90">
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        {/* <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
             className="mx-auto h-10 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
             alt="Referral Wala"
           />
-        </div>
+        </div> */}
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
@@ -161,6 +200,16 @@ function ForgotPassword() {
                 >
                   Reset Password
                 </button>
+                {resendTimer > 0 ? (
+                  <p className="text-sm text-gray-600 mt-4"><span className="text-blue-600 cursor-pointer underline">Resend OTP</span> in {resendTimer}s</p>
+                ) : (
+                  <button
+                    onClick={handleResendOtp}
+                    className="mt-4 w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-400"
+                  >
+                    Resend OTP
+                  </button>
+                )}
               </form>
             )}
           </div>

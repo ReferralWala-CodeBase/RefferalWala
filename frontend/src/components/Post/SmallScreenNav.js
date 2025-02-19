@@ -149,12 +149,24 @@ const ComedyModal = ({ onClose, onLocationSelect }) => {
 };
 
 const CtcModal = ({ onClose, onCtcSelect }) => {
+  const ctcModalRef = useRef(null); // Define the ref for the modal
+
   const ctcRanges = [
     "3-5 LPA", "5-8 LPA", "8-12 LPA", "12-15 LPA", "15-20 LPA", "20-25 LPA", "25+ LPA"
   ];
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ctcModalRef.current && !ctcModalRef.current.contains(event.target)) {
+        onClose(); // Use the correct onClose function
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [onClose]);
+
   return (
-    <div className="absolute w-64 bg-white p-4 rounded-lg shadow-lg z-50">
+    <div ref={ctcModalRef} className="absolute w-64 bg-white p-4 rounded-lg shadow-lg z-50">
       <h2 className="text-lg font-bold">Select CTC</h2>
       <ul className="space-y-1">
         {ctcRanges.map((ctc, index) => (
@@ -175,12 +187,24 @@ const CtcModal = ({ onClose, onCtcSelect }) => {
 };
 
 const ExperienceModal = ({ onClose, onExperienceSelect }) => {
+  const experienceModalRef = useRef(null); // Define the ref for the modal
   const experienceRanges = [
     "0-1 year", "2-5 years", "6-10 years", "10+ years"
   ];
 
+  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (experienceModalRef.current && !experienceModalRef.current.contains(event.target)) {
+        onClose(); // Use the correct onClose function
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [onClose]);
+
   return (
-    <div className="absolute w-64 bg-white p-4 rounded-lg shadow-lg z-50">
+    <div ref={experienceModalRef} className="absolute w-64 bg-white p-4 rounded-lg shadow-lg z-50">
       <h2 className="text-lg font-bold">Select Experience</h2>
       <ul className="space-y-1">
         {experienceRanges.map((experience, index) => (
