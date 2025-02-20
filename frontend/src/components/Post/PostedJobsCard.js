@@ -278,7 +278,7 @@ export default function PostedJobsCard() {
 
 
   const handleAddToWishlist = async (jobId) => {
-    
+
     if (!bearerToken || !userId) {
       toast.error(
         <div>
@@ -862,7 +862,7 @@ export default function PostedJobsCard() {
 
 
           {/* Job Cards Section */}
-          <div className="w-full max-w-6xl h-[90vh] overflow-y-auto">
+          <div className="w-full h-[90vh] overflow-y-auto">
             {/* Conditional View Rendering */}
             {loading ? (
               <Loader />

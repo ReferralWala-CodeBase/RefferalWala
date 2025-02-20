@@ -398,12 +398,30 @@ export default function ViewApplicantProfile() {
           <div className="p-6 font-sans rounded-lg shadow-lg bg-gray-50">
             <div className="flex flex-col md:flex-row">
               <div className="w-full md:w-1/3 text-center pr-6 md:border-r border-gray-300 mb-6 md:mb-0">
-                <img
-                  src={profileData.profilePhoto || person}
-                  alt="Profile"
-                  className="w-36 h-36 rounded-full mx-auto mb-4"
-                />
-                <h2 className="text-xl font-semibold text-gray-800">{`${profileData.firstName || ''} ${profileData.lastName || ''}`.trim() || <>&nbsp;</>}</h2>
+                <div className="w-36 h-36 rounded-full mx-auto mb-4 overflow-hidden flex items-center justify-center bg-gray-200">
+                  {profileData?.profilePhoto ? (
+                    <img
+                      src={profileData.profilePhoto}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "";
+                        e.target.style.display = "none";
+                      }}
+                    />
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+
+                  )}
+                </div>
+
+                <h2 className="text-xl font-semibold text-gray-800">
+                  {`${profileData.firstName || ""} ${profileData.lastName || ""}`.trim() || <>&nbsp;</>}
+                </h2>
+
                 <div className="text-sm text-gray-700 leading-relaxed block">
                   <div className="flex items-center space-x-1">
                     <FaEnvelope className="text-gray-500" />
@@ -414,6 +432,7 @@ export default function ViewApplicantProfile() {
                     <span>{profileData.mobileNumber || <>&nbsp;</>}</span>
                   </div>
                 </div>
+
                 <div className="flex justify-center gap-4 mt-4">
                   {profileData.links?.github && (
                     <a
@@ -467,6 +486,7 @@ export default function ViewApplicantProfile() {
                   )}
                 </div>
               </div>
+
               <div className="w-full md:w-2/3 pl-0 md:pl-6">
                 <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
                 <p className="text-sm text-gray-700 mb-6">{profileData.aboutMe || 'No about me information provided'}</p>

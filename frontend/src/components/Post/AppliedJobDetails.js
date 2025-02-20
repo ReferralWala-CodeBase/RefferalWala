@@ -308,20 +308,37 @@ export default function AppliedJobDetails() {
           <SidebarNavigation />
         </div>
         <div className="w-10/12 md:w-3/4 m-auto">
-          <div className="col-span-2 flex md:justify-between justify-center p-4 items-center flex-wrap gap-2">
+          <div className="col-span-2 flex md:justify-between justify-center px-1 py-3 items-center flex-wrap gap-2">
             {/* Posted By Section (Always Visible) */}
             <div
               className="flex gap-2 cursor-pointer px-4 py-1 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300 md:text-sm text-xs"
               onClick={() => handleViewUserProfile(jobData.user?._id)}
             >
-              <img
-                src={jobData?.companyLogoUrl}
-                className="h-6 w-6 border rounded-full object-cover"
-                alt=""
-              />
+              {jobData.user?.profilePhoto ? (
+                <img
+                  src={jobData.user?.profilePhoto}
+                  className="h-6 w-6 border rounded-full object-cover"
+                  alt="Profile"
+                  onError={(e) => (e.target.style.display = "none")}
+                />
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-gray-500"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2a5 5 0 00-5 5v1a5 5 0 0010 0V7a5 5 0 00-5-5zM4 21v-2a6 6 0 0112 0v2a1 1 0 01-1 1H5a1 1 0 01-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
               <span className="font-medium text-gray-800">Posted By:</span>
               <span className="text-blue-600 hover:underline">{jobData.user?.firstName}</span>
             </div>
+
 
             {/* Application Status & Buttons */}
             {applicationStatus === "applied" ? (
@@ -433,11 +450,15 @@ export default function AppliedJobDetails() {
 
 
                     <dl>
-                      <dt class="mb-1 text-gray-700 font-normal">Job Link</dt>
-                      <dd class="flex items-center gap-1 font-medium hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
+                      <a href={jobData?.jobLink} target="_blank" rel="noopener noreferrer">
+                        <p className="text-blue-500 gap-1 hover:underline hover:underline-offset-2 hover:text-blue-700 text-sm flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                          </svg>
 
-                        {jobData?.jobLink}
-                      </dd>
+                          <span className="font-medium">Job Link</span>{" "}
+                        </p>
+                      </a>
                     </dl>
 
                   </div>
