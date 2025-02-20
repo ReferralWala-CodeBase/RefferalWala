@@ -261,9 +261,9 @@ export default function ViewPostedJob() {
 
                   <dl>
                     <dt class="mb-1 text-gray-800 font-bold">Experience Required</dt>
-                    <dd class="flex items-center gap-1 font-normal hover:text-blue-500 cursor-pointer transition text-sm text-gray-900">
+                    <dd class="flex items-center gap-1 font-normal transition text-sm text-gray-900">
 
-                      {jobData?.experienceRequired} (Years)
+                      {jobData?.experienceRequired} yrs
                     </dd>
                   </dl>
 
