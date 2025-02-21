@@ -20,7 +20,8 @@ const app = express();
 app.use(cors({
   origin: ['http://localhost:3000', 'https://referralwala-deployment-frontend.vercel.app', 'https://referralwala.com','http://3.109.97.10' ]
 }));
-app.use(express.json());
+
+app.use(express.json({ limit: '10mb' }));
 
 connectDB();
 

@@ -192,15 +192,16 @@ exports.verifyCompanyEmail = async (req, res) => {
     // Check if OTP matches
     if (user.presentCompany.otp !== otp) {
       return res.status(400).json({ error: 'Invalid OTP' });
+    } else {
+
+      // Verify company email
+      user.presentCompany.companyEmail = email;
+      user.presentCompany.CompanyEmailVerified = true;
+      user.presentCompany.otp = null; // Clear OTP after verification
+      await user.save();
+
+      res.status(200).json({ message: 'Company email verified successfully' });
     }
-
-    // Verify company email
-    user.presentCompany.companyEmail = email;
-    user.presentCompany.CompanyEmailVerified = true;
-    user.presentCompany.otp = null; // Clear OTP after verification
-    await user.save();
-
-    res.status(200).json({ message: 'Company email verified successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -375,18 +376,22 @@ exports.sendOTP = async (req, res) => {
     }
 
     // Check if the company email has already been verified
-    if (user.presentCompany.companyEmail === email) {
-      return res.status(400).json({ message: 'Company email already verified' });
+    if(user.presentCompany.CompanyEmailVerified){
+      if (user.presentCompany.companyEmail === email) {
+        return res.status(400).json({ message: 'Company email already verified' });
+      }
     }
 
     // Generate new OTP
     const otp = generateOTP();
+
 
     // Send the OTP via email
     await sendEmail(email, otp);
 
     // Save the new OTP to the user's presentCompany.otp field
     user.presentCompany.otp = otp;
+    user.presentCompany.CompanyEmailVerified = false;
     await user.save();
 
     res.json({ message: 'OTP sent to the company email.' });
@@ -443,7 +448,7 @@ exports.updateProfileById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    
+
     res.status(200).json(user);
   } catch (error) {
     console.log(error);

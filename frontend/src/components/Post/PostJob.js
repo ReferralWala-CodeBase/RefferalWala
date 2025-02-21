@@ -541,7 +541,7 @@ export default function PostJob() {
 
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
 
-          <div className="bg-white p-6 rounded-md shadow-md">
+          <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
 
             <h2 className="text-lg font-semibold text-gray-900">
               Complete Your Profile

@@ -187,6 +187,24 @@ export default function EditProfile() {
     // Prevent default form submission behavior
     e.preventDefault();
     const bearerToken = localStorage.getItem('token');
+
+    //Company Email validation
+    const companyEmail = profileData.presentCompany.companyEmail;
+    const companyName = profileData.presentCompany.companyName.toLowerCase().replace(/\s+/g, ''); // Remove spaces from company name
+
+    // Extract the domain part after '@'
+    const companyDomain = companyEmail.split('@')[1];
+    const companyNameFromDomain = companyDomain.split('.')[0].toLowerCase();
+
+    const inputEmail = profileData.presentCompany.companyEmail;
+
+    const emailRegex = new RegExp(`^[a-zA-Z0-9._%+-]+@${companyNameFromDomain}\\.`);
+
+    if (!emailRegex.test(inputEmail) || !companyNameFromDomain.includes(companyName)) {
+      toast.error("Email does not belong to the company's domain or does not match the company name.");
+      return; 
+    }
+
     setResendTimer(30);
     setShowOtpModal(true);
 
@@ -201,6 +219,15 @@ export default function EditProfile() {
       });
 
       const data = await response.json();
+
+      setIsCompanyEmailVerified(false);
+      setProfileData(prevState => ({
+        ...prevState,
+        presentCompany: {
+          ...prevState.presentCompany,
+          CompanyEmailVerified: false
+        }
+      }));
 
       if (response.ok) {
         toast.success("OTP sent successfully!");
@@ -726,8 +753,22 @@ export default function EditProfile() {
     }
 
     // **Resume Link Validation**
-    if (profileData.resume && !urlPattern.test(profileData.resume)) {
-      return toast.error("Please enter a valid URL for the resume.");
+    // if (profileData.resume && !urlPattern.test(profileData.resume)) {
+    //   return toast.error("Please enter a valid URL for the resume.");
+    // }
+  };
+
+  const handleResumeChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileData({
+          ...profileData,
+          resume: reader.result.split(',')[1], // Store only the base64 part
+        });
+      };
+      reader.readAsDataURL(file); // Read the file as a base64 string
     }
   };
 
@@ -1873,14 +1914,21 @@ export default function EditProfile() {
             {/* Resume Link */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume Link <span className="text-red-500">*</span></h3>
             <div className="mt-3">
-              <input
+              {/* <input
                 type="text"
                 name="resume"
                 value={profileData.resume || ''}
                 onChange={handleChange}
                 onBlur={validation}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-              />
+              /> */}
+              <input
+          type="file"
+          name="resume"
+          accept=".pdf,.docx,.txt" // You can specify which file types to allow
+          onChange={handleResumeChange}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+        />
             </div>
 
 

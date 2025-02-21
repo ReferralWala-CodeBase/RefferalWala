@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
@@ -10,6 +10,8 @@ import Loader from '../Loader';
 import busi from "../../assets/company.png";
 import { UserPlus, UserX } from "lucide-react";
 import person from '../../assets/person.png';
+import { EyeIcon } from '@heroicons/react/20/solid';
+import { Dialog, Transition } from '@headlessui/react';
 
 export default function CheckUserProfile() {
   const navigate = useNavigate();
@@ -22,6 +24,18 @@ export default function CheckUserProfile() {
   const [searchQuery, setSearchQuery] = useState('');
   const [jobs, setJobs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const cancelButtonRef = React.useRef(null);
+
+  // Open modal function
+  const openModal = () => {
+    setOpen(true);
+  };
+
+  // Close modal function
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -192,8 +206,8 @@ export default function CheckUserProfile() {
                               <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
                               <span
                                 className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active"
-                                    ? "bg-green-100 text-green-600"
-                                    : "bg-red-100 text-red-600"
+                                  ? "bg-green-100 text-green-600"
+                                  : "bg-red-100 text-red-600"
                                   }`}
                               >
                                 {job.status === "active" ? "Active" : "Inactive"}
@@ -338,6 +352,75 @@ export default function CheckUserProfile() {
                     </div>
                   )}
                 </div>
+
+
+                {/* Resume */}
+                <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume</h3>
+                <div className="mt-3">
+                  {profileData.resume ? (
+                    <div>
+                      {/* Button to open the modal and view resume */}
+                      <button
+                        type="button"
+                        onClick={openModal}
+                        // className="mt-1 block w-25 p-2 bg-blue-500 text-white rounded"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:from-indigo-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2"
+                      >
+                        <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                        View Resume
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mt-1 block w-full p-2">No resume uploaded</div>
+                  )}
+                </div>
+
+                {/* Resume Dialog */}
+                {open && (
+                  <Transition.Root show={open} as={Fragment}>
+                    <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={handleCloseModal}>
+                      <div className="fixed inset-0 z-10 w-screen overflow-y-auto mt-4">
+                        <div className="flex min-h-full items-center justify-center p-2 text-center sm:items-center sm:p-0">
+                          <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enterTo="opacity-100 translate-y-0 sm:scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                          >
+                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:max-w-3xl w-full sm:h-auto h-3/4 p-6">
+                              <div className="sm:flex sm:items-start">
+                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                  <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                    Uploaded Resume
+                                  </Dialog.Title>
+                                </div>
+                              </div>
+                              <div className="mt-3">
+                                {/* Display the Base64 resume as an embedded PDF */}
+                                <iframe
+                                  src={`data:application/pdf;base64,${profileData.resume}`}
+                                  width="100%"
+                                  height="500px"
+                                  title="Resume"
+                                ></iframe>
+                              </div>
+                              {/* Close Button */}
+                              <button
+                                onClick={handleCloseModal}
+                                className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                              >
+                                <FaTimes className="w-6 h-6" />
+                              </button>
+                            </Dialog.Panel>
+                          </Transition.Child>
+                        </div>
+                      </div>
+                    </Dialog>
+                  </Transition.Root>
+                )}
 
               </div>
             </div>
