@@ -124,9 +124,9 @@ export default function AppliedJobDetails() {
       // Check for profile completeness
       if (
         !profile.firstName ||
-        !profile.lastName ||
         !profile.mobileNumber ||
-        !profile.aboutMe
+        !profile.aboutMe ||
+        !profile.resume
       ) {
         setProfileIncomplete(true); // Show dialog box for profile completion
         return;
