@@ -10,6 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Loader from '../Loader';
 import person from '../../assets/person.png'
 import Achievements from './Achievements';
+import { Dialog, Transition } from '@headlessui/react';
+import { FaTimes } from "react-icons/fa";
 
 export default function ViewProfile() {
   const navigate = useNavigate();

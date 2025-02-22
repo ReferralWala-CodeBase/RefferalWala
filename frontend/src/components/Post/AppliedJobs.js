@@ -13,6 +13,8 @@ import img3 from "../../assets/2.png";
 import noSignal from "../../assets/noSignal.jpg";
 import { motion } from "framer-motion";
 import ServerError from '../ServerError';
+import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
+import JobFilterDialog from "../sorting";
 
 export default function AppliedJobs() {
   const navigate = useNavigate();
@@ -26,6 +28,9 @@ export default function AppliedJobs() {
   const cancelButtonRef = useRef(null);
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState('applied');
+  const [sortField, setSortField] = useState("appliedAt");
+  const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
+  const [workModeFilter, setWorkModeFilter] = useState("all");
 
 
   const handleOpenModal = (jobId) => {
@@ -118,6 +123,33 @@ export default function AppliedJobs() {
 
   const filteredJobs = appliedJobs.filter(job => job.status === selectedStatus);
 
+  const sortedJobs = [...filteredJobs]
+    .filter(job =>
+      workModeFilter === "all" || job.jobPostId.workMode.toLowerCase() === workModeFilter
+    )
+    .sort((a, b) => {
+      let valueA, valueB;
+
+      if (sortField === "appliedAt") {
+        valueA = new Date(a.appliedAt);
+        valueB = new Date(b.appliedAt);
+      } else if (sortField === "companyName") {
+        valueA = a.jobPostId.companyName.toLowerCase();
+        valueB = b.jobPostId.companyName.toLowerCase();
+      } else if (sortField === "jobRole") {
+        valueA = a.jobPostId.jobRole.toLowerCase();
+        valueB = b.jobPostId.jobRole.toLowerCase();
+      } else if (sortField === "location") {
+        valueA = a.jobPostId.location.toLowerCase();
+        valueB = b.jobPostId.location.toLowerCase();
+      }
+
+      if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
+      if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+
+
   const handleViewJobDetails = (jobId) => {
     navigate(`/appliedjobdetails/${jobId}`);
   };
@@ -132,7 +164,7 @@ export default function AppliedJobs() {
         <div className="w-11/12 md:w-3/4 m-auto">
           <div className="mt-4 flow-root">
             {/* Tabs for status */}
-            <div className="flex space-x-4 mb-6">
+            <div className="flex space-x-4 mb-2 md:mb-6">
               {['applied', 'selected', 'rejected', 'on hold'].map(status => (
                 <button
                   key={status}
@@ -169,6 +201,17 @@ export default function AppliedJobs() {
                   {status.charAt(0).toUpperCase() + status.slice(1)}
                 </button>
               ))}
+              <div className="hidden md:block">
+                <JobFilterDialog
+                  sortField={sortField}
+                  setSortField={setSortField}
+                  sortOrder={sortOrder}
+                  setSortOrder={setSortOrder}
+                  workModeFilter={workModeFilter}
+                  setWorkModeFilter={setWorkModeFilter}
+                />
+              </div>
+
             </div>
 
             {loading ? (
@@ -203,6 +246,18 @@ export default function AppliedJobs() {
               </div>
             ) : (
               <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+
+                <div className="block md:hidden mb-2">
+                  <JobFilterDialog
+                    sortField={sortField}
+                    setSortField={setSortField}
+                    sortOrder={sortOrder}
+                    setSortOrder={setSortOrder}
+                    workModeFilter={workModeFilter}
+                    setWorkModeFilter={setWorkModeFilter}
+                  />
+                </div>
+
                 {/* Table View for Larger Screens */}
                 <div className="hidden md:block">
                   <table className="min-w-full divide-y divide-gray-300">
@@ -227,7 +282,7 @@ export default function AppliedJobs() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {filteredJobs.map((job) => (
+                      {sortedJobs.map((job) => (
                         <tr
                           key={job.jobPostId._id}
                           className="cursor-pointer hover:bg-gray-100"
@@ -320,7 +375,7 @@ export default function AppliedJobs() {
 
 
                 <div className="block md:hidden">
-                  {filteredJobs.map((job) => (
+                  {sortedJobs.map((job) => (
                     <motion.li
                       key={job._id}
                       className="mb-4 relative max-w-lg w-full list-none rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
