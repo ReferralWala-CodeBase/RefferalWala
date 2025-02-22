@@ -9,8 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from '../Loader';
 import person from '../../assets/person.png'
-import { Dialog, Transition } from '@headlessui/react';
-import { FaTimes } from "react-icons/fa";
+import Achievements from './Achievements';
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -75,40 +74,44 @@ export default function ViewProfile() {
   return (
     <>
       <Navbar className="sticky top-0 z-50" searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <div className="flex mt-[navbar-height]">
+      <div className="flex mt-[navbar-height] bg-[#edede7]">
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-11/12 md:w-3/4 px-0 sm:px-6 m-auto">
-          <div className="flex justify-end pt-2 pb-4 ml-4 gap-2">
-            <button
-              onClick={() => navigate(`/editprofile`)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:from-indigo-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2"
-            >
-              <PencilIcon className="h-5 w-5" aria-hidden="true" /> Edit Profile
-            </button>
-          </div>
-
-
-          <div className="p-6 sm:mr-0 font-sans rounded-lg shadow-lg bg-gray-50">
+        <div className="w-11/12 md:w-4/4 px-0 sm:px-6 m-auto">
+          <div className="p-3 sm:mr-0 font-sans rounded-md">
             <div className="flex flex-col lg:flex-row">
-              <div className="lg:w-1/3 text-center lg:pr-6 lg:border-r border-gray-300 mb-6 lg:mb-0">
-                <img
-                  src={profileData.profilePhoto || person}
-                  alt="Profile"
-                  className="w-36 h-36 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                />
+              <div className="relative w-full max-w-sm space-y-4 text-center lg:pr-4 mb-6 lg:mb-0 py-2 md:py-6 rounded-lg px-2 md:px-4 bg-white overflow-hidden">
+                {/* Background for top half */}
+                <div className="absolute top-0 left-0 w-full h-1/3 bg-blue-700 rounded-t-lg z-0"></div>
+
+                {/* Profile Image Container (Ensure it's above background) */}
+                <div className="relative w-36 h-36 mx-auto z-10">
+                  <div className="relative w-36 h-36 mx-auto bg-white rounded-full">
+                    <img
+                      src={profileData.profilePhoto || person}
+                      alt="Profile"
+                      className="w-36 h-36 rounded-full border-2 p-1 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                  </div>
+                  <button
+                    onClick={() => navigate(`/editprofile`)}
+                    className="absolute bottom-0 right-0 bg-blue-600 p-1.5 rounded-full shadow-md hover:bg-blue-700 transition z-20"
+                  >
+                    <PencilIcon className="h-4 w-4 text-white" aria-hidden="true" />
+                  </button>
+                </div>
                 <h2 className="text-xl font-semibold text-gray-800">{profileData.firstName || <>&nbsp;</>} {profileData.lastName || <>&nbsp;</>}</h2>
-                <p className="text-sm text-gray-600 mb-3">{profileData.presentCompany?.role || <>&nbsp;</>}</p>
-                <div className="text-sm text-gray-700 leading-relaxed block">
-                  <div className="flex items-center space-x-1">
-                    <FaEnvelope className="text-gray-500" />
-                    <span>{profileData.email || <>&nbsp;</>}</span>
+                <p className="text-sm text-gray-600 mb-2">{profileData.presentCompany?.role || <>&nbsp;</>}</p>
+                <div className="text-sm text-gray-700 space-y-2 leading-relaxed block">
+                  <div className="flex items-center space-x-2">
+                    <FaEnvelope className="text-gray-600" />
+                    <span className='font-light text-sm cursor-pointer'>{profileData.email || <>&nbsp;</>}</span>
                   </div>
                   {/* <span className="text-gray-400">||</span> */}
-                  <div className="flex items-center space-x-1">
-                    <FaPhone className="text-gray-500" />
-                    <span>{profileData.mobileNumber || <>&nbsp;</>}</span>
+                  <div className="flex items-center space-x-2">
+                    <FaPhone className="text-gray-600" />
+                    <span className='font-light text-sm'>{profileData.mobileNumber || <>&nbsp;</>}</span>
                   </div>
                 </div>
                 <div className="flex justify-center gap-4 mt-4">
@@ -171,7 +174,7 @@ export default function ViewProfile() {
 
 
               </div>
-              <div className="lg:w-2/3 lg:pl-6">
+              <div className="w-full max-w-5xl lg:mx-2 px-2 md:px-6 py-2 md:py-8 rounded-lg bg-white">
                 <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
                 <p className="text-sm text-gray-700 mb-6">{profileData.aboutMe || 'No about me information provided'}</p>
                 <h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
@@ -186,18 +189,8 @@ export default function ViewProfile() {
                   ))}
                 </div>
                 {/* Achievements */}
-                <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Achievements</h3>
-                <div className="mt-3">
-                  {profileData.achievements?.length ? (
-                    <div className="mt-1 block w-full p-2">
-                      {profileData.achievements.join(", ")}
-                    </div>
-                  ) : (
-                    <div className="mt-1 block w-full p-2">
-                      No achievements added
-                    </div>
-                  )}
-                </div>
+                <Achievements achievements={profileData.achievements || []} />
+
 
                 {/* Resume */}
                 <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume</h3>
@@ -223,7 +216,7 @@ export default function ViewProfile() {
                 {/* Resume Dialog */}
                 {open && (
                   <Transition.Root show={open} as={Fragment}>
-                    <Dialog as="div" className="relative z-10"  initialFocus={cancelButtonRef} onClose={handleCloseModal}>
+                    <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={handleCloseModal}>
                       <div className="fixed inset-0 z-10 w-screen overflow-y-auto mt-4">
                         <div className="flex min-h-full items-center justify-center p-2 text-center sm:items-center sm:p-0">
                           <Transition.Child
@@ -271,209 +264,194 @@ export default function ViewProfile() {
             </div>
 
             { /* Education */}
-            <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-2">Education</h3>
-            {profileData.education?.length ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.education.map((edu, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl">
-                        <FaUniversity />
+            <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
+              <h3 className="font-semibold text-gray-800 mb-1 text-sm px-1">Education</h3>
+              {profileData.education?.length ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {profileData.education.map((edu, index) => (
+                    <div
+                      key={index}
+                      className="p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300"
+                    >
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl">
+                          <FaUniversity />
+                        </div>
+                        <div className="ml-4">
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            {edu.level || "Education Level"}
+                          </h3>
+                          <p className="text-sm text-gray-500">{edu.schoolName || "School/University Name"}</p>
+                        </div>
                       </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {edu.level || "Education Level"}
-                        </h3>
-                        <p className="text-sm text-gray-500">{edu.schoolName || "School/University Name"}</p>
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <p className="text-gray-600">
-                        <span className="font-medium">Year of Passing:</span>{" "}
-                        {edu.yearOfPassing || "Not provided"}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-gray-600 mt-6">
-                No education details added.
-              </div>
-            )}
-
-            {/* Present Company Section */}
-            <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-4">Present Company</h3>
-            {profileData.presentCompany ? (
-              <div>
-                <div className="flex flex-row flex-wrap gap-10 md:gap-x-24 gap-y-10">
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Role</span>
-                    <span className="text-gray-600">{profileData.presentCompany.role || '-'}</span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Company Name</span>
-                    <span className="text-gray-600">
-                      {profileData.presentCompany.companyName || '-'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Company Email</span>
-                    <span className="text-gray-600">
-                      {profileData.presentCompany.companyEmail || '-'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Years of Experience</span>
-                    <span className="text-gray-600">
-                      {profileData.presentCompany.yearsOfExperience || '-'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Location</span>
-                    <span className="text-gray-600">{profileData.presentCompany.location || '-'}</span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Current CTC</span>
-                    <span className="text-gray-600">
-                      ₹{profileData.presentCompany.currentCTC || '-'} LPA
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="text-gray-600">No present company details added.</div>
-            )}
-
-            {/* Experience Section */}
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Experience</h3>
-            {profileData.experience?.length ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.experience.map((exp, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl">
-                        <FaBuilding />
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {exp.companyName || "Company Name"}
-                        </h3>
-                        <p className="text-sm text-gray-500">{exp.position || "Position"}</p>
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <p className="text-gray-600">
-                        <span className="font-medium">Years of Experience:</span>{" "}
-                        {exp.yearsOfExperience
-                          ? `${exp.yearsOfExperience} years`
-                          : "Not provided"}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-gray-600 mt-6">
-                No experience details added.
-              </div>
-            )}
-
-            {/* Projects */}
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Projects</h3>
-            {profileData.project?.length ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.project.map((project, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-xl">
-                        <FaLaptopCode />
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {project.projectName || "Project Name"}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {project.details || "Project Description"}
+                      <div className="mt-4">
+                        <p className="text-gray-600">
+                          <span className="font-medium">Year of Passing:</span>{" "}
+                          {edu.yearOfPassing || "Not provided"}
                         </p>
                       </div>
                     </div>
-                    <div className="mt-4">
-                      {/* Display Repo Link with FA Icon */}
-                      {project.repoLink && (
-                        <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
-                          <p className="text-blue-500 text-sm flex items-center">
-                            <FaGithub className="mr-2" />
-                            <span className="font-medium">Repository:</span>{" "}
-                          </p>
-                        </a>
-                      )}
+                  ))}
+                </div>
+              ) : (
+                <div className="text-gray-600 mt-6">
+                  No education details added.
+                </div>
+              )}
+            </div>
+
+            {/* Present Company Section */}
+            {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2'>
+              <h3 className="text-lg font-semibold text-gray-800 mt-1 mb-4">Present Company</h3>
+              {profileData.presentCompany ? (
+                <div>
+                  <div className="flex flex-row flex-wrap gap-8 md:gap-x-20 gap-y-10">
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Role</span>
+                      <span className="text-gray-600">{profileData.presentCompany.role || '-'}</span>
                     </div>
-                    <div className="mt-4">
-                      {/* Display Live Link with FA Icon */}
-                      {project.liveLink && (
-                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                          <p className="text-blue-500 text-sm flex items-center">
-                            <FaGlobe className="mr-2" />
-                            <span className="font-medium">Live Link:</span>{" "}
-                          </p>
-                        </a>
-                      )}
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Company Name</span>
+                      <span className="text-gray-600">
+                        {profileData.presentCompany.companyName || '-'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Company Email</span>
+                      <span className="text-gray-600">
+                        {profileData.presentCompany.companyEmail || '-'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Years of Experience</span>
+                      <span className="text-gray-600">
+                        {profileData.presentCompany.yearsOfExperience || '-'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Location</span>
+                      <span className="text-gray-600">{profileData.presentCompany.location || '-'}</span>
+                    </div>
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Current CTC</span>
+                      <span className="text-gray-600">
+                        ₹{profileData.presentCompany.currentCTC || '-'} LPA
+                      </span>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-gray-600 mt-6">No projects added.</div>
-            )}
+                </div>
+              ) : (
+                <div className="text-gray-600">No present company details added.</div>
+              )}
+            </div> */}
 
-            {/* Preferences */}
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Preferences</h3>
-            {profileData.preferences?.length ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.preferences.map((pref, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-xl">
-                        {pref.preferredCompanyURL ? (
-                          <img src={pref.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
-                        ) : (
-                          <FaLocationArrow />
-                        )}
+            {/* Experience Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2">
+              {/* Experience Section */}
+              <div>
+                <h3 className="text-small font-semibold text-gray-900 mb-1">Experience</h3>
+                <div className="space-y-4">
+                  {profileData.experience?.length ? (
+                    profileData.experience.map((exp, index) => (
+                      <div
+                        key={index}
+                        className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition duration-300"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-14 h-14 bg-blue-200 text-blue-700 rounded-full flex items-center justify-center text-2xl">
+                            <FaBuilding />
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-gray-800">{exp.companyName || "Company Name"}</h4>
+                            <p className="text-gray-500">{exp.position || "Position"}</p>
+                          </div>
+                        </div>
+                        <p className="mt-4 text-gray-600 text-sm">
+                          <span className="font-medium">Experience:</span> {exp.yearsOfExperience || "N/A"} years
+                        </p>
                       </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {pref.preferredCompanyName || "Preferred Company Name"}
-                        </h3>
-                        <p className="text-sm text-gray-500">{pref.preferredPosition || "Preferred Position"}</p>
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <p className="text-gray-600">
-                        <span className="font-medium">Expected CTC Range:</span>{" "}
-                        {pref.expectedCTCRange || "Not Set"}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-sm">No experience details added.</p>
+                  )}
+                </div>
               </div>
-            ) : (
-              <p className="text-gray-500 mt-4">No Preferences Set</p>
-            )}
 
+              {/* Projects Section */}
+              <div>
+                <h3 className="text-small font-semibold text-gray-900 mb-1">Projects</h3>
+                <div className="space-y-4">
+                  {profileData.project?.length ? (
+                    profileData.project.map((project, index) => (
+                      <div
+                        key={index}
+                        className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition duration-300"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-14 h-14 bg-teal-200 text-teal-700 rounded-full flex items-center justify-center text-2xl">
+                            <FaLaptopCode />
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-gray-800">{project.projectName || "Project Name"}</h4>
+                            <p className="text-gray-500">{project.details || "Project Description"}</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 items-center mt-4">
+                          {project.repoLink && (
+                            <a href={project.repoLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-sm flex items-center">
+                              <FaGithub className="mr-2" />
+                              <span className="font-medium">Repository</span>
+                            </a>
+                          )}
+                          {project.liveLink && (
+                            <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-sm flex items-center">
+                              <FaGlobe className="mr-2" />
+                              <span className="font-medium">Live Link</span>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-sm">No projects added.</p>
+                  )}
+                </div>
+              </div>
 
+              {/* Preferences Section */}
+              <div>
+                <h3 className="text-small font-semibold text-gray-900 mb-1">Preferences</h3>
+                <div className="space-y-4">
+                  {profileData.preferences?.length ? (
+                    profileData.preferences.map((pref, index) => (
+                      <div
+                        key={index}
+                        className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition duration-300"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-14 h-14 bg-yellow-200 text-yellow-700 rounded-full flex items-center justify-center text-2xl">
+                            {pref.preferredCompanyURL ? (
+                              <img src={pref.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
+                            ) : (
+                              <FaLocationArrow />
+                            )}
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-gray-800">{pref.preferredCompanyName || "Preferred Company"}</h4>
+                            <p className="text-gray-500">{pref.preferredPosition || "Preferred Position"}</p>
+                          </div>
+                        </div>
+                        <p className="mt-4 text-gray-600 text-sm">
+                          <span className="font-medium">Expected CTC:</span> {pref.expectedCTCRange || "Not Set"}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-sm">No preferences set.</p>
+                  )}
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
