@@ -1912,7 +1912,7 @@ export default function EditProfile() {
 
 
             {/* Resume Link */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume Link <span className="text-red-500">*</span></h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Upload Resume <span className="text-red-500">*</span></h3>
             <div className="mt-3">
               {/* <input
                 type="text"

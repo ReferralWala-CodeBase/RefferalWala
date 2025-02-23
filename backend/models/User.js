@@ -210,6 +210,58 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+// userSchema.js
+
+userSchema.methods.calculateProfileCompletion = function () {
+  let totalWeight = 0;
+  let completedWeight = 0;
+
+  // Basic Info (30%)
+  const basicFields = ["firstName", "lastName", "email", "mobileNumber", "profilePhoto", "aboutMe"];
+  totalWeight += 30;
+  completedWeight += basicFields.filter(field => this[field]).length * (30 / basicFields.length);
+
+  // Education (15%)
+  totalWeight += 15;
+  if (this.education.length > 0) completedWeight += 15;
+
+  // Experience (15%)
+  totalWeight += 15;
+  if (this.experience.length > 0) completedWeight += 15;
+
+  // Projects (10%)
+  totalWeight += 10;
+  if (this.project.length > 0) completedWeight += 10;
+
+  // Skills (5%) - If any skill is written
+  totalWeight += 5;
+  if (this.skills.length > 0) completedWeight += 5;
+
+  // Links (5%) - At least one important link
+  totalWeight += 5;
+  if (
+    this.links &&
+    (this.links.github || this.links.linkedin || this.links.portfolio)
+  ) {
+    completedWeight += 5;
+  }
+
+  // Resume (10%)
+  totalWeight += 10;
+  if (this.resume) completedWeight += 10;
+
+  // Present Company Email Verification (10%)
+  totalWeight += 10;
+  if (this.presentCompany && this.presentCompany.companyEmailVerified) completedWeight += 10;
+
+  // Calculate percentage
+  return Math.round((completedWeight / totalWeight) * 100);
+};
+
+// userSchema.js
+
+
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

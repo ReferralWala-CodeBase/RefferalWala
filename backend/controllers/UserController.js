@@ -416,6 +416,22 @@ exports.getProfileById = async (req, res) => {
   }
 };
 
+exports.getProfileCompletion = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id); // Find user by ID
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Calculate profile completion
+    const profileCompletion = user.calculateProfileCompletion();
+
+    // Return profile completion percentage
+    res.status(200).json({ profileCompletion });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // Get profile by email
 exports.getProfileByEmail = async (req, res) => {
   try {

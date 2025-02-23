@@ -243,8 +243,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   };
 
   const handleSignOut = async () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    localStorage.clear();
 
     if ("caches" in window) {
       try {

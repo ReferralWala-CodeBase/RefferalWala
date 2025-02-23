@@ -181,15 +181,19 @@ export default function ViewProfile() {
                 <p className="text-sm text-gray-700 mb-6">{profileData.aboutMe || 'No about me information provided'}</p>
                 <h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {profileData.skills.map((skill, index) => (
-                    <span
-                      key={index}
-                      className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+  {profileData?.skills?.length > 0 ? (
+    profileData.skills.map((skill, index) => (
+      <span
+        key={index}
+        className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full"
+      >
+        {skill}
+      </span>
+    ))
+  ) : (
+    <p className="text-sm text-gray-500">No skills added</p>
+  )}
+</div>
                 {/* Achievements */}
                 <Achievements achievements={profileData.achievements || []} />
 
