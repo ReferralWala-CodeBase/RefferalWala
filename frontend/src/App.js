@@ -11,6 +11,7 @@ import EditProfile from "./components/Profile/EditProfile";
 import ForgotPage from "./pages/ForgotPage";
 import PostJob from "./components/Post/PostJob";
 import PostedJobsList from "./components/Post/PostedJobsList";
+import WishlistJobsList from "./components/Post/WishlistJobsList";
 import SidebarNavigation from "./components/SidebarNavigation";
 import Navbar from "./components/Navbar";
 import ViewPostedJob from "./components/Post/ViewPostedJob";
@@ -49,6 +50,7 @@ function App() {
         <Route path="/appliedjobs" element={<AppliedJobs />} />
         <Route path="/appliedjobdetails/:jobId" element={<AppliedJobDetails />} />
         <Route path="/postedjobslist" element={<PostedJobsList />} />
+        <Route path="/wishlistjobslist" element={<WishlistJobsList />} />
         <Route path="/postedjobscard" element={<PostedJobsCard />} />
         <Route path="/viewpostedjob/:jobId" element={<ViewPostedJob />} />
         <Route path="/editpostedjob/:jobId" element={<EditPostedJob />} />

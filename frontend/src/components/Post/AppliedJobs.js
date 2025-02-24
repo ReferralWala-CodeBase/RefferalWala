@@ -121,11 +121,11 @@ export default function AppliedJobs() {
     }
   };
 
-  const filteredJobs = appliedJobs.filter(job => job.status === selectedStatus);
+  const filteredJobs = appliedJobs.filter(job => job?.status === selectedStatus);
 
   const sortedJobs = [...filteredJobs]
     .filter(job =>
-      workModeFilter === "all" || job.jobPostId.workMode.toLowerCase() === workModeFilter
+      workModeFilter === "all" || job?.jobPostId?.workMode.toLowerCase() === workModeFilter
     )
     .sort((a, b) => {
       let valueA, valueB;
@@ -284,44 +284,44 @@ export default function AppliedJobs() {
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {sortedJobs.map((job) => (
                         <tr
-                          key={job.jobPostId._id}
+                          key={job?.jobPostId?._id}
                           className="cursor-pointer hover:bg-gray-100"
                         >
                           <td
-                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
                           >
-                            {job.jobPostId.jobRole}
+                            {job?.jobPostId?.jobRole}
                           </td>
                           <td
-                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {job.jobPostId.companyName}
+                            {job?.jobPostId?.companyName}
                           </td>
                           <td
-                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {job.jobPostId.location}
+                            {job?.jobPostId?.location}
                           </td>
                           <td
-                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {job.jobPostId.workMode}
+                            {job?.jobPostId?.workMode}
                           </td>
                           <td
-                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {new Date(job.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            {new Date(job?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                           </td>
                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <FaTrash
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent triggering the row click
-                                handleOpenModal(job.jobPostId._id);
+                                handleOpenModal(job?.jobPostId?._id);
                               }}
                               className="m-2 mt-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
                             />
@@ -338,33 +338,33 @@ export default function AppliedJobs() {
                   <p className='mb-5 text-xl font-medium leading-7 text-gray-900'>Applied Jobs</p>
                   {filteredJobs.map((job) => (
                     <div
-                      key={job.jobPostId._id}
+                      key={job?.jobPostId?._id}
                       className="mb-4 rounded-lg border border-gray-300 bg-white p-4 shadow"
                     >
                       <p className="text-sm font-medium text-gray-900">
-                        <strong>Job Role:</strong> {job.jobPostId.jobRole}
+                        <strong>Job Role:</strong> {job?.jobPostId?.jobRole}
                       </p>
                       <p className="text-sm text-gray-700">
-                        <strong>Company Name:</strong> {job.jobPostId.companyName}
+                        <strong>Company Name:</strong> {job?.jobPostId?.companyName}
                       </p>
                       <p className="text-sm text-gray-700">
-                        <strong>Location:</strong> {job.jobPostId.location}
+                        <strong>Location:</strong> {job?.jobPostId?.location}
                       </p>
                       <p className="text-sm text-gray-700">
-                        <strong>Work Mode:</strong> {job.jobPostId.workMode}
+                        <strong>Work Mode:</strong> {job?.jobPostId?.workMode}
                       </p>
                       <p className="text-sm text-gray-700">
                         <strong>Applied On:</strong> {new Date(job.appliedAt).toLocaleDateString()}
                       </p>
                       <div className="mt-4 flex justify-between space-x-4">
                         <button
-                          onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                          onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                           className="rounded bg-indigo-600 px-3 py-1.5 text-sm text-white hover:bg-indigo-700"
                         >
                           View Job
                         </button>
                         <FaTrash
-                          onClick={() => handleOpenModal(job.jobPostId._id)}
+                          onClick={() => handleOpenModal(job?.jobPostId?._id)}
                           className="text-xl cursor-pointer text-red-500 hover:text-red-700"
                         />
 
@@ -377,7 +377,7 @@ export default function AppliedJobs() {
                 <div className="block md:hidden">
                   {sortedJobs.map((job) => (
                     <motion.li
-                      key={job._id}
+                      key={job?._id}
                       className="mb-4 relative max-w-lg w-full list-none rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.3 }}
@@ -388,8 +388,8 @@ export default function AppliedJobs() {
                       <div className="absolute mt-8 top-2 right-2">
                         <div className="bg-white rounded-full shadow-md p-1">
                           <img
-                            src={job.jobPostId.companyLogoUrl}
-                            alt={`${job.jobPostId.companyName} Logo`}
+                            src={job?.jobPostId?.companyLogoUrl}
+                            alt={`${job?.jobPostId?.companyName} Logo`}
                             className="h-20 w-20 object-cover rounded-full"
                           />
                         </div>
@@ -402,16 +402,16 @@ export default function AppliedJobs() {
                             className={job.status === "inactive" ? "text-red-500" : "text-green-500"}
                             size={5}
                           />
-                          <span>{job.status === "inactive" ? "Closed" : job.jobPostId.status}</span>
+                          <span>{job.status === "inactive" ? "Closed" : job?.jobPostId?.status}</span>
                         </span> */}
 
                         <span className="inline-flex items-center gap-1 bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full mb-2">
-                          <span>Applied On: {new Date(job.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                          <span>Applied On: {new Date(job?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                         </span>
 
                         {/* Job Title */}
                         <h3 className="text-lg font-semibold text-blue-600 hover:underline">
-                          {job.jobPostId.jobRole}
+                          {job?.jobPostId?.jobRole}
                         </h3>
 
                         {/* Company Name */}
@@ -421,7 +421,7 @@ export default function AppliedJobs() {
                               <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
                             </svg>
 
-                            <p className="text-sm text-gray-500 mt-1">{job.jobPostId.companyName}</p>
+                            <p className="text-sm text-gray-500 mt-1">{job?.jobPostId?.companyName}</p>
                           </div>
 
                           <div className='flex gap-1 items-center'>
@@ -429,7 +429,7 @@ export default function AppliedJobs() {
                               <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
                             </svg>
 
-                            <p className="text-xs text-gray-700 mt-1">{job.jobPostId.experienceRequired} yrs.</p>
+                            <p className="text-xs text-gray-700 mt-1">{job?.jobPostId?.experienceRequired} yrs.</p>
                           </div>
                         </div>
 
@@ -438,7 +438,7 @@ export default function AppliedJobs() {
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
-                            <p className="text-sm text-gray-500 mt-1">{job.jobPostId.ctc}</p>
+                            <p className="text-sm text-gray-500 mt-1">{job?.jobPostId?.ctc}</p>
                           </div>
 
                           <div className='flex gap-1 items-center'>
@@ -446,7 +446,7 @@ export default function AppliedJobs() {
                               <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                             </svg>
-                            <p className="text-xs text-gray-700 mt-1">{job.jobPostId.location}</p>
+                            <p className="text-xs text-gray-700 mt-1">{job?.jobPostId?.location}</p>
                           </div>
                         </div>
                       </div>
@@ -458,20 +458,20 @@ export default function AppliedJobs() {
                       <div className='flex justify-between items-center'>
                         <div className="flex mx-auto my-2 px-2 gap-4">
                           <button
-                            onClick={() => handleViewJobDetails(job.jobPostId._id)}
+                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
                           >
                             View Job
                           </button>
                           <button
-                            onClick={() => handleOpenModal(job.jobPostId._id)}
+                            onClick={() => handleOpenModal(job?.jobPostId?._id)}
                             className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
                           >
                             <FaTrash
                               className="text-l cursor-pointer"
                             />
 
-                            View Applicants
+                 Withdraw
                           </button>
                         </div>
                       </div>
