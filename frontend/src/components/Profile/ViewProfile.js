@@ -12,6 +12,10 @@ import person from '../../assets/person.png'
 import Achievements from './Achievements';
 import { Dialog, Transition } from '@headlessui/react';
 import { FaTimes } from "react-icons/fa";
+import ExperienceCarousel from './ExperienceCarousel';
+import ProjectCarousel from './ProjectCarousel';
+import Preferences from './Preferences';
+import AboutMeSection from './AboutMe';
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -177,23 +181,21 @@ export default function ViewProfile() {
 
               </div>
               <div className="w-full max-w-5xl lg:mx-2 px-2 md:px-6 py-2 md:py-8 rounded-lg bg-white">
-                <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
-                <p className="text-sm text-gray-700 mb-6">{profileData.aboutMe || 'No about me information provided'}</p>
-                <h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
+                <AboutMeSection profileData={profileData} /><h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-6">
-  {profileData?.skills?.length > 0 ? (
-    profileData.skills.map((skill, index) => (
-      <span
-        key={index}
-        className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full"
-      >
-        {skill}
-      </span>
-    ))
-  ) : (
-    <p className="text-sm text-gray-500">No skills added</p>
-  )}
-</div>
+                  {profileData?.skills?.length > 0 ? (
+                    profileData.skills.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full"
+                      >
+                        {skill}
+                      </span>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-500">No skills added</p>
+                  )}
+                </div>
                 {/* Achievements */}
                 <Achievements achievements={profileData.achievements || []} />
 
@@ -352,111 +354,18 @@ export default function ViewProfile() {
             </div> */}
 
             {/* Experience Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-2 bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2">
               {/* Experience Section */}
-              <div>
-                <h3 className="text-small font-semibold text-gray-900 mb-1">Experience</h3>
-                <div className="space-y-4">
-                  {profileData.experience?.length ? (
-                    profileData.experience.map((exp, index) => (
-                      <div
-                        key={index}
-                        className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition duration-300"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-14 h-14 bg-blue-200 text-blue-700 rounded-full flex items-center justify-center text-2xl">
-                            <FaBuilding />
-                          </div>
-                          <div>
-                            <h4 className="text-lg font-semibold text-gray-800">{exp.companyName || "Company Name"}</h4>
-                            <p className="text-gray-500">{exp.position || "Position"}</p>
-                          </div>
-                        </div>
-                        <p className="mt-4 text-gray-600 text-sm">
-                          <span className="font-medium">Experience:</span> {exp.yearsOfExperience || "N/A"} years
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-500 text-sm">No experience details added.</p>
-                  )}
-                </div>
-              </div>
+              <ExperienceCarousel experience={profileData.experience} />
+
 
               {/* Projects Section */}
-              <div>
-                <h3 className="text-small font-semibold text-gray-900 mb-1">Projects</h3>
-                <div className="space-y-4">
-                  {profileData.project?.length ? (
-                    profileData.project.map((project, index) => (
-                      <div
-                        key={index}
-                        className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition duration-300"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-14 h-14 bg-teal-200 text-teal-700 rounded-full flex items-center justify-center text-2xl">
-                            <FaLaptopCode />
-                          </div>
-                          <div>
-                            <h4 className="text-lg font-semibold text-gray-800">{project.projectName || "Project Name"}</h4>
-                            <p className="text-gray-500">{project.details || "Project Description"}</p>
-                          </div>
-                        </div>
-                        <div className="flex gap-2 items-center mt-4">
-                          {project.repoLink && (
-                            <a href={project.repoLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-sm flex items-center">
-                              <FaGithub className="mr-2" />
-                              <span className="font-medium">Repository</span>
-                            </a>
-                          )}
-                          {project.liveLink && (
-                            <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-sm flex items-center">
-                              <FaGlobe className="mr-2" />
-                              <span className="font-medium">Live Link</span>
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-500 text-sm">No projects added.</p>
-                  )}
-                </div>
-              </div>
+              <ProjectCarousel projects={profileData.project} />
+
 
               {/* Preferences Section */}
-              <div>
-                <h3 className="text-small font-semibold text-gray-900 mb-1">Preferences</h3>
-                <div className="space-y-4">
-                  {profileData.preferences?.length ? (
-                    profileData.preferences.map((pref, index) => (
-                      <div
-                        key={index}
-                        className="bg-white shadow-md rounded-xl p-6 border border-gray-200 hover:shadow-lg transition duration-300"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-14 h-14 bg-yellow-200 text-yellow-700 rounded-full flex items-center justify-center text-2xl">
-                            {pref.preferredCompanyURL ? (
-                              <img src={pref.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
-                            ) : (
-                              <FaLocationArrow />
-                            )}
-                          </div>
-                          <div>
-                            <h4 className="text-lg font-semibold text-gray-800">{pref.preferredCompanyName || "Preferred Company"}</h4>
-                            <p className="text-gray-500">{pref.preferredPosition || "Preferred Position"}</p>
-                          </div>
-                        </div>
-                        <p className="mt-4 text-gray-600 text-sm">
-                          <span className="font-medium">Expected CTC:</span> {pref.expectedCTCRange || "Not Set"}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-500 text-sm">No preferences set.</p>
-                  )}
-                </div>
-              </div>
+              <Preferences preferences={profileData.preferences} />
+
             </div>
 
           </div>
