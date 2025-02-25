@@ -474,21 +474,18 @@ export default function AppliedJobs() {
                         <div className="flex mx-auto my-2 px-2 gap-4">
                           <button
                             onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
-                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
                           >
                             View Job
                           </button>
                           <button
                             onClick={() => handleOpenModal(job?.jobPostId?._id)}
-                            onClick={() => handleOpenModal(job?.jobPostId?._id)}
                             className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
                           >
                             <FaTrash
                               className="text-l cursor-pointer"
                             />
-
-                 Withdraw
+                            Withdraw
                           </button>
                         </div>
                       </div>
