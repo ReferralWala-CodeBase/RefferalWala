@@ -28,7 +28,7 @@ const JobPostSchema = new Schema({
     required: false,
   },
   experienceRequired: {
-    type: String,
+    type: Number,
     required: false, // Optional
   },
   location: {

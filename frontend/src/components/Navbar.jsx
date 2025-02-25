@@ -5,8 +5,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import profile from "../assets/profile-icon-user.png";
-import {
-  UserGroupIcon, // About Us (Team Representation)
+import { 
   PhoneIcon, // Contact Us (Phone Representation)
   ShieldCheckIcon, // Privacy Policy (Security Representation)
   DocumentTextIcon, // Terms & Conditions (Document Representation)
@@ -15,11 +14,10 @@ import {
 } from "@heroicons/react/24/outline";
 
 import {
-  CalendarIcon,
   ChartPieIcon,
-  DocumentDuplicateIcon,
-  HomeIcon,
   UsersIcon,
+  UserIcon,
+  UserGroupIcon
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -32,9 +30,9 @@ const navigation = [
 ];
 
 const userNavigation = [
-  { name: "Homepage", href: "/", icon: HomeIcon, current: false },
+  // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
   // { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
+  { name: "Profile", href: "/viewprofile", icon: UserIcon, current: false },
   // {
   //   name: "Followers",
   //   href: "/followerlist",
@@ -61,19 +59,19 @@ const userNavigation = [
 ];
 
 const sidenavigation = [
-  { name: "Homepage", href: "/", icon: HomeIcon, current: false },
+  // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
   // { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Profile", href: "/viewprofile", icon: UsersIcon, current: false },
+  { name: "Profile", href: "/viewprofile", icon: UserIcon, current: false },
   {
     name: "Followers",
     href: "/followerlist",
-    icon: DocumentDuplicateIcon,
+    icon: UsersIcon,
     current: false,
   },
   {
     name: "Following",
     href: "/followinglist",
-    icon: ChartPieIcon,
+    icon: UserGroupIcon,
     current: false,
   },
 ];
@@ -99,10 +97,17 @@ const teams = [
     initial: "A",
     current: false,
   },
+  {
+    id: 4,
+    name: "Wishlisted Jobs",
+    href: "/wishlistjobslist",
+    initial: "W",
+    current: false,
+  },
 ];
 
 const sidenavigationlogout = [
-  { name: "Homepage", href: "/", icon: HomeIcon, current: false },
+  // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
   { name: "About Us", icon: UserGroupIcon, href: "/about-us" },
   { name: "Privacy Policy", icon: ShieldCheckIcon, href: "/privacy-policy" },
   {
@@ -161,9 +166,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
         console.error("Error fetching profile data:", error);
       }
     };
-
-    fetchProfileData();
-  }, []);
+    if (userId && bearerToken) fetchProfileData(); // Ensure they exist before calling
+  }, [userId, bearerToken]);
 
   useEffect(() => {
     if (openNotifications) {
@@ -308,7 +312,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       id="search"
                       name="search"
                       className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
-                      placeholder="Search..."
+                      placeholder="Search Jobs and People.."
                       type="search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}

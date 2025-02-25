@@ -1,28 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
-import { FaSpinner, FaCircle } from "react-icons/fa";
+import { FaSpinner, FaCircle, FaTrash } from "react-icons/fa";
 import Navbar from "../Navbar";
 import Loader from '../Loader';
 import { motion } from "framer-motion";
 import noJobsPosted from "../../assets/noJobsPosted.png";
+import { Dialog, Transition } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import noSignal from "../../assets/noSignal.jpg";
 import ServerError from '../ServerError';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export default function PostedJobsList() {
+export default function WishlistJobsList() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+const [open, setOpen] = useState(false);
+const [refresh, setRefresh] = useState(false);
+  const cancelButtonRef = useRef(null);
+  const [selectedJobId, setSelectedJobId] = useState(null);
+
+  const handleOpenModal = (jobId) => {
+    setSelectedJobId(jobId);
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedJobId(null);
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchJobs = async () => {
       const bearerToken = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
       try {
-        const response = await fetch(`${Fronted_API_URL}/job/user/${userId}`, {
-          method: 'GET',
+        const response = await fetch(`${Fronted_API_URL}/job/wishlist/${userId}`, {
+         method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,
             'Content-Type': 'application/json',
@@ -41,7 +59,7 @@ export default function PostedJobsList() {
         }
 
         const data = await response.json();
-        setJobs(data);
+        setJobs(data.wishlist);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -50,21 +68,41 @@ export default function PostedJobsList() {
     };
 
     fetchJobs();
-  }, []);
+  }, [refresh]);
 
   const navigate = useNavigate();
 
-  const handleEdit = (jobId) => {
-    navigate(`/editpostedjob/${jobId}`);
-  };
+  const handleRemoveFromWishlist = async (jobId) => {
+      try {
+        const bearerToken = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+        const response = await fetch(
+          `${Fronted_API_URL}/job/wishlist/remove`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, jobId }),
+          }
+        );
+        const data = await response.json();
+      console.log("Response data:", data);
+        if (response.ok) {
+          toast.warning("Removed from wishlist!");
+        }
+        setOpen(false);
+        setRefresh((prev) => !prev);
+      } catch (error) {
+        toast.error("Failed to remove from wishlist.");
+      }
+    };
 
   const handleView = (jobId) => {
-    navigate(`/viewpostedjob/${jobId}`);
+    navigate(`/appliedjobdetails/${jobId}`);
   };
 
-  const handleViewApplicants = (jobId) => {
-    navigate(`/jobapplicantslist/${jobId}`);
-  };
 
   const filteredJobs = jobs && Object.fromEntries(
     Object.entries(jobs).filter(([id, job]) => {
@@ -133,7 +171,6 @@ export default function PostedJobsList() {
                           Status
                         </th>
                         <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
-                        <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
@@ -171,18 +208,16 @@ export default function PostedJobsList() {
                           >
                             {job?.status === "inactive" ? "Closed" : job?.status}
                           </td>
-                       
-                          <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleViewApplicants(job?._id)
-                              }}
-                              className="text-indigo-600 hover:text-indigo-900"
-                            >
-                              Applicants
-                            </button>
-                          </td>
+                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
+                                                      <FaTrash
+                                                        onClick={(e) => {
+                                                          e.stopPropagation(); // Prevent triggering the row click
+                                                          handleOpenModal(job?._id);
+                                                        }}
+                                                        className="m-2 mt-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
+                                                      />
+                                                    </td>
+                    
                         </tr>
                       ))}
                     </tbody>
@@ -280,14 +315,19 @@ export default function PostedJobsList() {
                             onClick={() => handleView(job?._id)}
                             className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
                           >
-                            View/Edit
+                            View
                           </button>
                           <button
-                            onClick={() => handleViewApplicants(job?._id)}
-                            className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
-                          >
-                            View Applicants
-                          </button>
+                                                      onClick={() => handleOpenModal(job?._id)}
+                                                      className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
+                                                    >
+                                                      <FaTrash
+                                                        className="text-l cursor-pointer"
+                                                      />
+                          
+                                           Remove
+                                                    </button>
+                        
                         </div>
                       </div>
 
@@ -297,11 +337,95 @@ export default function PostedJobsList() {
                   ))}
                 </div>
 
+                { /*Modal Open Dialog */}
+                {open && (
+                  <Transition.Root show={open} as={Fragment}>
+                    <Dialog
+                      as="div"
+                      className="relative z-10"
+                      initialFocus={cancelButtonRef}
+                      onClose={handleCloseModal}
+                    >
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                      </Transition.Child>
+
+                      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                          <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            enterTo="opacity-100 translate-y-0 sm:scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                          >
+                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                              <div className="sm:flex sm:items-start">
+                                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                  <ExclamationTriangleIcon
+                                    className="h-6 w-6 text-red-600"
+                                    aria-hidden="true"
+                                  />
+                                </div>
+                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                  <Dialog.Title
+                                    as="h3"
+                                    className="text-base font-semibold leading-6 text-gray-900"
+                                  >
+                                    Close Job
+                                  </Dialog.Title>
+                                  <div className="mt-2">
+                                    <p className="text-sm text-gray-500">
+                                      Are you sure you want to remove from Wishlist? 
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                <button
+                                  type="button"
+                                  className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                                  onClick={() => {
+                                    handleRemoveFromWishlist(selectedJobId);
+                                    handleCloseModal();
+                                  }}
+                                >
+                                  Confirm
+                                </button>
+                                <button
+                                  type="button"
+                                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                  onClick={handleCloseModal}
+                                  ref={cancelButtonRef}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </Dialog.Panel>
+                          </Transition.Child>
+                        </div>
+                      </div>
+                    </Dialog>
+                  </Transition.Root>
+                )}
+
               </div>
             )}
           </div>
         </div>
       </div>
+         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+         
     </>
   );
 }

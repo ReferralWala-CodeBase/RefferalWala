@@ -118,17 +118,94 @@ exports.createJobPost = async (req, res) => {
 exports.getAllJobPosts = async (req, res) => {
   try {
     const currentDate = new Date();
+    const page = parseInt(req.query.page) || 1; // Default to page 1
+    const limit = parseInt(req.query.limit) || 10; // Default limit per page
+    const skip = (page - 1) * limit;
+
+    const { locations, companies, experience, ctc, searchQuery } = req.query;
+     
+    let decodedLocations = [];
+    if (locations) {
+      // Check if locations is an array or a single string
+      const locationArray = Array.isArray(locations) ? locations : [locations];
+      
+      // Decode and split locations into an array
+      decodedLocations = locationArray
+        .map(loc => decodeURIComponent(loc).split('%2C').map(locPart => locPart.trim()).join(', ')); // Format and decode each location
+    }
+
+    // Log decoded locations for debugging
+    console.log("Decoded Locations: ", decodedLocations);
 
     // Update all expired job posts to inactive
     await JobPost.updateMany(
       { endDate: { $lt: currentDate }, status: 'active' },
       { $set: { status: 'inactive' } }
     );
+    
+    // Build filter conditions based on query parameters
+    let filterConditions = { status: 'active' };
+   
+    if (decodedLocations.length > 0) {
+      // Ensure that the filter uses full location names (city, state)
+      filterConditions.location = { $in: decodedLocations };
+    }
+    if (companies && companies.length) {
+      filterConditions.companyName = { $in: companies.split(',') }; // If multiple companies are provided
+    }
 
-    // Retrieve all job posts with the updated statuses
-    const jobPosts = await JobPost.find({ status: 'active' })
-      .populate('user', 'firstName lastName email');
-    res.status(200).json(jobPosts);
+    if (experience) {
+      // Map experience range to numeric boundaries
+      const experienceRangeMapping = {
+        "0-1 year": [0, 1],
+        "2-5 years": [2, 5],
+        "6-10 years": [6, 10],
+        "10+ years": [10, Infinity]
+      };
+    
+      const [minExp, maxExp] = experienceRangeMapping[experience] || [0, Infinity];
+
+      // Adjust the filtering to handle the experience string properly
+      filterConditions.experienceRequired = {
+        $gte: minExp,  // Greater than or equal to the minimum experience
+        $lte: maxExp   // Less than or equal to the maximum experience
+      };
+    }
+
+    if (ctc) {
+      // Assuming CTC is provided in ranges like "3-5 LPA"
+      const [minCtc, maxCtc] = ctc.split('-').map(Number);
+      filterConditions.ctc = { $gte: minCtc, $lte: maxCtc };
+    }
+
+    if (searchQuery) {
+      filterConditions.$or = [
+        { companyName: { $regex: searchQuery, $options: 'i' } },
+        { jobRole: { $regex: searchQuery, $options: 'i' } },
+        { location: { $regex: searchQuery, $options: 'i' } },
+      ];
+    }
+
+    // Log filter conditions before querying the database
+    console.log("Filter Conditions: ", filterConditions);
+
+    // Retrieve filtered and paginated job posts
+    const jobPosts = await JobPost.find(filterConditions)
+      .populate('user', 'firstName lastName email')
+      .sort({ createdAt: -1 }) // Sort by newest first
+      .skip(skip)
+      .limit(limit);
+
+      console.log("Job Posts Retrieved: ", jobPosts);
+    // Get total active job count after applying filters (for frontend pagination)
+    const totalJobs = await JobPost.countDocuments(filterConditions);
+
+    res.status(200).json({
+      jobPosts,
+      currentPage: page,
+      totalPages: Math.ceil(totalJobs / limit),
+      totalJobs,
+    });
   } catch (err) {
     console.error('Error fetching job posts:', err.message);
     res.status(500).send('Server Error');

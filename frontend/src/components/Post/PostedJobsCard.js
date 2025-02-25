@@ -29,6 +29,9 @@ export default function PostedJobsCard() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);  // Current page
+const [totalPages, setTotalPages] = useState(1); // Total pages
+const limit = 6; // Number of jobs per page
   const [searchQuery, setSearchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState("");
   const [companySearchTerm, setCompanySearchTerm] = useState("");
@@ -40,11 +43,8 @@ export default function PostedJobsCard() {
   const [isCompanyDropdownVisible, setCompanyDropdownVisible] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState("");
   const [filterVisible, setFilterVisible] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [followingList, setFollowingList] = useState([]);
   const [wishlistJobs, setWishlistJobs] = useState([]);
   const location = useLocation();
-  const [profileData, setProfileData] = useState(null);
   const [profileIncomplete, setProfileIncomplete] = useState(false);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
@@ -70,6 +70,7 @@ export default function PostedJobsCard() {
     setSelectedCompanies([]);
     setSelectedExperience("");
     setSelectedCtc("");
+    setPage(1);
   };
 
   const isAnyFilterSelected =
@@ -101,14 +102,25 @@ export default function PostedJobsCard() {
   const handleLocationFilter = (jobLocation, selectedLocations) => {
     // If no location is selected, return true (no filtering)
     if (!selectedLocations || selectedLocations.length === 0) return true;
-
-    // Lowercase the job location for case-insensitive comparison
-    const lowerJobLocation = jobLocation.toLowerCase();
-
-    // Check if the job's location contains any selected city's or state's name
+  
+    // Format the jobLocation by adding a space after the comma if needed
+    const formattedJobLocation = jobLocation
+      ? jobLocation
+          .split(",") // Split location by commas
+          .map(part => part.trim()) // Trim any extra spaces around city/state parts
+          .join(", ") // Rejoin with proper space after comma
+      : "";
+  
+    // Lowercase the formatted job location for case-insensitive comparison
+    const lowerJobLocation = formattedJobLocation.toLowerCase();
+  
+    // Check if the job location matches any selected location exactly
     return selectedLocations.some(loc => {
-      return lowerJobLocation.includes(loc.city.toLowerCase()) ||
-        lowerJobLocation.includes(loc.state.toLowerCase());
+      // Format selected location similarly (city, state format with space after comma)
+      const formattedSelectedLocation = `${loc.city.trim()}, ${loc.state.trim()}`.toLowerCase();
+  
+      // Compare formatted job location with the formatted selected location
+      return lowerJobLocation === formattedSelectedLocation;
     });
   };
 
@@ -194,61 +206,62 @@ export default function PostedJobsCard() {
 
   useEffect(() => {
     const fetchJobs = async () => {
-
       try {
-        const response = await fetch(`${Fronted_API_URL}/job/all`, {
+        setLoading(true);
+  
+        const formattedSelectedLocations = selectedLocations.map(loc => {
+          return `${loc.city.trim()}, ${loc.state.trim()}`;
+        });
+  
+        // Construct query parameters from filter states
+        const params = new URLSearchParams({
+          page,
+          limit,
+          companies: selectedCompanies.join(','),
+          experience: selectedExperience || "",  // Pass the selected experience
+          ctc: selectedCtc || "",  // Pass the selected CTC
+          searchQuery: searchQuery || "",  // Include the search query if available
+        });
+  
+
+        formattedSelectedLocations.forEach(location => {
+          params.append('locations', location);
+        });
+  
+        const response = await fetch(`${Fronted_API_URL}/job/all?${params.toString()}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-
+  
         if (!response.ok) {
           throw new Error('Failed to fetch jobs');
         }
-
+  
         const data = await response.json();
-        // const activeJobs = data.filter((job) => job.status === 'active');
-        // setJobs(activeJobs);
-        setJobs(data);
+        setJobs(data.jobPosts);  // Update job list
+        setTotalPages(data.totalPages);  // Store total pages from API response
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchJobs();
-  }, [Fronted_API_URL]);
+  }, [
+    Fronted_API_URL,
+    page,
+    selectedLocations,
+    selectedCompanies,
+    selectedExperience,
+    selectedCtc,
+    searchQuery,
+    limit
+  ]);
+  
 
-  // Fetch the list of users the logged-in user is following
-  useEffect(() => {
-    const fetchFollowingList = async () => {
-      if (!userId) return;
-
-      try {
-        const response = await fetch(`${Fronted_API_URL}/user/${userId}/following`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch following users');
-        }
-        const data = await response.json();
-        setFollowingList(data.following || []); // Set the list of followed users
-
-      } catch (error) {
-        console.error("Error fetching following list:", error);
-      }
-    };
-
-    fetchFollowingList();
-  }, [Fronted_API_URL, bearerToken, userId]);
 
   //wishlist functions--
   useEffect(() => {
@@ -273,8 +286,8 @@ export default function PostedJobsCard() {
         console.error("Error fetching wishlist jobs:", error);
       }
     };
-    fetchWishlistJobs();
-  }, []);
+    if (userId && bearerToken) fetchWishlistJobs(); // Ensure they exist before calling
+  }, [userId, bearerToken]);
 
 
   const handleAddToWishlist = async (jobId) => {
@@ -338,89 +351,6 @@ export default function PostedJobsCard() {
     }
   };
 
-  // Handle follow request
-  const handleFollow = async (targetUserId) => {
-    if (!userId) return;
-
-    try {
-      const response = await fetch(
-        `${Fronted_API_URL}/user/follow/${targetUserId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        }
-      );
-      if (response.ok) {
-        setFollowingList((prevList) => [...prevList, { _id: targetUserId }]); // Add the followed user to the list
-        toast.success("Followed Successfully.");
-      } else {
-        console.error("Follow request failed");
-        const errorData = await response.json();
-        throw new Error(errorData.message || response.statusText);
-      }
-    } catch (error) {
-      console.error("Error following the user:", error);
-    }
-  };
-
-  // Handle unfollow request
-  const handleUnfollow = async (targetUserId) => {
-    if (!userId) return;
-
-    try {
-      const response = await fetch(
-        `${Fronted_API_URL}/user/unfollow/${targetUserId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        }
-      );
-      if (response.ok) {
-        setFollowingList((prevList) => prevList.filter(user => user._id !== targetUserId));
-        toast.success("Unfollowed Successfully.");
-      } else {
-        console.error("Unfollow request failed");
-        const errorData = await response.json();
-        if (response.status === 401) {
-          // Unauthorized, remove the token and navigate to login
-          localStorage.removeItem('token');
-          navigate('/user-login');
-        } else {
-          throw new Error(errorData.message || response.statusText);
-        }
-      }
-    } catch (error) {
-      console.error("Error unfollowing the user:", error);
-    }
-  };
-
-
-  const fetchProfileData = async () => {
-    try {
-      const bearerToken = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      return await response.json(); // Return the fetched data directly
-    } catch (error) {
-      console.error('Error fetching profile data:', error);
-      toast.error(error.message);
-      throw error; // Rethrow the error to handle it in the calling function
-    }
-  };
 
   // const handleView = async (jobId) => {
   //   if (localStorage.getItem('token') === null) {
@@ -477,6 +407,30 @@ export default function PostedJobsCard() {
     return false;
   }
 
+  const renderPagination = () => {
+    let pages = [];
+    const maxPagesToShow = 3;
+  
+    if (totalPages <= maxPagesToShow + 2) {
+      // Show all pages if total pages are small
+      pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+    } else {
+      if (page <= maxPagesToShow) {
+        // Show first 3 pages + "..." + last page
+        pages = [...Array(maxPagesToShow).keys()].map((i) => i + 1);
+        pages.push("...", totalPages);
+      } else if (page >= totalPages - maxPagesToShow + 1) {
+        // Show first page + "..." + last 3 pages
+        pages = [1, "...", ...Array(maxPagesToShow).keys().map((i) => totalPages - maxPagesToShow + 1 + i)];
+      } else {
+        // Show first page + "..." + current, previous, next + "..." + last page
+        pages = [1, "...", page - 1, page, page + 1, "...", totalPages];
+      }
+    }
+  
+    return pages;
+  };
+  
 
 
   const isLoggedIn = !!localStorage.getItem('token');
@@ -1034,6 +988,46 @@ export default function PostedJobsCard() {
                 ))}
               </ul>
             )}
+     <div className="flex justify-center mt-4 gap-2">
+  {/* Previous Button */}
+  <button
+    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+    disabled={page === 1}
+    className="px-3 py-1 bg-gray-200 rounded-md disabled:opacity-50"
+  >
+    Previous
+  </button>
+
+  {/* Render Pagination */}
+  {renderPagination().map((pageNum, index) =>
+    pageNum === "..." ? (
+      <span key={index} className="px-3 py-1">
+        ...
+      </span>
+    ) : (
+      <button
+        key={pageNum}
+        onClick={() => setPage(pageNum)}
+        className={`px-3 py-1 rounded-md transition ${
+          page === pageNum ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+        }`}
+      >
+        {pageNum}
+      </button>
+    )
+  )}
+
+  {/* Next Button */}
+  <button
+    onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+    disabled={page === totalPages}
+    className="px-3 py-1 bg-gray-200 rounded-md disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
+
+
           </div>
 
 
