@@ -285,7 +285,6 @@ export default function AppliedJobs() {
                       {sortedJobs.map((job) => (
                         <tr
                           key={job?.jobPostId?._id}
-                          key={job?.jobPostId?._id}
                           className="cursor-pointer hover:bg-gray-100"
                         >
                           <td
@@ -317,7 +316,6 @@ export default function AppliedJobs() {
                             {job?.jobPostId?.workMode}
                           </td>
                           <td
-                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
@@ -398,8 +396,6 @@ export default function AppliedJobs() {
                           <img
                             src={job?.jobPostId?.companyLogoUrl}
                             alt={`${job?.jobPostId?.companyName} Logo`}
-                            src={job?.jobPostId?.companyLogoUrl}
-                            alt={`${job.jobPostId.companyName} Logo`}
                             className="h-20 w-20 object-cover rounded-full"
                           />
                         </div>

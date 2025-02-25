@@ -7,6 +7,7 @@ import person from '../../assets/person.png'
 import noApplicants from "../../assets/noApplicants.png";
 import noSignal from "../../assets/noSignal.jpg";
 import ServerError from '../ServerError';
+import JobFilterDialog from "../sorting";
 
 export default function JobApplicantsList() {
   const { jobId } = useParams(); // Get jobId from URL params
@@ -15,6 +16,12 @@ export default function JobApplicantsList() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [sortField, setSortField] = useState("appliedAt");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [createdDateFilter, setCreatedDateFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
+  const [userStatusFilter, setUserStatusFilter] = useState("all");
+  const [appliedOnDateFilter, setAppliedOnDateFilter] = useState(""); // Applied on date
 
   useEffect(() => {
     const fetchApplicants = async () => {
@@ -63,21 +70,54 @@ export default function JobApplicantsList() {
     });
   };
 
-  const filteredApplicants = applicants && Object.fromEntries(
-    Object.entries(applicants).filter(([id, applicant]) => {
+  // const filteredApplicants = applicants && Object.fromEntries(
+  //   Object.entries(applicants).filter(([id, applicant]) => {
+  //     return (
+  //       !applicant.hidden &&
+  //       (
+  //         applicant?.userId?.firstName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //         applicant?.userId?.lastName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //         applicant?.userId?.email?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //         applicant?.appliedAt?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //         applicant?.status?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+  //       )
+  //     );
+  //   })
+  // );
+
+
+  const filteredAndSortedJobs = applicants && Object.entries(applicants)
+    .filter(([id, applicant]) => {
+      // Apply filtering logic
       return (
-        !applicant.hidden &&
-        (
-          applicant?.userId?.firstName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          applicant?.userId?.lastName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          applicant?.userId?.email?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          applicant?.appliedAt?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-          applicant?.status?.toString().toLowerCase().includes(searchQuery.toLowerCase())
-        )
+        // Status filter
+        (!statusFilter || statusFilter === "all" || applicant.status === statusFilter) &&
+        // User status filter
+        (!userStatusFilter || userStatusFilter === "all" || applicant.status === userStatusFilter)
       );
     })
-  );
+    .sort(([idA, applicantA], [idB, applicantB]) => {
+      // Sorting logic based on the selected sortField and order
+      const orderMultiplier = sortOrder === "asc" ? 1 : -1; // Ascending or descending order
 
+      // If sorting by "appliedAt" date field
+      if (sortField === "appliedAt") {
+        const dateA = new Date(applicantA.appliedAt).getTime(); // Convert to timestamp for proper comparison
+        const dateB = new Date(applicantB.appliedAt).getTime(); // Convert to timestamp for proper comparison
+
+        if (dateA < dateB) return -1 * orderMultiplier;
+        if (dateA > dateB) return 1 * orderMultiplier;
+        return 0;
+      }
+
+      // Default sorting for other fields
+      const valueA = applicantA[sortField];
+      const valueB = applicantB[sortField];
+
+      if (valueA < valueB) return -1 * orderMultiplier;
+      if (valueA > valueB) return 1 * orderMultiplier;
+      return 0;
+    });
 
   return (
     <>
@@ -117,6 +157,22 @@ export default function JobApplicantsList() {
               </>
             ) : (
               <div className="max-w-7xl">
+
+                <div className="mb-2">
+                  <JobFilterDialog
+                    sortField={sortField}
+                    setSortField={setSortField}
+                    sortOrder={sortOrder}
+                    setSortOrder={setSortOrder}
+                    userStatusFilter={userStatusFilter}
+                    setUserStatusFilter={setUserStatusFilter}
+                    appliedOnDateFilter={appliedOnDateFilter}
+                    setAppliedOnDateFilter={setAppliedOnDateFilter}
+                    createdDateFilter={createdDateFilter}
+                    setCreatedDateFilter={setCreatedDateFilter}
+                  />
+                </div>
+
                 <div className="hidden lg:block">
                   <table className="min-w-full divide-y divide-gray-300">
                     <thead>
@@ -130,8 +186,8 @@ export default function JobApplicantsList() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {Object.entries(filteredApplicants).map(([id, applicant]) => (
-                        <tr key={applicant._id}
+                      {filteredAndSortedJobs.map(([id, applicant]) => (
+                        <tr key={applicant?._id}
                           onClick={() => handleViewApplicantDetails(applicant?.userId?._id)}
                           className='cursor-pointer'
                         >
@@ -161,7 +217,7 @@ export default function JobApplicantsList() {
                 </div>
 
                 <div className="block lg:hidden">
-                  {Object.entries(filteredApplicants).map(([id, applicant]) => (
+                  {filteredAndSortedJobs.map(([id, applicant]) => (
                     <div key={applicant?._id} className="mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg"
                       onClick={() => handleViewApplicantDetails(applicant?.userId?._id)}
                     >

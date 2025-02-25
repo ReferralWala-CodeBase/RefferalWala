@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import noJobsPosted from "../../assets/noJobsPosted.png";
 import noSignal from "../../assets/noSignal.jpg";
 import ServerError from '../ServerError';
+import JobFilterDialog from "../sorting";
 
 export default function PostedJobsList() {
   const [jobs, setJobs] = useState([]);
@@ -15,6 +16,11 @@ export default function PostedJobsList() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const [sortField, setSortField] = useState("appliedAt");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [createdDateFilter, setCreatedDateFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
+  const [workModeFilter, setWorkModeFilter] = useState("all");
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -66,17 +72,36 @@ export default function PostedJobsList() {
     navigate(`/jobapplicantslist/${jobId}`);
   };
 
-  const filteredJobs = jobs && Object.fromEntries(
-    Object.entries(jobs).filter(([id, job]) => {
-      return !job.hidden && (
-        job?.jobUniqueId?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+  // const filteredJobs = jobs && Object.fromEntries(
+  //   Object.entries(jobs).filter(([id, job]) => {
+  //     return !job.hidden && (
+  //       job?.jobUniqueId?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+  //     );
+  //   })
+  // );
+
+  const filteredAndSortedJobs = jobs && Object.entries(jobs)
+    .filter(([id, job]) => {
+      // Apply filters
+      return (
+        (!statusFilter || statusFilter === "all" || job.status === statusFilter) &&
+        (!workModeFilter || workModeFilter === "all" || job.workMode === workModeFilter) &&
+        (!createdDateFilter || createdDateFilter === "all" || new Date(job.createdDate).toLocaleDateString() === createdDateFilter)
       );
     })
-  );
+    .sort(([idA, jobA], [idB, jobB]) => {
+      // Apply sorting based on jobUniqueId, you can adjust this for other properties
+      const sortKey = "jobUniqueId"; // For example, sorting by jobUniqueId
+      const orderMultiplier = sortOrder === "asc" ? 1 : -1;
+
+      if (jobA[sortKey] < jobB[sortKey]) return -1 * orderMultiplier;
+      if (jobA[sortKey] > jobB[sortKey]) return 1 * orderMultiplier;
+      return 0;
+    });
 
   return (
     <>
@@ -86,7 +111,7 @@ export default function PostedJobsList() {
           <SidebarNavigation />
         </div>
         <div className="w-11/12 md:w-3/4 m-auto">
-         
+
           <div className="mt-2 flow-root">
             {loading ? (
               <Loader />
@@ -101,7 +126,7 @@ export default function PostedJobsList() {
                     Add Job
                   </button>
                 </div>
-              ) : <ServerError/>
+              ) : <ServerError />
             ) : jobs.length === 0 ? (
 
               <div className="flex w-full justify-center items-center h-auto mx-auto text-center">
@@ -112,6 +137,19 @@ export default function PostedJobsList() {
               </div>
             ) : (
               <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+                {/* Job Filter Dialog */}
+                <div className="mb-2">
+                  <JobFilterDialog
+                    sortField={sortField}
+                    setSortField={setSortField}
+                    sortOrder={sortOrder}
+                    setSortOrder={setSortOrder}
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    createdDateFilter={createdDateFilter}
+                    setCreatedDateFilter={setCreatedDateFilter}
+                  />
+                </div>
                 {/* Display Table View for Larger Screens */}
                 <div className="hidden lg:block overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-300">
@@ -137,7 +175,8 @@ export default function PostedJobsList() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {Object.entries(filteredJobs).map(([id, job]) => (
+                      {/* {Object.entries(filteredJobs).map(([id, job]) => ( */}
+                      {filteredAndSortedJobs.map(([id, job]) => (
                         <tr key={job?._id}
                           className='cursor-pointer hover:bg-gray-100'
                         >
@@ -171,7 +210,7 @@ export default function PostedJobsList() {
                           >
                             {job?.status === "inactive" ? "Closed" : job?.status}
                           </td>
-                       
+
                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <button
                               onClick={(e) => {
@@ -189,11 +228,12 @@ export default function PostedJobsList() {
                   </table>
                 </div>
 
-  
+
 
                 {/* Display Card View for Smaller and Tablet Screens */}
                 <div className="block lg:hidden">
-                  {Object.entries(filteredJobs).map(([id, job]) => (
+                  {/* {Object.entries(filteredJobs).map(([id, job]) => ( */}
+                  {filteredAndSortedJobs.map(([id, job]) => (
                     <motion.li
                       key={job?._id}
                       className="relative mb-4 max-w-lg w-full list-none rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
@@ -271,8 +311,6 @@ export default function PostedJobsList() {
                       </div>
 
                       {/* Apply Button */}
-
-
                       <hr className='mt-2' />
                       <div className='flex justify-between items-center'>
                         <div className="flex mx-auto my-2 px-2 gap-4">
