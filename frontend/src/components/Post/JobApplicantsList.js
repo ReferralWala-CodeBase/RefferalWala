@@ -100,20 +100,20 @@ export default function JobApplicantsList() {
             {loading ? (
               <Loader />
             ) : error ? (
-              <ServerError/>
+              <ServerError />
             ) : applicants.length === 0 ? (
               <>
-              <div className="w-full h-full flex justify-center items-center">
-                <div className="bg-white  rounded-2xl p-6 flex flex-col items-center">
-                <img 
-  src={noApplicants} 
-  alt="No Applicants" 
-  className="w-40 h-40 md:w-80 md:h-80 lg:w-100 lg:100 opacity-80"
-/>
+                <div className="w-full h-full flex justify-center items-center">
+                  <div className="bg-white  rounded-2xl p-6 flex flex-col items-center">
+                    <img
+                      src={noApplicants}
+                      alt="No Applicants"
+                      className="w-40 h-40 md:w-80 md:h-80 lg:w-100 lg:100 opacity-80"
+                    />
 
-                  <p className="text-gray-600 text-lg font-semibold">No Applicants Found</p>
+                    <p className="text-gray-600 text-lg font-semibold">No Applicants Found</p>
+                  </div>
                 </div>
-              </div>
               </>
             ) : (
               <div className="max-w-7xl">
@@ -131,26 +131,29 @@ export default function JobApplicantsList() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {Object.entries(filteredApplicants).map(([id, applicant]) => (
-                        <tr key={applicant._id}>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"> <img className="h-11 w-11 rounded-full" src={applicant.userId?.profilePhoto || person} alt="" />
+                        <tr key={applicant._id}
+                          onClick={() => handleViewApplicantDetails(applicant?.userId?._id)}
+                          className='cursor-pointer'
+                        >
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"> <img className="h-11 w-11 rounded-full" src={applicant?.userId?.profilePhoto || person} alt="" />
                           </td>
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
 
-                            {applicant.userId?.firstName} {applicant.userId?.lastName}
+                            {applicant?.userId?.firstName} {applicant?.userId?.lastName}
                           </td>
 
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant.userId?.email}</td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant?.userId?.email}</td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(applicant?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant?.status}</td>
-                          <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
+                          {/* <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <button
                               onClick={() => handleViewApplicantDetails(applicant.userId?._id)}
                               className="text-indigo-600 hover:text-indigo-900"
                             >
                               View Profile
                             </button>
-                          </td>
+                          </td> */}
                         </tr>
                       ))}
                     </tbody>
@@ -159,20 +162,20 @@ export default function JobApplicantsList() {
 
                 <div className="block lg:hidden">
                   {Object.entries(filteredApplicants).map(([id, applicant]) => (
-                    <div key={applicant._id} className="mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg"
-                      onClick={() => handleViewApplicantDetails(applicant.userId?._id)}
+                    <div key={applicant?._id} className="mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg"
+                      onClick={() => handleViewApplicantDetails(applicant?.userId?._id)}
                     >
                       <div className="flex items-center space-x-4">
                         <img
                           className="h-12 w-12 sm:h-16 sm:w-16 rounded-full border-2 border-gray-500"
-                          src={applicant.userId?.profilePhoto || person}
+                          src={applicant?.userId?.profilePhoto || person}
                           alt=""
                         />
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900">
-                            {applicant.userId?.firstName} {applicant.userId?.lastName}
+                            {applicant?.userId?.firstName} {applicant?.userId?.lastName}
                           </h3>
-                          <p className="text-xs sm:text-sm text-gray-500">{applicant.userId?.email}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">{applicant?.userId?.email}</p>
                           <p className="text-xs text-gray-400">Applied On: {new Date(applicant?.appliedAt).toLocaleDateString("en-GB")}</p>
                           <p className="text-xs text-gray-500">Status: {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}</p>
                         </div>

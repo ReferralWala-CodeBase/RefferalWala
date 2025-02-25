@@ -219,27 +219,27 @@ export default function ViewPostedJob() {
           <div className="lg:flex lg:justify-between p-4 md:p-8">
             <div className="min-w-0 flex-1 border-b pb-4">
               <h2 className="text-2xl font-bold leading-7 text-blue-700 sm:truncate sm:text-2xl sm:tracking-tight">
-                {jobData.jobRole}
+                {jobData?.jobRole}
               </h2>
               <h3 className="text-xl leading-7 text-gray-700 sm:truncate sm:text-xl sm:tracking-tight">
-                @{jobData.companyName}
+                @{jobData?.companyName}
               </h3>
               <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6 mb-4">
                 <div className="mt-2 flex items-center text-xs text-gray-600 bg-gray-200/70 px-2 md:px-4 rounded-full py-1">
                   <BriefcaseIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
-                  {jobData.workMode}
+                  {jobData?.workMode}
                 </div>
                 <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
                   <MapPinIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
-                  {jobData.location}
+                  {jobData?.location}
                 </div>
                 <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
                   <CurrencyDollarIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
-                  {jobData.ctc} LPA
+                  {jobData?.ctc} LPA
                 </div>
                 <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
                   <CalendarIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
-                  Closing on {getDate(jobData.endDate)}
+                  Closing on {getDate(jobData?.endDate)}
                 </div>
                 <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
                   <svg class="hidden h-5 w-5 shrink-0 text-gray-700  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

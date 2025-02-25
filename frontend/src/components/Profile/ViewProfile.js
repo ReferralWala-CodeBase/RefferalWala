@@ -95,7 +95,7 @@ export default function ViewProfile() {
                 <div className="relative w-36 h-36 mx-auto z-10">
                   <div className="relative w-36 h-36 mx-auto bg-white rounded-full">
                     <img
-                      src={profileData.profilePhoto || person}
+                      src={profileData?.profilePhoto || person}
                       alt="Profile"
                       className="w-36 h-36 rounded-full border-2 p-1 shadow-lg hover:shadow-xl transition-shadow duration-300"
                     />
@@ -107,23 +107,23 @@ export default function ViewProfile() {
                     <PencilIcon className="h-4 w-4 text-white" aria-hidden="true" />
                   </button>
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">{profileData.firstName || <>&nbsp;</>} {profileData.lastName || <>&nbsp;</>}</h2>
-                <p className="text-sm text-gray-600 mb-2">{profileData.presentCompany?.role || <>&nbsp;</>}</p>
+                <h2 className="text-xl font-semibold text-gray-800">{profileData?.firstName || <>&nbsp;</>} {profileData?.lastName || <>&nbsp;</>}</h2>
+                <p className="text-sm text-gray-600 mb-2">{profileData?.presentCompany?.role || <>&nbsp;</>}</p>
                 <div className="text-sm text-gray-700 space-y-2 leading-relaxed block">
                   <div className="flex items-center space-x-2">
                     <FaEnvelope className="text-gray-600" />
-                    <span className='font-light text-sm cursor-pointer'>{profileData.email || <>&nbsp;</>}</span>
+                    <span className='font-light text-sm cursor-pointer'>{profileData?.email || <>&nbsp;</>}</span>
                   </div>
                   {/* <span className="text-gray-400">||</span> */}
                   <div className="flex items-center space-x-2">
                     <FaPhone className="text-gray-600" />
-                    <span className='font-light text-sm'>{profileData.mobileNumber || <>&nbsp;</>}</span>
+                    <span className='font-light text-sm'>{profileData?.mobileNumber || <>&nbsp;</>}</span>
                   </div>
                 </div>
                 <div className="flex justify-center gap-4 mt-4">
-                  {profileData.links?.github && (
+                  {profileData?.links?.github && (
                     <a
-                      href={profileData.links.github}
+                      href={profileData?.links.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -132,9 +132,9 @@ export default function ViewProfile() {
                     </a>
                   )}
 
-                  {profileData.links?.linkedin && (
+                  {profileData?.links?.linkedin && (
                     <a
-                      href={profileData.links.linkedin}
+                      href={profileData?.links.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -143,9 +143,9 @@ export default function ViewProfile() {
                     </a>
                   )}
 
-                  {profileData.links?.website && (
+                  {profileData?.links?.website && (
                     <a
-                      href={profileData.links.website}
+                      href={profileData?.links.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -154,9 +154,9 @@ export default function ViewProfile() {
                     </a>
                   )}
 
-                  {profileData.links?.instagram && (
+                  {profileData?.links?.instagram && (
                     <a
-                      href={profileData.links.instagram}
+                      href={profileData?.links.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -165,9 +165,9 @@ export default function ViewProfile() {
                     </a>
                   )}
 
-                  {profileData.links?.facebook && (
+                  {profileData?.links?.facebook && (
                     <a
-                      href={profileData.links.facebook}
+                      href={profileData?.links.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -184,7 +184,7 @@ export default function ViewProfile() {
                 <AboutMeSection profileData={profileData} /><h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {profileData?.skills?.length > 0 ? (
-                    profileData.skills.map((skill, index) => (
+                    profileData?.skills.map((skill, index) => (
                       <span
                         key={index}
                         className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full"
@@ -197,13 +197,13 @@ export default function ViewProfile() {
                   )}
                 </div>
                 {/* Achievements */}
-                <Achievements achievements={profileData.achievements || []} />
+                <Achievements achievements={profileData?.achievements || []} />
 
 
                 {/* Resume */}
                 <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume</h3>
                 <div className="mt-3">
-                  {profileData.resume ? (
+                  {profileData?.resume ? (
                     <div>
                       {/* Button to open the modal and view resume */}
                       <button
@@ -247,7 +247,7 @@ export default function ViewProfile() {
                               <div className="mt-3">
                                 {/* Display the Base64 resume as an embedded PDF */}
                                 <iframe
-                                  src={`data:application/pdf;base64,${profileData.resume}`}
+                                  src={`data:application/pdf;base64,${profileData?.resume}`}
                                   width="100%"
                                   height="500px"
                                   title="Resume"
@@ -274,9 +274,9 @@ export default function ViewProfile() {
             { /* Education */}
             <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
               <h3 className="font-semibold text-gray-800 mb-1 text-sm px-1">Education</h3>
-              {profileData.education?.length ? (
+              {profileData?.education?.length ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {profileData.education.map((edu, index) => (
+                  {profileData?.education.map((edu, index) => (
                     <div
                       key={index}
                       className="p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300"
@@ -311,39 +311,39 @@ export default function ViewProfile() {
             {/* Present Company Section */}
             {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2'>
               <h3 className="text-lg font-semibold text-gray-800 mt-1 mb-4">Present Company</h3>
-              {profileData.presentCompany ? (
+              {profileData?.presentCompany ? (
                 <div>
                   <div className="flex flex-row flex-wrap gap-8 md:gap-x-20 gap-y-10">
                     <div>
                       <span className="block text-sm font-medium text-gray-700">Role</span>
-                      <span className="text-gray-600">{profileData.presentCompany.role || '-'}</span>
+                      <span className="text-gray-600">{profileData?.presentCompany.role || '-'}</span>
                     </div>
                     <div>
                       <span className="block text-sm font-medium text-gray-700">Company Name</span>
                       <span className="text-gray-600">
-                        {profileData.presentCompany.companyName || '-'}
+                        {profileData?.presentCompany.companyName || '-'}
                       </span>
                     </div>
                     <div>
                       <span className="block text-sm font-medium text-gray-700">Company Email</span>
                       <span className="text-gray-600">
-                        {profileData.presentCompany.companyEmail || '-'}
+                        {profileData?.presentCompany.companyEmail || '-'}
                       </span>
                     </div>
                     <div>
                       <span className="block text-sm font-medium text-gray-700">Years of Experience</span>
                       <span className="text-gray-600">
-                        {profileData.presentCompany.yearsOfExperience || '-'}
+                        {profileData?.presentCompany.yearsOfExperience || '-'}
                       </span>
                     </div>
                     <div>
                       <span className="block text-sm font-medium text-gray-700">Location</span>
-                      <span className="text-gray-600">{profileData.presentCompany.location || '-'}</span>
+                      <span className="text-gray-600">{profileData?.presentCompany.location || '-'}</span>
                     </div>
                     <div>
                       <span className="block text-sm font-medium text-gray-700">Current CTC</span>
                       <span className="text-gray-600">
-                        ₹{profileData.presentCompany.currentCTC || '-'} LPA
+                        ₹{profileData?.presentCompany.currentCTC || '-'} LPA
                       </span>
                     </div>
                   </div>
@@ -356,15 +356,15 @@ export default function ViewProfile() {
             {/* Experience Section */}
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-2 bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2">
               {/* Experience Section */}
-              <ExperienceCarousel experience={profileData.experience} />
+              <ExperienceCarousel experience={profileData?.experience} />
 
 
               {/* Projects Section */}
-              <ProjectCarousel projects={profileData.project} />
+              <ProjectCarousel projects={profileData?.project} />
 
 
               {/* Preferences Section */}
-              <Preferences preferences={profileData.preferences} />
+              <Preferences preferences={profileData?.preferences} />
 
             </div>
 

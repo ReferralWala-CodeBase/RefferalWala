@@ -10,7 +10,6 @@ export default function EditJob() {
   const navigate = useNavigate(); // Using useNavigate instead of useHistory
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const [searchQuery, setSearchQuery] = useState('');
-  
 
   const [formData, setFormData] = useState({
     jobRole: '',
@@ -129,7 +128,7 @@ export default function EditJob() {
 
   return (
     <>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex">
         <div className="w-2/12 md:w-1/4">
           <SidebarNavigation />
@@ -143,7 +142,7 @@ export default function EditJob() {
                 type="text"
                 id="jobRole"
                 name="jobRole"
-                value={formData.jobRole}
+                value={formData?.jobRole}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -155,7 +154,7 @@ export default function EditJob() {
                 type="text"
                 id="jobLink"
                 name="jobLink"
-                value={formData.jobLink}
+                value={formData?.jobLink}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -167,7 +166,7 @@ export default function EditJob() {
                 type="text"
                 id="jobUniqueId"
                 name="jobUniqueId"
-                value={formData.jobUniqueId}
+                value={formData?.jobUniqueId}
                 onChange={handleChange}
                 required
                 disabled
@@ -180,7 +179,7 @@ export default function EditJob() {
                 type="text"
                 id="companyName"
                 name="companyName"
-                value={formData.companyName}
+                value={formData?.companyName}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -192,7 +191,7 @@ export default function EditJob() {
                 type="text"
                 id="experienceRequired"
                 name="experienceRequired"
-                value={formData.experienceRequired}
+                value={formData?.experienceRequired}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -204,7 +203,7 @@ export default function EditJob() {
                 type="text"
                 id="location"
                 name="location"
-                value={formData.location}
+                value={formData?.location}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -215,7 +214,7 @@ export default function EditJob() {
               <select
                 id="workMode"
                 name="workMode"
-                value={formData.workMode}
+                value={formData?.workMode}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -230,7 +229,7 @@ export default function EditJob() {
               <select
                 id="employmentType"
                 name="employmentType"
-                value={formData.employmentType}
+                value={formData?.employmentType}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -242,25 +241,25 @@ export default function EditJob() {
               </select>
             </div>
             <div>
-  <label htmlFor="ctc" className="block text-sm font-medium text-gray-700">CTC (INR-Lakhs)</label>
-  <select
-    id="ctc"
-    name="ctc"
-    value={formData.ctc}
-    onChange={handleChange}
-    required
-    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-  >
-    <option value="">Select CTC</option>
-    <option value="3-5 LPA">3-5 LPA</option>
-    <option value="5-8 LPA">5-8 LPA</option>
-    <option value="8-12 LPA">8-12 LPA</option>
-    <option value="12-15 LPA">12-15 LPA</option>
-    <option value="15-20 LPA">15-20 LPA</option>
-    <option value="20-25 LPA">20-25 LPA</option>
-    <option value="25+ LPA">25+ LPA</option>
-  </select>
-</div>
+              <label htmlFor="ctc" className="block text-sm font-medium text-gray-700">CTC (INR-Lakhs)</label>
+              <select
+                id="ctc"
+                name="ctc"
+                value={formData?.ctc}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              >
+                <option value="">Select CTC</option>
+                <option value="3-5 LPA">3-5 LPA</option>
+                <option value="5-8 LPA">5-8 LPA</option>
+                <option value="8-12 LPA">8-12 LPA</option>
+                <option value="12-15 LPA">12-15 LPA</option>
+                <option value="15-20 LPA">15-20 LPA</option>
+                <option value="20-25 LPA">20-25 LPA</option>
+                <option value="25+ LPA">25+ LPA</option>
+              </select>
+            </div>
 
             <div>
               <label htmlFor="noOfReferrals" className="block text-sm font-medium text-gray-700">Number of Referrals</label>
@@ -268,7 +267,7 @@ export default function EditJob() {
                 type="number"
                 id="noOfReferrals"
                 name="noOfReferrals"
-                value={formData.noOfReferrals}
+                value={formData?.noOfReferrals}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -280,7 +279,7 @@ export default function EditJob() {
                 type="date"
                 id="endDate"
                 name="endDate"
-                value={getDate(formData.endDate)}
+                value={getDate(formData?.endDate)}
                 onChange={handleChange}
                 min={new Date().toISOString().split("T")[0]}
                 required
@@ -292,7 +291,7 @@ export default function EditJob() {
               <textarea
                 id="jobDescription"
                 name="jobDescription"
-                value={formData.jobDescription}
+                value={formData?.jobDescription}
                 onChange={handleChange}
                 rows="4"
                 required

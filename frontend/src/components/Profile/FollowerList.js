@@ -140,38 +140,38 @@ export default function FollowerList() {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {followers.map((user) => (
-                        <tr key={user._id}
+                        <tr key={user?._id}
                           className='cursor-pointer hover:bg-gray-100'
                         >
                           <td
-                            onClick={() => handleViewUserProfile(user._id)}
+                            onClick={() => handleViewUserProfile(user?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
                             <img
                               className="h-11 w-11 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                              src={user.profilePhoto || person}
+                              src={user?.profilePhoto || person}
                               alt="avatar"
                             />
                           </td>
                           <td
-                            onClick={() => handleViewUserProfile(user._id)}
+                            onClick={() => handleViewUserProfile(user?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
-                            {user.firstName || ''}
+                            {user?.firstName || ''}
                           </td>
                           <td
-                            onClick={() => handleViewUserProfile(user._id)}
+                            onClick={() => handleViewUserProfile(user?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
-                            {user.lastName || ''}
+                            {user?.lastName || ''}
                           </td>
                           <td
-                            onClick={() => handleViewUserProfile(user._id)}
+                            onClick={() => handleViewUserProfile(user?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {user.email || ''}
+                            {user?.email || ''}
                           </td>
                           {/* <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <button
-                              onClick={() => handleViewUserProfile(user._id)}
+                              onClick={() => handleViewUserProfile(user?._id)}
                               className="text-indigo-600 hover:text-indigo-900"
                             >
                               View Profile
@@ -180,7 +180,7 @@ export default function FollowerList() {
                           <td className="relative py-4 pl-2 pr-2 text-sm font-medium sm:pr-6">
                             <button onClick={(e) => {
                               e.stopPropagation();
-                              handleShowJob(user._id)
+                              handleShowJob(user?._id)
                             }}
                               className="text-indigo-600 hover:text-indigo-900">
                               View Job Posted
@@ -259,29 +259,29 @@ export default function FollowerList() {
                 {/* For small screens, show card layout */}
                 <div className="md:hidden grid grid-cols-1 gap-4">
                   {followers.map((user) => (
-                    <div key={user._id} className="p-4 border rounded-lg shadow-sm">
+                    <div key={user?._id} className="p-4 border rounded-lg shadow-sm">
                       <div className="flex items-center">
                         <img
                           className="h-12 w-12 sm:h-16 sm:w-16 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                          src={user.profilePhoto || person}
+                          src={user?.profilePhoto || person}
                           alt="avatar"
                         />
                         <div className="ml-4">
                           <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900">
-                            {user.firstName} {user.lastName}
+                            {user?.firstName} {user?.lastName}
                           </h3>
-                          <p className="text-xs sm:text-sm md:text-base text-gray-500">{user.email}</p>
+                          <p className="text-xs sm:text-sm md:text-base text-gray-500">{user?.email}</p>
                         </div>
                       </div>
                       <div className="mt-2 text-center">
                         <button
-                          onClick={() => handleViewUserProfile(user._id)}
+                          onClick={() => handleViewUserProfile(user?._id)}
                           className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                           View Profile
                         </button>
                         <button
-                          onClick={() => handleShowJob(user._id)}
+                          onClick={() => handleShowJob(user?._id)}
                           className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                           Posted Job
