@@ -31,7 +31,7 @@ export default function PostedJobsCard() {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);  // Current page
 const [totalPages, setTotalPages] = useState(1); // Total pages
-const limit = 6; // Number of jobs per page
+const limit = 9; // Number of jobs per page
   const [searchQuery, setSearchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState("");
   const [companySearchTerm, setCompanySearchTerm] = useState("");

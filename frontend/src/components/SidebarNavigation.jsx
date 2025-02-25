@@ -1,12 +1,16 @@
 import { Fragment, useState, useEffect } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { Link } from "react-router-dom";
+import { Disclosure, Menu, Dialog, Transition } from "@headlessui/react";
+import { Link, useNavigate} from "react-router-dom";
 import person from "../assets/person.png";
 import {
   UsersIcon,
   UserIcon,
   UserGroupIcon,
-  HeartIcon
+  HeartIcon,
+  InformationCircleIcon,
+  ShieldCheckIcon,
+  DocumentTextIcon,
+  PhoneIcon
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -57,6 +61,17 @@ const teams = [
     current: false,
   },
 ];
+const sidenavigationlogout = [
+  // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
+  { name: "About Us", icon: InformationCircleIcon, href: "/about-us" },
+  { name: "Conatct Us", icon: PhoneIcon, href: "/contact-us" },
+  { name: "Privacy Policy", icon: ShieldCheckIcon, href: "/privacy-policy" },
+  {
+    name: "Terms & Conditions",
+    icon: DocumentTextIcon,
+    href: "/terms-conditions",
+  },
+];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -66,7 +81,7 @@ export default function SidebarNa() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
-
+ const navigate = useNavigate();
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -97,9 +112,27 @@ export default function SidebarNa() {
     fetchProfileData();
   }, [Fronted_API_URL]);
 
+  
+  const handleSignOut = async () => {
+    localStorage.clear();
+
+    if ("caches" in window) {
+      try {
+        const cacheNames = await caches.keys();
+        await Promise.all(
+          cacheNames.map((cacheName) => caches.delete(cacheName))
+        );
+        console.log("Cache cleared successfully.");
+      } catch (error) {
+        console.error("Error clearing cache:", error);
+      }
+    }
+    navigate("/");
+  };
+
   return (
     <>
-
+    <Disclosure>
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -117,7 +150,7 @@ export default function SidebarNa() {
                 <div className="text-xs pt-3 font-semibold leading-6 text-gray-400">
                     Overview
                   </div>
-                  <ul role="list" className="-mx-2 space-y-3 ">
+                  <ul role="list" className="-mx-2 space-y-1 ">
                     {navigation.map((item) => (
                       <li key={item.name}>
                         <Link
@@ -148,7 +181,7 @@ export default function SidebarNa() {
                   <div className="text-xs font-semibold leading-6 text-gray-400">
                     Posts
                   </div>
-                  <ul role="list" className="-mx-2 mt-2 space-y-1">
+                  <ul role="list" className="-mx-2 space-y-1">
                     {teams.map((team) => (
                       <li key={team.name}>
                         <Link
@@ -176,24 +209,44 @@ export default function SidebarNa() {
                     ))}
                   </ul>
                 </li>
-                <li className="-mx-6 mt-auto">
-                  <a
-                    href="#"
-                    className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
-                  >
-                    <img
-                      src={profileData?.profilePhoto || person}
-                      alt="Profile"
-                      className="h-8 w-8 rounded-full bg-gray-50 border-gray-500  shadow-lg hover:shadow-xl transition-shadow duration-300"
-                    />
-
-                    <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">
-                      {profileData?.firstName || ""}{" "}
-                      {profileData?.lastName || ""}
-                    </span>
-                  </a>
+                <li>
+                <div className="text-xs font-semibold leading-6 text-gray-400">
+                    General
+                  </div>
+                  <ul role="list" className="-mx-2 space-y-1 ">
+                    {sidenavigationlogout.map((item) => (
+                      <li key={item.name}>
+                        <Link
+                          to={item.href}
+                          className={classNames(
+                            item.current
+                              ? "bg-gray-50 text-indigo-600"
+                              : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                          )}
+                        >
+                          <item.icon
+                            className={classNames(
+                              item.current
+                                ? "text-indigo-600"
+                                : "text-gray-400 group-hover:text-indigo-600",
+                              "h-6 w-6 shrink-0"
+                            )}
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </li>
+                   <Disclosure.Button
+                         as="button"
+                         onClick={handleSignOut}
+                         className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                       >
+                         Sign Out
+                       </Disclosure.Button>
               </ul>
             </nav>
           </div>
@@ -205,6 +258,7 @@ export default function SidebarNa() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div> */}
+        </Disclosure>
      
     </>
   );

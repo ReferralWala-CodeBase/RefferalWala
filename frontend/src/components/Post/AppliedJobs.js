@@ -292,13 +292,11 @@ export default function AppliedJobs() {
                             className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
                           >
                             {job?.jobPostId?.jobRole}
-                            {job?.jobPostId?.jobRole}
                           </td>
                           <td
                             onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {job?.jobPostId?.companyName}
                             {job?.jobPostId?.companyName}
                           </td>
                           <td
@@ -306,13 +304,11 @@ export default function AppliedJobs() {
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
                             {job?.jobPostId?.location}
-                            {job?.jobPostId?.location}
                           </td>
                           <td
                             onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
-                            {job?.jobPostId?.workMode}
                             {job?.jobPostId?.workMode}
                           </td>
                           <td
@@ -320,13 +316,11 @@ export default function AppliedJobs() {
                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           >
                             {new Date(job?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                            {new Date(job?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                          </td>
+                         </td>
                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <FaTrash
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent triggering the row click
-                                handleOpenModal(job?.jobPostId?._id);
                                 handleOpenModal(job?.jobPostId?._id);
                               }}
                               className="m-2 mt-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
@@ -418,7 +412,7 @@ export default function AppliedJobs() {
                         {/* Job Title */}
                         <h3 className="text-lg font-semibold text-blue-600 hover:underline">
                           {job?.jobPostId?.jobRole}
-                          {job?.jobPostId?.jobRole}
+
                         </h3>
 
                         {/* Company Name */}
@@ -429,7 +423,7 @@ export default function AppliedJobs() {
                             </svg>
 
                             <p className="text-sm text-gray-500 mt-1">{job?.jobPostId?.companyName}</p>
-                            <p className="text-sm text-gray-500 mt-1">{job?.jobPostId?.companyName}</p>
+                       
                           </div>
 
                           <div className='flex gap-1 items-center'>
@@ -438,8 +432,7 @@ export default function AppliedJobs() {
                             </svg>
 
                             <p className="text-xs text-gray-700 mt-1">{job?.jobPostId?.experienceRequired} yrs.</p>
-                            <p className="text-xs text-gray-700 mt-1">{job?.jobPostId?.experienceRequired} yrs.</p>
-                          </div>
+                         </div>
                         </div>
 
                         <div className='flex justify-between mt-2'>
@@ -448,7 +441,6 @@ export default function AppliedJobs() {
                               <path stroke-linecap="round" stroke-linejoin="round" d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                             <p className="text-sm text-gray-500 mt-1">{job?.jobPostId?.ctc}</p>
-                            <p className="text-sm text-gray-500 mt-1">{job?.jobPostId?.ctc}</p>
                           </div>
 
                           <div className='flex gap-1 items-center'>
@@ -456,7 +448,6 @@ export default function AppliedJobs() {
                               <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                             </svg>
-                            <p className="text-xs text-gray-700 mt-1">{job?.jobPostId?.location}</p>
                             <p className="text-xs text-gray-700 mt-1">{job?.jobPostId?.location}</p>
                           </div>
                         </div>
