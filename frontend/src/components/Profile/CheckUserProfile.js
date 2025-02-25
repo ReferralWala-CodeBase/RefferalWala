@@ -248,27 +248,27 @@ export default function CheckUserProfile() {
             <div className="flex flex-col lg:flex-row">
               <div className="lg:w-1/3 text-center lg:pr-6 lg:border-r border-gray-300 mb-6 lg:mb-0">
                 <img
-                  src={profileData.profilePhoto || person}
+                  src={profileData?.profilePhoto || person}
                   alt="Profile"
                   className="w-36 h-36 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
                 />
-                <h2 className="text-xl font-semibold text-gray-800">{profileData.firstName || <>&nbsp;</>} {profileData.lastName || <>&nbsp;</>}</h2>
-                <p className="text-sm text-gray-600 mb-3">{profileData.presentCompany?.role || <>&nbsp;</>}</p>
+                <h2 className="text-xl font-semibold text-gray-800">{profileData?.firstName || <>&nbsp;</>} {profileData?.lastName || <>&nbsp;</>}</h2>
+                <p className="text-sm text-gray-600 mb-3">{profileData?.presentCompany?.role || <>&nbsp;</>}</p>
                 <div className="text-sm text-gray-700 leading-relaxed block">
                   <div className="flex items-center space-x-1">
                     <FaEnvelope className="text-gray-500" />
-                    <span>{profileData.email || <>&nbsp;</>}</span>
+                    <span>{profileData?.email || <>&nbsp;</>}</span>
                   </div>
                   {/* <span className="text-gray-400">||</span> */}
                   <div className="flex items-center space-x-1">
                     <FaPhone className="text-gray-500" />
-                    <span>{profileData.mobileNumber || <>&nbsp;</>}</span>
+                    <span>{profileData?.mobileNumber || <>&nbsp;</>}</span>
                   </div>
                 </div>
                 <div className="flex justify-center gap-4 mt-4">
-                  {profileData.links?.github && (
+                  {profileData?.links?.github && (
                     <a
-                      href={profileData.links.github}
+                      href={profileData?.links.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -277,9 +277,9 @@ export default function CheckUserProfile() {
                     </a>
                   )}
 
-                  {profileData.links?.linkedin && (
+                  {profileData?.links?.linkedin && (
                     <a
-                      href={profileData.links.linkedin}
+                      href={profileData?.links.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -288,9 +288,9 @@ export default function CheckUserProfile() {
                     </a>
                   )}
 
-                  {profileData.links?.website && (
+                  {profileData?.links?.website && (
                     <a
-                      href={profileData.links.website}
+                      href={profileData?.links.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -299,9 +299,9 @@ export default function CheckUserProfile() {
                     </a>
                   )}
 
-                  {profileData.links?.instagram && (
+                  {profileData?.links?.instagram && (
                     <a
-                      href={profileData.links.instagram}
+                      href={profileData?.links.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -310,9 +310,9 @@ export default function CheckUserProfile() {
                     </a>
                   )}
 
-                  {profileData.links?.facebook && (
+                  {profileData?.links?.facebook && (
                     <a
-                      href={profileData.links.facebook}
+                      href={profileData?.links.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -327,10 +327,10 @@ export default function CheckUserProfile() {
               </div>
               <div className="lg:w-2/3 lg:pl-6">
                 <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
-                <p className="text-sm text-gray-700 mb-6">{profileData.aboutMe || 'No about me information provided'}</p>
+                <p className="text-sm text-gray-700 mb-6">{profileData?.aboutMe || 'No about me information provided'}</p>
                 <h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {profileData.skills.map((skill, index) => (
+                  {profileData?.skills.map((skill, index) => (
                     <span
                       key={index}
                       className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full"
@@ -342,9 +342,9 @@ export default function CheckUserProfile() {
                 {/* Achievements */}
                 <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Achievements</h3>
                 <div className="mt-3">
-                  {profileData.achievements?.length ? (
+                  {profileData?.achievements?.length ? (
                     <div className="mt-1 block w-full p-2">
-                      {profileData.achievements.join(", ")}
+                      {profileData?.achievements.join(", ")}
                     </div>
                   ) : (
                     <div className="mt-1 block w-full p-2">
@@ -357,7 +357,7 @@ export default function CheckUserProfile() {
                 {/* Resume */}
                 <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume</h3>
                 <div className="mt-3">
-                  {profileData.resume ? (
+                  {profileData?.resume ? (
                     <div>
                       {/* Button to open the modal and view resume */}
                       <button
@@ -401,7 +401,7 @@ export default function CheckUserProfile() {
                               <div className="mt-3">
                                 {/* Display the Base64 resume as an embedded PDF */}
                                 <iframe
-                                  src={`data:application/pdf;base64,${profileData.resume}`}
+                                  src={`data:application/pdf;base64,${profileData?.resume}`}
                                   width="100%"
                                   height="500px"
                                   title="Resume"
@@ -427,9 +427,9 @@ export default function CheckUserProfile() {
 
             { /* Education */}
             <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-2">Education</h3>
-            {profileData.education?.length ? (
+            {profileData?.education?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.education.map((edu, index) => (
+                {profileData?.education.map((edu, index) => (
                   <div
                     key={index}
                     className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
@@ -462,39 +462,39 @@ export default function CheckUserProfile() {
 
             {/* Present Company Section */}
             <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Present Company</h3>
-            {profileData.presentCompany ? (
+            {profileData?.presentCompany ? (
               <div>
                 <div className="flex flex-row flex-wrap gap-10 md:gap-x-24 gap-y-10">
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Role:</span>
-                    <span className="text-gray-600">{profileData.presentCompany.role || '-'}</span>
+                    <span className="text-gray-600">{profileData?.presentCompany.role || '-'}</span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Company Name:</span>
                     <span className="text-gray-600">
-                      {profileData.presentCompany.companyName || '-'}
+                      {profileData?.presentCompany.companyName || '-'}
                     </span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Company Email:</span>
                     <span className="text-gray-600">
-                      {profileData.presentCompany.companyEmail || '-'}
+                      {profileData?.presentCompany.companyEmail || '-'}
                     </span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Years of Experience:</span>
                     <span className="text-gray-600">
-                      {profileData.presentCompany.yearsOfExperience || '-'}
+                      {profileData?.presentCompany.yearsOfExperience || '-'}
                     </span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Location:</span>
-                    <span className="text-gray-600">{profileData.presentCompany.location || '-'}</span>
+                    <span className="text-gray-600">{profileData?.presentCompany.location || '-'}</span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Current CTC:</span>
                     <span className="text-gray-600">
-                      ₹{profileData.presentCompany.currentCTC || '-'} LPA
+                      ₹{profileData?.presentCompany.currentCTC || '-'} LPA
                     </span>
                   </div>
                 </div>
@@ -505,9 +505,9 @@ export default function CheckUserProfile() {
 
             {/* Experience Section */}
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Experience</h3>
-            {profileData.experience?.length ? (
+            {profileData?.experience?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.experience.map((exp, index) => (
+                {profileData?.experience.map((exp, index) => (
                   <div
                     key={index}
                     className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
@@ -543,9 +543,9 @@ export default function CheckUserProfile() {
 
             {/* Projects */}
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Projects</h3>
-            {profileData.project?.length ? (
+            {profileData?.project?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.project.map((project, index) => (
+                {profileData?.project.map((project, index) => (
                   <div
                     key={index}
                     className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
@@ -594,9 +594,9 @@ export default function CheckUserProfile() {
 
             {/* Preferences */}
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Preferences</h3>
-            {profileData.preferences?.length ? (
+            {profileData?.preferences?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.preferences.map((pref, index) => (
+                {profileData?.preferences.map((pref, index) => (
                   <div
                     key={index}
                     className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"

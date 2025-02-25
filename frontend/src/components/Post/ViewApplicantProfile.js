@@ -369,21 +369,21 @@ export default function ViewApplicantProfile() {
                     <ul className="space-y-2">
                       {jobs.map((job) => (
                         <li
-                          key={job._id}
+                          key={job?._id}
                           onClick={() => job.status === "active" && handleViewDetails(job._id)}
                           className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
                             }`}
                         >
                           <img
-                            src={job.companyLogoUrl || busi}
-                            alt={job.companyName}
+                            src={job?.companyLogoUrl || busi}
+                            alt={job?.companyName}
                             className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
                           />
                           <div className="flex-1">
                             <div className="flex justify-between items-center">
-                              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job?.jobRole}</h3>
                               <span
-                                className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active"
+                                className={`px-2 py-1 text-xs font-medium rounded-full ${job?.status === "active"
                                   ? "bg-green-100 text-green-600"
                                   : "bg-red-100 text-red-600"
                                   }`}
@@ -391,10 +391,10 @@ export default function ViewApplicantProfile() {
                                 {job.status === "active" ? "Active" : "Inactive"}
                               </span>
                             </div>
-                            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
-                            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                            <p className="text-sm sm:text-base text-gray-600">{job?.companyName}</p>
+                            <p className="text-sm sm:text-base text-gray-500">Location: {job?.location}</p>
                             <p className="text-sm sm:text-base text-gray-500">
-                              End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
+                              End Date: {new Date(job?.endDate).toLocaleDateString("en-GB")}
                             </p>
                           </div>
                         </li>
@@ -415,7 +415,7 @@ export default function ViewApplicantProfile() {
                 <div className="w-36 h-36 rounded-full mx-auto mb-4 overflow-hidden flex items-center justify-center bg-gray-200">
                   {profileData?.profilePhoto ? (
                     <img
-                      src={profileData.profilePhoto}
+                      src={profileData?.profilePhoto}
                       alt="Profile"
                       className="w-full h-full object-cover"
                       onError={(e) => {
@@ -433,24 +433,24 @@ export default function ViewApplicantProfile() {
                 </div>
 
                 <h2 className="text-xl font-semibold text-gray-800">
-                  {`${profileData.firstName || ""} ${profileData.lastName || ""}`.trim() || <>&nbsp;</>}
+                  {`${profileData?.firstName || ""} ${profileData?.lastName || ""}`.trim() || <>&nbsp;</>}
                 </h2>
 
                 <div className="text-sm text-gray-700 leading-relaxed block">
                   <div className="flex items-center space-x-1">
                     <FaEnvelope className="text-gray-500" />
-                    <span>{profileData.email || <>&nbsp;</>}</span>
+                    <span>{profileData?.email || <>&nbsp;</>}</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <FaPhone className="text-gray-500" />
-                    <span>{profileData.mobileNumber || <>&nbsp;</>}</span>
+                    <span>{profileData?.mobileNumber || <>&nbsp;</>}</span>
                   </div>
                 </div>
 
                 <div className="flex justify-center gap-4 mt-4">
-                  {profileData.links?.github && (
+                  {profileData?.links?.github && (
                     <a
-                      href={profileData.links.github}
+                      href={profileData?.links?.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -458,9 +458,9 @@ export default function ViewApplicantProfile() {
                       <FaGithub className="text-2xl" />
                     </a>
                   )}
-                  {profileData.links?.linkedin && (
+                  {profileData?.links?.linkedin && (
                     <a
-                      href={profileData.links.linkedin}
+                      href={profileData?.links.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -468,9 +468,9 @@ export default function ViewApplicantProfile() {
                       <FaLinkedin className="text-2xl" />
                     </a>
                   )}
-                  {profileData.links?.website && (
+                  {profileData?.links?.website && (
                     <a
-                      href={profileData.links.website}
+                      href={profileData?.links?.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -478,9 +478,9 @@ export default function ViewApplicantProfile() {
                       <FaGlobe className="text-2xl" />
                     </a>
                   )}
-                  {profileData.links?.instagram && (
+                  {profileData?.links?.instagram && (
                     <a
-                      href={profileData.links.instagram}
+                      href={profileData?.links?.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -488,9 +488,9 @@ export default function ViewApplicantProfile() {
                       <FaInstagram className="text-2xl" />
                     </a>
                   )}
-                  {profileData.links?.facebook && (
+                  {profileData?.links?.facebook && (
                     <a
-                      href={profileData.links.facebook}
+                      href={profileData?.links?.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -503,10 +503,10 @@ export default function ViewApplicantProfile() {
 
               <div className="w-full md:w-2/3 pl-0 md:pl-6">
                 <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
-                <p className="text-sm text-gray-700 mb-6">{profileData.aboutMe || 'No about me information provided'}</p>
+                <p className="text-sm text-gray-700 mb-6">{profileData?.aboutMe || 'No about me information provided'}</p>
                 <h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {profileData.skills.map((skill, index) => (
+                  {profileData?.skills.map((skill, index) => (
                     <span
                       key={index}
                       className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full"
@@ -519,7 +519,7 @@ export default function ViewApplicantProfile() {
                 <div className="mt-3">
                   {profileData.achievements?.length ? (
                     <div className="mt-1 block w-full p-2">
-                      {profileData.achievements.join(", ")}
+                      {profileData?.achievements.join(", ")}
                     </div>
                   ) : (
                     <div className="mt-1 block w-full p-2">
@@ -531,7 +531,7 @@ export default function ViewApplicantProfile() {
                 {/* Resume */}
                 <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume</h3>
                 <div className="mt-3">
-                  {profileData.resume ? (
+                  {profileData?.resume ? (
                     <div>
                       {/* Button to open the modal and view resume */}
                       <button
@@ -602,9 +602,9 @@ export default function ViewApplicantProfile() {
 
             { /* Education */}
             <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-2">Education</h3>
-            {profileData.education?.length ? (
+            {profileData?.education?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.education.map((edu, index) => (
+                {profileData?.education.map((edu, index) => (
                   <div
                     key={index}
                     className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
@@ -615,15 +615,15 @@ export default function ViewApplicantProfile() {
                       </div>
                       <div className="ml-4">
                         <h3 className="text-lg font-semibold text-gray-800">
-                          {edu.level || "Education Level"}
+                          {edu?.level || "Education Level"}
                         </h3>
-                        <p className="text-sm text-gray-500">{edu.schoolName || "School/University Name"}</p>
+                        <p className="text-sm text-gray-500">{edu?.schoolName || "School/University Name"}</p>
                       </div>
                     </div>
                     <div className="mt-4">
                       <p className="text-gray-600">
                         <span className="font-medium">Year of Passing:</span>{" "}
-                        {edu.yearOfPassing || "Not provided"}
+                        {edu?.yearOfPassing || "Not provided"}
                       </p>
                     </div>
                   </div>
@@ -637,39 +637,39 @@ export default function ViewApplicantProfile() {
 
             {/* Present Company Section */}
             <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Present Company</h3>
-            {profileData.presentCompany ? (
+            {profileData?.presentCompany ? (
               <div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Role:</span>
-                    <span className="text-gray-600">{profileData.presentCompany.role || '-'}</span>
+                    <span className="text-gray-600">{profileData?.presentCompany?.role || '-'}</span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Company Name:</span>
                     <span className="text-gray-600">
-                      {profileData.presentCompany.companyName || '-'}
+                      {profileData?.presentCompany?.companyName || '-'}
                     </span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Company Email:</span>
                     <span className="text-gray-600">
-                      {profileData.presentCompany.companyEmail || '-'}
+                      {profileData?.presentCompany?.companyEmail || '-'}
                     </span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Years of Experience:</span>
                     <span className="text-gray-600">
-                      {profileData.presentCompany.yearsOfExperience || '-'}
+                      {profileData?.presentCompany?.yearsOfExperience || '-'}
                     </span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Location:</span>
-                    <span className="text-gray-600">{profileData.presentCompany.location || '-'}</span>
+                    <span className="text-gray-600">{profileData?.presentCompany?.location || '-'}</span>
                   </div>
                   <div>
                     <span className="block text-sm font-medium text-gray-700">Current CTC:</span>
                     <span className="text-gray-600">
-                      ₹{profileData.presentCompany.currentCTC || '-'} LPA
+                      ₹{profileData?.presentCompany?.currentCTC || '-'} LPA
                     </span>
                   </div>
                 </div>
@@ -682,7 +682,7 @@ export default function ViewApplicantProfile() {
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Experience</h3>
             {profileData.experience?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.experience.map((exp, index) => (
+                {profileData?.experience.map((exp, index) => (
                   <div
                     key={index}
                     className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
@@ -693,9 +693,9 @@ export default function ViewApplicantProfile() {
                       </div>
                       <div className="ml-4">
                         <h3 className="text-lg font-semibold text-gray-800">
-                          {exp.companyName || "Company Name"}
+                          {exp?.companyName || "Company Name"}
                         </h3>
-                        <p className="text-sm text-gray-500">{exp.position || "Position"}</p>
+                        <p className="text-sm text-gray-500">{exp?.position || "Position"}</p>
                       </div>
                     </div>
                     <div className="mt-4">
@@ -719,7 +719,7 @@ export default function ViewApplicantProfile() {
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Projects</h3>
             {profileData.project?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.project.map((project, index) => (
+                {profileData?.project.map((project, index) => (
                   <div
                     key={index}
                     className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
@@ -730,17 +730,17 @@ export default function ViewApplicantProfile() {
                       </div>
                       <div className="ml-4">
                         <h3 className="text-lg font-semibold text-gray-800">
-                          {project.projectName || "Project Name"}
+                          {project?.projectName || "Project Name"}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          {project.details || "Project Description"}
+                          {project?.details || "Project Description"}
                         </p>
                       </div>
                     </div>
                     <div className="mt-4">
                       {/* Display Repo Link with FA Icon */}
-                      {project.repoLink && (
-                        <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
+                      {project?.repoLink && (
+                        <a href={project?.repoLink} target="_blank" rel="noopener noreferrer">
                           <p className="text-blue-500 text-sm flex items-center">
                             <FaGithub className="mr-2" />
                             <span className="font-medium">Repository</span>{" "}
@@ -750,8 +750,8 @@ export default function ViewApplicantProfile() {
                     </div>
                     <div className="mt-4">
                       {/* Display Live Link with FA Icon */}
-                      {project.liveLink && (
-                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                      {project?.liveLink && (
+                        <a href={project?.liveLink} target="_blank" rel="noopener noreferrer">
                           <p className="text-blue-500 text-sm flex items-center">
                             <FaGlobe className="mr-2" />
                             <span className="font-medium">Live Link</span>{" "}
@@ -768,32 +768,32 @@ export default function ViewApplicantProfile() {
 
             {/* Preferences */}
             <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Preferences</h3>
-            {profileData.preferences?.length ? (
+            {profileData?.preferences?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData.preferences.map((pref, index) => (
+                {profileData?.preferences.map((pref, index) => (
                   <div
                     key={index}
                     className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
                   >
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-xl">
-                        {pref.preferredCompanyURL ? (
-                          <img src={pref.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
+                        {pref?.preferredCompanyURL ? (
+                          <img src={pref?.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
                         ) : (
                           <FaLocationArrow />
                         )}
                       </div>
                       <div className="ml-4">
                         <h3 className="text-lg font-semibold text-gray-800">
-                          {pref.preferredCompanyName || "Preferred Company Name"}
+                          {pref?.preferredCompanyName || "Preferred Company Name"}
                         </h3>
-                        <p className="text-sm text-gray-500">{pref.preferredPosition || "Preferred Position"}</p>
+                        <p className="text-sm text-gray-500">{pref?.preferredPosition || "Preferred Position"}</p>
                       </div>
                     </div>
                     <div className="mt-4">
                       <p className="text-gray-600">
                         <span className="font-medium">Expected CTC Range:</span>{" "}
-                        {pref.expectedCTCRange || "Not Set"}
+                        {pref?.expectedCTCRange || "Not Set"}
                       </p>
                     </div>
                   </div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const AboutMeSection = ({ profileData }) => {
     const [showFull, setShowFull] = useState(false);
-    const aboutMeText = profileData.aboutMe || "No about me information provided";
+    const aboutMeText = profileData?.aboutMe || "No about me information provided";
 
     return (
         <div>
