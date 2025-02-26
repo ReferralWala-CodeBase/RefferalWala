@@ -19,8 +19,8 @@ export default function WishlistJobsList() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
-const [open, setOpen] = useState(false);
-const [refresh, setRefresh] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const cancelButtonRef = useRef(null);
   const [selectedJobId, setSelectedJobId] = useState(null);
 
@@ -40,7 +40,7 @@ const [refresh, setRefresh] = useState(false);
       const userId = localStorage.getItem('userId');
       try {
         const response = await fetch(`${Fronted_API_URL}/job/wishlist/${userId}`, {
-         method: 'GET',
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${bearerToken}`,
             'Content-Type': 'application/json',
@@ -73,31 +73,31 @@ const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
   const handleRemoveFromWishlist = async (jobId) => {
-      try {
-        const bearerToken = localStorage.getItem("token");
+    try {
+      const bearerToken = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
-        const response = await fetch(
-          `${Fronted_API_URL}/job/wishlist/remove`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${bearerToken}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId, jobId }),
-          }
-        );
-        const data = await response.json();
-      console.log("Response data:", data);
-        if (response.ok) {
-          toast.warning("Removed from wishlist!");
+      const response = await fetch(
+        `${Fronted_API_URL}/job/wishlist/remove`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, jobId }),
         }
-        setOpen(false);
-        setRefresh((prev) => !prev);
-      } catch (error) {
-        toast.error("Failed to remove from wishlist.");
+      );
+      const data = await response.json();
+      console.log("Response data:", data);
+      if (response.ok) {
+        toast.warning("Removed from wishlist!");
       }
-    };
+      setOpen(false);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      toast.error("Failed to remove from wishlist.");
+    }
+  };
 
   const handleView = (jobId) => {
     navigate(`/appliedjobdetails/${jobId}`);
@@ -124,7 +124,7 @@ const [refresh, setRefresh] = useState(false);
           <SidebarNavigation />
         </div>
         <div className="w-11/12 md:w-3/4 m-auto">
-         
+
           <div className="mt-2 flow-root">
             {loading ? (
               <Loader />
@@ -139,15 +139,20 @@ const [refresh, setRefresh] = useState(false);
                     Add Job
                   </button>
                 </div>
-              ) : <ServerError/>
+              ) : <ServerError />
             ) : jobs.length === 0 ? (
 
-              <div className="flex w-full justify-center items-center h-auto mx-auto text-center">
+              <div className="flex w-full h-screen justify-center items-center text-center">
                 <div>
-                  <img src={noJobsPosted} alt="No data found" className="mb-4 mx-auto block rounded-full" />
+                  <img
+                    src={noJobsPosted}
+                    alt="No data found"
+                    className="mb-4 h-24 w-24 md:h-32 md:w-32 mx-auto block rounded-full"
+                  />
                   <p className="text-xl font-light">No jobs found !</p>
                 </div>
               </div>
+
             ) : (
               <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
                 {/* Display Table View for Larger Screens */}
@@ -208,23 +213,23 @@ const [refresh, setRefresh] = useState(false);
                           >
                             {job?.status === "inactive" ? "Closed" : job?.status}
                           </td>
-                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                                                      <FaTrash
-                                                        onClick={(e) => {
-                                                          e.stopPropagation(); // Prevent triggering the row click
-                                                          handleOpenModal(job?._id);
-                                                        }}
-                                                        className="m-2 mt-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
-                                                      />
-                                                    </td>
-                    
+                          <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
+                            <FaTrash
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent triggering the row click
+                                handleOpenModal(job?._id);
+                              }}
+                              className="m-2 mt-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
+                            />
+                          </td>
+
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
 
-  
+
 
                 {/* Display Card View for Smaller and Tablet Screens */}
                 <div className="block lg:hidden">
@@ -318,16 +323,16 @@ const [refresh, setRefresh] = useState(false);
                             View
                           </button>
                           <button
-                                                      onClick={() => handleOpenModal(job?._id)}
-                                                      className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
-                                                    >
-                                                      <FaTrash
-                                                        className="text-l cursor-pointer"
-                                                      />
-                          
-                                           Remove
-                                                    </button>
-                        
+                            onClick={() => handleOpenModal(job?._id)}
+                            className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
+                          >
+                            <FaTrash
+                              className="text-l cursor-pointer"
+                            />
+
+                            Remove
+                          </button>
+
                         </div>
                       </div>
 
@@ -386,7 +391,7 @@ const [refresh, setRefresh] = useState(false);
                                   </Dialog.Title>
                                   <div className="mt-2">
                                     <p className="text-sm text-gray-500">
-                                      Are you sure you want to remove from Wishlist? 
+                                      Are you sure you want to remove from Wishlist?
                                     </p>
                                   </div>
                                 </div>
@@ -424,8 +429,8 @@ const [refresh, setRefresh] = useState(false);
           </div>
         </div>
       </div>
-         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
-         
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+
     </>
   );
 }

@@ -2,76 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Card Styles */
 .postCard {
-    justify-self: center;
-    width: 300px;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-  /* Header Section (Image and Name) */
-  .postCard-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  /* Profile Image Styles */
-  .postCard-profile-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 15px;
-  }
-  
-  /* Name and Company Details */
-  .postCard-name-section {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .postCard-name {
-    margin: 0;
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .postCard-company,
-  .postCard-role,
-  .postCard-location {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #666;
-  }
-  
-  /* Apply Button */
-  .postCard-apply-btn {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .apply-btn:hover {
-    background-color: #0056b3;
-  }
-  
+  justify-self: center;
+  width: 300px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Header Section (Image and Name) */
+.postCard-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Profile Image Styles */
+.postCard-profile-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+/* Name and Company Details */
+.postCard-name-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.postCard-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.postCard-company,
+.postCard-role,
+.postCard-location {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Apply Button */
+.postCard-apply-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.apply-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Dialog, Transition } from "@headlessui/react";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import person from "../assets/person.png";
 import {
   UsersIcon,
@@ -10,7 +10,7 @@ import {
   InformationCircleIcon,
   ShieldCheckIcon,
   DocumentTextIcon,
-  PhoneIcon
+  PhoneIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -81,7 +81,7 @@ export default function SidebarNa() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
- const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -112,7 +112,6 @@ export default function SidebarNa() {
     fetchProfileData();
   }, [Fronted_API_URL]);
 
-  
   const handleSignOut = async () => {
     localStorage.clear();
 
@@ -132,11 +131,10 @@ export default function SidebarNa() {
 
   return (
     <>
-    <Disclosure>
+      <Disclosure>
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 mt-16">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 mt-16 custom-scrollbar">
             {/* <div className="flex h-16 shrink-0 items-center">
               <img
                 className="h-8 w-auto"
@@ -147,7 +145,7 @@ export default function SidebarNa() {
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-8">
                 <li>
-                <div className="text-xs pt-3 font-semibold leading-6 text-gray-400">
+                  <div className="text-xs pt-3 font-semibold leading-6 text-gray-400">
                     Overview
                   </div>
                   <ul role="list" className="-mx-2 space-y-1 ">
@@ -210,7 +208,7 @@ export default function SidebarNa() {
                   </ul>
                 </li>
                 <li>
-                <div className="text-xs font-semibold leading-6 text-gray-400">
+                  <div className="text-xs font-semibold leading-6 text-gray-400">
                     General
                   </div>
                   <ul role="list" className="-mx-2 space-y-1 ">
@@ -240,13 +238,13 @@ export default function SidebarNa() {
                     ))}
                   </ul>
                 </li>
-                   <Disclosure.Button
-                         as="button"
-                         onClick={handleSignOut}
-                         className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                       >
-                         Sign Out
-                       </Disclosure.Button>
+                <Disclosure.Button
+                  as="button"
+                  onClick={handleSignOut}
+                  className="inline-flex mb-4 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Sign Out
+                </Disclosure.Button>
               </ul>
             </nav>
           </div>
@@ -258,8 +256,7 @@ export default function SidebarNa() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div> */}
-        </Disclosure>
-     
+      </Disclosure>
     </>
   );
 }
