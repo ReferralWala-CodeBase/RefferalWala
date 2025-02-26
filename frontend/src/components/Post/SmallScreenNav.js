@@ -192,7 +192,7 @@ const ExperienceModal = ({ onClose, onExperienceSelect }) => {
     "0-1 year", "2-5 years", "6-10 years", "10+ years"
   ];
 
-  
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (experienceModalRef.current && !experienceModalRef.current.contains(event.target)) {
@@ -291,7 +291,7 @@ const SmallScreenNav = ({ setSelectedCompanies, setSelectedLocations, setSelecte
                 boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.2)", // Add slight shadow for visibility
               }}
             >
-              ×
+              X
             </button>
 
 

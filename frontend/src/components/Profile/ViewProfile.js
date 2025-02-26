@@ -84,12 +84,18 @@ export default function ViewProfile() {
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-11/12 md:w-4/4 px-0 sm:px-6 m-auto">
+        <div className="w-full md:w-4/4 px-0 sm:px-6 m-auto">
           <div className="p-3 sm:mr-0 font-sans rounded-md">
             <div className="flex flex-col lg:flex-row">
-              <div className="relative w-full max-w-sm space-y-4 text-center lg:pr-4 mb-6 lg:mb-0 py-2 md:py-6 rounded-lg px-2 md:px-4 bg-white overflow-hidden">
+              <div className="relative w-full max-w-sm space-y-4 text-center lg:pr-4 mb-2 lg:mb-0 py-2 md:py-6 rounded-lg px-4 md:px-4 bg-white overflow-hidden">
                 {/* Background for top half */}
-                <div className="absolute top-0 left-0 w-full h-1/3 bg-blue-700 rounded-t-lg z-0"></div>
+                <div className="absolute top-0 left-0 w-full h-1/3 bg-blue-700 rounded-t-lg z-0">
+                  <button
+                    onClick={() => navigate(`/editprofile`)}
+                    className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow-md  transition z-20"
+                  >
+                    <PencilIcon className="h-4 w-4 text-black" aria-hidden="true" />
+                  </button></div>
 
                 {/* Profile Image Container (Ensure it's above background) */}
                 <div className="relative w-36 h-36 mx-auto z-10">
@@ -100,14 +106,10 @@ export default function ViewProfile() {
                       className="w-36 h-36 rounded-full border-2 p-1 shadow-lg hover:shadow-xl transition-shadow duration-300"
                     />
                   </div>
-                  <button
-                    onClick={() => navigate(`/editprofile`)}
-                    className="absolute bottom-0 right-0 bg-blue-600 p-1.5 rounded-full shadow-md hover:bg-blue-700 transition z-20"
-                  >
-                    <PencilIcon className="h-4 w-4 text-white" aria-hidden="true" />
-                  </button>
+
                 </div>
                 <h2 className="text-xl font-semibold text-gray-800">{profileData?.firstName || <>&nbsp;</>} {profileData?.lastName || <>&nbsp;</>}</h2>
+                <p className="text-sm text-gray-600 mb-1">{profileData?.presentCompany.companyName || <>&nbsp;</>}</p>
                 <p className="text-sm text-gray-600 mb-2">{profileData?.presentCompany?.role || <>&nbsp;</>}</p>
                 <div className="text-sm text-gray-700 space-y-2 leading-relaxed block">
                   <div className="flex items-center space-x-2">
@@ -176,11 +178,9 @@ export default function ViewProfile() {
                     </a>
                   )}
                 </div>
-
-
-
               </div>
-              <div className="w-full max-w-5xl lg:mx-2 px-2 md:px-6 py-2 md:py-8 rounded-lg bg-white">
+
+              <div className="w-full max-w-5xl lg:mx-2 px-3 md:px-6 py-4 md:py-8 rounded-lg bg-white">
                 <AboutMeSection profileData={profileData} /><h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {profileData?.skills?.length > 0 ? (
@@ -200,19 +200,16 @@ export default function ViewProfile() {
                 <Achievements achievements={profileData?.achievements || []} />
 
 
-                {/* Resume */}
-                <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume</h3>
+
                 <div className="mt-3">
                   {profileData?.resume ? (
                     <div>
-                      {/* Button to open the modal and view resume */}
                       <button
                         type="button"
                         onClick={openModal}
-                        // className="mt-1 block w-25 p-2 bg-blue-500 text-white rounded"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:from-indigo-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2"
+                        className="flex gap-2 text-sm items-center px-4 py-1 rounded-full bg-blue-500 text-white"
                       >
-                        <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                        <EyeIcon className="h-4 w-4" aria-hidden="true" />
                         View Resume
                       </button>
                     </div>

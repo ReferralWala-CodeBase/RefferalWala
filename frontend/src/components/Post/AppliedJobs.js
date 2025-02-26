@@ -245,7 +245,7 @@ export default function AppliedJobs() {
                 <p className="text-gray-500 text-lg">No applied jobs found.</p>
               </div>
             ) : (
-              <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+              <div className="max-w-7xl mx-auto px-0 sm:px-4 lg:px-2">
 
                 <div className="block md:hidden mb-2">
                   <JobFilterDialog
@@ -260,78 +260,80 @@ export default function AppliedJobs() {
 
                 {/* Table View for Larger Screens */}
                 <div className="hidden md:block">
-                  <table className="min-w-full divide-y divide-gray-300">
-                    <thead>
-                      <tr>
-                        <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                          Job Role
-                        </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Company Name
-                        </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Location
-                        </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Work Mode
-                        </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Applied On
-                        </th>
-                        <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white">
-                      {sortedJobs.map((job) => (
-                        <tr
-                          key={job?.jobPostId?._id}
-                          className="cursor-pointer hover:bg-gray-100"
-                        >
-                          <td
-                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
-                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                          >
-                            {job?.jobPostId?.jobRole}
-                          </td>
-                          <td
-                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                          >
-                            {job?.jobPostId?.companyName}
-                          </td>
-                          <td
-                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                          >
-                            {job?.jobPostId?.location}
-                          </td>
-                          <td
-                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                          >
-                            {job?.jobPostId?.workMode}
-                          </td>
-                          <td
-                            onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                          >
-                            {new Date(job?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                          </td>
-                          <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                            <FaTrash
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent triggering the row click
-                                handleOpenModal(job?.jobPostId?._id);
-                              }}
-                              className="m-2 mt-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
-                            />
-                          </td>
+                  <div className="overflow-hidden border border-gray-200 rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-300 bg-white">
+                      <thead className="bg-gray-100 sticky top-0 z-10">
+                        <tr>
+                          <th className="py-4 pl-6 text-left text-sm font-semibold text-gray-900">Job Role</th>
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Company Name</th>
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Location</th>
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Work Mode</th>
+                          <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Applied On</th>
                         </tr>
-                      ))}
-                    </tbody>
+                      </thead>
 
-                  </table>
+                      <tbody className="divide-y divide-gray-200">
+                        {sortedJobs.map((job, index) => (
+                          <tr
+                            key={job?.jobPostId?._id}
+                            className={`cursor-pointer transition duration-200 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                              } hover:bg-gray-100`}
+                          >
+                            <td
+                              onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
+                              className="whitespace-nowrap py-4 pl-6 text-sm font-medium text-gray-900"
+                            >
+                              {job?.jobPostId?.jobRole}
+                            </td>
+
+                            <td
+                              onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
+                              className="whitespace-nowrap px-6 py-4 text-sm text-gray-600"
+                            >
+                              {job?.jobPostId?.companyName}
+                            </td>
+
+                            <td
+                              onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
+                              className="whitespace-nowrap px-6 py-4 text-sm text-gray-600"
+                            >
+                              {job?.jobPostId?.location}
+                            </td>
+
+                            <td
+                              onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
+                              className="whitespace-nowrap px-6 py-4 text-sm text-gray-600"
+                            >
+                              {job?.jobPostId?.workMode}
+                            </td>
+
+                            <td
+                              onClick={() => handleViewJobDetails(job?.jobPostId?._id)}
+                              className="whitespace-nowrap px-6 py-4 text-sm text-gray-600"
+                            >
+                              {new Date(job?.appliedAt).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              })}
+                            </td>
+
+                            <td className="relative py-4 pr-6 text-right">
+                              <FaTrash
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleOpenModal(job?.jobPostId?._id);
+                                }}
+                                className="text-xl cursor-pointer text-red-500 hover:text-red-700 transition duration-200"
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+
 
                 {/* Card View for Smaller Screens */}
                 {/* <div className="block md:hidden">
@@ -386,7 +388,7 @@ export default function AppliedJobs() {
                       <div className="mt-2 top-2 right-2">
                         <div className='flex px-2 justify-between items-center'>
                           <div className="inline-flex items-center gap-1 bg-gray-200/70 text-gray-700 text-[9px] font-normal px-3 py-1 rounded-full mb-2">
-                            <span>{new Date(job?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                            <span>Applied On: {new Date(job?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                           </div>
 
                           <button onClick={() => handleOpenModal(job?.jobPostId?._id)}
