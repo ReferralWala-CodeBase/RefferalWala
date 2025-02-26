@@ -19,7 +19,6 @@ const AboutMeSection = ({ profileData }) => {
             </p>
 
 
-
             {showFull && (
                 <div className="fixed z-40 inset-0 flex items-center justify-center bg-black/30 p-3">
                     <div className="bg-white p-4 rounded-lg shadow-lg max-w-lg w-full">
