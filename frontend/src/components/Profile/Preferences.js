@@ -23,23 +23,23 @@ const Preferences = ({ preferences = [] }) => {
                         >
                             <div className="flex items-center space-x-4">
                                 <div className="w-14 h-14 bg-yellow-200 text-yellow-700 rounded-full flex items-center justify-center text-2xl">
-                                    {pref.preferredCompanyURL ? (
-                                        <img src={pref.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
+                                    {pref?.preferredCompanyURL ? (
+                                        <img src={pref?.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
                                     ) : (
                                         <FaLocationArrow size={18} />
                                     )}
                                 </div>
                                 <div>
-                                    <h4 className="text-lg font-semibold text-gray-800">{pref.preferredCompanyName || "Preferred Company"}</h4>
-                                    <p className="text-gray-500">{pref.preferredPosition || "Preferred Position"}</p>
+                                    <h4 className="text-lg font-semibold text-gray-800">{pref?.preferredCompanyName || "Preferred Company"}</h4>
+                                    <p className="text-gray-500">{pref?.preferredPosition || "Preferred Position"}</p>
                                 </div>
                             </div>
                             <p className="mt-4 text-gray-600 text-sm">
-                                <span className="font-medium">Expected CTC:</span> {pref.expectedCTCRange || "Not Set"}
+                                <span className="font-medium">Expected CTC:</span> {pref?.expectedCTCRange || "Not Set"}
                             </p>
-                            {pref.description && pref.description.length > 20 ? (
+                            {pref?.description && pref?.description.length > 20 ? (
                                 <p className="text-gray-500 text-sm">
-                                    {pref.description.slice(0, 20)}...
+                                    {pref?.description.slice(0, 20)}...
                                     <button
                                         onClick={() => openModal(pref)}
                                         className="text-blue-600 text-xs underline ml-1"
@@ -48,7 +48,7 @@ const Preferences = ({ preferences = [] }) => {
                                     </button>
                                 </p>
                             ) : (
-                                <p className="text-gray-500 text-sm">{pref.description}</p>
+                                <p className="text-gray-500 text-sm">{pref?.description}</p>
                             )}
                         </div>
                     ))

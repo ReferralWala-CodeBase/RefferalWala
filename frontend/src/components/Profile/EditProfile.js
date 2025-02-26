@@ -3,7 +3,7 @@ import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
 import { FaTrash, FaCheck, FaCheckCircle } from 'react-icons/fa';
 import Navbar from "../Navbar";
-import { PencilIcon, UserMinusIcon, UserPlusIcon } from '@heroicons/react/20/solid';
+import { PencilIcon, UserMinusIcon, UserPlusIcon, EyeIcon } from '@heroicons/react/20/solid';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Dialog, Transition } from "@headlessui/react";
@@ -68,13 +68,25 @@ export default function EditProfile() {
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
+  
+  const [openResume, setResumeOpen] = useState(false);
+  // const cancelButtonRef = useRef(null);
+
+  const openModal = () => {
+    setResumeOpen(true);
+  };
+
+  // Close modal function
+  const handleCloseModal = () => {
+    setResumeOpen(false);
+  };
 
 
   const handleDeactivate = async () => {
     try {
       const bearerToken = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
-      const newStatus = profileData.isActivate ? false : true; // Toggle the status
+      const newStatus = profileData?.isActivate ? false : true; // Toggle the status
 
       const response = await fetch(`${Fronted_API_URL}/user/deactivate/${userId}`, {
         method: "PUT",
@@ -118,7 +130,7 @@ export default function EditProfile() {
             Authorization: `Bearer ${bearerToken}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: profileData.presentCompany.companyEmail }),
+          body: JSON.stringify({ email: profileData?.presentCompany.companyEmail }),
         }
       );
 
@@ -154,7 +166,7 @@ export default function EditProfile() {
             "Content-Type": "application/json",
 
           },
-          body: JSON.stringify({ email: profileData.presentCompany.companyEmail, otp }),
+          body: JSON.stringify({ email: profileData?.presentCompany.companyEmail, otp }),
         }
       );
 
@@ -173,7 +185,7 @@ export default function EditProfile() {
         }));
 
 
-        setOriginalCompanyEmail(profileData.presentCompany?.companyEmail);
+        setOriginalCompanyEmail(profileData?.presentCompany?.companyEmail);
         setShowOtpModal(false);
       } else {
         toast.error(data.message || "Company Email verification failed. Try again.");
@@ -189,20 +201,20 @@ export default function EditProfile() {
     const bearerToken = localStorage.getItem('token');
 
     //Company Email validation
-    const companyEmail = profileData.presentCompany.companyEmail;
-    const companyName = profileData.presentCompany.companyName.toLowerCase().replace(/\s+/g, ''); // Remove spaces from company name
+    const companyEmail = profileData?.presentCompany.companyEmail;
+    const companyName = profileData?.presentCompany.companyName.toLowerCase().replace(/\s+/g, ''); // Remove spaces from company name
 
     // Extract the domain part after '@'
     const companyDomain = companyEmail.split('@')[1];
     const companyNameFromDomain = companyDomain.split('.')[0].toLowerCase();
 
-    const inputEmail = profileData.presentCompany.companyEmail;
+    const inputEmail = profileData?.presentCompany.companyEmail;
 
     const emailRegex = new RegExp(`^[a-zA-Z0-9._%+-]+@${companyNameFromDomain}\\.`);
 
     if (!emailRegex.test(inputEmail) || !companyNameFromDomain.includes(companyName)) {
       toast.error("Email does not belong to the company's domain or does not match the company name.");
-      return; 
+      return;
     }
 
     setResendTimer(30);
@@ -215,7 +227,7 @@ export default function EditProfile() {
           Authorization: `Bearer ${bearerToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: profileData.presentCompany.companyEmail }),
+        body: JSON.stringify({ email: profileData?.presentCompany.companyEmail }),
       });
 
       const data = await response.json();
@@ -245,7 +257,7 @@ export default function EditProfile() {
 
 
   const handleAchievementChange = (index, value) => {
-    const updatedAchievements = [...profileData.achievements];
+    const updatedAchievements = [...profileData?.achievements];
     updatedAchievements[index] = value;
     setProfileData({ ...profileData, achievements: updatedAchievements });
   };
@@ -253,17 +265,17 @@ export default function EditProfile() {
   const addAchievement = () => {
     setProfileData({
       ...profileData,
-      achievements: [...profileData.achievements, ''] // Add a new empty input for achievements
+      achievements: [...profileData?.achievements, ''] // Add a new empty input for achievements
     });
   };
 
   const removeAchievement = (index) => {
-    const newAchievements = profileData.achievements.filter((_, i) => i !== index);
+    const newAchievements = profileData?.achievements.filter((_, i) => i !== index);
     setProfileData({ ...profileData, achievements: newAchievements });
   };
 
   const handleSkillChange = (index, value) => {
-    const updatedSkills = [...profileData.skills];
+    const updatedSkills = [...profileData?.skills];
     updatedSkills[index] = value;
     setProfileData({ ...profileData, skills: updatedSkills });
   };
@@ -272,13 +284,13 @@ export default function EditProfile() {
   const addSkill = () => {
     setProfileData({
       ...profileData,
-      skills: [...profileData.skills, ""] // Add a new empty input for skills
+      skills: [...profileData?.skills, ""] // Add a new empty input for skills
     });
   };
 
   // Remove a skill from the list
   const removeSkill = (index) => {
-    const updatedSkills = profileData.skills.filter((_, i) => i !== index);
+    const updatedSkills = profileData?.skills.filter((_, i) => i !== index);
     setProfileData({ ...profileData, skills: updatedSkills });
   };
 
@@ -490,7 +502,7 @@ export default function EditProfile() {
     const { name, value } = e.target;
 
     // Update preference state
-    const updatedPreferences = [...profileData.preferences];
+    const updatedPreferences = [...profileData?.preferences];
     updatedPreferences[index] = {
       ...updatedPreferences[index],
       [name]: value,
@@ -706,7 +718,7 @@ export default function EditProfile() {
   };
 
   const handleCompanyEmail = () => {
-    if (profileData.presentCompany?.companyEmail !== originalCompanyEmail) {
+    if (profileData?.presentCompany?.companyEmail !== originalCompanyEmail) {
       setIsCompanyEmailVerified(false);
     }
   };
@@ -719,26 +731,26 @@ export default function EditProfile() {
     const numericPattern = /^\d+$/; // Only numbers
 
     // **Mobile Number Validation**
-    if (profileData.mobileNumber && !mobilePattern.test(profileData.mobileNumber)) {
+    if (profileData?.mobileNumber && !mobilePattern.test(profileData?.mobileNumber)) {
       return toast.error("Please enter a valid 10-digit mobile number.");
     }
 
     // **Year of Passing Validation**
-    for (const edu of profileData.education ?? []) {
+    for (const edu of profileData?.education ?? []) {
       if (edu.yearOfPassing && !yearPattern.test(edu.yearOfPassing)) {
         return toast.error("Please enter a valid year of passing.");
       }
     }
 
     // **Years of Experience Validation**
-    for (const exp of profileData.experience ?? []) {
+    for (const exp of profileData?.experience ?? []) {
       if (exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience)) {
         return toast.error("Years of experience must be a valid number.");
       }
     }
 
     // **Repo & Live Link Validation**
-    for (const proj of profileData.project ?? []) {
+    for (const proj of profileData?.project ?? []) {
       if ((proj.repoLink && !urlPattern.test(proj.repoLink)) ||
         (proj.liveLink && !urlPattern.test(proj.liveLink))) {
         return toast.error("Please enter valid URLs for repo or live links.");
@@ -746,14 +758,14 @@ export default function EditProfile() {
     }
 
     // **Social Media Links Validation**
-    for (const [key, value] of Object.entries(profileData.links ?? {})) {
+    for (const [key, value] of Object.entries(profileData?.links ?? {})) {
       if (key !== "_id" && value && !urlPattern.test(value)) {
         return toast.error(`Please enter a valid URL for ${key}`);
       }
     }
 
     // **Resume Link Validation**
-    // if (profileData.resume && !urlPattern.test(profileData.resume)) {
+    // if (profileData?.resume && !urlPattern.test(profileData?.resume)) {
     //   return toast.error("Please enter a valid URL for the resume.");
     // }
   };
@@ -786,7 +798,7 @@ export default function EditProfile() {
   //         Authorization: `Bearer ${bearerToken}`,
   //         "Content-Type": "application/json",
   //       },
-  //       body: JSON.stringify({ mobileNumber: profileData.mobileNumber }),
+  //       body: JSON.stringify({ mobileNumber: profileData?.mobileNumber }),
   //     });
 
   //     const data = await response.json();
@@ -824,12 +836,12 @@ export default function EditProfile() {
               onClick={() => setOpen(true)}
               className="inline-flex justify-center items-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
-              {profileData.isActivate === false ? (
+              {profileData?.isActivate === false ? (
                 <UserPlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
               ) : (
                 <UserMinusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
               )}
-              {profileData.isActivate === false ? "Activate" : "Deactivate"}
+              {profileData?.isActivate === false ? "Activate" : "Deactivate"}
             </button> */}
           </div>
 
@@ -916,7 +928,7 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="firstName"
-                  value={profileData.firstName || ''}
+                  value={profileData?.firstName || ''}
                   onChange={handleChange}
                   required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
@@ -927,7 +939,7 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="lastName"
-                  value={profileData.lastName || ''}
+                  value={profileData?.lastName || ''}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
@@ -937,7 +949,7 @@ export default function EditProfile() {
                 <input
                   type="email"
                   name="email"
-                  value={profileData.email || ''}
+                  value={profileData?.email || ''}
                   onChange={handleChange}
                   disabled
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
@@ -950,7 +962,7 @@ export default function EditProfile() {
                   <input
                     type="tel"
                     name="mobileNumber"
-                    value={profileData.mobileNumber || ''}
+                    value={profileData?.mobileNumber || ''}
                     onChange={handleChange}
                     onBlur={validation}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
@@ -962,7 +974,7 @@ export default function EditProfile() {
                       setProfileData({
                         ...profileData,
                         presentCompany: {
-                          ...profileData.presentCompany,
+                          ...profileData?.presentCompany,
                           companyEmail: e.target.value,
                         },
                       })
@@ -972,7 +984,7 @@ export default function EditProfile() {
 
 
                   {/*
-                  {profileData.mobileNumber === originalMobileno &&
+                  {profileData?.mobileNumber === originalMobileno &&
                     isPhoneVerified && (
                       <FaCheckCircle
                         className="ml-2"
@@ -1006,7 +1018,7 @@ export default function EditProfile() {
                         </label>
                         <input
                           type="tel"
-                          value={profileData.mobileNumber}
+                          value={profileData?.mobileNumber}
                           readOnly
                           className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         />
@@ -1050,7 +1062,7 @@ export default function EditProfile() {
                 <label className="block text-sm font-medium text-gray-700">Gender <span className="text-red-500">*</span></label>
                 <select
                   name="gender"
-                  value={profileData.gender}
+                  value={profileData?.gender}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 >
@@ -1080,7 +1092,7 @@ export default function EditProfile() {
                     className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
                   />
                 ) : (<img
-                  src={profileData.profilePhoto}
+                  src={profileData?.profilePhoto}
                   alt="Profile"
                   className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
                 />)}
@@ -1096,12 +1108,12 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="role"
-                  value={profileData.presentCompany?.role || ''}
+                  value={profileData?.presentCompany?.role || ''}
                   onChange={(e) =>
                     setProfileData({
                       ...profileData,
                       presentCompany: {
-                        ...profileData.presentCompany,
+                        ...profileData?.presentCompany,
                         role: e.target.value,
                       },
                     })
@@ -1114,7 +1126,7 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="companyName"
-                  value={profileData.presentCompany?.companyName || ''}
+                  value={profileData?.presentCompany?.companyName || ''}
                   onChange={handlePresentChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
@@ -1146,12 +1158,12 @@ export default function EditProfile() {
                   <input
                     type="text"
                     name="companyEmail"
-                    value={profileData.presentCompany?.companyEmail || ''}
+                    value={profileData?.presentCompany?.companyEmail || ''}
                     onChange={(e) =>
                       setProfileData({
                         ...profileData,
                         presentCompany: {
-                          ...profileData.presentCompany,
+                          ...profileData?.presentCompany,
                           companyEmail: e.target.value,
                         },
                       })
@@ -1198,7 +1210,7 @@ export default function EditProfile() {
                         </label>
                         <input
                           type="email"
-                          value={profileData.presentCompany.companyEmail}
+                          value={profileData?.presentCompany.companyEmail}
                           readOnly
                           className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         />
@@ -1243,12 +1255,12 @@ export default function EditProfile() {
                   type="number"
                   name="yearsOfExperience"
                   min="0"
-                  value={profileData.presentCompany?.yearsOfExperience || ''}
+                  value={profileData?.presentCompany?.yearsOfExperience || ''}
                   onChange={(e) =>
                     setProfileData({
                       ...profileData,
                       presentCompany: {
-                        ...profileData.presentCompany,
+                        ...profileData?.presentCompany,
                         yearsOfExperience: e.target.value,
                       },
                     })
@@ -1261,7 +1273,7 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="location"
-                  value={profileData.presentCompany?.location || ''}
+                  value={profileData?.presentCompany?.location || ''}
                   onChange={handlePresentChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
@@ -1285,12 +1297,12 @@ export default function EditProfile() {
                   type="number"
                   name="currentCTC"
                   min="0"
-                  value={profileData.presentCompany?.currentCTC || ''}
+                  value={profileData?.presentCompany?.currentCTC || ''}
                   onChange={(e) =>
                     setProfileData({
                       ...profileData,
                       presentCompany: {
-                        ...profileData.presentCompany,
+                        ...profileData?.presentCompany,
                         currentCTC: e.target.value,
                       },
                     })
@@ -1303,7 +1315,7 @@ export default function EditProfile() {
 
             {/* Education Section */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education <span className="text-red-500">*</span></h3>
-            {profileData.education.map((edu, index) => (
+            {profileData?.education.map((edu, index) => (
               <div key={index} className="mt-3 flex items-center gap-6 flex-col sm:flex-row">
                 <div className="w-full sm:flex-1">
                   <label className="block text-sm font-medium text-gray-700">Level</label>
@@ -1312,7 +1324,7 @@ export default function EditProfile() {
                     name="level"
                     value={edu.level}
                     onChange={(e) => {
-                      const updatedEducation = [...profileData.education];
+                      const updatedEducation = [...profileData?.education];
                       updatedEducation[index].level = e.target.value;
                       setProfileData({ ...profileData, education: updatedEducation });
                     }}
@@ -1326,7 +1338,7 @@ export default function EditProfile() {
                     name="schoolName"
                     value={edu.schoolName}
                     onChange={(e) => {
-                      const updatedEducation = [...profileData.education];
+                      const updatedEducation = [...profileData?.education];
                       updatedEducation[index].schoolName = e.target.value;
                       setProfileData({ ...profileData, education: updatedEducation });
                     }}
@@ -1341,7 +1353,7 @@ export default function EditProfile() {
                       name="yearOfPassing"
                       value={edu.yearOfPassing}
                       onChange={(e) => {
-                        const updatedEducation = [...profileData.education];
+                        const updatedEducation = [...profileData?.education];
                         updatedEducation[index].yearOfPassing = e.target.value;
                         setProfileData({ ...profileData, education: updatedEducation });
                       }}
@@ -1409,7 +1421,7 @@ export default function EditProfile() {
 
             {/* Experience Section */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Experience</h3>
-            {profileData.experience.map((exp, index) => (
+            {profileData?.experience.map((exp, index) => (
               <div key={index} className="mt-3 flex items-center gap-6 flex-col sm:flex-row">
                 <div className="w-full sm:flex-1">
                   <label className="block text-sm font-medium text-gray-700">Company Name</label>
@@ -1418,7 +1430,7 @@ export default function EditProfile() {
                     name="companyName"
                     value={exp.companyName || ''}
                     onChange={(e) => {
-                      const updatedExperience = [...profileData.experience];
+                      const updatedExperience = [...profileData?.experience];
                       updatedExperience[index].companyName = e.target.value;
                       setProfileData({ ...profileData, experience: updatedExperience });
                     }}
@@ -1432,7 +1444,7 @@ export default function EditProfile() {
                     name="position"
                     value={exp.position || ''}
                     onChange={(e) => {
-                      const updatedExperience = [...profileData.experience];
+                      const updatedExperience = [...profileData?.experience];
                       updatedExperience[index].position = e.target.value;
                       setProfileData({ ...profileData, experience: updatedExperience });
                     }}
@@ -1448,7 +1460,7 @@ export default function EditProfile() {
                       name="yearsOfExperience"
                       value={exp.yearsOfExperience || ''}
                       onChange={(e) => {
-                        const updatedExperience = [...profileData.experience];
+                        const updatedExperience = [...profileData?.experience];
                         updatedExperience[index].yearsOfExperience = e.target.value;
                         setProfileData({ ...profileData, experience: updatedExperience });
                       }}
@@ -1516,7 +1528,7 @@ export default function EditProfile() {
 
             {/* Projects*/}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Project</h3>
-            {profileData.project.map((project, index) => (
+            {profileData?.project.map((project, index) => (
               <div key={index} className="relative mt-3 flex flex-col gap-6 p-4 border rounded-lg shadow-md bg-white">
 
                 {/* Delete Button in the Top-Right Corner */}
@@ -1535,7 +1547,7 @@ export default function EditProfile() {
                       name="projectName"
                       value={project.projectName || ''}
                       onChange={(e) => {
-                        const updatedProjects = [...profileData.project];
+                        const updatedProjects = [...profileData?.project];
                         updatedProjects[index].projectName = e.target.value;
                         setProfileData({ ...profileData, project: updatedProjects });
                       }}
@@ -1551,7 +1563,7 @@ export default function EditProfile() {
                       name="repoLink"
                       value={project.repoLink || ''}
                       onChange={(e) => {
-                        const updatedProjects = [...profileData.project];
+                        const updatedProjects = [...profileData?.project];
                         updatedProjects[index].repoLink = e.target.value;
                         setProfileData({ ...profileData, project: updatedProjects });
                       }}
@@ -1568,7 +1580,7 @@ export default function EditProfile() {
                       name="liveLink"
                       value={project.liveLink || ''}
                       onChange={(e) => {
-                        const updatedProjects = [...profileData.project];
+                        const updatedProjects = [...profileData?.project];
                         updatedProjects[index].liveLink = e.target.value;
                         setProfileData({ ...profileData, project: updatedProjects });
                       }}
@@ -1586,7 +1598,7 @@ export default function EditProfile() {
                       name="details"
                       value={project.details || ''}
                       onChange={(e) => {
-                        const updatedProjects = [...profileData.project];
+                        const updatedProjects = [...profileData?.project];
                         updatedProjects[index].details = e.target.value;
                         setProfileData({ ...profileData, project: updatedProjects });
                       }}
@@ -1674,7 +1686,7 @@ export default function EditProfile() {
 
             {/* Preferences */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Preferences</h3>
-            {profileData.preferences.map((preference, index) => (
+            {profileData?.preferences.map((preference, index) => (
               <div key={index} className="mt-3 flex flex-col gap-2">
                 <div className="flex items-center gap-6 flex-col sm:flex-row">
                   {/* Preferred Company Name with Suggestions */}
@@ -1824,12 +1836,12 @@ export default function EditProfile() {
                   <input
                     type="text"
                     name={link}
-                    value={profileData.links?.[link] || ''}
+                    value={profileData?.links?.[link] || ''}
                     onChange={(e) =>
                       setProfileData({
                         ...profileData,
                         links: {
-                          ...profileData.links,
+                          ...profileData?.links,
                           [link]: e.target.value,
                         },
                       })
@@ -1845,7 +1857,7 @@ export default function EditProfile() {
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Achievements</h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="col-span-2">
-                {profileData.achievements.map((achievement, index) => (
+                {profileData?.achievements.map((achievement, index) => (
                   <div key={index} className="flex items-center mb-2">
                     <input
                       type="text"
@@ -1879,7 +1891,7 @@ export default function EditProfile() {
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Skills <span className="text-red-500">*</span></h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="col-span-2 flex flex-wrap gap-4">
-                {profileData.skills.map((skill, index) => (
+                {profileData?.skills.map((skill, index) => (
                   <div key={index} className="flex items-center mb-2">
                     <input
                       type="text"
@@ -1914,30 +1926,85 @@ export default function EditProfile() {
             {/* Resume Link */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Upload Resume <span className="text-red-500">*</span></h3>
             <div className="mt-3">
-              {/* <input
-                type="text"
-                name="resume"
-                value={profileData.resume || ''}
-                onChange={handleChange}
-                onBlur={validation}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-              /> */}
               <input
-          type="file"
-          name="resume"
-          accept=".pdf,.docx,.txt" // You can specify which file types to allow
-          onChange={handleResumeChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-        />
+                type="file"
+                name="resume"
+                accept=".pdf,.docx,.txt" // You can specify which file types to allow
+                onChange={handleResumeChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+              />
+              <div className="mt-3">
+                {profileData?.resume ? (
+                  <div>
+                    {/* Button to open the modal and view resume */}
+                    <button
+                      type="button"
+                      onClick={openModal}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:from-indigo-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2"
+                    >
+                      <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                      View Uploaded Resume
+                    </button>
+                  </div>
+                ) : (
+                  <div className="mt-1 block w-full p-2">No resume uploaded</div>
+                )}
+              </div>
             </div>
 
+{/* Resume Modal */}
+{openResume && (
+                <Transition.Root show={openResume} as={Fragment}>
+                  <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={handleCloseModal}>
+                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto mt-4">
+                      <div className="flex min-h-full items-center justify-center p-2 text-center sm:items-center sm:p-0">
+                        <Transition.Child
+                          as={Fragment}
+                          enter="ease-out duration-300"
+                          enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                          enterTo="opacity-100 translate-y-0 sm:scale-100"
+                          leave="ease-in duration-200"
+                          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        >
+                          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:max-w-3xl w-full sm:h-auto h-3/4 p-6">
+                            <div className="sm:flex sm:items-start">
+                              <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                  Uploaded Resume
+                                </Dialog.Title>
+                              </div>
+                            </div>
+                            <div className="mt-3">
+                              {/* Display the Base64 resume as an embedded PDF */}
+                              <iframe
+                                src={`data:application/pdf;base64,${profileData?.resume}`}
+                                width="100%"
+                                height="500px"
+                                title="Resume"
+                              ></iframe>
+                            </div>
+                            {/* Close Button */}
+                            <button
+                              onClick={handleCloseModal}
+                              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                            >
+                              <FaTimes className="w-6 h-6" />
+                            </button>
+                          </Dialog.Panel>
+                        </Transition.Child>
+                      </div>
+                    </div>
+                  </Dialog>
+                </Transition.Root>
+              )}
 
             {/* About Me */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">About Me <span className="text-red-500">*</span></h3>
             <div className="mt-3">
               <textarea
                 name="aboutMe"
-                value={profileData.aboutMe || ''}
+                value={profileData?.aboutMe || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 rows="4"

@@ -9,7 +9,7 @@ import ReportJob from './Post/ReportJob';
 import SidebarNavigation from '../components/SidebarNavigation';
 import busi from "../assets/company.png";
 import person from "../assets/person.png";
-import { UserPlus, UserX } from "lucide-react";
+import { Eye, UserPlus, UserX } from "lucide-react";
 
 export default function Search() {
     const location = useLocation();
@@ -306,31 +306,65 @@ export default function Search() {
                                                     </div>
 
                                                     {/* Action Button */}
-                                                    <div>
-                                                        {isFollowing ? (
+                                                    <div className='hidden sm:block'>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleShowJob(user._id);
+                                                            }}
+                                                            className="mr-2 mb-2 gap-1 px-4 py-2 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 text-white shadow hover:bg-indigo-700 text-xs sm:text-sm"
+                                                        >
+                                                            <Eye size={17} /> {/* UserPlus icon */}
+                                                            Posted Jobs
+                                                        </button>
+                                                        {!isFollowing && (
                                                             <button
                                                                 onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    handleShowJob(user._id)
-                                                                }}
-                                                                className="bg-indigo-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-md shadow hover:bg-indigo-700 text-xs sm:text-sm"
-                                                            >
-                                                                Posted Job
-                                                            </button>
-                                                        ) : (
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
+                                                                    e.stopPropagation(); // Prevent event propagation
                                                                     handleFollow(user._id); // Follow the user
-                                                                    setFollowingStatus((prevStatus) => ({ ...prevStatus, [user._id]: true })); // Update state to show "Posted Job"
+                                                                    setFollowingStatus((prevStatus) => ({
+                                                                        ...prevStatus,
+                                                                        [user._id]: true, // Update state to show the user is now followed
+                                                                    }));
                                                                 }}
-                                                                className="gap-1 px-1 py-1 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 sm:py-2 sm:px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                                                <UserPlus size={17} />
+                                                                className="gap-1 px-4 py-2 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 sm:px-4 sm:py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                            >
+                                                                <UserPlus size={17} /> {/* UserPlus icon */}
                                                                 Follow
                                                             </button>
                                                         )}
                                                     </div>
+
                                                 </div>
+                                                {/* Action Button */}
+                                                <div className='sm:hidden flex items-center justify-center mt-4 gap-1'>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleShowJob(user._id);
+                                                            }}
+                                                            className="gap-1 px-4 py-2 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 text-white shadow hover:bg-indigo-700 text-xs sm:text-sm"
+                                                        >
+                                                            <Eye size={18} /> {/* UserPlus icon */}
+                                                            Posted Jobs
+                                                        </button>
+                                                        {!isFollowing && (
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation(); // Prevent event propagation
+                                                                    handleFollow(user._id); // Follow the user
+                                                                    setFollowingStatus((prevStatus) => ({
+                                                                        ...prevStatus,
+                                                                        [user._id]: true, // Update state to show the user is now followed
+                                                                    }));
+                                                                }}
+                                                                className="gap-1 px-4 py-2 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 sm:px-4 sm:py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                            >
+                                                                <UserPlus size={17} /> {/* UserPlus icon */}
+                                                                Follow
+                                                            </button>
+                                                        )}
+                                                    </div>
                                             </div>
 
                                         );
@@ -357,47 +391,45 @@ export default function Search() {
 
                                             {/* Modal Content */}
                                             <div className="overflow-auto max-h-[70vh] p-4 hide-scrollbar">
-  {jobs.length > 0 ? (
-    <ul className="space-y-2">
-      {jobs.map((job) => (
-        <li
-          key={job._id}
-          onClick={() => job.status === "active" && handleViewDetails(job._id)}
-          className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${
-            job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
-          }`}
-        >
-          <img
-            src={job.companyLogoUrl || busi}
-            alt={job.companyName}
-            className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
-          />
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
-              <span
-                className={`px-2 py-1 text-xs font-medium rounded-full ${
-                  job.status === "active"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-600"
-                }`}
-              >
-                {job.status === "active" ? "Active" : "Inactive"}
-              </span>
-            </div>
-            <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
-            <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
-            <p className="text-sm sm:text-base text-gray-500">
-              End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>No jobs posted by this user.</p>
-  )}
-</div>
+                                                {jobs.length > 0 ? (
+                                                    <ul className="space-y-2">
+                                                        {jobs.map((job) => (
+                                                            <li
+                                                                key={job._id}
+                                                                onClick={() => job.status === "active" && handleViewDetails(job._id)}
+                                                                className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
+                                                                    }`}
+                                                            >
+                                                                <img
+                                                                    src={job.companyLogoUrl || busi}
+                                                                    alt={job.companyName}
+                                                                    className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                                                                />
+                                                                <div className="flex-1">
+                                                                    <div className="flex justify-between items-center">
+                                                                        <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                                                                        <span
+                                                                            className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active"
+                                                                                ? "bg-green-100 text-green-600"
+                                                                                : "bg-red-100 text-red-600"
+                                                                                }`}
+                                                                        >
+                                                                            {job.status === "active" ? "Active" : "Inactive"}
+                                                                        </span>
+                                                                    </div>
+                                                                    <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
+                                                                    <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                                                                    <p className="text-sm sm:text-base text-gray-500">
+                                                                        End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
+                                                                    </p>
+                                                                </div>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                ) : (
+                                                    <p>No jobs posted by this user.</p>
+                                                )}
+                                            </div>
 
                                         </div>
                                     </div>

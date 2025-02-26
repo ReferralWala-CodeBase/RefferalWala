@@ -367,7 +367,7 @@ export default function PostJob() {
                   Experience Required(Yrs)
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   id="experienceRequired"
                   name="experienceRequired"
                   value={formData.experienceRequired}

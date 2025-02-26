@@ -29,6 +29,9 @@ export default function PostedJobsCard() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);  // Current page
+const [totalPages, setTotalPages] = useState(1); // Total pages
+const limit = 9; // Number of jobs per page
   const [searchQuery, setSearchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState("");
   const [companySearchTerm, setCompanySearchTerm] = useState("");
@@ -40,11 +43,8 @@ export default function PostedJobsCard() {
   const [isCompanyDropdownVisible, setCompanyDropdownVisible] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState("");
   const [filterVisible, setFilterVisible] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [followingList, setFollowingList] = useState([]);
   const [wishlistJobs, setWishlistJobs] = useState([]);
   const location = useLocation();
-  const [profileData, setProfileData] = useState(null);
   const [profileIncomplete, setProfileIncomplete] = useState(false);
   const bearerToken = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
@@ -70,6 +70,7 @@ export default function PostedJobsCard() {
     setSelectedCompanies([]);
     setSelectedExperience("");
     setSelectedCtc("");
+    setPage(1);
   };
 
   const isAnyFilterSelected =
@@ -101,14 +102,25 @@ export default function PostedJobsCard() {
   const handleLocationFilter = (jobLocation, selectedLocations) => {
     // If no location is selected, return true (no filtering)
     if (!selectedLocations || selectedLocations.length === 0) return true;
-
-    // Lowercase the job location for case-insensitive comparison
-    const lowerJobLocation = jobLocation.toLowerCase();
-
-    // Check if the job's location contains any selected city's or state's name
+  
+    // Format the jobLocation by adding a space after the comma if needed
+    const formattedJobLocation = jobLocation
+      ? jobLocation
+          .split(",") // Split location by commas
+          .map(part => part.trim()) // Trim any extra spaces around city/state parts
+          .join(", ") // Rejoin with proper space after comma
+      : "";
+  
+    // Lowercase the formatted job location for case-insensitive comparison
+    const lowerJobLocation = formattedJobLocation.toLowerCase();
+  
+    // Check if the job location matches any selected location exactly
     return selectedLocations.some(loc => {
-      return lowerJobLocation.includes(loc.city.toLowerCase()) ||
-        lowerJobLocation.includes(loc.state.toLowerCase());
+      // Format selected location similarly (city, state format with space after comma)
+      const formattedSelectedLocation = `${loc.city.trim()}, ${loc.state.trim()}`.toLowerCase();
+  
+      // Compare formatted job location with the formatted selected location
+      return lowerJobLocation === formattedSelectedLocation;
     });
   };
 
@@ -194,61 +206,62 @@ export default function PostedJobsCard() {
 
   useEffect(() => {
     const fetchJobs = async () => {
-
       try {
-        const response = await fetch(`${Fronted_API_URL}/job/all`, {
+        setLoading(true);
+  
+        const formattedSelectedLocations = selectedLocations.map(loc => {
+          return `${loc.city.trim()}, ${loc.state.trim()}`;
+        });
+  
+        // Construct query parameters from filter states
+        const params = new URLSearchParams({
+          page,
+          limit,
+          companies: selectedCompanies.join(','),
+          experience: selectedExperience || "",  // Pass the selected experience
+          ctc: selectedCtc || "",  // Pass the selected CTC
+          searchQuery: searchQuery || "",  // Include the search query if available
+        });
+  
+
+        formattedSelectedLocations.forEach(location => {
+          params.append('locations', location);
+        });
+  
+        const response = await fetch(`${Fronted_API_URL}/job/all?${params.toString()}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-
+  
         if (!response.ok) {
           throw new Error('Failed to fetch jobs');
         }
-
+  
         const data = await response.json();
-        // const activeJobs = data.filter((job) => job.status === 'active');
-        // setJobs(activeJobs);
-        setJobs(data);
+        setJobs(data.jobPosts);  // Update job list
+        setTotalPages(data.totalPages);  // Store total pages from API response
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchJobs();
-  }, [Fronted_API_URL]);
+  }, [
+    Fronted_API_URL,
+    page,
+    selectedLocations,
+    selectedCompanies,
+    selectedExperience,
+    selectedCtc,
+    searchQuery,
+    limit
+  ]);
+  
 
-  // Fetch the list of users the logged-in user is following
-  useEffect(() => {
-    const fetchFollowingList = async () => {
-      if (!userId) return;
-
-      try {
-        const response = await fetch(`${Fronted_API_URL}/user/${userId}/following`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch following users');
-        }
-        const data = await response.json();
-        setFollowingList(data.following || []); // Set the list of followed users
-
-      } catch (error) {
-        console.error("Error fetching following list:", error);
-      }
-    };
-
-    fetchFollowingList();
-  }, [Fronted_API_URL, bearerToken, userId]);
 
   //wishlist functions--
   useEffect(() => {
@@ -273,8 +286,8 @@ export default function PostedJobsCard() {
         console.error("Error fetching wishlist jobs:", error);
       }
     };
-    fetchWishlistJobs();
-  }, []);
+    if (userId && bearerToken) fetchWishlistJobs(); // Ensure they exist before calling
+  }, [userId, bearerToken]);
 
 
   const handleAddToWishlist = async (jobId) => {
@@ -338,89 +351,6 @@ export default function PostedJobsCard() {
     }
   };
 
-  // Handle follow request
-  const handleFollow = async (targetUserId) => {
-    if (!userId) return;
-
-    try {
-      const response = await fetch(
-        `${Fronted_API_URL}/user/follow/${targetUserId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        }
-      );
-      if (response.ok) {
-        setFollowingList((prevList) => [...prevList, { _id: targetUserId }]); // Add the followed user to the list
-        toast.success("Followed Successfully.");
-      } else {
-        console.error("Follow request failed");
-        const errorData = await response.json();
-        throw new Error(errorData.message || response.statusText);
-      }
-    } catch (error) {
-      console.error("Error following the user:", error);
-    }
-  };
-
-  // Handle unfollow request
-  const handleUnfollow = async (targetUserId) => {
-    if (!userId) return;
-
-    try {
-      const response = await fetch(
-        `${Fronted_API_URL}/user/unfollow/${targetUserId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        }
-      );
-      if (response.ok) {
-        setFollowingList((prevList) => prevList.filter(user => user._id !== targetUserId));
-        toast.success("Unfollowed Successfully.");
-      } else {
-        console.error("Unfollow request failed");
-        const errorData = await response.json();
-        if (response.status === 401) {
-          // Unauthorized, remove the token and navigate to login
-          localStorage.removeItem('token');
-          navigate('/user-login');
-        } else {
-          throw new Error(errorData.message || response.statusText);
-        }
-      }
-    } catch (error) {
-      console.error("Error unfollowing the user:", error);
-    }
-  };
-
-
-  const fetchProfileData = async () => {
-    try {
-      const bearerToken = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      const response = await fetch(`${Fronted_API_URL}/user/profile/${userId}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      return await response.json(); // Return the fetched data directly
-    } catch (error) {
-      console.error('Error fetching profile data:', error);
-      toast.error(error.message);
-      throw error; // Rethrow the error to handle it in the calling function
-    }
-  };
 
   // const handleView = async (jobId) => {
   //   if (localStorage.getItem('token') === null) {
@@ -477,6 +407,30 @@ export default function PostedJobsCard() {
     return false;
   }
 
+  const renderPagination = () => {
+    let pages = [];
+    const maxPagesToShow = 3;
+  
+    if (totalPages <= maxPagesToShow + 2) {
+      // Show all pages if total pages are small
+      pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+    } else {
+      if (page <= maxPagesToShow) {
+        // Show first 3 pages + "..." + last page
+        pages = [...Array(maxPagesToShow).keys()].map((i) => i + 1);
+        pages.push("...", totalPages);
+      } else if (page >= totalPages - maxPagesToShow + 1) {
+        // Show first page + "..." + last 3 pages
+        pages = [1, "...", ...Array(maxPagesToShow).keys().map((i) => totalPages - maxPagesToShow + 1 + i)];
+      } else {
+        // Show first page + "..." + current, previous, next + "..." + last page
+        pages = [1, "...", page - 1, page, page + 1, "...", totalPages];
+      }
+    }
+  
+    return pages;
+  };
+  
 
 
   const isLoggedIn = !!localStorage.getItem('token');
@@ -889,15 +843,15 @@ export default function PostedJobsCard() {
               >
                 {Object.entries(filteredJobs).map(([id, job]) => (
                   <motion.li
-                    key={job._id}
+                    key={job?._id}
                     className="relative max-w-lg w-full rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white cursor-pointer"
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.3 }}
-                    onClick={() => handleView(job._id)}
+                    onClick={() => handleView(job?._id)}
                   >
                     <div className="absolute top-2 left-2 z-10">
                       <button className="flex items-center justify-center w-8 h-8 hover:text-red-600 hover: transition">
-                        {wishlistJobs.includes(job._id) ? (
+                        {wishlistJobs.includes(job?._id) ? (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
@@ -905,7 +859,7 @@ export default function PostedJobsCard() {
                             className="w-8 h-8 text-red-500"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleRemoveFromWishlist(job._id)
+                              handleRemoveFromWishlist(job?._id)
                             }}
                           >
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -918,7 +872,7 @@ export default function PostedJobsCard() {
                             className="w-5 h-5 text-white"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleAddToWishlist(job._id)
+                              handleAddToWishlist(job?._id)
                             }}
                           >
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -933,8 +887,8 @@ export default function PostedJobsCard() {
                     <div className="absolute mt-8 top-2 right-2">
                       <div className="bg-white rounded-full shadow-md p-1">
                         <img
-                          src={job.companyLogoUrl}
-                          alt={`${job.companyName} Logo`}
+                          src={job?.companyLogoUrl}
+                          alt={`${job?.companyName} Logo`}
                           className="h-20 w-20 object-cover rounded-full"
                         />
                       </div>
@@ -944,15 +898,15 @@ export default function PostedJobsCard() {
                     <div className="p-3 max-w-lg w-full">
                       {/* Work Mode Tag */}
                       <span className="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full inline-block mb-2">
-                        {job.workMode}
+                        {job?.workMode}
                       </span>
                       <span className="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full inline-block mx-2 mb-2">
-                        {job.employmentType}
+                        {job?.employmentType}
                       </span>
 
                       {/* Job Title */}
-                      <h3 onClick={() => handleView(job._id)} className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer">
-                        {job.jobRole}
+                      <h3 onClick={() => handleView(job?._id)} className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer">
+                        {job?.jobRole}
                       </h3>
 
                       {/* Company Name */}
@@ -962,7 +916,7 @@ export default function PostedJobsCard() {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
                           </svg>
 
-                          <p className="text-sm text-gray-500 mt-1">{job.companyName}</p>
+                          <p className="text-sm text-gray-500 mt-1">{job?.companyName}</p>
                         </div>
 
                         <div className='flex gap-1 items-center'>
@@ -970,7 +924,7 @@ export default function PostedJobsCard() {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
                           </svg>
 
-                          <p className="text-xs text-gray-700 mt-1">{job.experienceRequired} yrs</p>
+                          <p className="text-xs text-gray-700 mt-1">{job?.experienceRequired} yrs</p>
                         </div>
                       </div>
 
@@ -979,7 +933,7 @@ export default function PostedJobsCard() {
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                           </svg>
-                          <p className="text-sm text-gray-500 mt-1">{job.ctc}</p>
+                          <p className="text-sm text-gray-500 mt-1">{job?.ctc}</p>
                         </div>
 
                         <div className='flex gap-1 items-center'>
@@ -987,7 +941,7 @@ export default function PostedJobsCard() {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                           </svg>
-                          <p className="text-xs text-gray-700 mt-1">{job.location}</p>
+                          <p className="text-xs text-gray-700 mt-1">{job?.location}</p>
                         </div>
                       </div>
                     </div>
@@ -997,7 +951,7 @@ export default function PostedJobsCard() {
                     <div className='flex justify-between items-center'>
                       <div className="mt-1 px-2">
                         <button
-                          onClick={() => handleView(job._id)}
+                          onClick={() => handleView(job?._id)}
                           className="flex text-xs gap-2 items-center justify-center px-4 py-1 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
                         >
                           View details
@@ -1022,7 +976,7 @@ export default function PostedJobsCard() {
                         <button className='p-1 text-xs rounded-full bg-gray-200'
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleShare(job._id)
+                            handleShare(job?._id)
                           }}>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
@@ -1034,6 +988,46 @@ export default function PostedJobsCard() {
                 ))}
               </ul>
             )}
+     <div className="flex justify-center mt-4 gap-2">
+  {/* Previous Button */}
+  <button
+    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+    disabled={page === 1}
+    className="px-3 py-1 bg-gray-200 rounded-md disabled:opacity-50"
+  >
+    Previous
+  </button>
+
+  {/* Render Pagination */}
+  {renderPagination().map((pageNum, index) =>
+    pageNum === "..." ? (
+      <span key={index} className="px-3 py-1">
+        ...
+      </span>
+    ) : (
+      <button
+        key={pageNum}
+        onClick={() => setPage(pageNum)}
+        className={`px-3 py-1 rounded-md transition ${
+          page === pageNum ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+        }`}
+      >
+        {pageNum}
+      </button>
+    )
+  )}
+
+  {/* Next Button */}
+  <button
+    onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+    disabled={page === totalPages}
+    className="px-3 py-1 bg-gray-200 rounded-md disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
+
+
           </div>
 
 
