@@ -123,12 +123,12 @@ exports.getAllJobPosts = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const { locations, companies, experience, ctc, searchQuery } = req.query;
-     
+
     let decodedLocations = [];
     if (locations) {
       // Check if locations is an array or a single string
       const locationArray = Array.isArray(locations) ? locations : [locations];
-      
+
       // Decode and split locations into an array
       decodedLocations = locationArray
         .map(loc => decodeURIComponent(loc).split('%2C').map(locPart => locPart.trim()).join(', ')); // Format and decode each location
@@ -142,10 +142,10 @@ exports.getAllJobPosts = async (req, res) => {
       { endDate: { $lt: currentDate }, status: 'active' },
       { $set: { status: 'inactive' } }
     );
-    
+
     // Build filter conditions based on query parameters
     let filterConditions = { status: 'active' };
-   
+
     if (decodedLocations.length > 0) {
       // Ensure that the filter uses full location names (city, state)
       filterConditions.location = { $in: decodedLocations };
@@ -162,7 +162,7 @@ exports.getAllJobPosts = async (req, res) => {
         "6-10 years": [6, 10],
         "10+ years": [10, Infinity]
       };
-    
+
       const [minExp, maxExp] = experienceRangeMapping[experience] || [0, Infinity];
 
       // Adjust the filtering to handle the experience string properly
@@ -196,7 +196,7 @@ exports.getAllJobPosts = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-      console.log("Job Posts Retrieved: ", jobPosts);
+    console.log("Job Posts Retrieved: ", jobPosts);
     // Get total active job count after applying filters (for frontend pagination)
     const totalJobs = await JobPost.countDocuments(filterConditions);
 
@@ -639,12 +639,19 @@ exports.updateApplicantStatus = async (req, res) => {
     applicantStatus.employer_doc = uploadedFileUrl;
     await applicantStatus.save();
 
+    if (uploadedFileUrl) {
+      // Find the user and increment the hiresCount by 1
+      await User.findByIdAndUpdate(applicantId, {
+        $inc: { getreferral: 1 } // Increment the hiresCount field by 1
+      });
+    }
+
     // Optionally, create a notification about the status change
     const user = await User.findById(applicantId);
     if (user) {
       const notification = new Notification({
         user: applicantId,
-        message: `Your application status for ${jobPost.jobRole} at ${jobPost.companyName} has been updated to ${status}.`,     post: jobPost._id,
+        message: `Your application status for ${jobPost.jobRole} at ${jobPost.companyName} has been updated to ${status}.`, post: jobPost._id,
       });
 
       await notification.save();
@@ -700,6 +707,13 @@ exports.updateEmployeeDocument = async (req, res) => {
     // Update document URL
     applicantStatus.employee_doc = documentUrl;
     await applicantStatus.save();
+
+    const jobPosterUserId = job.user; // Assuming the job model has a field 'userId' referring to the poster's user jobPostId
+
+    // Increment the referralsCount of the job poster by 1
+    await User.findByIdAndUpdate(jobPosterUserId, {
+      $inc: { givereferral: 1 } // Increment the givereferral by 1
+    }, { new: true }); // The 'new' option returns the updated document
 
     res.status(200).json({ message: "Document updated successfully", documentUrl });
   } catch (error) {

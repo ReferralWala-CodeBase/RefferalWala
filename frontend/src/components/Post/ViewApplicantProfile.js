@@ -33,6 +33,7 @@ export default function ViewApplicantProfile() {
   const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
   const [open, setOpen] = useState(false);
   const cancelButtonRef = React.useRef(null);
+  const [selectedDocUpload, setSelectedDocUpload] = useState(false);
 
   // Open modal function
   const openModal = () => {
@@ -98,8 +99,11 @@ export default function ViewApplicantProfile() {
 
         if (!response.ok) throw new Error('Failed to fetch status');
 
-        const { status } = await response.json();
-        setStatus(status); // Set current status
+        const data = await response.json();
+        const { status } = data;
+        setStatus(status);
+        setSelectedDocUpload(!!data?.employer_doc);
+        setUploadedFileUrl(data?.employer_doc);
       } catch (error) {
         console.error('Error fetching status:', error);
       }
@@ -112,7 +116,7 @@ export default function ViewApplicantProfile() {
   const handleStatusChange = async (newStatus) => {
     if (newStatus === "selected") {
       setIsDialogOpen(true); // Open dialog before proceeding
-      return;
+      // return;
     }
 
     await updateStatus(newStatus, null);
@@ -344,6 +348,31 @@ export default function ViewApplicantProfile() {
               </div>
             </div>
           </div>
+
+          <div className="flex justify-end mb-4">
+            {status === "selected" && !uploadedFileUrl && (
+              <button
+                onClick={() => setIsDialogOpen(true)} // Show dialog to upload file
+                className="ml-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                disabled={updatingStatus}
+              >
+                Upload Document
+              </button>
+            )}
+
+            {/* If the document is uploaded, show 'View Document' button */}
+            {selectedDocUpload && (
+              <button
+                onClick={() => window.open(uploadedFileUrl, "_blank")} // Open the document in a new tab
+                className="ml-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                disabled={updatingStatus}
+              >
+                View Document
+              </button>
+            )}
+          </div>
+
+
 
           {isModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
