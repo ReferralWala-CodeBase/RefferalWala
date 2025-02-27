@@ -105,12 +105,12 @@ export default function FollowerList() {
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 mx-auto">
+        <div className="w-10/12 md:w-3/4 mx-auto ">
           <div className="mt-2">
             {loading ? (
               <Loader />
             ) : error ? (
-              <ServerError/>
+              <ServerError />
             ) : followers.length === 0 ? (
               <div className="flex justify-center items-center h-[70vh] mx-auto text-center">
                 <div>
@@ -126,63 +126,49 @@ export default function FollowerList() {
                 </div>
               </div>
             ) : (
-              <div className="max-w-7xl">
+              <div className="max-w-7xl md:mr-2">
                 <div className="hidden md:block">
-                  <table className="min-w-full divide-y divide-gray-300">
-                    <thead>
+                  <table className="min-w-full border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                    <thead className="bg-gray-200/80">
                       <tr>
                         <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Avatar</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"> First Name</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"> Last Name</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-                        {/* <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Action</th> */}
+                        <th className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">First Name</th>
+                        <th className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Last Name</th>
+                        <th className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
+                        <th className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {followers.map((user) => (
-                        <tr key={user?._id}
-                          className='cursor-pointer hover:bg-gray-100'
+                        <tr
+                          key={user?._id}
+                          className="cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                          onClick={() => handleViewUserProfile(user?._id)}
                         >
-                          <td
-                            onClick={() => handleViewUserProfile(user?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                          >
+                          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
                             <img
-                              className="h-11 w-11 rounded-full mx-auto mb-4 border-2 p-1 border-gray-500 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                              className="h-12 w-12 rounded-full mx-auto border-2 border-gray-300 shadow-md hover:shadow-lg transition-shadow duration-300"
                               src={user?.profilePhoto || person}
                               alt="avatar"
                             />
                           </td>
-                          <td
-                            onClick={() => handleViewUserProfile(user?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
-                            {user?.firstName || ''}
+                          <td className="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900">
+                            {user?.firstName || '—'}
                           </td>
-                          <td
-                            onClick={() => handleViewUserProfile(user?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
-                            {user?.lastName || ''}
+                          <td className="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900">
+                            {user?.lastName || '—'}
                           </td>
-                          <td
-                            onClick={() => handleViewUserProfile(user?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                          >
-                            {user?.email || ''}
+                          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
+                            {user?.email || '—'}
                           </td>
-                          {/* <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
+                          <td className="whitespace-nowrap px-4 py-4 text-sm">
                             <button
-                              onClick={() => handleViewUserProfile(user?._id)}
-                              className="text-indigo-600 hover:text-indigo-900"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleShowJob(user?._id);
+                              }}
+                              className="text-indigo-600 hover:text-indigo-900 font-medium transition duration-200"
                             >
-                              View Profile
-                            </button>
-                          </td> */}
-                          <td className="relative py-4 pl-2 pr-2 text-sm font-medium sm:pr-6">
-                            <button onClick={(e) => {
-                              e.stopPropagation();
-                              handleShowJob(user?._id)
-                            }}
-                              className="text-indigo-600 hover:text-indigo-900">
                               View Job Posted
                             </button>
                           </td>
@@ -190,6 +176,7 @@ export default function FollowerList() {
                       ))}
                     </tbody>
                   </table>
+
                 </div>
 
                 {isModalOpen && (
@@ -231,8 +218,8 @@ export default function FollowerList() {
                                     <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
                                     <span
                                       className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active"
-                                          ? "bg-green-100 text-green-600"
-                                          : "bg-red-100 text-red-600"
+                                        ? "bg-green-100 text-green-600"
+                                        : "bg-red-100 text-red-600"
                                         }`}
                                     >
                                       {job.status === "active" ? "Active" : "Inactive"}
@@ -273,16 +260,16 @@ export default function FollowerList() {
                           <p className="text-xs sm:text-sm md:text-base text-gray-500">{user?.email}</p>
                         </div>
                       </div>
-                      <div className="mt-2 text-center">
+                      <div className="mt-2 flex justify-between text-center gap-2">
                         <button
                           onClick={() => handleViewUserProfile(user?._id)}
-                          className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          className="px-3 text-xs font-normal bg-blue-600 py-1 text-white rounded-full"
                         >
                           View Profile
                         </button>
                         <button
                           onClick={() => handleShowJob(user?._id)}
-                          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          className="px-3 text-xs font-normal bg-gray-200 py-1 text-black rounded-full"
                         >
                           Posted Job
                         </button>
