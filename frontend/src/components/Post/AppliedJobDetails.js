@@ -25,7 +25,6 @@ export default function AppliedJobDetails() {
   const [uploading, setUploading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [isDocumentOpen, setIsDocumentOpen] = useState(false);
   const [verifyFile, setVerifyFile] = useState(null);
   const [isFollowing, setIsFollowing] = useState(null);
   const [usertofollow, setUsertofollow] = useState("");
@@ -74,6 +73,7 @@ export default function AppliedJobDetails() {
         const statusData = await statusResponse.json();
         setApplicationStatus(statusData.status);
         setVerified(!!statusData.employee_doc);
+        setEmployeeDoc(statusData.employee_doc);
         setVerifyFile(statusData.employer_doc);
 
       } catch (error) {
@@ -347,7 +347,13 @@ export default function AppliedJobDetails() {
               <div>
                 <p className="text-green-600 font-medium text-center">You have been selected for this job!</p>
                 <button
-                  onClick={() => setIsDocumentOpen(true)}
+                  onClick={() => {
+                    if (verifyFile) {
+                      window.open(verifyFile, "_blank"); // Open the employer's document in a new tab
+                    } else {
+                      toast.error("No document available to view.");
+                    }
+                  }}
                   className="mt-2 mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                   View Selected Document
@@ -358,6 +364,15 @@ export default function AppliedJobDetails() {
                     className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   >
                     {uploading ? "Uploading..." : "Uploading Selected Document"}
+                  </button>
+                )}
+                {/* Show the "View Employee Document" Button if there's a document available */}
+                {verified && (
+                  <button
+                    onClick={() => window.open(employeeDoc, "_blank")} // Open the employee's document in a new tab
+                    className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  >
+                    View Employee Document
                   </button>
                 )}
               </div>
@@ -374,6 +389,38 @@ export default function AppliedJobDetails() {
               </button>
             )}
           </div>
+
+          {/* File Uploading */}
+          {isDialogOpen && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 className="text-lg font-semibold mb-4">Uploading Select Document</h2>
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleFileChange}
+                  className="mb-4 w-full border border-gray-300 p-2 rounded-md"
+                />
+                <div className="flex justify-end space-x-2">
+                  <button
+                    onClick={() => setIsDialogOpen(false)}
+                    className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={uploadAndConfirmSelection}
+                    disabled={!selectedFile || uploading}
+                    className={`px-4 py-2 rounded-md text-white ${uploading || !selectedFile ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+                      }`}
+                  >
+                    {uploading ? "Uploading..." : "Confirm Selection"}
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          )}
 
           <section class="bg-white py-4 antialiased md:py-6">
             <div class="mx-auto px-1 2xl:px-0">

@@ -203,6 +203,14 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  getreferral: {
+    type: Number, // no of time he become employee 
+    default: 0
+  },
+  givereferral: {
+    type: Number,  // user hire another 
+    default: 0
+  },  
   preferredSectors: [
     {
       type: String, 
