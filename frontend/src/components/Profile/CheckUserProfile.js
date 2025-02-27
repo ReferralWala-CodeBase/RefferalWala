@@ -157,8 +157,8 @@ export default function CheckUserProfile() {
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-11/12 md:w-3/4 px-0 sm:px-3 m-auto">
-          <div className="mt-6 flex justify-end mb-2">
+        <div className="w-full md:w-3/4 px-0 sm:px-3 m-auto">
+          {/* <div className="mt-6 flex justify-end mb-2">
             <div>
               {isFollowing && (
                 <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -170,7 +170,7 @@ export default function CheckUserProfile() {
                 {isFollowing ? 'Unfollow' : 'Follow'}
               </button>
             </div>
-          </div>
+          </div> */}
 
           {isModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">

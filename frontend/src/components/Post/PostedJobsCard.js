@@ -1032,6 +1032,7 @@ export default function PostedJobsCard() {
                 </svg>
               </button>
             </div>
+
           </div>
 
 
