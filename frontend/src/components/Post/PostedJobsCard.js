@@ -30,8 +30,8 @@ export default function PostedJobsCard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);  // Current page
-const [totalPages, setTotalPages] = useState(1); // Total pages
-const limit = 9; // Number of jobs per page
+  const [totalPages, setTotalPages] = useState(1); // Total pages
+  const limit = 9; // Number of jobs per page
   const [searchQuery, setSearchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState("");
   const [companySearchTerm, setCompanySearchTerm] = useState("");
@@ -102,23 +102,23 @@ const limit = 9; // Number of jobs per page
   const handleLocationFilter = (jobLocation, selectedLocations) => {
     // If no location is selected, return true (no filtering)
     if (!selectedLocations || selectedLocations.length === 0) return true;
-  
+
     // Format the jobLocation by adding a space after the comma if needed
     const formattedJobLocation = jobLocation
       ? jobLocation
-          .split(",") // Split location by commas
-          .map(part => part.trim()) // Trim any extra spaces around city/state parts
-          .join(", ") // Rejoin with proper space after comma
+        .split(",") // Split location by commas
+        .map(part => part.trim()) // Trim any extra spaces around city/state parts
+        .join(", ") // Rejoin with proper space after comma
       : "";
-  
+
     // Lowercase the formatted job location for case-insensitive comparison
     const lowerJobLocation = formattedJobLocation.toLowerCase();
-  
+
     // Check if the job location matches any selected location exactly
     return selectedLocations.some(loc => {
       // Format selected location similarly (city, state format with space after comma)
       const formattedSelectedLocation = `${loc.city.trim()}, ${loc.state.trim()}`.toLowerCase();
-  
+
       // Compare formatted job location with the formatted selected location
       return lowerJobLocation === formattedSelectedLocation;
     });
@@ -208,11 +208,11 @@ const limit = 9; // Number of jobs per page
     const fetchJobs = async () => {
       try {
         setLoading(true);
-  
+
         const formattedSelectedLocations = selectedLocations.map(loc => {
           return `${loc.city.trim()}, ${loc.state.trim()}`;
         });
-  
+
         // Construct query parameters from filter states
         const params = new URLSearchParams({
           page,
@@ -222,23 +222,23 @@ const limit = 9; // Number of jobs per page
           ctc: selectedCtc || "",  // Pass the selected CTC
           searchQuery: searchQuery || "",  // Include the search query if available
         });
-  
+
 
         formattedSelectedLocations.forEach(location => {
           params.append('locations', location);
         });
-  
+
         const response = await fetch(`${Fronted_API_URL}/job/all?${params.toString()}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-  
+
         if (!response.ok) {
           throw new Error('Failed to fetch jobs');
         }
-  
+
         const data = await response.json();
         setJobs(data.jobPosts);  // Update job list
         setTotalPages(data.totalPages);  // Store total pages from API response
@@ -248,7 +248,7 @@ const limit = 9; // Number of jobs per page
         setLoading(false);
       }
     };
-  
+
     fetchJobs();
   }, [
     Fronted_API_URL,
@@ -260,7 +260,7 @@ const limit = 9; // Number of jobs per page
     searchQuery,
     limit
   ]);
-  
+
 
 
   //wishlist functions--
@@ -410,7 +410,7 @@ const limit = 9; // Number of jobs per page
   const renderPagination = () => {
     let pages = [];
     const maxPagesToShow = 3;
-  
+
     if (totalPages <= maxPagesToShow + 2) {
       // Show all pages if total pages are small
       pages = Array.from({ length: totalPages }, (_, index) => index + 1);
@@ -427,10 +427,10 @@ const limit = 9; // Number of jobs per page
         pages = [1, "...", page - 1, page, page + 1, "...", totalPages];
       }
     }
-  
+
     return pages;
   };
-  
+
 
 
   const isLoggedIn = !!localStorage.getItem('token');
@@ -816,7 +816,7 @@ const limit = 9; // Number of jobs per page
 
 
           {/* Job Cards Section */}
-          <div className="w-full h-[90vh] overflow-y-auto">
+          <div className="w-full h-[90vh] overflow-y-auto custom-scrollbar">
             {/* Conditional View Rendering */}
             {loading ? (
               <Loader />
@@ -988,46 +988,50 @@ const limit = 9; // Number of jobs per page
                 ))}
               </ul>
             )}
-     <div className="flex justify-center mt-4 gap-2">
-  {/* Previous Button */}
-  <button
-    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-    disabled={page === 1}
-    className="px-3 py-1 bg-gray-200 rounded-md disabled:opacity-50"
-  >
-    Previous
-  </button>
+            <div className="flex justify-center items-center mt-6 gap-2 mb-6">
+              {/* Previous Button */}
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="p-2 rounded-full bg-yellow-500 text-white shadow-md transition-all duration-300
+               hover:bg-yellow-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+              </button>
 
-  {/* Render Pagination */}
-  {renderPagination().map((pageNum, index) =>
-    pageNum === "..." ? (
-      <span key={index} className="px-3 py-1">
-        ...
-      </span>
-    ) : (
-      <button
-        key={pageNum}
-        onClick={() => setPage(pageNum)}
-        className={`px-3 py-1 rounded-md transition ${
-          page === pageNum ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-        }`}
-      >
-        {pageNum}
-      </button>
-    )
-  )}
+              {/* Render Pagination */}
+              {renderPagination().map((pageNum, index) =>
+                pageNum === "..." ? (
+                  <span key={index} className="px-3 py-1 text-gray-500">...</span>
+                ) : (
+                  <button
+                    key={pageNum}
+                    onClick={() => setPage(pageNum)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300
+                    ${page === pageNum
+                        ? "bg-blue-600 text-white shadow-lg"
+                        : "bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white"
+                      }`}
+                  >
+                    {pageNum}
+                  </button>
+                )
+              )}
 
-  {/* Next Button */}
-  <button
-    onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-    disabled={page === totalPages}
-    className="px-3 py-1 bg-gray-200 rounded-md disabled:opacity-50"
-  >
-    Next
-  </button>
-</div>
-
-
+              {/* Next Button */}
+              <button
+                onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={page === totalPages}
+                className="p-2 rounded-full bg-yellow-500 text-white shadow-md transition-all duration-300
+               hover:bg-yellow-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </div>
           </div>
 
 
