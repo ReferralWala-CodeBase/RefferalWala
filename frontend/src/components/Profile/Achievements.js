@@ -15,7 +15,7 @@ const Achievements = ({ achievements }) => {
                 {achievements?.length ? (
                     <ul className="text-gray-700 space-y-2 items-center">
                         {visibleAchievements.map((achievement, index) => (
-                            <li key={index} className="text-xs font-normal rounded-full px-2 flex items-center gap-2">
+                            <li key={index} className="text-sm rounded-full px-2 flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-4 h-4 text-green-600">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>

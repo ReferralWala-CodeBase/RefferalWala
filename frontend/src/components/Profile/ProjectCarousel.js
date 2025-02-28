@@ -44,9 +44,9 @@ const ProjectCarousel = ({ projects = [] }) => {
                                     <div>
                                         <h4 className="text-lg font-semibold text-gray-800">{project.projectName || "Project Name"}</h4>
                                         <p className="text-gray-500 text-sm">
-                                            {project.details.length > 20 ? (
+                                            {project.details.length > 50 ? (
                                                 <>
-                                                    {project.details.slice(0, 20)}...
+                                                    {project.details.slice(0, 50)}...
                                                     <button
                                                         onClick={() => openModal(project)}
                                                         className="text-blue-600 text-xs underline ml-1"

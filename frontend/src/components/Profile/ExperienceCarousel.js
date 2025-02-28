@@ -19,11 +19,11 @@ const ExperienceCarousel = ({ experience = [] }) => {
   };
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full max-w-6xl mx-auto mt-3 relative">
       <h3 className="text-small font-semibold text-gray-900 mb-4">Experience</h3>
       {experience.length ? (
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {experience.slice(currentIndex, currentIndex + itemsPerPage).map((exp, index) => (
               <div
                 key={index}

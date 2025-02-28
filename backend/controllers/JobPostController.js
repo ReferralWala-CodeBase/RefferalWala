@@ -134,9 +134,6 @@ exports.getAllJobPosts = async (req, res) => {
         .map(loc => decodeURIComponent(loc).split('%2C').map(locPart => locPart.trim()).join(', ')); // Format and decode each location
     }
 
-    // Log decoded locations for debugging
-    console.log("Decoded Locations: ", decodedLocations);
-
     // Update all expired job posts to inactive
     await JobPost.updateMany(
       { endDate: { $lt: currentDate }, status: 'active' },
@@ -186,8 +183,6 @@ exports.getAllJobPosts = async (req, res) => {
       ];
     }
 
-    // Log filter conditions before querying the database
-    console.log("Filter Conditions: ", filterConditions);
 
     // Retrieve filtered and paginated job posts
     const jobPosts = await JobPost.find(filterConditions)
@@ -195,8 +190,6 @@ exports.getAllJobPosts = async (req, res) => {
       .sort({ createdAt: -1 }) // Sort by newest first
       .skip(skip)
       .limit(limit);
-
-    console.log("Job Posts Retrieved: ", jobPosts);
     // Get total active job count after applying filters (for frontend pagination)
     const totalJobs = await JobPost.countDocuments(filterConditions);
 
