@@ -97,7 +97,7 @@ const ProjectCarousel = ({ projects = [] }) => {
                     )}
                 </div>
             ) : (
-                <p className="text-gray-500 text-sm">No projects added.</p>
+                <p className="text-gray-500 text-sm">From concept to reality—let your projects speak for you.</p>
             )}
 
             {/* Modal for full details */}

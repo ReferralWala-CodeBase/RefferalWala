@@ -158,19 +158,16 @@ export default function CheckUserProfile() {
           <SidebarNavigation />
         </div>
         <div className="w-full md:w-3/4 px-0 sm:px-3 m-auto">
-          {/* <div className="mt-6 flex justify-end mb-2">
+          <div className="mt-2 flex justify-end mr-12">
             <div>
               {isFollowing && (
-                <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                <button onClick={handleShowJob} className="px-4 bg-gray-200/70 py-1 font-normal text-gray-700 text-xs rounded-full border border-gray-400">
                   View Job Posted
                 </button>
               )}
-              <button onClick={handleFollowUnfollow} className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
-                {isFollowing ? 'Unfollow' : 'Follow'}
-              </button>
+
             </div>
-          </div> */}
+          </div>
 
           {isModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -462,7 +459,7 @@ export default function CheckUserProfile() {
                   </div>
                 ) : (
                   <div className="text-gray-600 mt-6">
-                    No education details added.
+                    Education is the key—open the door to success.
                   </div>
                 )}
               </div>
