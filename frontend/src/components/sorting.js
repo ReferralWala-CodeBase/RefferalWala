@@ -11,9 +11,9 @@ export default function JobFilterDialog({ sortField, setSortField, sortOrder, se
             {/* Button to Open Dialog */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-1 md:py-2 text-xs sm:text-sm font-medium rounded-md shadow-sm border md:rounded-lg md:shadow-md hover:bg-gray-100 transition bg-gray-200 text-gray-700"
+                className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-1 md:py-1 text-xs sm:text-sm font-medium rounded-full shadow-sm border md:rounded-full md:shadow-md hover:bg-blue-400 transition bg-blue-600 text-white"
             >
-                <FaFilter className="text-md md:text-lg" /> Filter & Sort
+                <FaFilter className="text-md md:text-lg" size={10} /> Filter & Sort
             </button>
 
             {/* Dialog Box */}

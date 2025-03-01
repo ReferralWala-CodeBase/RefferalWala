@@ -157,31 +157,25 @@ export default function WishlistJobsList() {
               <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
                 {/* Display Table View for Larger Screens */}
                 <div className="hidden lg:block overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-300">
-                    <thead>
+                  <table className="min-w-full border border-gray-200 shadow-md rounded-lg overflow-hidden">
+                    <thead className="bg-gray-100 text-gray-900">
                       <tr>
-                        <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                        <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-6">
                           Job ID
                         </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Job Role
-                        </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Company Name
-                        </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Location
-                        </th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Status
-                        </th>
-                        <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold">Job Role</th>
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold">Company Name</th>
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold">Location</th>
+                        <th className="px-3 py-3.5 text-left text-sm font-semibold">Status</th>
+                        <th className="px-2 py-3.5 text-left text-sm font-semibold"></th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white">
-                      {Object.entries(filteredJobs).map(([id, job]) => (
-                        <tr key={job?._id}
-                          className='cursor-pointer hover:bg-gray-100'
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {Object.entries(filteredJobs).map(([id, job], index) => (
+                        <tr
+                          key={job?._id}
+                          className={`cursor-pointer hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                            }`}
                         >
                           <td
                             onClick={() => handleView(job?._id)}
@@ -191,38 +185,38 @@ export default function WishlistJobsList() {
                           </td>
                           <td
                             onClick={() => handleView(job?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-600"
                           >
                             {job?.jobRole}
                           </td>
                           <td
                             onClick={() => handleView(job?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-600"
                           >
                             {job?.companyName}
                           </td>
                           <td
                             onClick={() => handleView(job?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-600"
                           >
                             {job?.location}
                           </td>
                           <td
                             onClick={() => handleView(job?._id)}
-                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                            className={`whitespace-nowrap px-3 py-4 text-sm font-semibold ${job?.status === "inactive" ? "text-red-500" : "text-green-500"
+                              }`}
                           >
                             {job?.status === "inactive" ? "Closed" : job?.status}
                           </td>
                           <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <FaTrash
                               onClick={(e) => {
-                                e.stopPropagation(); // Prevent triggering the row click
+                                e.stopPropagation();
                                 handleOpenModal(job?._id);
                               }}
-                              className="m-2 mt-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
+                              className="text-xl cursor-pointer text-red-500 hover:text-red-700 transition-all duration-200"
                             />
                           </td>
-
                         </tr>
                       ))}
                     </tbody>
