@@ -173,48 +173,49 @@ export default function JobApplicantsList() {
                   />
                 </div>
 
-                <div className="hidden lg:block">
-                  <table className="min-w-full divide-y divide-gray-300">
-                    <thead>
+                <div className="hidden lg:block overflow-x-auto rounded-lg shadow-md">
+                  <table className="min-w-full bg-white divide-y divide-gray-300 rounded-lg">
+                    <thead className="bg-gray-100">
                       <tr>
-                        <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Avatar</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Applicant Name</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Applied On</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                        <th className="px-2 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
+                        <th className="py-4 pl-6 text-left text-sm font-semibold text-gray-900">Avatar</th>
+                        <th className="px-4 py-4 text-left text-sm font-semibold text-gray-900">Applicant Name</th>
+                        <th className="px-4 py-4 text-left text-sm font-semibold text-gray-900">Email</th>
+                        <th className="px-4 py-4 text-left text-sm font-semibold text-gray-900">Applied On</th>
+                        <th className="px-4 py-4 text-left text-sm font-semibold text-gray-900">Status</th>
+                        <th className="px-4 py-4 text-left text-sm font-semibold text-gray-900"></th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white">
-                      {filteredAndSortedJobs.map(([id, applicant]) => (
-                        <tr key={applicant?._id}
+                    <tbody className="divide-y divide-gray-200">
+                      {filteredAndSortedJobs.map(([id, applicant], index) => (
+                        <tr
+                          key={applicant?._id}
                           onClick={() => handleViewApplicantDetails(applicant?.userId?._id)}
-                          className='cursor-pointer'
+                          className={`cursor-pointer ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100 transition duration-200`}
                         >
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"> <img className="h-11 w-11 rounded-full" src={applicant?.userId?.profilePhoto || person} alt="" />
+                          <td className="whitespace-nowrap px-6 py-4">
+                            <img className="h-12 w-12 rounded-full object-cover border border-gray-300" src={applicant?.userId?.profilePhoto || person} alt="Profile" />
                           </td>
-                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-
+                          <td className="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900">
                             {applicant?.userId?.firstName} {applicant?.userId?.lastName}
                           </td>
-
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant?.userId?.email}</td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(applicant?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">{applicant?.userId?.email}</td>
+                          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">
+                            {new Date(applicant?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{applicant?.status}</td>
-                          {/* <td className="relative py-4 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
-                            <button
-                              onClick={() => handleViewApplicantDetails(applicant.userId?._id)}
-                              className="text-indigo-600 hover:text-indigo-900"
-                            >
-                              View Profile
-                            </button>
-                          </td> */}
+                          <td className="whitespace-nowrap px-4 py-4 text-sm">
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${applicant?.status === "Accepted" ? "bg-green-200 text-green-800" :
+                              applicant?.status === "Pending" ? "bg-yellow-200 text-yellow-800" :
+                                "bg-red-200 text-red-800"
+                              }`}>
+                              {applicant?.status}
+                            </span>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
+
 
                 <div className="block lg:hidden">
                   {filteredAndSortedJobs.map(([id, applicant]) => (

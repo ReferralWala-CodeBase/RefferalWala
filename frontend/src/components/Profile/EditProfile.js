@@ -68,7 +68,7 @@ export default function EditProfile() {
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
-  
+
   const [openResume, setResumeOpen] = useState(false);
   // const cancelButtonRef = useRef(null);
 
@@ -821,14 +821,14 @@ export default function EditProfile() {
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <div className="flex">
+      <div className="flex md:bg-[#edede7] bg-none">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-0 sm:px-6 mx-auto">
+        <div className="w-10/12 md:w-3/4 px-0 sm:px-6 mx-auto bg-white">
           <div className="flex justify-between w-full items-center mt-6 ">
 
-            <h3 className="text-lg font-medium leading-7 text-gray-900 text-left">
+            <h3 className="text-lg border w-full p-2 bg-gray-200/50 rounded-lg font-medium leading-7 text-gray-800 text-left">
               Edit Profile
             </h3>
 
@@ -922,7 +922,7 @@ export default function EditProfile() {
 
           <form onSubmit={handleSubmit}>
             {/* Basic Information */}
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">First Name <span className="text-red-500">*</span></label>
                 <input
@@ -931,7 +931,8 @@ export default function EditProfile() {
                   value={profileData?.firstName || ''}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  className="mt-1 block w-full rounded-md bg-gray-100/60 border border-gray-300 shadow-sm p-2 placeholder:text-sm placeholder:text-gray-500"
+                  placeholder='Enter your first name'
                 />
               </div>
               <div>
@@ -941,7 +942,8 @@ export default function EditProfile() {
                   name="lastName"
                   value={profileData?.lastName || ''}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  className="mt-1 block w-full rounded-md bg-gray-100/60 border border-gray-300 shadow-sm p-2 placeholder:text-sm placeholder:text-gray-500"
+                  placeholder='Enter your last name'
                 />
               </div>
               <div>
@@ -952,8 +954,35 @@ export default function EditProfile() {
                   value={profileData?.email || ''}
                   onChange={handleChange}
                   disabled
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  className="mt-1 block w-full rounded-md bg-gray-100/60 border border-gray-300 shadow-sm p-2 placeholder:text-sm placeholder:text-gray-500"
+                  placeholder='Enter your personal email address'
                 />
+              </div>
+
+              <div className="flex items-center space-x-4">
+                {/* Image Upload */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Profile Photo
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="mt-1 block w-full rounded-md bg-gray-100/60 border border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-8 w-8 rounded-full shadow border-2 border-gray-500 p-1"
+                  />
+                ) : (<img
+                  src={profileData?.profilePhoto}
+                  alt="Profile"
+                  className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
+                />)}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Mobile Number <span className="text-red-500">*</span></label>
@@ -965,8 +994,9 @@ export default function EditProfile() {
                     value={profileData?.mobileNumber || ''}
                     onChange={handleChange}
                     onBlur={validation}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    className="mt-1 block w-full rounded-md bg-gray-100/60 border border-gray-300 shadow-sm p-2 placeholder:text-sm placeholder:text-gray-500"
                     required
+                    placeholder='Enter your contact number'
                   />
 
                   {/* <input
@@ -1064,7 +1094,7 @@ export default function EditProfile() {
                   name="gender"
                   value={profileData?.gender}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  className="mt-1 block w-full rounded-md bg-gray-100/60 border border-gray-300 shadow-sm p-2"
                 >
                   <option value="">Select Gender</option>
                   <option value="Male">Male</option>
@@ -1072,33 +1102,11 @@ export default function EditProfile() {
                   <option value="Other">Other</option>
                 </select>
               </div>
-              <div className="flex items-center space-x-4">
-                {/* Image Upload */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Profile Photo
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                  />
-                </div>
-                {imagePreview ? (
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
-                  />
-                ) : (<img
-                  src={profileData?.profilePhoto}
-                  alt="Profile"
-                  className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
-                />)}
-              </div>
+
 
             </div>
+
+            <hr className='mt-2 mb-2' />
 
             {/* Present Company */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Present Company</h3>
@@ -1952,52 +1960,52 @@ export default function EditProfile() {
               </div>
             </div>
 
-{/* Resume Modal */}
-{openResume && (
-                <Transition.Root show={openResume} as={Fragment}>
-                  <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={handleCloseModal}>
-                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto mt-4">
-                      <div className="flex min-h-full items-center justify-center p-2 text-center sm:items-center sm:p-0">
-                        <Transition.Child
-                          as={Fragment}
-                          enter="ease-out duration-300"
-                          enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                          enterTo="opacity-100 translate-y-0 sm:scale-100"
-                          leave="ease-in duration-200"
-                          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        >
-                          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:max-w-3xl w-full sm:h-auto h-3/4 p-6">
-                            <div className="sm:flex sm:items-start">
-                              <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                  Uploaded Resume
-                                </Dialog.Title>
-                              </div>
+            {/* Resume Modal */}
+            {openResume && (
+              <Transition.Root show={openResume} as={Fragment}>
+                <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={handleCloseModal}>
+                  <div className="fixed inset-0 z-10 w-screen overflow-y-auto mt-4">
+                    <div className="flex min-h-full items-center justify-center p-2 text-center sm:items-center sm:p-0">
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        enterTo="opacity-100 translate-y-0 sm:scale-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                        leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                      >
+                        <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:max-w-3xl w-full sm:h-auto h-3/4 p-6">
+                          <div className="sm:flex sm:items-start">
+                            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                              <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                Uploaded Resume
+                              </Dialog.Title>
                             </div>
-                            <div className="mt-3">
-                              {/* Display the Base64 resume as an embedded PDF */}
-                              <iframe
-                                src={`data:application/pdf;base64,${profileData?.resume}`}
-                                width="100%"
-                                height="500px"
-                                title="Resume"
-                              ></iframe>
-                            </div>
-                            {/* Close Button */}
-                            <button
-                              onClick={handleCloseModal}
-                              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-                            >
-                              <FaTimes className="w-6 h-6" />
-                            </button>
-                          </Dialog.Panel>
-                        </Transition.Child>
-                      </div>
+                          </div>
+                          <div className="mt-3">
+                            {/* Display the Base64 resume as an embedded PDF */}
+                            <iframe
+                              src={`data:application/pdf;base64,${profileData?.resume}`}
+                              width="100%"
+                              height="500px"
+                              title="Resume"
+                            ></iframe>
+                          </div>
+                          {/* Close Button */}
+                          <button
+                            onClick={handleCloseModal}
+                            className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                          >
+                            <FaTimes className="w-6 h-6" />
+                          </button>
+                        </Dialog.Panel>
+                      </Transition.Child>
                     </div>
-                  </Dialog>
-                </Transition.Root>
-              )}
+                  </div>
+                </Dialog>
+              </Transition.Root>
+            )}
 
             {/* About Me */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">About Me <span className="text-red-500">*</span></h3>

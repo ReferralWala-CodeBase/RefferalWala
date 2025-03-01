@@ -64,7 +64,7 @@ const ExperienceCarousel = ({ experience = [] }) => {
           )}
         </div>
       ) : (
-        <p className="text-gray-500 text-sm">No experience details added.</p>
+        <p className="text-gray-500 text-sm">Step into the spotlight and redefine what’s possible.</p>
       )}
     </div>
   );

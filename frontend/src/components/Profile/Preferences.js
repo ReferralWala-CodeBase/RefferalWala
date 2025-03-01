@@ -13,7 +13,7 @@ const Preferences = ({ preferences = [] }) => {
 
     return (
         <div className="w-full max-w-6xl mx-auto mt-3 relative">
-            <h3 className="text-small font-semibold text-gray-900 mb-4">Projects</h3>
+            <h3 className="text-small font-semibold text-gray-900 mb-4">Preferences</h3>
             <div className="space-y-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {preferences.length ? (
                     preferences.map((pref, index) => (

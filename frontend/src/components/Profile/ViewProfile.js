@@ -199,8 +199,6 @@ export default function ViewProfile() {
                 {/* Achievements */}
                 <Achievements achievements={profileData?.achievements || []} />
 
-
-
                 <div className="mt-3">
                   {profileData?.resume ? (
                     <div>
@@ -300,7 +298,7 @@ export default function ViewProfile() {
                 </div>
               ) : (
                 <div className="text-gray-600 mt-6">
-                  No education details added.
+                  Education is the key—open the door to success.
                 </div>
               )}
             </div>
