@@ -157,7 +157,7 @@ export default function CheckUserProfile() {
         <div className="w-1/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-full md:w-3/4 px-0 sm:px-3 m-auto">
+        <div className="w-full md:w-4/4 px-0 sm:px-3 m-auto">
           <div className="mt-2 flex justify-end mr-12">
             <div>
               {isFollowing && (
@@ -244,7 +244,7 @@ export default function CheckUserProfile() {
   }
 `}</style>
 
-          <div className="w-full md:w-4/4 px-0 sm:px-6 m-auto">
+          <div className="w-full md:w-4/4 px-0 sm:px-2 m-auto">
             <div className="p-3 sm:mr-0 font-sans rounded-md">
               <div className="flex flex-col lg:flex-row">
                 <div className="relative w-full max-w-sm space-y-4 text-center lg:pr-4 mb-2 lg:mb-0 py-2 md:py-6 rounded-lg px-4 md:px-4 bg-white overflow-hidden">

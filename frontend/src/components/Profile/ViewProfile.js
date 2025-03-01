@@ -199,8 +199,6 @@ export default function ViewProfile() {
                 {/* Achievements */}
                 <Achievements achievements={profileData?.achievements || []} />
 
-
-
                 <div className="mt-3">
                   {profileData?.resume ? (
                     <div>
