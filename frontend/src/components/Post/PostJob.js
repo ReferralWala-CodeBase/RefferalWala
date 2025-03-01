@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { LocationExport } from "../Location";
+import 'quill/dist/quill.snow.css';
+import Quill from 'quill';
+import DOMPurify from 'dompurify';
+
 
 export default function PostJob() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +26,8 @@ export default function PostJob() {
     employmentType: 'full-time',
     ctc: '',
     endDate: '',
-    jobDescription: '',
+    jobDescription: ''
+    // jobDescription:'<p><strong>Job Title:</strong> Software Engineer</p><p><strong>Location:</strong> Remote</p><p><strong>About Us:</strong> We are a leading software development company, known for innovative products and an amazing team. We specialize in creating cutting-edge applications that streamline business operations.</p><p><strong>Job Description:</strong></p><p>As a Software Engineer at our company, you will play a pivotal role in the design, development, and maintenance of our software applications. You will work closely with cross-functional teams to create high-performance applications and contribute to the growth of our product suite.</p><p><strong>What You\'ll Do:</strong></p><ul><li>Develop and maintain software applications using modern technologies.</li><li>Write clean, efficient, and scalable code.</li><li>Collaborate with product managers and designers to build new features.</li><li>Participate in code reviews to ensure code quality and best practices.</li><li>Debug and troubleshoot issues in production systems.</li><li>Keep up-to-date with the latest software development trends and techniques.</li></ul><p><strong>Required Experience:</strong></p><ul><li>Bachelor’s degree in Computer Science or related field.</li><li>3+ years of experience in software development.</li><li>Strong knowledge of programming languages such as JavaScript, Python, or Java.</li><li>Experience with web development frameworks like React, Angular, or Node.js.</li><li>Knowledge of databases (e.g., MySQL, PostgreSQL, MongoDB).</li><li>Excellent problem-solving and debugging skills.</li><li>Experience with version control systems like Git.</li></ul><p><strong>Desirable Skills:</strong></p><ul><li>Familiarity with cloud platforms (AWS, Azure, GCP).</li><li>Experience with Agile development methodologies.</li><li>Good communication skills and the ability to work in a team.</li></ul><p><strong>Benefits:</strong></p><ul><li>Competitive salary and performance-based bonuses.</li><li>Flexible working hours and remote work options.</li><li>Health insurance and wellness programs.</li><li>Opportunity to work with a talented and passionate team.</li><li>Career growth and development opportunities.</li></ul><p><strong>How to Apply:</strong> To apply for this position, please submit your resume and cover letter through our website or email. We look forward to reviewing your application!</p><p><strong>Note:</strong> This is a dummy job description for illustration purposes. Please replace with your actual job details.</p>'
   });
 
   const [profileIncomplete, setProfileIncomplete] = useState(false);
@@ -96,6 +101,9 @@ export default function PostJob() {
     checkProfileCompletion();
 
   }, []);
+
+
+
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -219,7 +227,7 @@ export default function PostJob() {
           throw new Error("Session expired. Please log in again.");
         } else {
           // throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
-          throw new Error(errorData.msg || response.statusText);
+          throw new Error(errorData.message || response.statusText);
         }
       }
 
@@ -261,6 +269,78 @@ export default function PostJob() {
     return true;
   };
 
+  const quillRef = useRef(null);  // Reference for the Quill container
+  const editorRef = useRef(null);  // Quill editor instance
+  const initializedRef = useRef(false);  // Track if Quill has been initialized
+  
+  useEffect(() => {
+    if (quillRef.current && !initializedRef.current) {
+      console.log("🛠️ Initializing Quill...");
+      
+      // Create a custom stylesheet to override Quill's default styles
+      const styleSheet = document.createElement("style");
+      styleSheet.textContent = `
+        .ql-editor { 
+          direction: ltr !important;
+          text-align: left !important;
+          position: relative !important;
+        }
+        .ql-editor p {
+          position: relative !important;
+          display: block !important;
+        }
+      `;
+      document.head.appendChild(styleSheet);
+      
+      editorRef.current = new Quill(quillRef.current, {
+        theme: "snow",
+        modules: {
+          toolbar: [
+            [{ header: "1" }, { header: "2" }, { font: [] }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["bold", "italic", "underline", "strike"],
+            ["link"],
+            [{ align: [] }],
+            // Removed RTL option
+            [{ indent: "-1" }, { indent: "+1" }],
+            ["clean"],
+          ],
+        },
+      });
+      
+      // Force paragraph tags to use block display
+      editorRef.current.clipboard.addMatcher('p', (node, delta) => {
+        delta.attributes = delta.attributes || {};
+        delta.attributes.style = 'display: block; position: relative;';
+        return delta;
+      });
+      
+      initializedRef.current = true;
+      editorRef.current.on("text-change", handleEditorChange);
+      
+      if (formData.jobDescription) {
+        editorRef.current.root.innerHTML = formData.jobDescription;
+      }
+    }
+  }, []);
+
+  // 🟢 Handle content changes in Quill Editor
+  const handleEditorChange = () => {
+    if (!editorRef.current) return;
+
+    const updatedContent = editorRef.current.root.innerHTML;
+    const sanitizedContent = DOMPurify.sanitize(updatedContent);
+
+    console.log('✏️ Updated content:', sanitizedContent);
+
+    // Only update state if content has changed to prevent unnecessary re-renders
+    if (formData?.jobDescription !== sanitizedContent) {
+      setFormData((prev) => ({
+        ...prev,
+        jobDescription: sanitizedContent,
+      }));
+    }
+  }
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -505,22 +585,45 @@ export default function PostJob() {
 </div>
             </div>
             <div className="col-span-2 mt-6">
-              <label
-                htmlFor="jobDescription"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Job Description
-              </label>
-              <textarea
-                id="jobDescription"
-                name="jobDescription"
-                value={formData.jobDescription}
-                onChange={handleChange}
-                rows="4"
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              ></textarea>
-            </div>
+  <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-700">
+    Job Description
+  </label>
+  <div className="border border-gray-300 rounded-md">
+    {/* Quill container with inline styles */}
+    <div 
+      ref={quillRef} 
+      style={{
+        minHeight: "300px",
+        direction: "ltr",
+        display: "flex",
+        flexDirection: "column"
+      }}
+    ></div>
+    
+    {/* Add this style tag within your component */}
+    <style jsx>{`
+      :global(.ql-editor) {
+        min-height: 250px;
+        direction: ltr !important;
+        text-align: left !important;
+        display: block !important;
+      }
+      
+      :global(.ql-container) {
+        overflow: visible !important;
+        height: auto !important;
+      }
+      
+      :global(.ql-editor p) {
+        margin-bottom: 1em;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+      }
+    `}</style>
+  </div>
+</div>    
+
             <div className="col-span-2 mt-6">
               <button
                 type="submit"

@@ -299,12 +299,14 @@ export default function ViewPostedJob() {
                   </dl>
 
                 </div>
-
                 <div className="col-span-2 pb-1 border-t py-2 md:py-4 border-gray-200">
-                  <label className="block text-sm font-bold text-blue-700">Job Description</label>
-                  <div className="mt-1 text-sm text-justify block w-full rounded-none">{jobData?.jobDescription}</div>
+  <label className="block text-sm font-bold text-blue-700">Job Description</label>
+  <div
+    className="mt-1 text-sm text-justify block w-full rounded-none"
+    dangerouslySetInnerHTML={{ __html: jobData?.jobDescription }}
+  />
+</div>
 
-                </div>
               </div>
             </div>
 
