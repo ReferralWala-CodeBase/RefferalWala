@@ -68,9 +68,10 @@ export default function PostedJobsList() {
     navigate(`/viewpostedjob/${jobId}`);
   };
 
-  const handleViewApplicants = (jobId) => {
-    navigate(`/jobapplicantslist/${jobId}`);
+  const handleViewApplicants = (job) => {
+    navigate(`/jobapplicantslist/${job._id}`, { state: { status: job.status } });
   };
+  
 
   // const filteredJobs = jobs && Object.fromEntries(
   //   Object.entries(jobs).filter(([id, job]) => {
@@ -186,7 +187,7 @@ export default function PostedJobsList() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleViewApplicants(job?._id);
+                                handleViewApplicants(job);
                               }}
                               className="text-indigo-600 hover:text-indigo-900 font-medium transition"
                             >
@@ -218,7 +219,7 @@ export default function PostedJobsList() {
                             <span>{job?.status === "inactive" ? "Closed" : job?.status}</span>
                           </span>
 
-                          <button onClick={() => handleViewApplicants(job?._id)}
+                          <button onClick={() => handleViewApplicants(job)}
                             className="inline-flex cursor-pointer items-center gap-1 bg-blue-600 text-gray-100 text-[9px] font-normal px-3 py-1 rounded-full mb-2">
                             View Applicants
                           </button>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams ,useLocation} from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import Loader from '../Loader';
@@ -11,6 +11,8 @@ import JobFilterDialog from "../sorting";
 
 export default function JobApplicantsList() {
   const { jobId } = useParams(); // Get jobId from URL params
+  const location = useLocation();
+  const jobStatus = location.state?.status;
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -186,68 +188,109 @@ export default function JobApplicantsList() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {filteredAndSortedJobs.map(([id, applicant], index) => (
-                        <tr
-                          key={applicant?._id}
-                          onClick={() => handleViewApplicantDetails(applicant?.userId?._id)}
-                          className={`cursor-pointer ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100 transition duration-200`}
-                        >
-                          <td className="whitespace-nowrap px-6 py-4">
-                            <img className="h-12 w-12 rounded-full object-cover border border-gray-300" src={applicant?.userId?.profilePhoto || person} alt="Profile" />
-                          </td>
-                          <td className="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900">
-                            {applicant?.userId?.firstName} {applicant?.userId?.lastName}
-                          </td>
-                          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">{applicant?.userId?.email}</td>
-                          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">
-                            {new Date(applicant?.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                          </td>
-                          <td className="whitespace-nowrap px-4 py-4 text-sm">
-                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${applicant?.status === "Accepted" ? "bg-green-200 text-green-800" :
-                              applicant?.status === "Pending" ? "bg-yellow-200 text-yellow-800" :
-                                "bg-red-200 text-red-800"
-                              }`}>
-                              {applicant?.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
+  {filteredAndSortedJobs
+    .sort((a, b) => {
+      // Define custom sorting order for statuses
+      const statusOrder = ["selected", "on hold", "applied", "rejected"];
+      return statusOrder.indexOf(a[1]?.status) - statusOrder.indexOf(b[1]?.status);
+    })
+    .map(([id, applicant], index) => {
+      // Define isClickable based on jobStatus and applicant's status
+      const isClickable = jobStatus !== "inactive" || applicant?.status === "selected";
+
+      return (
+        <tr
+          key={applicant?._id}
+          onClick={isClickable ? () => handleViewApplicantDetails(applicant?.userId?._id) : undefined}
+          className={`${
+            isClickable ? "cursor-pointer hover:bg-gray-100 transition duration-200" : "cursor-not-allowed opacity-50"
+          } ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
+        >
+          <td className="whitespace-nowrap px-6 py-4">
+            <img
+              className="h-12 w-12 rounded-full object-cover border border-gray-300"
+              src={applicant?.userId?.profilePhoto || person}
+              alt="Profile"
+            />
+          </td>
+          <td className="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900">
+            {applicant?.userId?.firstName} {applicant?.userId?.lastName}
+          </td>
+          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">{applicant?.userId?.email}</td>
+          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">
+            {new Date(applicant?.appliedAt).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </td>
+          <td className="whitespace-nowrap px-4 py-4 text-sm">
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                applicant?.status === "Accepted"
+                  ? "bg-green-200 text-green-800"
+                  : applicant?.status === "Pending"
+                  ? "bg-yellow-200 text-yellow-800"
+                  : "bg-red-200 text-red-800"
+              }`}
+            >
+              {applicant?.status}
+            </span>
+          </td>
+        </tr>
+      );
+    })}
+</tbody>
+
                   </table>
                 </div>
 
 
                 <div className="block lg:hidden">
-                  {filteredAndSortedJobs.map(([id, applicant]) => (
-                    <div key={applicant?._id} className="mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg"
-                      onClick={() => handleViewApplicantDetails(applicant?.userId?._id)}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <img
-                          className="h-12 w-12 sm:h-16 sm:w-16 rounded-full border-2 border-gray-500"
-                          src={applicant?.userId?.profilePhoto || person}
-                          alt=""
-                        />
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            {applicant?.userId?.firstName} {applicant?.userId?.lastName}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-gray-500">{applicant?.userId?.email}</p>
-                          <p className="text-xs text-gray-400">Applied On: {new Date(applicant?.appliedAt).toLocaleDateString("en-GB")}</p>
-                          <p className="text-xs text-gray-500">Status: {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}</p>
-                        </div>
-                      </div>
-                      {/* <div className="mt-4 text-right">
-                        <button
-                          onClick={() => handleViewApplicantDetails(applicant.userId?._id)}
-                          className="text-indigo-600 hover:text-indigo-900 text-sm"
-                        >
-                          View Full Profile
-                        </button>
-                      </div> */}
-                    </div>
-                  ))}
-                </div>
+  {filteredAndSortedJobs
+    .sort((a, b) => {
+      // Define custom sorting order for statuses
+      const statusOrder = ["selected", "on hold", "applied", "rejected"];
+      return statusOrder.indexOf(a[1]?.status) - statusOrder.indexOf(b[1]?.status);
+    })
+    .map(([id, applicant]) => {
+      // Define isClickable based on jobStatus and applicant's status
+      const isClickable = jobStatus !== "Inactive" || applicant?.status === "Selected";
+
+      return (
+        <div
+          key={applicant?._id}
+          className={`mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg ${
+            isClickable ? "cursor-pointer hover:bg-gray-100 transition duration-200" : "cursor-not-allowed opacity-50"
+          }`}
+          onClick={isClickable ? () => handleViewApplicantDetails(applicant?.userId?._id) : undefined}
+        >
+          <div className="flex items-center space-x-4">
+            <img
+              className="h-12 w-12 sm:h-16 sm:w-16 rounded-full border-2 border-gray-500"
+              src={applicant?.userId?.profilePhoto || person}
+              alt=""
+            />
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {applicant?.userId?.firstName} {applicant?.userId?.lastName}
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-500">{applicant?.userId?.email}</p>
+              <p className="text-xs text-gray-400">
+                Applied On: {new Date(applicant?.appliedAt).toLocaleDateString("en-GB")}
+              </p>
+              <p className="text-xs text-gray-500">
+                Status: {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+</div>
+
+
+
               </div>
             )}
           </div>

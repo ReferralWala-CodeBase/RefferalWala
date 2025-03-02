@@ -381,9 +381,10 @@ export default function AppliedJobDetails() {
               <p className="text-yellow-600 font-medium">Your application is on hold.</p>
             ) : (
               <button
-                onClick={handleApply}
-                className="w-full md:w-auto text-center rounded-full border border-transparent bg-blue-600 py-2 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
+              onClick={handleApply}
+              disabled={jobData?.status === "inactive"}  // Disable the button if job status is inactive
+              className={`w-full md:w-auto text-center rounded-full border border-transparent ${jobData?.status === "inactive" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"} py-2 px-7 text-md font-light text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+            >
                 Apply
               </button>
             )}
@@ -549,12 +550,12 @@ export default function AppliedJobDetails() {
   />
 </div>
 
-                <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto">
+                {/* <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto">
                   <svg class="-ms-0.5 me-1.5 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"></path>
                   </svg>
                   Apply
-                </button>
+                </button> */}
               </div>
 
             </div>

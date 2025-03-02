@@ -242,7 +242,6 @@ export default function PostJob() {
         progress: undefined,
       });
       navigate('/postedjobslist');
-      console.log('Response:', responseData);
     } catch (error) {
       console.error('Error posting job:', error.message);
       toast.error(error.message);
@@ -275,7 +274,7 @@ export default function PostJob() {
   
   useEffect(() => {
     if (quillRef.current && !initializedRef.current) {
-      console.log("🛠️ Initializing Quill...");
+
       
       // Create a custom stylesheet to override Quill's default styles
       const styleSheet = document.createElement("style");
@@ -330,8 +329,6 @@ export default function PostJob() {
 
     const updatedContent = editorRef.current.root.innerHTML;
     const sanitizedContent = DOMPurify.sanitize(updatedContent);
-
-    console.log('✏️ Updated content:', sanitizedContent);
 
     // Only update state if content has changed to prevent unnecessary re-renders
     if (formData?.jobDescription !== sanitizedContent) {

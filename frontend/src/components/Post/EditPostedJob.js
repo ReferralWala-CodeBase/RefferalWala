@@ -135,7 +135,6 @@ export default function EditJob() {
   useEffect(() => {
     if (quillRef.current && !quillInitializedRef.current) {
       try {
-        console.log('Initializing Quill...');
 
         // Ensure container is LTR
         quillRef.current.style.direction = 'ltr';
@@ -165,22 +164,16 @@ export default function EditJob() {
         editorRef.current.root.style.textAlign = 'left';
         editorRef.current.root.setAttribute('dir', 'ltr');
 
-        console.log('Quill initialized successfully!');
-
         // Set initial content if available
         if (formData?.jobDescription) {
           editorRef.current.clipboard.dangerouslyPasteHTML(0, formData.jobDescription);
           editorRef.current.formatText(0, editorRef.current.getLength(), 'direction', 'ltr');
-          console.log('Initial content set!');
         }
 
         // Define text change handler
         const handleTextChange = () => {
-          console.log('Text changed!');
           const updatedContent = editorRef.current.root.innerHTML;
           const sanitizedContent = DOMPurify.sanitize(updatedContent);
-
-          console.log('Sanitized Content:', sanitizedContent);
           if (formData?.jobDescription !== sanitizedContent) {
             setFormData(prev => ({ ...prev, jobDescription: sanitizedContent }));
           }
@@ -200,8 +193,6 @@ export default function EditJob() {
       const currentContent = editorRef.current.root.innerHTML;
       if (currentContent !== formData.jobDescription) {
         try {
-          console.log('Updating editor content...');
-
           // Remove text change listener before updating
           editorRef.current.off('text-change');
 
@@ -218,8 +209,6 @@ export default function EditJob() {
               setFormData(prev => ({ ...prev, jobDescription: sanitizedContent }));
             }
           });
-
-          console.log('Editor content updated!');
         } catch (error) {
           console.error('Error setting content:', error);
         }

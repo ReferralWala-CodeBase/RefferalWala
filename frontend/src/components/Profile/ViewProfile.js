@@ -2,8 +2,9 @@ import React, { Fragment, useState, useEffect } from 'react';
 import SidebarNavigation from '../SidebarNavigation';
 import { useNavigate } from 'react-router-dom';
 import { PencilIcon, EyeIcon } from '@heroicons/react/20/solid';
-import { FaGithub, FaLinkedin, FaGlobe, FaInstagram, FaFacebook, FaEnvelope, FaPhone } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaGlobe, FaInstagram, FaFacebook, FaEnvelope, FaPhone ,FaCheckCircle} from "react-icons/fa";
 import { FaUniversity, FaBuilding, FaLocationArrow, FaLaptopCode } from 'react-icons/fa';
+import { IoShieldCheckmark } from "react-icons/io5";
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,6 +25,7 @@ export default function ViewProfile() {
   const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
   const [open, setOpen] = useState(false);
   const cancelButtonRef = React.useRef(null);
+  const [profileCompletion, setProfileCompletion] = useState(null);
 
   // Open modal function
   const openModal = () => {
@@ -70,6 +72,37 @@ export default function ViewProfile() {
 
     fetchProfileData();
   }, []);
+  useEffect(() => {
+    const fetchProfileCompletion = async () => {
+      try {
+        const bearerToken = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
+  
+        const response = await fetch(`${Fronted_API_URL}/user/profile-completion/${userId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile completion");
+        }
+  
+        const data = await response.json();
+        setProfileCompletion(data.profileCompletion); // Assuming API returns { profileCompletion: 75 }
+      } catch (error) {
+        console.error("Error fetching profile completion:", error);
+      }
+    };
+  
+    fetchProfileCompletion();
+  }, []);
+
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+  const progress = profileCompletion !== null ? (profileCompletion / 100) * circumference : 0;
 
   if (!profileData) {
     return (
@@ -104,14 +137,55 @@ export default function ViewProfile() {
                       src={profileData?.profilePhoto || person}
                       alt="Profile"
                       className="w-36 h-36 rounded-full border-2 p-1 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                    />
+                    />        {/* Profile Completion Percentage Badge */}
+                    {profileCompletion !== null && (
+                      <div className="absolute bottom-4 right-1 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+                        {profileCompletion}%
+                      </div>
+                    )}
+                                </div>
+              
+                              </div>
+                              <div className="flex flex-col items-center space-y-2">
+                {/* Name */}
+                <h2 className="text-xl font-semibold text-gray-800 text-center flex items-center justify-center space-x-1">
+                <span>
+                  {profileData?.firstName || <>&nbsp;</>} {profileData?.lastName || <>&nbsp;</>}
+                </span>
+              
+                {/* Verified Badge with Tooltip */}
+                {profileData?.presentCompany?.CompanyEmailVerified && (
+                  <div className="relative group">
+                    <IoShieldCheckmark className="text-blue-500 w-7 h-7 cursor-pointer" />
+                    
+                    {/* Tooltip */}
+                    <span className="absolute -top-7 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      Verified
+                    </span>
                   </div>
-
+                )}
+              </h2>
+              
+                {/* Company Logo & Details */}
+                <div className="flex items-center space-x-3 p-2 rounded-lg">
+                  {/* Company Logo */}
+                  {profileData?.presentCompany?.companyLogoUrl ? (
+                <img
+                  src={profileData?.presentCompany?.companyLogoUrl}
+                  alt={`${profileData?.presentCompany?.companyName} Logo`}
+                  className="h-12 w-12 object-cover rounded-full"
+                />
+              ) : null}
+              
+                  {/* Company Name & Role */}
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-gray-800">{profileData?.presentCompany?.companyName || <>&nbsp;</>}</p>
+                    <p className="text-sm text-gray-600">{profileData?.presentCompany?.role || <>&nbsp;</>}</p>
+                  </div>
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">{profileData?.firstName || <>&nbsp;</>} {profileData?.lastName || <>&nbsp;</>}</h2>
-                <p className="text-sm text-gray-600 mb-1">{profileData?.presentCompany.companyName || <>&nbsp;</>}</p>
-                <p className="text-sm text-gray-600 mb-2">{profileData?.presentCompany?.role || <>&nbsp;</>}</p>
-                <div className="text-sm text-gray-700 space-y-2 leading-relaxed block">
+              </div>
+              
+                              <div className="text-sm text-gray-700 space-y-2 leading-relaxed block">
                   <div className="flex items-center space-x-2">
                     <FaEnvelope className="text-gray-600" />
                     <span className='font-light text-sm cursor-pointer'>{profileData?.email || <>&nbsp;</>}</span>
