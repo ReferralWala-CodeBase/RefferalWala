@@ -299,7 +299,6 @@ export default function AppliedJobDetails() {
   }
 
 
-
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
