@@ -345,7 +345,7 @@ export default function AppliedJobDetails() {
               <p className="text-blue-600 font-medium">You have applied for this job.</p>
             ) : applicationStatus === "selected" ? (
               <div>
-                <p className="text-green-600 font-medium text-center">You have been selected for this job!</p>
+                <p className="text-green-600 font-medium text-center">Congratulations! You have been selected for this job!</p>
                 <button
                   onClick={() => {
                     if (verifyFile) {
@@ -363,7 +363,7 @@ export default function AppliedJobDetails() {
                     onClick={() => setIsDialogOpen(true)}
                     className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   >
-                    {uploading ? "Uploading..." : "Uploading Selected Document"}
+                    {uploading ? "Uploading..." : "Upload Confirmation Document"}
                   </button>
                 )}
                 {/* Show the "View Employee Document" Button if there's a document available */}
@@ -372,7 +372,7 @@ export default function AppliedJobDetails() {
                     onClick={() => window.open(employeeDoc, "_blank")} // Open the employee's document in a new tab
                     className="mt-2 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                   >
-                    View Employee Document
+                    View Confirmation Document
                   </button>
                 )}
               </div>

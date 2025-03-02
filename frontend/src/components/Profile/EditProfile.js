@@ -65,6 +65,7 @@ export default function EditProfile() {
   const [newPreferences, setNewPreferences] = useState({ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' });
   const [showForm, setShowForm] = useState(false); // To show the input form
   const [isVerified, setIsVerified] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false); // Resume Confrim
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
@@ -384,6 +385,13 @@ export default function EditProfile() {
     }));
   };
 
+  // Remove the Resume
+  const removeResume = () => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      resume: '', // Clear the resume from state
+    }));
+  };
 
 
   // Fetching the existing profile data
@@ -1943,7 +1951,7 @@ export default function EditProfile() {
               />
               <div className="mt-3">
                 {profileData?.resume ? (
-                  <div>
+                  <div className="flex items-center gap-2">
                     {/* Button to open the modal and view resume */}
                     <button
                       type="button"
@@ -1953,12 +1961,82 @@ export default function EditProfile() {
                       <EyeIcon className="h-5 w-5" aria-hidden="true" />
                       View Uploaded Resume
                     </button>
+                    {/* Trash Icon to Delete Resume */}
+                    <FaTrash
+                      onClick={() => setOpenConfirmModal(true)}
+                      className="ml-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
+                    />
                   </div>
                 ) : (
                   <div className="mt-1 block w-full p-2">No resume uploaded</div>
                 )}
               </div>
             </div>
+
+            {/* Resume delect */}
+            {/* Confirmation Modal for Resume Deletion */}
+            <Transition.Root show={openConfirmModal} as={Fragment}>
+              <Dialog as="div" className="relative z-10" onClose={() => setOpenConfirmModal(false)}>
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </Transition.Child>
+
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                  <div className="flex min-h-full items-center justify-center p-4 text-center">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                      enterTo="opacity-100 translate-y-0 sm:scale-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                      leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    >
+                      <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-6 py-4 text-left shadow-xl transition-all sm:max-w-md sm:w-full">
+                        <div className="sm:flex sm:items-start">
+                          <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                          </div>
+                          <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                            <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                              Delete Resume
+                            </Dialog.Title>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">Are you sure you want to delete your resume? This action cannot be undone.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-4 sm:flex sm:flex-row-reverse">
+                          <button
+                            type="button"
+                            className="inline-flex w-full justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto"
+                            onClick={removeResume}
+                          >
+                            Yes, Delete
+                          </button>
+                          <button
+                            type="button"
+                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                            onClick={() => setOpenConfirmModal(false)}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </Dialog>
+            </Transition.Root>
+
 
             {/* Resume Modal */}
             {openResume && (

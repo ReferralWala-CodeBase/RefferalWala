@@ -12,6 +12,7 @@ import { UserPlus, UserX } from "lucide-react";
 import person from '../../assets/person.png';
 import { EyeIcon } from '@heroicons/react/20/solid';
 import { Dialog, Transition } from '@headlessui/react';
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export default function ViewApplicantProfile() {
   const navigate = useNavigate();
@@ -34,6 +35,8 @@ export default function ViewApplicantProfile() {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = React.useRef(null);
   const [selectedDocUpload, setSelectedDocUpload] = useState(false);
+  const [openStatusBox, setOpenStatusBox] = useState(false);
+  const [tempStatus, setTempStatus] = useState(""); // Holds temporary status before confirmation
 
   // Open modal function
   const openModal = () => {
@@ -113,13 +116,21 @@ export default function ViewApplicantProfile() {
   }, [Fronted_API_URL, applicantId, jobId]);
 
   // Handle status change selection
-  const handleStatusChange = async (newStatus) => {
-    if (newStatus === "selected") {
-      setIsDialogOpen(true); // Open dialog before proceeding
-      // return;
-    }
+  const handleStatusChange = (newStatus) => {
+    setTempStatus(newStatus); // Store the new status temporarily
+    setOpenStatusBox(true); // Open confirmation dialog
+  };
 
-    await updateStatus(newStatus, null);
+  //Confrim status change
+  const confirmChange = async () => {
+    setUpdatingStatus(true);
+    try {
+      await updateStatus(tempStatus); // Call API to update status
+      setStatus(tempStatus); // Update actual status after confirmation
+      setOpenStatusBox(false);
+    } finally {
+      setUpdatingStatus(false);
+    }
   };
 
   // Upload file and confirm selection
@@ -289,7 +300,7 @@ export default function ViewApplicantProfile() {
               value={status}
               onChange={(e) => handleStatusChange(e.target.value)}
               className="inline-flex rounded-md border border-gray-300 bg-white py-2 px-4 pr-6 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              disabled={updatingStatus} // Disable while updating
+              disabled={status === "selected" || updatingStatus}
             >
               {statusOptions.map((option) => (
                 <option key={option} value={option}>
@@ -299,6 +310,77 @@ export default function ViewApplicantProfile() {
             </select>
             {updatingStatus && <FaSpinner className="ml-4 animate-spin text-indigo-600" />}
 
+            {/* Confirmation Modal */}
+            <Transition.Root show={openStatusBox} as={Fragment}>
+              <Dialog as="div" className="relative z-10" onClose={() => setOpenStatusBox(false)}>
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </Transition.Child>
+
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                  <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                      enterTo="opacity-100 translate-y-0 sm:scale-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                      leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    >
+                      <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                        <div className="sm:flex sm:items-start">
+                          <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <ExclamationTriangleIcon className="h-6 w-6 text-yellow-600" aria-hidden="true" />
+                          </div>
+                          <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                            <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                              Confirm Status Change
+                            </Dialog.Title>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">
+                                Are you sure you want to change the status to{" "}
+                                <strong className="text-gray-900">{tempStatus}</strong>?
+                              </p>
+                              {tempStatus === "selected" && (
+                                <p className="mt-2 text-sm font-bold text-red-600">
+                                  This action cannot be undone.
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                          <button
+                            type="button"
+                            className="inline-flex w-full justify-center rounded-md bg-yellow-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 sm:ml-3 sm:w-auto"
+                            onClick={confirmChange}
+                            disabled={updatingStatus}
+                          >
+                            {updatingStatus ? <FaSpinner className="animate-spin" /> : "Confirm"}
+                          </button>
+                          <button
+                            type="button"
+                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                            onClick={() => setOpenStatusBox(false)}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </Dialog>
+            </Transition.Root>
 
             {/* File Uploading */}
             {isDialogOpen && (
