@@ -226,8 +226,8 @@ export default function PostedJobsList() {
                         </div>
                         <div className="px-2 py-1 w-fit">
                           <img
-                            src={job?.jobPostId?.companyLogoUrl}
-                            alt={`${job?.jobPostId?.companyName} Logo`}
+                            src={job?.companyLogoUrl}
+                            alt={`${job?.companyName} Logo`}
                             className="h-16 w-16 border object-cover rounded-full"
                           />
                         </div>
