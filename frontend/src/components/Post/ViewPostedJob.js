@@ -216,6 +216,7 @@ export default function ViewPostedJob() {
               </div>
             </Dialog>
           </Transition.Root>
+          
           <div className="lg:flex lg:justify-between p-4 md:p-8">
             <div className="min-w-0 flex-1 border-b pb-4">
               <h2 className="text-2xl font-bold leading-7 text-blue-700 sm:truncate sm:text-2xl sm:tracking-tight">

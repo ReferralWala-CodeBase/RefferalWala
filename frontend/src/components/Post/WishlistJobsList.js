@@ -150,6 +150,12 @@ export default function WishlistJobsList() {
                     className="mb-4 h-24 w-24 md:h-32 md:w-32 mx-auto block rounded-full"
                   />
                   <p className="text-xl font-light">No jobs found !</p>
+                  <button
+                    onClick={() => navigate("/")}
+                    className="mt-2 relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
+                  >
+                    Explore More jobs
+                  </button>
                 </div>
               </div>
 

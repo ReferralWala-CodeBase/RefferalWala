@@ -55,6 +55,7 @@ export default function EditProfile() {
   const [otp, setOtp] = useState("");
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [originalCompany, setOriginalCompany] = useState('');
   const [originalCompanyEmail, setOriginalCompanyEmail] = useState('');
   const [isCompanyEmailVerified, setIsCompanyEmailVerified] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -65,6 +66,8 @@ export default function EditProfile() {
   const [newPreferences, setNewPreferences] = useState({ preferredCompanyName: '', preferredPosition: '', expectedCTCRange: '' });
   const [showForm, setShowForm] = useState(false); // To show the input form
   const [isVerified, setIsVerified] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false); // Resume Confrim
+  const [showCompanyChangeModal, setShowCompanyChangeModal] = useState(false);
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
@@ -384,6 +387,13 @@ export default function EditProfile() {
     }));
   };
 
+  // Remove the Resume
+  const removeResume = () => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      resume: '', // Clear the resume from state
+    }));
+  };
 
 
   // Fetching the existing profile data
@@ -412,6 +422,7 @@ export default function EditProfile() {
 
         const data = await response.json();
         setProfileData(data);
+        setOriginalCompany(data?.presentCompany?.companyName);
         setOriginalCompanyEmail(data?.presentCompany?.companyEmail);
         setIsCompanyEmailVerified(data?.presentCompany?.CompanyEmailVerified);
         // setOriginalMobileno(data?.mobileNumber);   //Phone verify
@@ -443,7 +454,6 @@ export default function EditProfile() {
   const handlePresentChange = async (e) => {
     const { name, value } = e.target;
 
-    // Update profileData for presentCompany or any other field
     setProfileData((prevState) => {
       return {
         ...prevState,
@@ -497,6 +507,24 @@ export default function EditProfile() {
       setLocationSuggestions([]);
     }
   };
+
+  const confirmCompanyChange = (confirm) => {
+    setProfileData((prevState) => ({
+      ...prevState,
+      presentCompany: confirm
+        ? { role: "", companyName: profileData?.presentCompany?.companyName, location: "", currentCTC: "", CompanyEmailVerified: false, companyEmail: "", yearsOfExperience: "" }
+        : { ...prevState.presentCompany, companyName: originalCompany },
+    }));
+
+    if (confirm) {
+      setIsCompanyEmailVerified(false);
+    }
+
+
+    setShowCompanyChangeModal(false);
+  };
+
+
 
   const handlePreferenceChange = async (e, index) => {
     const { name, value } = e.target;
@@ -554,6 +582,7 @@ export default function EditProfile() {
   };
 
   const handleSuggestionClick = (company) => {
+
     setProfileData((prevState) => ({
       ...prevState,
       presentCompany: {
@@ -564,6 +593,8 @@ export default function EditProfile() {
     }));
 
     setCompanySuggestions([]); // Clear suggestions
+    setShowCompanyChangeModal(true);
+
   };
 
   const handlePreferencecompanyClick = (company) => {
@@ -1160,6 +1191,33 @@ export default function EditProfile() {
                   </ul>
                 )}
               </div>
+
+              {showCompanyChangeModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
+                  <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">
+                      Change Company Name?
+                    </h3>
+                    <p className="text-gray-700">Changing the company name will erase all existing company details. Do you still want to proceed?</p>
+                    <div className="mt-4 flex justify-end space-x-4">
+                      <button
+                        onClick={() => confirmCompanyChange(false)}
+                        className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                      >
+                        No
+                      </button>
+                      <button
+                        onClick={() => confirmCompanyChange(true)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      >
+                        Yes, Change
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+
               <div>
                 <label className="block text-sm font-medium text-gray-700">Company Email</label>
                 <div className="flex items-center">
@@ -1191,9 +1249,9 @@ export default function EditProfile() {
                   <button
                     type="button"
                     onClick={handleCompanyVerification}
-                    className="ml-2 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    className="ml-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
                   >
-                    Verify
+                    {!!originalCompany ? "Edit" : "Verify"}
                   </button>
                 </div>
               </div>
@@ -1377,7 +1435,7 @@ export default function EditProfile() {
             <button
               type="button"
               onClick={() => setShowEducationForm(true)}
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
+              className="mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
             >
               Add Education
             </button>
@@ -1484,7 +1542,7 @@ export default function EditProfile() {
             <button
               type="button"
               onClick={() => setShowExperienceForm(true)}
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
+              className="mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
             >
               Add Experience
             </button>
@@ -1622,7 +1680,7 @@ export default function EditProfile() {
             <button
               type="button"
               onClick={() => setShowProjectForm(true)}
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
+              className="mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
             >
               Add Project
             </button>
@@ -1754,7 +1812,7 @@ export default function EditProfile() {
             <button
               type="button"
               onClick={() => setShowForm(true)}
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
+              className="mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
             >
               Add Preference
             </button>
@@ -1888,7 +1946,7 @@ export default function EditProfile() {
                 <button
                   type="button"
                   onClick={addAchievement}
-                  className="p-2 bg-blue-500 text-white rounded"
+                  className="mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
                 >
                   Add Achievement
                 </button>
@@ -1923,7 +1981,7 @@ export default function EditProfile() {
                 <button
                   type="button"
                   onClick={addSkill}
-                  className="p-2 bg-blue-500 text-white rounded"
+                  className="mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
                 >
                   Add Skill
                 </button>
@@ -1943,22 +2001,92 @@ export default function EditProfile() {
               />
               <div className="mt-3">
                 {profileData?.resume ? (
-                  <div>
+                  <div className="flex items-center gap-2">
                     {/* Button to open the modal and view resume */}
                     <button
                       type="button"
                       onClick={openModal}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:from-indigo-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2"
-                    >
+                      className="inline-flex items-center gap-2 px-5 py-2.5 mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
+                      >
                       <EyeIcon className="h-5 w-5" aria-hidden="true" />
                       View Uploaded Resume
                     </button>
+                    {/* Trash Icon to Delete Resume */}
+                    <FaTrash
+                      onClick={() => setOpenConfirmModal(true)}
+                      className="ml-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
+                    />
                   </div>
                 ) : (
                   <div className="mt-1 block w-full p-2">No resume uploaded</div>
                 )}
               </div>
             </div>
+
+            {/* Resume delect */}
+            {/* Confirmation Modal for Resume Deletion */}
+            <Transition.Root show={openConfirmModal} as={Fragment}>
+              <Dialog as="div" className="relative z-10" onClose={() => setOpenConfirmModal(false)}>
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </Transition.Child>
+
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                  <div className="flex min-h-full items-center justify-center p-4 text-center">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                      enterTo="opacity-100 translate-y-0 sm:scale-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                      leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    >
+                      <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-6 py-4 text-left shadow-xl transition-all sm:max-w-md sm:w-full">
+                        <div className="sm:flex sm:items-start">
+                          <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                          </div>
+                          <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                            <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                              Delete Resume
+                            </Dialog.Title>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">Are you sure you want to delete your resume? This action cannot be undone.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-4 sm:flex sm:flex-row-reverse">
+                          <button
+                            type="button"
+                            className="inline-flex w-full justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto"
+                            onClick={removeResume}
+                          >
+                            Yes, Delete
+                          </button>
+                          <button
+                            type="button"
+                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                            onClick={() => setOpenConfirmModal(false)}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </Dialog>
+            </Transition.Root>
+
 
             {/* Resume Modal */}
             {openResume && (
