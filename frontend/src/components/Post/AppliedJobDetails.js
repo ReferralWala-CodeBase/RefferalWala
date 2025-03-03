@@ -9,6 +9,8 @@ import company from "../../assets/company.png";
 import Loader from '../Loader';
 import { FaTimes } from "react-icons/fa";
 import { UserPlus, UserX } from "lucide-react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import ReportJob from './ReportJob';
 
 export default function AppliedJobDetails() {
   const { jobId } = useParams(); // Extract jobId from URL
@@ -30,6 +32,8 @@ export default function AppliedJobDetails() {
   const [usertofollow, setUsertofollow] = useState("");
   const [profileData, setProfileData] = useState(null);
   const [profileIncomplete, setProfileIncomplete] = useState(false);
+  const [showReportDialog, setShowReportDialog] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState(null);
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -284,6 +288,25 @@ export default function AppliedJobDetails() {
     return date;
   }
 
+
+  const isLoggedIn = !!localStorage.getItem('token');
+
+  const handleReportClick = (jobId) => {
+    if (!isLoggedIn) {
+      toast.error('Please log in first!');
+      return;
+    }
+    setSelectedJobId(jobId);
+    setShowReportDialog(true);
+  };
+
+  const handleReportSuccess = () => {
+    toast.success("Job Reported Successfully.");
+    setShowReportDialog(false);
+    setSelectedJobId(null);
+  };
+
+
   if (loading) {
     return (
       <Loader />
@@ -309,35 +332,44 @@ export default function AppliedJobDetails() {
         <div className="w-10/12 md:w-3/4 m-auto">
           <div className="col-span-2 flex md:justify-between justify-center px-1 py-3 items-center flex-wrap gap-2">
             {/* Posted By Section (Always Visible) */}
-            <div
-              className="flex gap-2 cursor-pointer px-4 py-1 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300 md:text-sm text-xs"
-              onClick={() => handleViewUserProfile(jobData.user?._id)}
-            >
-              {jobData.user?.profilePhoto ? (
-                <img
-                  src={jobData.user?.profilePhoto}
-                  className="h-6 w-6 border rounded-full object-cover"
-                  alt="Profile"
-                  onError={(e) => (e.target.style.display = "none")}
-                />
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-gray-500"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2a5 5 0 00-5 5v1a5 5 0 0010 0V7a5 5 0 00-5-5zM4 21v-2a6 6 0 0112 0v2a1 1 0 01-1 1H5a1 1 0 01-1-1z"
-                    clipRule="evenodd"
+            <div className="flex gap-1">
+              <div
+                className="flex gap-2 cursor-pointer px-4 py-1 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300 md:text-sm text-xs"
+                onClick={() => handleViewUserProfile(jobData.user?._id)}
+              >
+                {jobData.user?.profilePhoto ? (
+                  <img
+                    src={jobData.user?.profilePhoto}
+                    className="h-6 w-6 border rounded-full object-cover"
+                    alt="Profile"
+                    onError={(e) => (e.target.style.display = "none")}
                   />
-                </svg>
-              )}
-              <span className="font-medium text-gray-800">Posted By:</span>
-              <span className="text-blue-600 hover:underline">{jobData.user?.firstName}</span>
-            </div>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-gray-500"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12 2a5 5 0 00-5 5v1a5 5 0 0010 0V7a5 5 0 00-5-5zM4 21v-2a6 6 0 0112 0v2a1 1 0 01-1 1H5a1 1 0 01-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                )}
+                <span className="font-medium text-gray-800">Posted By:</span>
+                <span className="text-blue-600 hover:underline">{jobData.user?.firstName}</span>
+              </div>
 
+              <div
+                className="flex gap-2 cursor-pointer px-4 py-1 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300 md:text-sm text-xs"
+                onClick={() => handleReportClick(jobData._id)}
+              >
+                <ExclamationTriangleIcon className="w-5 h-5 text-gray-700" />
+                <span className="font-medium text-gray-800">Report</span>
+              </div>
+            </div>
 
             {/* Application Status & Buttons */}
             {applicationStatus === "applied" ? (
@@ -381,10 +413,10 @@ export default function AppliedJobDetails() {
               <p className="text-yellow-600 font-medium">Your application is on hold.</p>
             ) : (
               <button
-              onClick={handleApply}
-              disabled={jobData?.status === "inactive"}  // Disable the button if job status is inactive
-              className={`w-full md:w-auto text-center rounded-full border border-transparent ${jobData?.status === "inactive" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"} py-2 px-7 text-md font-light text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
-            >
+                onClick={handleApply}
+                disabled={jobData?.status === "inactive"}  // Disable the button if job status is inactive
+                className={`w-full md:w-auto text-center rounded-full border border-transparent ${jobData?.status === "inactive" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"} py-2 px-7 text-md font-light text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+              >
                 Apply
               </button>
             )}
@@ -420,6 +452,17 @@ export default function AppliedJobDetails() {
                 </div>
               </div>
             </div>
+          )}
+
+
+          {/* Uncomment this */}
+          {showReportDialog && selectedJobId && (
+            <ReportJob
+              jobId={selectedJobId}
+              isLoggedIn={isLoggedIn}
+              onReportSuccess={handleReportSuccess}
+              onCancel={() => setShowReportDialog(false)}
+            />
           )}
 
           <section class="bg-white py-4 antialiased md:py-6">
@@ -543,12 +586,12 @@ export default function AppliedJobDetails() {
                 <hr className='mt-3 mb-3 text-gray-700' />
 
                 <div className="col-span-2 pb-4">
-  <label className="block text-sm font-bold text-blue-700">Job Description</label>
-  <div
-    className="mt-1 text-sm text-justify block w-full rounded-none"
-    dangerouslySetInnerHTML={{ __html: jobData?.jobDescription }}
-  />
-</div>
+                  <label className="block text-sm font-bold text-blue-700">Job Description</label>
+                  <div
+                    className="mt-1 text-sm text-justify block w-full rounded-none"
+                    dangerouslySetInnerHTML={{ __html: jobData?.jobDescription }}
+                  />
+                </div>
 
                 {/* <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto">
                   <svg class="-ms-0.5 me-1.5 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

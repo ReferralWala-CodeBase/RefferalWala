@@ -73,6 +73,10 @@ export default function ViewPostedJob() {
     return date;
   }
 
+  const handleViewApplicants = (jobId) => {
+    navigate(`/jobapplicantslist/${jobId}`, { state: { status: "selected" } });
+  };
+
   const inactivate = async () => {
     const bearerToken = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
@@ -133,22 +137,40 @@ export default function ViewPostedJob() {
       <div>
         <SidebarNavigation />
         <main className="py-4 lg:pl-72 min-h-screen">
+          {/* status */}
           <div className="mt-5 flex justify-end gap-2 px-4 lg:ml-4 lg:mt-0">
-            <button
-              type="button"
-              onClick={() => navigate(`/editpostedjob/${jobId}`)}
-              className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
-            >
-              <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
-              Edit
-            </button>
+            {jobData?.status === 'active' ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => navigate(`/editpostedjob/${jobId}`)}
+                  className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
+                >
+                  <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+                  Edit
+                </button>
 
+                <button
+                  onClick={() => setOpen(true)}
+                  className="inline-flex justify-center rounded-full border border-transparent bg-red-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 items-center focus:ring-offset-2"
+                >
+                  Close Job
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate(`/editpostedjob/${jobId}`)}
+                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
+              >
+                Active
+              </button>
+            )}
             <button
-              onClick={() => setOpen(true)}
-              className="inline-flex justify-center rounded-full border border-transparent bg-red-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 items-center focus:ring-offset-2"
-            >
-              Close Job
-            </button>
+                onClick={() => {handleViewApplicants(jobId)}}
+                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
+              >
+                View Applicants
+              </button>
           </div>
 
           {/* Modal for Closing Job */}
@@ -216,7 +238,7 @@ export default function ViewPostedJob() {
               </div>
             </Dialog>
           </Transition.Root>
-          
+
           <div className="lg:flex lg:justify-between p-4 md:p-8">
             <div className="min-w-0 flex-1 border-b pb-4">
               <h2 className="text-2xl font-bold leading-7 text-blue-700 sm:truncate sm:text-2xl sm:tracking-tight">
@@ -301,12 +323,12 @@ export default function ViewPostedJob() {
 
                 </div>
                 <div className="col-span-2 pb-1 border-t py-2 md:py-4 border-gray-200">
-  <label className="block text-sm font-bold text-blue-700">Job Description</label>
-  <div
-    className="mt-1 text-sm text-justify block w-full rounded-none"
-    dangerouslySetInnerHTML={{ __html: jobData?.jobDescription }}
-  />
-</div>
+                  <label className="block text-sm font-bold text-blue-700">Job Description</label>
+                  <div
+                    className="mt-1 text-sm text-justify block w-full rounded-none"
+                    dangerouslySetInnerHTML={{ __html: jobData?.jobDescription }}
+                  />
+                </div>
 
               </div>
             </div>

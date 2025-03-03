@@ -1995,7 +1995,7 @@ export default function EditProfile() {
               <input
                 type="file"
                 name="resume"
-                accept=".pdf,.docx,.txt" // You can specify which file types to allow
+                accept=".pdf" // You can specify which file types to allow
                 onChange={handleResumeChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
               />
