@@ -3,8 +3,7 @@ import RouterPage from "./RouterPage";
 function App() {
   return (
     <>
-       <RouterPage />
-
+      <RouterPage />
     </>
 
   );
