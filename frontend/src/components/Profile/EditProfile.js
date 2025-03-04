@@ -849,35 +849,6 @@ export default function EditProfile() {
   //   }
   // };
 
-  const handleDateChange = (e, field) => {
-    const value = e.target.value;
-    const updatedProfileData = {
-      ...profileData,
-      presentCompany: {
-        ...profileData.presentCompany,
-        [field]: value,
-      },
-    };
-
-    // Calculate years of experience if both dates are selected
-    if (updatedProfileData.presentCompany.startDate && updatedProfileData.presentCompany.endDate) {
-      const startDate = new Date(updatedProfileData.presentCompany.startDate);
-      const endDate = new Date(updatedProfileData.presentCompany.endDate);
-
-      if (endDate >= startDate) {
-        const diffInMs = endDate - startDate;
-        const diffInYears = diffInMs / (1000 * 60 * 60 * 24 * 365.25); // Convert ms to years
-
-        updatedProfileData.presentCompany.yearsOfExperience = diffInYears.toFixed(2); // Keep 2 decimal places
-      } else {
-        updatedProfileData.presentCompany.yearsOfExperience = '';
-      }
-    }
-
-    setProfileData(updatedProfileData);
-  };
-
-
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -1345,38 +1316,24 @@ export default function EditProfile() {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Start Date</label>
+                <label className="block text-sm font-medium text-gray-700">Year of Experience</label>
                 <input
-                  type="date"
-                  name="startDate"
-                  value={profileData?.presentCompany?.startDate || ''}
-                  onChange={(e) => handleDateChange(e, 'startDate')}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
-              </div>
-
-              <div className="mt-3">
-                <label className="block text-sm font-medium text-gray-700">End Date</label>
-                <input
-                  type="date"
-                  name="endDate"
-                  value={profileData?.presentCompany?.endDate || ''}
-                  onChange={(e) => handleDateChange(e, 'endDate')}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
-              </div>
-
-              <div className="mt-3">
-                <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
-                <input
-                  type="text"
+                  type="number"
                   name="yearsOfExperience"
+                  min="0"
                   value={profileData?.presentCompany?.yearsOfExperience || ''}
-                  readOnly
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100"
+                  onChange={(e) =>
+                    setProfileData({
+                      ...profileData,
+                      presentCompany: {
+                        ...profileData?.presentCompany,
+                        yearsOfExperience: e.target.value,
+                      },
+                    })
+                  }
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
               </div>
-
 
               <div className='relative'>
                 <label className="block text-sm font-medium text-gray-700">Location</label>
