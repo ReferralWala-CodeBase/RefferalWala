@@ -10,6 +10,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { LocationExport } from "../Location";
 import { FaTimes } from "react-icons/fa";
+import Loader from '../Loader';
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -24,8 +25,9 @@ export default function EditProfile() {
     gender: '',
     profilePhoto: '',
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
-    experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
-    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', yearsOfExperience: '' }],
+    // experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
+    experience: [{ companyName: '', position: '', dateOfJoining: '', dateOfLeaving: '' }],
+    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', dateOfJoining: '' }],
     preferences: [{ preferredCompanyName: '', preferredCompanyURL: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
@@ -45,7 +47,7 @@ export default function EditProfile() {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
   const [newEducation, setNewEducation] = useState({ level: '', schoolName: '', yearOfPassing: '' });
-  const [newExperience, setNewExperience] = useState({ companyName: '', position: '', yearsOfExperience: '' });
+  const [newExperience, setNewExperience] = useState({ companyName: '', position: '', dateOfJoining: '', dateOfLeaving: '' });
   const [showEducationForm, setShowEducationForm] = useState(false);
   const [showExperienceForm, setShowExperienceForm] = useState(false);
   const [companySuggestions, setCompanySuggestions] = useState([]);
@@ -68,6 +70,7 @@ export default function EditProfile() {
   const [isVerified, setIsVerified] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false); // Resume Confrim
   const [showCompanyChangeModal, setShowCompanyChangeModal] = useState(false);
+  const [showloader, setShowLoader] = useState(false);
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
@@ -203,22 +206,22 @@ export default function EditProfile() {
     e.preventDefault();
     const bearerToken = localStorage.getItem('token');
 
-    //Company Email validation
-    const companyEmail = profileData?.presentCompany.companyEmail;
-    const companyName = profileData?.presentCompany.companyName.toLowerCase().replace(/\s+/g, ''); // Remove spaces from company name
+    // //Company Email validation
+    // const companyEmail = profileData?.presentCompany.companyEmail;
+    // const companyName = profileData?.presentCompany.companyName.toLowerCase().replace(/\s+/g, ''); // Remove spaces from company name
 
-    // Extract the domain part after '@'
-    const companyDomain = companyEmail.split('@')[1];
-    const companyNameFromDomain = companyDomain.split('.')[0].toLowerCase();
+    // // Extract the domain part after '@'
+    // const companyDomain = companyEmail.split('@')[1];
+    // const companyNameFromDomain = companyDomain.split('.')[0].toLowerCase();
 
-    const inputEmail = profileData?.presentCompany.companyEmail;
+    // const inputEmail = profileData?.presentCompany.companyEmail;
 
-    const emailRegex = new RegExp(`^[a-zA-Z0-9._%+-]+@${companyNameFromDomain}\\.`);
+    // const emailRegex = new RegExp(`^[a-zA-Z0-9._%+-]+@${companyNameFromDomain}\\.`);
 
-    if (!emailRegex.test(inputEmail) || !companyNameFromDomain.includes(companyName)) {
-      toast.error("Email does not belong to the company's domain or does not match the company name.");
-      return;
-    }
+    // if (!emailRegex.test(inputEmail) || !companyNameFromDomain.includes(companyName)) {
+    //   toast.error("Email does not belong to the company's domain or does not match the company name.");
+    //   return;
+    // }
 
     setResendTimer(30);
     setShowOtpModal(true);
@@ -422,6 +425,7 @@ export default function EditProfile() {
 
         const data = await response.json();
         setProfileData(data);
+        setShowLoader(true);
         setOriginalCompany(data?.presentCompany?.companyName);
         setOriginalCompanyEmail(data?.presentCompany?.companyEmail);
         setIsCompanyEmailVerified(data?.presentCompany?.CompanyEmailVerified);
@@ -512,7 +516,7 @@ export default function EditProfile() {
     setProfileData((prevState) => ({
       ...prevState,
       presentCompany: confirm
-        ? { role: "", companyName: profileData?.presentCompany?.companyName, location: "", currentCTC: "", CompanyEmailVerified: false, companyEmail: "", yearsOfExperience: "" }
+        ? { role: "", companyName: profileData?.presentCompany?.companyName, location: "", currentCTC: "", CompanyEmailVerified: false, companyEmail: "", dateOfJoining: "" }
         : { ...prevState.presentCompany, companyName: originalCompany },
     }));
 
@@ -649,7 +653,7 @@ export default function EditProfile() {
       experience: [...prev.experience, newExperience],
     }));
     setShowExperienceForm(false);
-    setNewExperience({ companyName: '', position: '', yearsOfExperience: '' });
+    setNewExperience({ companyName: '', position: '', dateOfJoining: '', dateOfLeaving: '' });
 
   };
 
@@ -773,13 +777,6 @@ export default function EditProfile() {
       }
     }
 
-    // **Years of Experience Validation**
-    for (const exp of profileData?.experience ?? []) {
-      if (exp.yearsOfExperience && !numericPattern.test(exp.yearsOfExperience)) {
-        return toast.error("Years of experience must be a valid number.");
-      }
-    }
-
     // **Repo & Live Link Validation**
     for (const proj of profileData?.project ?? []) {
       if ((proj.repoLink && !urlPattern.test(proj.repoLink)) ||
@@ -849,6 +846,12 @@ export default function EditProfile() {
   //   }
   // };
 
+  if (!showloader) {
+    return (
+      <Loader />
+    );
+  }
+
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -856,7 +859,7 @@ export default function EditProfile() {
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-0 sm:px-6 mx-auto bg-white">
+        <div className="w-full md:w-4/4 px-0 sm:px-6 mx-auto bg-white">
           <div className="flex justify-between w-full items-center mt-6 ">
 
             <h3 className="text-lg border w-full p-2 bg-gray-200/50 rounded-lg font-medium leading-7 text-gray-800 text-left">
@@ -1316,24 +1319,25 @@ export default function EditProfile() {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Year of Experience</label>
+                <label className="block text-sm font-medium text-gray-700">Date of Joining</label>
                 <input
-                  type="number"
-                  name="yearsOfExperience"
-                  min="0"
-                  value={profileData?.presentCompany?.yearsOfExperience || ''}
+                  type="date"
+                  name="dateOfJoining"
+                  value={profileData?.presentCompany?.dateOfJoining || ""}
                   onChange={(e) =>
                     setProfileData({
                       ...profileData,
                       presentCompany: {
                         ...profileData?.presentCompany,
-                        yearsOfExperience: e.target.value,
+                        dateOfJoining: e.target.value,
                       },
                     })
                   }
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
+
               </div>
+
 
               <div className='relative'>
                 <label className="block text-sm font-medium text-gray-700">Location</label>
@@ -1521,17 +1525,31 @@ export default function EditProfile() {
 
                 <div className="w-full sm:flex-1 flex items-center gap-3">
                   <div className="w-[80%] sm:flex-1">
-                    <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
+                    <label className="block text-sm font-medium text-gray-700">Date of Joining</label>
                     <input
-                      type="text"
-                      name="yearsOfExperience"
-                      value={exp.yearsOfExperience || ''}
+                      type="date"
+                      name="dateOfJoining"
+                      value={exp.dateOfJoining || ""}
                       onChange={(e) => {
                         const updatedExperience = [...profileData?.experience];
-                        updatedExperience[index].yearsOfExperience = e.target.value;
+                        updatedExperience[index].dateOfJoining = e.target.value;
                         setProfileData({ ...profileData, experience: updatedExperience });
                       }}
-                      onBlur={validation}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+
+                  </div>
+                  <div className="w-[80%] sm:flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Date of Leaving</label>
+                    <input
+                      type="date"
+                      name="dateOfLeaving"
+                      value={exp.dateOfLeaving || ""}
+                      onChange={(e) => {
+                        const updatedExperience = [...profileData?.experience];
+                        updatedExperience[index].dateOfLeaving = e.target.value;
+                        setProfileData({ ...profileData, experience: updatedExperience });
+                      }}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />
                   </div>
@@ -1574,11 +1592,21 @@ export default function EditProfile() {
                     />
                   </div>
                   <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
+                    <label className="block text-sm font-medium text-gray-700">Date of Joining</label>
                     <input
-                      type="text"
-                      name="yearsOfExperience"
-                      value={newExperience.yearsOfExperience}
+                      type="date"
+                      name="dateOfJoining"
+                      value={newExperience.dateOfJoining || ""}
+                      onChange={handleExperienceChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">Date of Leaving</label>
+                    <input
+                      type="date"
+                      name="dateOfLeaving"
+                      value={newExperience.dateOfLeaving || ""}
                       onChange={handleExperienceChange}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                     />

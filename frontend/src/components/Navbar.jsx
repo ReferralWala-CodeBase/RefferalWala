@@ -278,11 +278,11 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
             <div className="relative flex h-16 justify-between">
               <div className="relative z-10 flex items-center lg:hidden">
-                <Disclosure.Button className="relative flex items-center justify-end w-full rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <Disclosure.Button className="relative flex items-center justify-end w-full rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
                   <span className="sr-only">Open menu</span>
                   {open ? (
                     <XMarkIcon
-                      className="absolute left-52 bg-red-500 text-white rounded-full p-1 h-6 w-6 ml-auto"
+                      className="bg-blue-700 text-white rounded-full p-1 h-6 w-6"
                       aria-hidden="true"
                     />
                   ) : (
@@ -444,8 +444,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
           >
             <div className="flex h-full flex-col gap-y-5 overflow-y-auto px-4 pb-2">
               {/* Overview Section */}
-              <nav className="flex-1 mt-9">
-                <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">
+              <nav className="flex-1 mt-10">
+              {loggedIn && (
+                <>
+                <div className="text-xs font-semibold leading-6 text-gray-400 ml-2 mt-5">
                   Overview
                 </div>
                 <ul role="list" className="space-y-1">
@@ -477,7 +479,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                     </li>
                   ))}
                   {/* Notifications (Only if logged in) */}
-                  {loggedIn && (
+                  {/* {loggedIn && ( */}
                     <li>
                       <Disclosure.Button
                         as={Link}
@@ -488,8 +490,9 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                         Notifications
                       </Disclosure.Button>
                     </li>
-                  )}
                 </ul>
+                </>
+                  )}
 
                 {/* Posts Section (Only if logged in) */}
                 {loggedIn && teams.length > 0 && (
@@ -530,7 +533,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
 
                 {/* General Section - Always Show sidenavigationlogout */}
                 <>
-                  <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">
+                  <div className="text-xs font-semibold leading-6 text-gray-400 ml-2 mt-5">
                     General
                   </div>
                   <ul role="list" className="space-y-1">

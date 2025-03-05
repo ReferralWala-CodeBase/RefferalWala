@@ -22,8 +22,11 @@ const ExperienceSchema = new mongoose.Schema({
   position: {
     type: String,
   },
-  yearsOfExperience: {
-    type: Number,
+  dateOfJoining: {
+    type: String,
+  },
+  dateOfLeaving: {
+    type: String,
   },
 });
 
@@ -60,8 +63,8 @@ const PresentCompanySchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  yearsOfExperience: {
-    type: Number,
+  dateOfJoining: {
+    type: String,
   },
   location: {
     type: String,

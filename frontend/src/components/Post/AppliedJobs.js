@@ -31,7 +31,7 @@ export default function AppliedJobs() {
   const [sortField, setSortField] = useState("appliedAt");
   const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
   const [workModeFilter, setWorkModeFilter] = useState("all");
-
+  // const [sortOrderApplied,setSortOrderApplied={setSortOrderApplied}
 
   const handleOpenModal = (jobId) => {
     setSelectedJobId(jobId);
@@ -209,6 +209,8 @@ export default function AppliedJobs() {
                   setSortOrder={setSortOrder}
                   workModeFilter={workModeFilter}
                   setWorkModeFilter={setWorkModeFilter}
+                  // sortOrderApplied={sortOrderApplied}
+                  // setSortOrderApplied={setSortOrderApplied}
                 />
               </div>
 

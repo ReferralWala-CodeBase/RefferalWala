@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { FaSortAmountDown, FaSortAmountUp, FaFilter } from "react-icons/fa";
 
-export default function JobFilterDialog({ sortField, setSortField, sortOrder, setSortOrder, statusFilter, setStatusFilter, userStatusFilter, setUserStatusFilter, appliedOnDateFilter, setAppliedOnDateFilter, workModeFilter, setWorkModeFilter }) {
+export default function JobFilterDialog({ sortField, setSortField, wishlishtSortField, setWishlishtSortField, sortOrder, setSortOrder, statusFilter, setStatusFilter, userStatusFilter, setUserStatusFilter, appliedOnDateFilter, setAppliedOnDateFilter, workModeFilter, setWorkModeFilter }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -56,6 +56,23 @@ export default function JobFilterDialog({ sortField, setSortField, sortOrder, se
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
                                             >
                                                 <option value="appliedAt">Applied Date</option>
+                                                <option value="companyName">Company Name</option>
+                                                <option value="jobRole">Job Role</option>
+                                                <option value="location">Location</option>
+                                            </select>
+                                        </div>
+                                    )}
+
+
+                                    {/* Wishlisht Sort By */}
+                                    {setWishlishtSortField && (
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Sort By:</label>
+                                            <select
+                                                value={wishlishtSortField}
+                                                onChange={(e) => setWishlishtSortField(e.target.value)}
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                                            >
                                                 <option value="companyName">Company Name</option>
                                                 <option value="jobRole">Job Role</option>
                                                 <option value="location">Location</option>
@@ -119,7 +136,7 @@ export default function JobFilterDialog({ sortField, setSortField, sortOrder, se
                                     )}
 
                                     {/* Applied On Date Sort Order */}
-                                    {setSortOrder && (
+                                    {/* {setSortOrder && (
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700">Sort by Applied On:</label>
                                             <select
@@ -131,7 +148,7 @@ export default function JobFilterDialog({ sortField, setSortField, sortOrder, se
                                                 <option value="desc">Descending</option>
                                             </select>
                                         </div>
-                                    )}
+                                    )} */}
 
 
                                     {/* Work Mode Filter */}
