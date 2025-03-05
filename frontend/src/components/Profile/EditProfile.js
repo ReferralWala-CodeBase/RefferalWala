@@ -13,9 +13,9 @@ import { FaTimes } from "react-icons/fa";
 
 export default function EditProfile() {
   const navigate = useNavigate();
-  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
-  const Logo_Dev_Secret_key = process.env.REACT_APP_LOGO_DEV_SECRET_KEY; // Logo dev secret key
-  const Cloudinary_URL = process.env.REACT_APP_CLOUDINARY_URL; // Cloudinary API
+  const Fronted_API_URL = process.env.REACT_APP_API_URL;
+  const Logo_Dev_Secret_key = process.env.REACT_APP_LOGO_DEV_SECRET_KEY;
+  const Cloudinary_URL = process.env.REACT_APP_CLOUDINARY_URL;
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
@@ -1334,6 +1334,7 @@ export default function EditProfile() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
               </div>
+
               <div className='relative'>
                 <label className="block text-sm font-medium text-gray-700">Location</label>
                 <input
@@ -2007,7 +2008,7 @@ export default function EditProfile() {
                       type="button"
                       onClick={openModal}
                       className="inline-flex items-center gap-2 px-5 py-2.5 mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
-                      >
+                    >
                       <EyeIcon className="h-5 w-5" aria-hidden="true" />
                       View Uploaded Resume
                     </button>

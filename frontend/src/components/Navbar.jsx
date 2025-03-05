@@ -5,7 +5,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import profile from "../assets/profile-icon-user.png";
-import { 
+import {
   PhoneIcon, // Contact Us (Phone Representation)
   ShieldCheckIcon, // Privacy Policy (Security Representation)
   DocumentTextIcon, // Terms & Conditions (Document Representation)
@@ -17,7 +17,6 @@ import {
   UserGroupIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
@@ -134,13 +133,16 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   const navigate = useNavigate();
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const [profileData, setProfileData] = useState(null);
-  const hamburger = loggedIn ? [...sidenavigationlogout, ...sidenavigation] : sidenavigationlogout;
+  const hamburger = loggedIn
+    ? [...sidenavigationlogout, ...sidenavigation]
+    : sidenavigationlogout;
   const bearerToken = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
   const filteredSidenavigationLogout = loggedIn
-  ? sidenavigationlogout.filter(item => item.name !== "Login" && item.name !== "Sign up")
-  : sidenavigationlogout;
-
+    ? sidenavigationlogout.filter(
+        (item) => item.name !== "Login" && item.name !== "Sign up"
+      )
+    : sidenavigationlogout;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -266,11 +268,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     }
 
     setLoggedIn(false);
-    navigate("/");
+    navigate("/user-login");
   };
 
   return (
-    
     <Disclosure as="header" className="bg-blue-800 shadow sticky top-0 z-50">
       {({ open }) => (
         <>
@@ -349,7 +350,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                         );
                         return; // Prevent further action if not logged in
                       }
-                
+
                       // Navigate to the post job page if logged in
                       navigate("/postjob");
                     }}
@@ -361,118 +362,122 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                   </button>
                 </div>
                 {loggedIn ? (
-  <>
-    {/* 🔔 Notifications Button */}
-    <button
-      type="button"
-      onClick={() => setOpenNotifications(true)}
-      className="relative flex-shrink-0 rounded-full bg-gradient-to-r from-gray-100 to-gray-300 p-1.5 text-gray-500 shadow-md transition duration-300 hover:text-gray-700 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
-    >
-      <span className="sr-only">View notifications</span>
-      <BellIcon className="h-6 w-6" aria-hidden="true" />
-    </button>
+                  <>
+                    {/* 🔔 Notifications Button */}
+                    <button
+                      type="button"
+                      onClick={() => setOpenNotifications(true)}
+                      className="relative flex-shrink-0 rounded-full bg-gradient-to-r from-gray-100 to-gray-300 p-1.5 text-gray-500 shadow-md transition duration-300 hover:text-gray-700 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
+                    >
+                      <span className="sr-only">View notifications</span>
+                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
 
-    {/* 👤 Profile Button (Navigates to /viewprofile) */}
-    <Link
-      to="/viewprofile"
-      className="relative ml-4 flex rounded-full bg-gradient-to-r from-gray-100 to-gray-300 p-1 shadow-md transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
-    >
-      <img
-        className="h-8 w-8 rounded-full border-0 border-gray-800"
-        src={profileData?.profilePhoto || profile}
-        alt="User"
-      />
-    </Link>
-  </>
-) : (
-  <>
-    {/* 👤 Guest Profile Button (Shows Dropdown) */}
-    <Menu as="div" className="relative ml-4 flex-shrink-0">
-      <div>
-        <Menu.Button className="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-          <span className="sr-only">Open menu</span>
-          <img className="h-8 w-8 rounded-full" src={profile} alt="Guest" />
-        </Menu.Button>
-      </div>
+                    {/* 👤 Profile Button (Navigates to /viewprofile) */}
+                    <Link
+                      to="/viewprofile"
+                      className="relative ml-4 flex rounded-full bg-gradient-to-r from-gray-100 to-gray-300 p-1 shadow-md transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
+                    >
+                      <img
+                        className="h-8 w-8 rounded-full border-0 border-gray-800"
+                        src={profileData?.profilePhoto || profile}
+                        alt="User"
+                      />
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    {/* 👤 Guest Profile Button (Shows Dropdown) */}
+                    <Menu as="div" className="relative ml-4 flex-shrink-0">
+                      <div>
+                        <Menu.Button className="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                          <span className="sr-only">Open menu</span>
+                          <img
+                            className="h-8 w-8 rounded-full"
+                            src={profile}
+                            alt="Guest"
+                          />
+                        </Menu.Button>
+                      </div>
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          {navigation.map((item) => (
-            <Menu.Item key={item.name}>
-              {({ active }) => (
-                <Link
-                  to={item.href}
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  {item.name}
-                </Link>
-              )}
-            </Menu.Item>
-          ))}
-        </Menu.Items>
-      </Transition>
-    </Menu>
-  </>
-)}
-
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          {navigation.map((item) => (
+                            <Menu.Item key={item.name}>
+                              {({ active }) => (
+                                <Link
+                                  to={item.href}
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  {item.name}
+                                </Link>
+                              )}
+                            </Menu.Item>
+                          ))}
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </>
+                )}
               </div>
             </div>
           </div>
           {/* Here the small screen*/}
           <Disclosure.Panel
-  as="nav"
-  className={classNames(
-    "lg:hidden absolute top-0 left-0 h-screen w-64 bg-white shadow-md transform transition-transform duration-300",
-    open ? "translate-x-0" : "-translate-x-full"
-  )}
-  aria-label="Global"
->
-  <div className="flex h-full flex-col gap-y-5 overflow-y-auto px-4 pb-2">
-    
-    {/* Overview Section */}
-    <nav className="flex-1 mt-9">
-      <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">Overview</div>
-      <ul role="list" className="space-y-1">
-        {sidenavigation.map((item) => (
-          <li key={item.name}>
-            <Disclosure.Button
-              as={Link}
-              to={item.href}
-              className={classNames(
-                item.current
-                  ? "bg-gray-50 text-indigo-600"
-                  : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
-              )}
-            >
-              {item.icon && (
-                <item.icon
-                  className={classNames(
-                    item.current
-                      ? "text-indigo-600"
-                      : "text-gray-400 group-hover:text-indigo-600",
-                    "h-6 w-6"
-                  )}
-                  aria-hidden="true"
-                />
-              )}
-              {item.name}
-            </Disclosure.Button>
-          </li>
-        ))}
-          {/* Notifications (Only if logged in) */}
-          {loggedIn && (
+            as="nav"
+            className={classNames(
+              "lg:hidden absolute top-0 left-0 h-screen w-64 bg-white shadow-md transform transition-transform duration-300",
+              open ? "translate-x-0" : "-translate-x-full"
+            )}
+            aria-label="Global"
+          >
+            <div className="flex h-full flex-col gap-y-5 overflow-y-auto px-4 pb-2">
+              {/* Overview Section */}
+              <nav className="flex-1 mt-9">
+                <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">
+                  Overview
+                </div>
+                <ul role="list" className="space-y-1">
+                  {sidenavigation.map((item) => (
+                    <li key={item.name}>
+                      <Disclosure.Button
+                        as={Link}
+                        to={item.href}
+                        className={classNames(
+                          item.current
+                            ? "bg-gray-50 text-indigo-600"
+                            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                        )}
+                      >
+                        {item.icon && (
+                          <item.icon
+                            className={classNames(
+                              item.current
+                                ? "text-indigo-600"
+                                : "text-gray-400 group-hover:text-indigo-600",
+                              "h-6 w-6"
+                            )}
+                            aria-hidden="true"
+                          />
+                        )}
+                        {item.name}
+                      </Disclosure.Button>
+                    </li>
+                  ))}
+                  {/* Notifications (Only if logged in) */}
+                  {loggedIn && (
                     <li>
                       <Disclosure.Button
                         as={Link}
@@ -484,90 +489,94 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       </Disclosure.Button>
                     </li>
                   )}
-      </ul>
+                </ul>
 
-    {/* Posts Section (Only if logged in) */}
-    {loggedIn && teams.length > 0 && (
-      <>
-        <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">Posts</div>
-        <ul role="list" className="mt-2 space-y-1">
-          {teams.map((team) => (
-            <li key={team.name}>
-              <Disclosure.Button
-                as={Link}
-                to={team.href}
-                className={classNames(
-                  team.current
-                    ? "bg-gray-50 text-indigo-600"
-                    : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                  "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                {/* Posts Section (Only if logged in) */}
+                {loggedIn && teams.length > 0 && (
+                  <>
+                    <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">
+                      Posts
+                    </div>
+                    <ul role="list" className="mt-2 space-y-1">
+                      {teams.map((team) => (
+                        <li key={team.name}>
+                          <Disclosure.Button
+                            as={Link}
+                            to={team.href}
+                            className={classNames(
+                              team.current
+                                ? "bg-gray-50 text-indigo-600"
+                                : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                              "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                            )}
+                          >
+                            <span
+                              className={classNames(
+                                team.current
+                                  ? "text-indigo-600 border-indigo-600"
+                                  : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
+                                "flex h-6 w-6 items-center justify-center rounded-lg border text-xs font-medium bg-white"
+                              )}
+                            >
+                              {team.initial}
+                            </span>
+                            {team.name}
+                          </Disclosure.Button>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
                 )}
-              >
-                <span
-                  className={classNames(
-                    team.current
-                      ? "text-indigo-600 border-indigo-600"
-                      : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
-                    "flex h-6 w-6 items-center justify-center rounded-lg border text-xs font-medium bg-white"
-                  )}
+
+                {/* General Section - Always Show sidenavigationlogout */}
+                <>
+                  <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">
+                    General
+                  </div>
+                  <ul role="list" className="space-y-1">
+                    {filteredSidenavigationLogout.map((item) => (
+                      <li key={item.name}>
+                        <Disclosure.Button
+                          as={Link}
+                          to={item.href}
+                          className={classNames(
+                            item.current
+                              ? "bg-gray-50 text-indigo-600"
+                              : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                            "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                          )}
+                        >
+                          {item.icon && (
+                            <item.icon
+                              className={classNames(
+                                item.current
+                                  ? "text-indigo-600"
+                                  : "text-gray-400 group-hover:text-indigo-600",
+                                "h-6 w-6"
+                              )}
+                              aria-hidden="true"
+                            />
+                          )}
+                          {item.name}
+                        </Disclosure.Button>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              </nav>
+
+              {/* Sign Out Button (Only when logged in) */}
+              {loggedIn && (
+                <Disclosure.Button
+                  as="button"
+                  onClick={handleSignOut}
+                  className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                  {team.initial}
-                </span>
-                {team.name}
-              </Disclosure.Button>
-            </li>
-          ))}
-        </ul>
-      </>
-    )}
-
-    {/* General Section - Always Show sidenavigationlogout */}
-    <>
-      <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">General</div>
-      <ul role="list" className="space-y-1">
-        {filteredSidenavigationLogout.map((item) => (
-          <li key={item.name}>
-            <Disclosure.Button
-              as={Link}
-              to={item.href}
-              className={classNames(
-                item.current
-                  ? "bg-gray-50 text-indigo-600"
-                  : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                  Sign Out
+                </Disclosure.Button>
               )}
-            >
-              {item.icon && (
-                <item.icon
-                  className={classNames(
-                    item.current
-                      ? "text-indigo-600"
-                      : "text-gray-400 group-hover:text-indigo-600",
-                    "h-6 w-6"
-                  )}
-                  aria-hidden="true"
-                />
-              )}
-              {item.name}
-            </Disclosure.Button>
-          </li>
-        ))}
-      </ul>
-    </>
-    </nav>
-
-    {/* Sign Out Button (Only when logged in) */}
-    {loggedIn && (
-      <Disclosure.Button
-        as="button"
-        onClick={handleSignOut}
-        className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-      >
-        Sign Out
-      </Disclosure.Button>
-    )}
-  </div>
-</Disclosure.Panel>
+            </div>
+          </Disclosure.Panel>
 
           {/* Notification Page */}
           <Transition.Root show={openNotifications} as={Fragment}>
