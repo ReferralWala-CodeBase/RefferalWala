@@ -11,8 +11,15 @@ import busi from "../../assets/company.png";
 import { UserPlus, UserX } from "lucide-react";
 import person from '../../assets/person.png';
 import { EyeIcon } from '@heroicons/react/20/solid';
+import { IoShieldCheckmark } from "react-icons/io5";
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import ExperienceCarousel from '../Profile/ExperienceCarousel';
+import ProjectCarousel from '../Profile/ProjectCarousel';
+import Preferences from '../Profile/Preferences';
+import Achievements from '../Profile/Achievements';
+import AboutMeSection from '../Profile/AboutMe';
+
 
 export default function ViewApplicantProfile() {
   const navigate = useNavigate();
@@ -37,6 +44,7 @@ export default function ViewApplicantProfile() {
   const [selectedDocUpload, setSelectedDocUpload] = useState(false);
   const [openStatusBox, setOpenStatusBox] = useState(false);
   const [tempStatus, setTempStatus] = useState(""); // Holds temporary status before confirmation
+  const [profileCompletion, setProfileCompletion] = useState(null);
 
   // Open modal function
   const openModal = () => {
@@ -114,6 +122,33 @@ export default function ViewApplicantProfile() {
 
     if (jobId && applicantId) fetchCurrentStatus();
   }, [Fronted_API_URL, applicantId, jobId]);
+
+    useEffect(() => {
+      const fetchProfileCompletion = async () => {
+        try {
+          const bearerToken = localStorage.getItem('token');
+          const response = await fetch(`${Fronted_API_URL}/user/profile-completion/${applicantId}`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${bearerToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+  
+          if (!response.ok) {
+            throw new Error("Failed to fetch profile completion");
+          }
+  
+          const data = await response.json();
+          setProfileCompletion(data.profileCompletion); // Assuming API returns { profileCompletion: 75 }
+        } catch (error) {
+          console.error("Error fetching profile completion:", error);
+        }
+      };
+  
+      fetchProfileCompletion();
+    }, [applicantId]);
+  
 
   // Handle status change selection
   const handleStatusChange = (newStatus) => {
@@ -286,11 +321,11 @@ export default function ViewApplicantProfile() {
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <div className="flex">
+      <div className="flex mt-[navbar-height] bg-[#edede7]">
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-0 sm:px-6 mx-auto">
+        <div className="w-full md:w-4/4 px-0 sm:px-6 mx-auto">
           <div className={`col-span-2 flex justify-end items-center py-4 gap-1 ${isFollowing ? "flex-row gap-2 flex-wrap" : ""}`}>
             <label htmlFor="status" className="font-medium text-gray-700">
               Update Status
@@ -520,48 +555,86 @@ export default function ViewApplicantProfile() {
             </div>
           )}
 
-          <div className="p-6 font-sans rounded-lg shadow-lg bg-gray-50">
-            <div className="flex flex-col md:flex-row">
-              <div className="w-full md:w-1/3 text-center pr-6 md:border-r border-gray-300 mb-6 md:mb-0">
-                <div className="w-36 h-36 rounded-full mx-auto mb-4 overflow-hidden flex items-center justify-center bg-gray-200">
-                  {profileData?.profilePhoto ? (
+<div className="p-3 sm:mr-0 font-sans rounded-md">
+            <div className="flex flex-col lg:flex-row">
+              <div className="relative w-full max-w-sm space-y-4 text-center lg:pr-4 mb-2 lg:mb-0 py-2 md:py-6 rounded-lg px-4 md:px-4 bg-white overflow-hidden">
+                {/* Background for top half */}
+                <div className="absolute top-0 left-0 w-full h-1/3 bg-blue-700 rounded-t-lg z-0">
+                </div>
+
+                {/* Profile Image Container (Ensure it's above background) */}
+                <div className="relative w-36 h-36 mx-auto z-10">
+                  <div className="relative w-36 h-36 mx-auto bg-white rounded-full">
                     <img
-                      src={profileData?.profilePhoto}
+                      src={profileData?.profilePhoto || person}
                       alt="Profile"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = "";
-                        e.target.style.display = "none";
-                      }}
+                      className="w-36 h-36 rounded-full border-2 p-1 shadow-lg hover:shadow-xl transition-shadow duration-300"
                     />
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
+                    {/* Profile Completion Percentage Badge */}
+                    {profileCompletion !== null && (
+                      <div className="absolute bottom-4 right-1 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+                        {profileCompletion}%
+                      </div>
+                    )}
+                  </div>
 
-                  )}
+                </div>
+                <div className="flex flex-col items-center space-y-2">
+                  {/* Name */}
+                  <h2 className="text-xl font-semibold text-gray-800 text-center flex items-center justify-center space-x-1">
+                    <span>
+                      {profileData?.firstName || <>&nbsp;</>} {profileData?.lastName || <>&nbsp;</>}
+                    </span>
+
+                    {/* Verified Badge with Tooltip */}
+                    {profileData?.presentCompany?.CompanyEmailVerified && (
+                      <div className="relative group">
+                        <IoShieldCheckmark className="text-blue-500 w-7 h-7 cursor-pointer" />
+
+                        {/* Tooltip */}
+                        <span className="absolute -top-7 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          Verified
+                        </span>
+                      </div>
+                    )}
+                  </h2>
+
+                  {/* Company Logo & Details */}
+                  <div className="flex items-center space-x-3 p-2 rounded-lg">
+                    {/* Company Logo */}
+                    {profileData?.presentCompany?.companyLogoUrl ? (
+                      <img
+                        src={profileData?.presentCompany?.companyLogoUrl}
+                        alt={`${profileData?.presentCompany?.companyName} Logo`}
+                        className="h-12 w-12 object-cover rounded-full"
+                      />
+                    ) : null}
+
+
+                    {/* Company Name & Role */}
+                    <div className="text-center">
+                      <p className="text-md font-medium text-gray-800">{profileData?.presentCompany?.companyName || <>&nbsp;</>}</p>
+                      <p className="text-sm text-gray-600">{profileData?.presentCompany?.role || <>&nbsp;</>}</p>
+                    </div>
+                  </div>
                 </div>
 
-                <h2 className="text-xl font-semibold text-gray-800">
-                  {`${profileData?.firstName || ""} ${profileData?.lastName || ""}`.trim() || <>&nbsp;</>}
-                </h2>
 
-                <div className="text-sm text-gray-700 leading-relaxed block">
-                  <div className="flex items-center space-x-1">
-                    <FaEnvelope className="text-gray-500" />
-                    <span>{profileData?.email || <>&nbsp;</>}</span>
+                <div className="text-sm text-gray-700 space-y-2 leading-relaxed block">
+                  <div className="flex items-center space-x-2">
+                    <FaEnvelope className="text-gray-600" />
+                    <span className='font-light text-sm cursor-pointer'>{profileData?.email || <>&nbsp;</>}</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <FaPhone className="text-gray-500" />
-                    <span>{profileData?.mobileNumber || <>&nbsp;</>}</span>
+                  {/* <span className="text-gray-400">||</span> */}
+                  <div className="flex items-center space-x-2">
+                    <FaPhone className="text-gray-600" />
+                    <span className='font-light text-sm'>{profileData?.mobileNumber || <>&nbsp;</>}</span>
                   </div>
                 </div>
-
                 <div className="flex justify-center gap-4 mt-4">
                   {profileData?.links?.github && (
                     <a
-                      href={profileData?.links?.github}
+                      href={profileData?.links.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -569,6 +642,7 @@ export default function ViewApplicantProfile() {
                       <FaGithub className="text-2xl" />
                     </a>
                   )}
+
                   {profileData?.links?.linkedin && (
                     <a
                       href={profileData?.links.linkedin}
@@ -579,9 +653,10 @@ export default function ViewApplicantProfile() {
                       <FaLinkedin className="text-2xl" />
                     </a>
                   )}
+
                   {profileData?.links?.website && (
                     <a
-                      href={profileData?.links?.website}
+                      href={profileData?.links.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -589,9 +664,10 @@ export default function ViewApplicantProfile() {
                       <FaGlobe className="text-2xl" />
                     </a>
                   )}
+
                   {profileData?.links?.instagram && (
                     <a
-                      href={profileData?.links?.instagram}
+                      href={profileData?.links.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -599,9 +675,10 @@ export default function ViewApplicantProfile() {
                       <FaInstagram className="text-2xl" />
                     </a>
                   )}
+
                   {profileData?.links?.facebook && (
                     <a
-                      href={profileData?.links?.facebook}
+                      href={profileData?.links.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-blue-500 transition"
@@ -612,46 +689,120 @@ export default function ViewApplicantProfile() {
                 </div>
               </div>
 
-              <div className="w-full md:w-2/3 pl-0 md:pl-6">
-                <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
-                <p className="text-sm text-gray-700 mb-6">{profileData?.aboutMe || 'No about me information provided'}</p>
+              <div className="w-full max-w-5xl lg:mx-2 px-3 md:px-6 py-4 md:py-8 rounded-lg bg-white relative">
+                {/* Follow/Unfollow Button (Top-Right) */}
+                <button
+                  onClick={handleFollowUnfollow}
+                  className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow-md transition hover:bg-gray-100 z-20"
+                >
+                  {isFollowing ? <UserX size={20} /> : <UserPlus size={20} />}
+                </button>
+
+                {/* View Job Posted Button (Right next to Follow/Unfollow) */}
+                {isFollowing && (
+                  <button
+                    onClick={handleShowJob}
+                    className="absolute top-3 right-14 text-sm items-center px-4 py-1 rounded-full bg-blue-500 text-white "
+                  >
+                    Posted Jobs
+                  </button>
+                )}
+
+                {/* Conditionally Show Modal */}
+                {isFollowing && isModalOpen && (
+                  <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="mx-4 relative bg-white rounded-lg shadow-lg w-100 max-h-[80vh] overflow-hidden">
+                      {/* Sticky Header */}
+                      <div className="sticky top-0 bg-white z-10 border-b rounded-t-lg">
+                        {/* Close Icon */}
+                        <button
+                          onClick={() => {
+                            setIsModalOpen(false);
+                            setJobs([]);
+                          }}
+                          className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
+                        >
+                          <FaTimes className="w-6 h-6" />
+                        </button>
+                        <h2 className="text-xl font-bold mb-4 text-center py-4">Posted Jobs</h2>
+                      </div>
+
+                      {/* Modal Content */}
+                      <div className="overflow-auto max-h-[70vh] p-4 hide-scrollbar">
+                        {jobs.length > 0 ? (
+                          <ul className="space-y-2">
+                            {jobs.map((job) => (
+                              <li
+                                key={job._id}
+                                onClick={() => job.status === "active" && handleViewDetails(job._id)}
+                                className={`p-4 border rounded-md bg-gray-100 shadow-sm flex items-center justify-between cursor-pointer ${job.status === "inactive" ? "opacity-50 pointer-events-none" : ""
+                                  }`}
+                              >
+                                <img
+                                  src={job.companyLogoUrl || busi}
+                                  alt={job.companyName}
+                                  className="w-10 h-10 sm:w-16 sm:h-16 mr-4"
+                                />
+                                <div className="flex-1">
+                                  <div className="flex justify-between items-center">
+                                    <h3 className="font-semibold text-base sm:text-lg md:text-xl">{job.jobRole}</h3>
+                                    <span
+                                      className={`px-2 py-1 text-xs font-medium rounded-full ${job.status === "active" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+                                        }`}
+                                    >
+                                      {job.status === "active" ? "Active" : "Inactive"}
+                                    </span>
+                                  </div>
+                                  <p className="text-sm sm:text-base text-gray-600">{job.companyName}</p>
+                                  <p className="text-sm sm:text-base text-gray-500">Location: {job.location}</p>
+                                  <p className="text-sm sm:text-base text-gray-500">
+                                    End Date: {new Date(job.endDate).toLocaleDateString("en-GB")}
+                                  </p>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>No jobs posted by this user.</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+
+                {/* About Me Section */}
+                <AboutMeSection profileData={profileData} />
+
+                {/* Skills Section */}
                 <h3 className="text-lg font-medium text-gray-800 mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {profileData?.skills.map((skill, index) => (
-                    <span
-                      key={index}
-                      className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-                <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Achievements</h3>
-                <div className="mt-3">
-                  {profileData.achievements?.length ? (
-                    <div className="mt-1 block w-full p-2">
-                      {profileData?.achievements.join(", ")}
-                    </div>
+                  {profileData?.skills?.length > 0 ? (
+                    profileData.skills.map((skill, index) => (
+                      <span key={index} className="text-sm bg-blue-100 text-gray-800 px-3 py-1 rounded-full">
+                        {skill}
+                      </span>
+                    ))
                   ) : (
-                    <div className="mt-1 block w-full p-2">
-                      No achievements added
-                    </div>
+                    <p className="text-sm text-gray-500">No skills added</p>
                   )}
                 </div>
 
-                {/* Resume */}
-                <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Resume</h3>
+
+                {/* Achievements */}
+                <Achievements achievements={profileData?.achievements || []} />
+
+
+
                 <div className="mt-3">
                   {profileData?.resume ? (
                     <div>
-                      {/* Button to open the modal and view resume */}
                       <button
                         type="button"
                         onClick={openModal}
-                        // className="mt-1 block w-25 p-2 bg-blue-500 text-white rounded"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:from-indigo-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2"
+                        className="flex gap-2 text-sm items-center px-4 py-1 rounded-full bg-blue-500 text-white"
                       >
-                        <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                        <EyeIcon className="h-4 w-4" aria-hidden="true" />
                         View Resume
                       </button>
                     </div>
@@ -686,7 +837,7 @@ export default function ViewApplicantProfile() {
                               <div className="mt-3">
                                 {/* Display the Base64 resume as an embedded PDF */}
                                 <iframe
-                                  src={`data:application/pdf;base64,${profileData.resume}`}
+                                  src={`data:application/pdf;base64,${profileData?.resume}`}
                                   width="100%"
                                   height="500px"
                                   title="Resume"
@@ -710,210 +861,102 @@ export default function ViewApplicantProfile() {
               </div>
             </div>
 
-
             { /* Education */}
-            <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-2">Education</h3>
-            {profileData?.education?.length ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData?.education.map((edu, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl">
-                        <FaUniversity />
+            <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
+              <h3 className="font-semibold text-gray-800 mb-1 text-sm px-1">Education</h3>
+              {profileData?.education?.length ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {profileData?.education.map((edu, index) => (
+                    <div
+                      key={index}
+                      className="p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300"
+                    >
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl">
+                          <FaUniversity />
+                        </div>
+                        <div className="ml-4">
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            {edu.level || "Education Level"}
+                          </h3>
+                          <p className="text-sm text-gray-500">{edu.schoolName || "School/University Name"}</p>
+                        </div>
                       </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {edu?.level || "Education Level"}
-                        </h3>
-                        <p className="text-sm text-gray-500">{edu?.schoolName || "School/University Name"}</p>
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <p className="text-gray-600">
-                        <span className="font-medium">Year of Passing:</span>{" "}
-                        {edu?.yearOfPassing || "Not provided"}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-gray-600 mt-6">
-                No education details added.
-              </div>
-            )}
-
-            {/* Present Company Section */}
-            <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2">Present Company</h3>
-            {profileData?.presentCompany ? (
-              <div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Role:</span>
-                    <span className="text-gray-600">{profileData?.presentCompany?.role || '-'}</span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Company Name:</span>
-                    <span className="text-gray-600">
-                      {profileData?.presentCompany?.companyName || '-'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Company Email:</span>
-                    <span className="text-gray-600">
-                      {profileData?.presentCompany?.companyEmail || '-'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Years of Experience:</span>
-                    <span className="text-gray-600">
-                      {profileData?.presentCompany?.yearsOfExperience || '-'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Location:</span>
-                    <span className="text-gray-600">{profileData?.presentCompany?.location || '-'}</span>
-                  </div>
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">Current CTC:</span>
-                    <span className="text-gray-600">
-                      ₹{profileData?.presentCompany?.currentCTC || '-'} LPA
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="text-gray-600">No present company details added.</div>
-            )}
-
-            {/* Experience Section */}
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Experience</h3>
-            {profileData.experience?.length ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData?.experience.map((exp, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl">
-                        <FaBuilding />
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {exp?.companyName || "Company Name"}
-                        </h3>
-                        <p className="text-sm text-gray-500">{exp?.position || "Position"}</p>
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <p className="text-gray-600">
-                        <span className="font-medium">Years of Experience:</span>{" "}
-                        {exp.yearsOfExperience
-                          ? `${exp.yearsOfExperience} years`
-                          : "Not provided"}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-gray-600 mt-6">
-                No experience details added.
-              </div>
-            )}
-
-            {/* Projects */}
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Projects</h3>
-            {profileData.project?.length ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData?.project.map((project, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-xl">
-                        <FaLaptopCode />
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {project?.projectName || "Project Name"}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {project?.details || "Project Description"}
+                      <div className="mt-4">
+                        <p className="text-gray-600">
+                          <span className="font-medium">Year of Passing:</span>{" "}
+                          {edu.yearOfPassing || "Not provided"}
                         </p>
                       </div>
                     </div>
-                    <div className="mt-4">
-                      {/* Display Repo Link with FA Icon */}
-                      {project?.repoLink && (
-                        <a href={project?.repoLink} target="_blank" rel="noopener noreferrer">
-                          <p className="text-blue-500 text-sm flex items-center">
-                            <FaGithub className="mr-2" />
-                            <span className="font-medium">Repository</span>{" "}
-                          </p>
-                        </a>
-                      )}
+                  ))}
+                </div>
+              ) : (
+                <div className="text-gray-600 mt-6">
+                  Education is the key—open the door to success.
+                </div>
+              )}
+            </div>
+
+            {/* Present Company Section */}
+            {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2'>
+              <h3 className="text-lg font-semibold text-gray-800 mt-1 mb-4">Present Company</h3>
+              {profileData?.presentCompany ? (
+                <div>
+                  <div className="flex flex-row flex-wrap gap-8 md:gap-x-20 gap-y-10">
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Role</span>
+                      <span className="text-gray-600">{profileData?.presentCompany.role || '-'}</span>
                     </div>
-                    <div className="mt-4">
-                      {/* Display Live Link with FA Icon */}
-                      {project?.liveLink && (
-                        <a href={project?.liveLink} target="_blank" rel="noopener noreferrer">
-                          <p className="text-blue-500 text-sm flex items-center">
-                            <FaGlobe className="mr-2" />
-                            <span className="font-medium">Live Link</span>{" "}
-                          </p>
-                        </a>
-                      )}
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Company Name</span>
+                      <span className="text-gray-600">
+                        {profileData?.presentCompany.companyName || '-'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Company Email</span>
+                      <span className="text-gray-600">
+                        {profileData?.presentCompany.companyEmail || '-'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Years of Experience</span>
+                      <span className="text-gray-600">
+                        {profileData?.presentCompany.yearsOfExperience || '-'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Location</span>
+                      <span className="text-gray-600">{profileData?.presentCompany.location || '-'}</span>
+                    </div>
+                    <div>
+                      <span className="block text-sm font-medium text-gray-700">Current CTC</span>
+                      <span className="text-gray-600">
+                        ₹{profileData?.presentCompany.currentCTC || '-'} LPA
+                      </span>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-gray-600 mt-6">No projects added.</div>
-            )}
+                </div>
+              ) : (
+                <div className="text-gray-600">No present company details added.</div>
+              )}
+            </div> */}
 
-            {/* Preferences */}
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-6">Preferences</h3>
-            {profileData?.preferences?.length ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {profileData?.preferences.map((pref, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-xl">
-                        {pref?.preferredCompanyURL ? (
-                          <img src={pref?.preferredCompanyURL} alt="Company Logo" className="w-full h-full rounded-full object-cover" />
-                        ) : (
-                          <FaLocationArrow />
-                        )}
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {pref?.preferredCompanyName || "Preferred Company Name"}
-                        </h3>
-                        <p className="text-sm text-gray-500">{pref?.preferredPosition || "Preferred Position"}</p>
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <p className="text-gray-600">
-                        <span className="font-medium">Expected CTC Range:</span>{" "}
-                        {pref?.expectedCTCRange || "Not Set"}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500 mt-4">No Preferences Set</p>
-            )}
+            {/* Experience Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-2 bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2">
+              {/* Experience Section */}
+              <ExperienceCarousel experience={profileData?.experience} />
 
+
+              {/* Projects Section */}
+              <ProjectCarousel projects={profileData?.project} />
+
+
+              {/* Preferences Section */}
+              <Preferences preferences={profileData?.preferences} />
+
+            </div>
 
           </div>
         </div>

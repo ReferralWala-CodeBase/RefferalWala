@@ -18,6 +18,7 @@ exports.reportJob = async (req, res) => {
 
     // Save the report to the database
     await newReport.save();
+
     res.status(201).json({ message: 'Job reported successfully' });
   } catch (error) {
     console.error(error);

@@ -345,7 +345,7 @@ export default function PostJob() {
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 px-0 sm:px-1 m-auto">
+        <div className="m-auto w-full md:w-4/4 px-2 sm:px-6 mx-auto">
           <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Post a New Job</h3>
           <form
             onSubmit={handleJobPostSubmit}

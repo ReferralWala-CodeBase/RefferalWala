@@ -12,6 +12,7 @@ import noSignal from "../../assets/noSignal.jpg";
 import ServerError from '../ServerError';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import JobFilterDialog from "../sorting";
 
 export default function WishlistJobsList() {
   const [jobs, setJobs] = useState([]);
@@ -23,6 +24,12 @@ export default function WishlistJobsList() {
   const [refresh, setRefresh] = useState(false);
   const cancelButtonRef = useRef(null);
   const [selectedJobId, setSelectedJobId] = useState(null);
+  const [sortField, setSortField] = useState("appliedAt");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [createdDateFilter, setCreatedDateFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("asc"); // 'asc' or 'desc'
+  const [workModeFilter, setWorkModeFilter] = useState("all");
+  const [wishlishtSortField, setWishlishtSortField] = useState("appliedAt");
 
   const handleOpenModal = (jobId) => {
     setSelectedJobId(jobId);
@@ -104,17 +111,36 @@ export default function WishlistJobsList() {
   };
 
 
-  const filteredJobs = jobs && Object.fromEntries(
-    Object.entries(jobs).filter(([id, job]) => {
-      return !job.hidden && (
-        job?.jobUniqueId?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+  // const filteredJobs = jobs && Object.fromEntries(
+  //   Object.entries(jobs).filter(([id, job]) => {
+  //     return !job.hidden && (
+  //       job?.jobUniqueId?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+  //     );
+  //   })
+  // );
+
+  const filteredAndSortedJobs = jobs && Object.entries(jobs)
+    .filter(([id, job]) => {
+      // Apply filters
+      return (
+        (!statusFilter || statusFilter === "all" || job.status === statusFilter) &&
+        (!workModeFilter || workModeFilter === "all" || job.workMode === workModeFilter) &&
+        (!createdDateFilter || createdDateFilter === "all" || new Date(job.createdDate).toLocaleDateString() === createdDateFilter)
       );
     })
-  );
+    .sort(([idA, jobA], [idB, jobB]) => {
+      // Apply sorting based on jobUniqueId, you can adjust this for other properties
+      const sortKey = "jobUniqueId"; // For example, sorting by jobUniqueId
+      const orderMultiplier = sortOrder === "asc" ? 1 : -1;
+
+      if (jobA[sortKey] < jobB[sortKey]) return -1 * orderMultiplier;
+      if (jobA[sortKey] > jobB[sortKey]) return 1 * orderMultiplier;
+      return 0;
+    });
 
   return (
     <>
@@ -123,7 +149,7 @@ export default function WishlistJobsList() {
         <div className="w-1/12 md:w-1/4 fixed lg:relative" >
           <SidebarNavigation />
         </div>
-        <div className="w-11/12 md:w-3/4 m-auto">
+        <div className="w-full md:w-4/4 px-2 sm:px-6 m-auto">
 
           <div className="mt-2 flow-root">
             {loading ? (
@@ -147,7 +173,7 @@ export default function WishlistJobsList() {
                   <img
                     src={noJobsPosted}
                     alt="No data found"
-                    className="mb-4 h-24 w-24 md:h-32 md:w-32 mx-auto block rounded-full"
+                    className="mb-4 h-24 w-24 md:h-36 md:w-36 mx-auto block rounded-full"
                   />
                   <p className="text-xl font-light">No jobs found !</p>
                   <button
@@ -161,6 +187,14 @@ export default function WishlistJobsList() {
 
             ) : (
               <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+                <div className="mb-2">
+                  <JobFilterDialog
+                    sortOrder={sortOrder}
+                    setSortOrder={setSortOrder}
+                    wishlishtSortField = {wishlishtSortField}
+                    setWishlishtSortField = {setWishlishtSortField}
+                  />
+                </div>
                 {/* Display Table View for Larger Screens */}
                 <div className="hidden lg:block overflow-x-auto">
                   <table className="min-w-full border border-gray-200 shadow-md rounded-lg overflow-hidden">
@@ -177,11 +211,11 @@ export default function WishlistJobsList() {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {Object.entries(filteredJobs).map(([id, job], index) => (
+                    {filteredAndSortedJobs.map(([id, job]) => (
                         <tr
                           key={job?._id}
-                          className={`cursor-pointer hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                            }`}
+                          // className={`cursor-pointer hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
+                          className="hover:bg-gray-50 transition cursor-pointer"
                         >
                           <td
                             onClick={() => handleView(job?._id)}
@@ -230,10 +264,9 @@ export default function WishlistJobsList() {
                 </div>
 
 
-
                 {/* Display Card View for Smaller and Tablet Screens */}
                 <div className="block lg:hidden">
-                  {Object.entries(filteredJobs).map(([id, job]) => (
+                {filteredAndSortedJobs.map(([id, job]) => (
                     <motion.li
                       key={job?._id}
                       className="relative mb-4 max-w-lg w-full list-none rounded-lg border border-gray-300 overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"

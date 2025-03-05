@@ -111,7 +111,7 @@ export default function PostedJobsList() {
         <div className="w-1/12 md:w-1/4 fixed lg:relative" >
           <SidebarNavigation />
         </div>
-        <div className="w-11/12 md:w-3/4 m-auto">
+        <div className="w-full md:w-4/4 px-2 sm:px-6 m-auto">
 
           <div className="mt-2 flow-root">
             {loading ? (
