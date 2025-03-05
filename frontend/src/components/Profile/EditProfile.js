@@ -396,6 +396,7 @@ export default function EditProfile() {
       ...prevData,
       resume: '', // Clear the resume from state
     }));
+    setOpenConfirmModal(false);
   };
 
 
@@ -2019,7 +2020,7 @@ export default function EditProfile() {
 
 
             {/* Resume Link */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Upload Resume <span className="text-red-500">*</span></h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Upload Resume(.pdf) <span className="text-red-500">*</span></h3>
             <div className="mt-3">
               <input
                 type="file"
@@ -2093,17 +2094,17 @@ export default function EditProfile() {
                             </div>
                           </div>
                         </div>
-                        <div className="mt-4 sm:flex sm:flex-row-reverse">
+                        <div className="mt-4  sm:flex sm:flex-row-reverse">
                           <button
                             type="button"
-                            className="inline-flex w-full justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto"
+                            className="inline-flex w-full justify-center rounded-md bg-red-600 px-4 py-2 mx-1 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto"
                             onClick={removeResume}
                           >
                             Yes, Delete
                           </button>
                           <button
                             type="button"
-                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-4 py-2 mx-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                             onClick={() => setOpenConfirmModal(false)}
                           >
                             Cancel

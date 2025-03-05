@@ -119,8 +119,12 @@ export default function Search() {
 
     // Handle follow request
     const handleFollow = async (targetUserId) => {
-        if (!userId) return;
-
+        const bearerToken = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        if (!userId || !bearerToken) {
+            navigate('/user-login'); // Redirect to login if not logged in
+            return;
+        }
         try {
             const response = await fetch(
                 `${Fronted_API_URL}/user/follow/${targetUserId}`,

@@ -273,7 +273,7 @@ function Login() {
               </div>
 
               <p className="mt-5 text-center text-sm text-gray-500">
-                Not a member?{" "}
+                Not a member Yet?{" "}
                 <Link
                   to="/signup"
                   className="font-semibold leading-6 text-blue-600 hover:text-blue-500"
@@ -282,7 +282,7 @@ function Login() {
                 </Link>
               </p>
 
-              <p className="text-center text-xs text-gray-700">
+              {/* <p className="text-center text-xs text-gray-700">
                 Continue without login ?{" "}
                 <Link
                   to={`/`}
@@ -290,7 +290,7 @@ function Login() {
                 >
                   Click Here
                 </Link>
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

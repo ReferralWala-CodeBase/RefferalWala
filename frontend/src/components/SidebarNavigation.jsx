@@ -126,7 +126,7 @@ export default function SidebarNa() {
         console.error("Error clearing cache:", error);
       }
     }
-    navigate("/user-login");
+    navigate("/");
   };
 
   return (

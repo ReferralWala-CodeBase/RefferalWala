@@ -44,7 +44,6 @@ export default function ViewApplicantProfile() {
   const [selectedDocUpload, setSelectedDocUpload] = useState(false);
   const [openStatusBox, setOpenStatusBox] = useState(false);
   const [tempStatus, setTempStatus] = useState(""); // Holds temporary status before confirmation
-  const [profileCompletion, setProfileCompletion] = useState(null);
 
   // Open modal function
   const openModal = () => {
@@ -123,31 +122,6 @@ export default function ViewApplicantProfile() {
     if (jobId && applicantId) fetchCurrentStatus();
   }, [Fronted_API_URL, applicantId, jobId]);
 
-    useEffect(() => {
-      const fetchProfileCompletion = async () => {
-        try {
-          const bearerToken = localStorage.getItem('token');
-          const response = await fetch(`${Fronted_API_URL}/user/profile-completion/${applicantId}`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${bearerToken}`,
-              "Content-Type": "application/json",
-            },
-          });
-  
-          if (!response.ok) {
-            throw new Error("Failed to fetch profile completion");
-          }
-  
-          const data = await response.json();
-          setProfileCompletion(data.profileCompletion); // Assuming API returns { profileCompletion: 75 }
-        } catch (error) {
-          console.error("Error fetching profile completion:", error);
-        }
-      };
-  
-      fetchProfileCompletion();
-    }, [applicantId]);
   
 
   // Handle status change selection
@@ -570,12 +544,7 @@ export default function ViewApplicantProfile() {
                       alt="Profile"
                       className="w-36 h-36 rounded-full border-2 p-1 shadow-lg hover:shadow-xl transition-shadow duration-300"
                     />
-                    {/* Profile Completion Percentage Badge */}
-                    {profileCompletion !== null && (
-                      <div className="absolute bottom-4 right-1 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
-                        {profileCompletion}%
-                      </div>
-                    )}
+               
                   </div>
 
                 </div>
