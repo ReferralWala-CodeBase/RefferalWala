@@ -282,7 +282,7 @@ function Login() {
                 </Link>
               </p>
 
-              {/* <p className="text-center text-xs text-gray-700">
+              <p className="text-center text-xs text-gray-700">
                 Continue without login ?{" "}
                 <Link
                   to={`/`}
@@ -290,7 +290,7 @@ function Login() {
                 >
                   Click Here
                 </Link>
-              </p> */}
+              </p>
             </div>
           </div>
         </div>

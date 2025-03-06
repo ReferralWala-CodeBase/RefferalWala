@@ -309,7 +309,7 @@ export default function Search() {
                                                         </p>
                                                     </div>
 
-                                                    {/* Action Button */}
+                                                    {/* Action Button 
                                                     <div className='hidden sm:block'>
                                                         <button
                                                             onClick={(e) => {
@@ -318,7 +318,7 @@ export default function Search() {
                                                             }}
                                                             className="mr-2 mb-2 gap-1 px-4 py-2 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 text-white shadow hover:bg-indigo-700 text-xs sm:text-sm"
                                                         >
-                                                            <Eye size={17} /> {/* UserPlus icon */}
+                                                            <Eye size={17} /> 
                                                             Posted Jobs
                                                         </button>
                                                         {!isFollowing && (
@@ -333,15 +333,16 @@ export default function Search() {
                                                                 }}
                                                                 className="gap-1 px-4 py-2 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 sm:px-4 sm:py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                                             >
-                                                                <UserPlus size={17} /> {/* UserPlus icon */}
+                                                                <UserPlus size={17} /> 
                                                                 Follow
                                                             </button>
                                                         )}
                                                     </div>
+                                                    */}
 
                                                 </div>
                                                 {/* Action Button */}
-                                                <div className='sm:hidden flex items-center justify-center mt-4 gap-1'>
+                                                {/* <div className='sm:hidden flex items-center justify-center mt-4 gap-1'>
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
@@ -349,7 +350,7 @@ export default function Search() {
                                                             }}
                                                             className="gap-1 px-4 py-2 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 text-white shadow hover:bg-indigo-700 text-xs sm:text-sm"
                                                         >
-                                                            <Eye size={18} /> {/* UserPlus icon */}
+                                                            <Eye size={18} /> 
                                                             Posted Jobs
                                                         </button>
                                                         {!isFollowing && (
@@ -364,11 +365,11 @@ export default function Search() {
                                                                 }}
                                                                 className="gap-1 px-4 py-2 inline-flex sm:gap-2 justify-center rounded-md border border-transparent bg-indigo-600 sm:px-4 sm:py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                                             >
-                                                                <UserPlus size={17} /> {/* UserPlus icon */}
+                                                                <UserPlus size={17} /> 
                                                                 Follow
                                                             </button>
                                                         )}
-                                                    </div>
+                                                    </div> */}
                                             </div>
 
                                         );

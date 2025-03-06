@@ -78,10 +78,15 @@ function classNames(...classes) {
 }
 
 export default function SidebarNa() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("token"));
+  }, []);
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -126,7 +131,7 @@ export default function SidebarNa() {
         console.error("Error clearing cache:", error);
       }
     }
-    navigate("/");
+    navigate("/user-login");
   };
 
   return (
@@ -243,7 +248,7 @@ export default function SidebarNa() {
                   onClick={handleSignOut}
                   className="inline-flex mb-4 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                  Sign Out
+                  {isLoggedIn? "Sign Out" : "Sign In"}
                 </Disclosure.Button>
               </ul>
             </nav>
