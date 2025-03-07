@@ -866,7 +866,7 @@ export default function EditProfile() {
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-full md:w-4/4 px-0 sm:px-6 mx-auto bg-white">
+        <div className="w-full md:w-4/4 px-4 sm:px-6 mx-auto bg-white">
           <div className="flex justify-between w-full items-center mt-6 ">
 
             <h3 className="text-lg border w-full p-2 bg-gray-200/50 rounded-lg font-medium leading-7 text-gray-800 text-left">
