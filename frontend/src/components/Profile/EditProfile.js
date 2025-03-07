@@ -200,11 +200,14 @@ export default function EditProfile() {
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     }
+    finally{
+      setOtp("");
+    }
   };
 
   const handleCompanyVerification = async (e) => {
     // Prevent default form submission behavior
-    e.preventDefault();
+    // e.preventDefault();
     const bearerToken = localStorage.getItem('token');
 
     // //Company Email validation
@@ -525,6 +528,7 @@ export default function EditProfile() {
     if (confirm) {
       setIsCompanyEmailVerified(false);
       setOriginalCompany(false);
+      setIsEditing(true);
     }
 
 
