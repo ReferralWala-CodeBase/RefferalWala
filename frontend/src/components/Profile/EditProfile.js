@@ -71,6 +71,7 @@ export default function EditProfile() {
   const [openConfirmModal, setOpenConfirmModal] = useState(false); // Resume Confrim
   const [showCompanyChangeModal, setShowCompanyChangeModal] = useState(false);
   const [showloader, setShowLoader] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
@@ -523,6 +524,7 @@ export default function EditProfile() {
 
     if (confirm) {
       setIsCompanyEmailVerified(false);
+      setOriginalCompany(false);
     }
 
 
@@ -1239,6 +1241,7 @@ export default function EditProfile() {
                       })
                     }
                     onBlur={handleCompanyEmail}
+                    disabled={!isEditing}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                   {isCompanyEmailVerified && (
@@ -1252,10 +1255,16 @@ export default function EditProfile() {
 
                   <button
                     type="button"
-                    onClick={handleCompanyVerification}
+                    // onClick={handleCompanyVerification}
+                    onClick={() => {
+                      if (isEditing) {
+                        handleCompanyVerification(); // Trigger verification when changing
+                      }
+                      setIsEditing(!isEditing);
+                    }}
                     className="ml-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
                   >
-                    {!!originalCompany ? "Edit" : "Verify"}
+                    {!!originalCompany ? (isEditing ? "Change" : "Edit") : "Verify"}
                   </button>
                 </div>
               </div>
