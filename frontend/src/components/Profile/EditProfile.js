@@ -27,7 +27,7 @@ export default function EditProfile() {
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     // experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
     experience: [{ companyName: '', position: '', dateOfJoining: '', dateOfLeaving: '' }],
-    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', dateOfJoining: '' }],
+    presentCompany: [{ role: '', companyName: '', companyLogoUrl:'', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', dateOfJoining: '' }],
     preferences: [{ preferredCompanyName: '', preferredCompanyURL: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
@@ -72,7 +72,6 @@ export default function EditProfile() {
   const [showCompanyChangeModal, setShowCompanyChangeModal] = useState(false);
   const [showloader, setShowLoader] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [companylogo, setCompanyLogo] =  useState(null);
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
@@ -522,7 +521,7 @@ export default function EditProfile() {
     setProfileData((prevState) => ({
       ...prevState,
       presentCompany: confirm
-        ? { role: "", companyName: profileData?.presentCompany?.companyName, location: "", currentCTC: "", CompanyEmailVerified: false, companyEmail: "", dateOfJoining: "" }
+        ? { role: "", companyName: profileData?.presentCompany?.companyName, companyLogoUrl: profileData?.presentCompany?.companyLogoUrl, location: "", currentCTC: "", CompanyEmailVerified: false, companyEmail: "", dateOfJoining: "" }
         : { ...prevState.presentCompany, companyName: originalCompany },
     }));
 
@@ -603,8 +602,6 @@ export default function EditProfile() {
         companyLogoUrl: company.logo_url || null,
       },
     }));
-
-    setCompanyLogo(company.logo_url);
 
     setCompanySuggestions([]); // Clear suggestions
     setShowCompanyChangeModal(true);
@@ -1200,8 +1197,7 @@ export default function EditProfile() {
                 />)}
               </div> */}
 
-              <div className="flex">
-                <div className='relative w-4/5'>
+                <div className='relative'>
                   <label className="block text-sm font-medium text-gray-700">Company Name</label>
                   <input
                     type="text"
@@ -1232,20 +1228,6 @@ export default function EditProfile() {
                     </ul>
                   )}
                 </div>
-
-                {companylogo ? (
-                  <img
-                    src={companylogo}
-                    alt="Preview"
-                    className="h-12 w-12 mt-4 ml-2 rounded-full shadow border-2 border-gray-500"
-                  />
-                ) : (<img
-                    src={profileData.presentCompany.companyLogoUrl} // Use updated state
-                    alt={`${profileData.presentCompany.companyName} Logo`}
-                    className="h-12 w-12 mt-4 ml-2 rounded-full shadow border-2 border-gray-500"
-                  />)} 
-
-              </div>
               {showCompanyChangeModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
                   <div className="bg-white p-6 rounded-lg shadow-lg w-96">
