@@ -72,6 +72,7 @@ export default function EditProfile() {
   const [showCompanyChangeModal, setShowCompanyChangeModal] = useState(false);
   const [showloader, setShowLoader] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [companylogo, setCompanyLogo] =  useState(null);
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification
@@ -200,7 +201,7 @@ export default function EditProfile() {
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     }
-    finally{
+    finally {
       setOtp("");
     }
   };
@@ -602,6 +603,8 @@ export default function EditProfile() {
         companyLogoUrl: company.logo_url || null,
       },
     }));
+
+    setCompanyLogo(company.logo_url);
 
     setCompanySuggestions([]); // Clear suggestions
     setShowCompanyChangeModal(true);
@@ -1170,38 +1173,79 @@ export default function EditProfile() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
               </div>
-              <div className='relative'>
-                <label className="block text-sm font-medium text-gray-700">Company Name</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={profileData?.presentCompany?.companyName || ''}
-                  onChange={handlePresentChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
+              {/* 
+              <div className="flex items-center space-x-4">
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Profile Photo
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="mt-1 block w-full rounded-md bg-gray-100/60 border border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-8 w-8 rounded-full shadow border-2 border-gray-500 p-1"
+                  />
+                ) : (<img
+                  src={profileData?.profilePhoto}
+                  alt="Profile"
+                  className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
+                />)}
+              </div> */}
 
-                {companySuggestions.length > 0 && (
-                  <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
-                    {companySuggestions.map((company, index) => (
-                      <li
-                        key={index}
-                        className="cursor-pointer p-2 hover:bg-gray-200"
-                        onClick={() => handleSuggestionClick(company)}
-                      >
-                        <div className="flex items-center">
-                          <img
-                            src={company.logo_url}
-                            alt={company.name}
-                            className="h-6 w-6 object-contain mr-2"
-                          />
-                          <span>{company.name}</span>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+              <div className="flex">
+                <div className='relative w-4/5'>
+                  <label className="block text-sm font-medium text-gray-700">Company Name</label>
+                  <input
+                    type="text"
+                    name="companyName"
+                    value={profileData?.presentCompany?.companyName || ''}
+                    onChange={handlePresentChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
+
+                  {companySuggestions.length > 0 && (
+                    <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
+                      {companySuggestions.map((company, index) => (
+                        <li
+                          key={index}
+                          className="cursor-pointer p-2 hover:bg-gray-200"
+                          onClick={() => handleSuggestionClick(company)}
+                        >
+                          <div className="flex items-center">
+                            <img
+                              src={company.logo_url}
+                              alt={company.name}
+                              className="h-6 w-6 object-contain mr-2"
+                            />
+                            <span>{company.name}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {companylogo ? (
+                  <img
+                    src={companylogo}
+                    alt="Preview"
+                    className="h-12 w-12 mt-4 ml-2 rounded-full shadow border-2 border-gray-500"
+                  />
+                ) : (<img
+                    src={profileData.presentCompany.companyLogoUrl} // Use updated state
+                    alt={`${profileData.presentCompany.companyName} Logo`}
+                    className="h-12 w-12 mt-4 ml-2 rounded-full shadow border-2 border-gray-500"
+                  />)} 
+
               </div>
-
               {showCompanyChangeModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
                   <div className="bg-white p-6 rounded-lg shadow-lg w-96">
