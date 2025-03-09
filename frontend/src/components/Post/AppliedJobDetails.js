@@ -35,6 +35,16 @@ export default function AppliedJobDetails() {
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState(null);
 
+  const closeReportDialog = () => {
+    toast.success("Job Reported Successfully.", {
+      autoClose: 40, // Toast disappears after 2 seconds
+      onClose: () => setShowReportDialog(false) // Close dialog after toast disappears
+    });
+  };
+  
+
+
+
   useEffect(() => {
     const fetchJobData = async () => {
       try {
@@ -157,8 +167,9 @@ export default function AppliedJobDetails() {
         }
       }
 
-      toast.success("Successfully applied for the job!");
-      navigate('/appliedjobs');
+      toast.success("Successfully applied for the job!", {
+        onClose: () => navigate('/appliedjobs') // Navigates only after the toast is closed
+      });
     } catch (error) {
       toast.error(error.message);
     }
@@ -460,10 +471,11 @@ export default function AppliedJobDetails() {
             <ReportJob
               jobId={selectedJobId}
               isLoggedIn={isLoggedIn}
-              onReportSuccess={handleReportSuccess}
+              onReportSuccess={closeReportDialog}  // Close after reporting
               onCancel={() => setShowReportDialog(false)}
             />
           )}
+
 
           <section class="bg-white py-4 antialiased md:py-6">
             <div class="mx-auto px-1 2xl:px-0">

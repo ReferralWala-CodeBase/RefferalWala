@@ -4,7 +4,7 @@ import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import Loader from '../Loader';
 import person from '../../assets/person.png'
-import noApplicants from "../../assets/noApplicants.png";
+import NoApplicantList from "../../assets/noApplicants.png";
 import noSignal from "../../assets/noSignal.jpg";
 import ServerError from '../ServerError';
 import JobFilterDialog from "../sorting";
@@ -148,7 +148,7 @@ export default function JobApplicantsList() {
                 <div className="w-full h-full flex justify-center items-center">
                   <div className="bg-white  rounded-2xl p-6 flex flex-col items-center">
                     <img
-                      src={noApplicants}
+                      src={NoApplicantList}
                       alt="No Applicants"
                       className="w-40 h-40 md:w-80 md:h-80 lg:w-100 lg:100 opacity-80"
                     />

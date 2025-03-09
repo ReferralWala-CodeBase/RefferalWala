@@ -27,7 +27,7 @@ export default function EditProfile() {
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     // experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
     experience: [{ companyName: '', position: '', dateOfJoining: '', dateOfLeaving: '' }],
-    presentCompany: [{ role: '', companyName: '', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', dateOfJoining: '' }],
+    presentCompany: [{ role: '', companyName: '', companyLogoUrl:'', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', dateOfJoining: '' }],
     preferences: [{ preferredCompanyName: '', preferredCompanyURL: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
@@ -200,7 +200,7 @@ export default function EditProfile() {
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     }
-    finally{
+    finally {
       setOtp("");
     }
   };
@@ -521,7 +521,7 @@ export default function EditProfile() {
     setProfileData((prevState) => ({
       ...prevState,
       presentCompany: confirm
-        ? { role: "", companyName: profileData?.presentCompany?.companyName, location: "", currentCTC: "", CompanyEmailVerified: false, companyEmail: "", dateOfJoining: "" }
+        ? { role: "", companyName: profileData?.presentCompany?.companyName, companyLogoUrl: profileData?.presentCompany?.companyLogoUrl, location: "", currentCTC: "", CompanyEmailVerified: false, companyEmail: "", dateOfJoining: "" }
         : { ...prevState.presentCompany, companyName: originalCompany },
     }));
 
@@ -866,7 +866,7 @@ export default function EditProfile() {
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-full md:w-4/4 px-0 sm:px-6 mx-auto bg-white">
+        <div className="w-full md:w-4/4 px-4 sm:px-6 mx-auto bg-white">
           <div className="flex justify-between w-full items-center mt-6 ">
 
             <h3 className="text-lg border w-full p-2 bg-gray-200/50 rounded-lg font-medium leading-7 text-gray-800 text-left">
@@ -1170,38 +1170,64 @@ export default function EditProfile() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
               </div>
-              <div className='relative'>
-                <label className="block text-sm font-medium text-gray-700">Company Name</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={profileData?.presentCompany?.companyName || ''}
-                  onChange={handlePresentChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
+              {/* 
+              <div className="flex items-center space-x-4">
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Profile Photo
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="mt-1 block w-full rounded-md bg-gray-100/60 border border-gray-300 shadow-sm p-2"
+                  />
+                </div>
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-8 w-8 rounded-full shadow border-2 border-gray-500 p-1"
+                  />
+                ) : (<img
+                  src={profileData?.profilePhoto}
+                  alt="Profile"
+                  className="h-16 w-16 rounded-full shadow border-2 border-gray-500 p-1"
+                />)}
+              </div> */}
 
-                {companySuggestions.length > 0 && (
-                  <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
-                    {companySuggestions.map((company, index) => (
-                      <li
-                        key={index}
-                        className="cursor-pointer p-2 hover:bg-gray-200"
-                        onClick={() => handleSuggestionClick(company)}
-                      >
-                        <div className="flex items-center">
-                          <img
-                            src={company.logo_url}
-                            alt={company.name}
-                            className="h-6 w-6 object-contain mr-2"
-                          />
-                          <span>{company.name}</span>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                <div className='relative'>
+                  <label className="block text-sm font-medium text-gray-700">Company Name</label>
+                  <input
+                    type="text"
+                    name="companyName"
+                    value={profileData?.presentCompany?.companyName || ''}
+                    onChange={handlePresentChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                  />
 
+                  {companySuggestions.length > 0 && (
+                    <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
+                      {companySuggestions.map((company, index) => (
+                        <li
+                          key={index}
+                          className="cursor-pointer p-2 hover:bg-gray-200"
+                          onClick={() => handleSuggestionClick(company)}
+                        >
+                          <div className="flex items-center">
+                            <img
+                              src={company.logo_url}
+                              alt={company.name}
+                              className="h-6 w-6 object-contain mr-2"
+                            />
+                            <span>{company.name}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               {showCompanyChangeModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
                   <div className="bg-white p-6 rounded-lg shadow-lg w-96">
