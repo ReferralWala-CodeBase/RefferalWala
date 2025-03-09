@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams ,useLocation} from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import Navbar from "../Navbar";
 import Loader from '../Loader';
@@ -128,7 +128,7 @@ export default function JobApplicantsList() {
         <div className="w-2/12 md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 mx-auto">
+        <div className="w-full px-2 md:px-1 md:w-3/4 mx-auto">
           {/* <input
             type="text"
             placeholder="Search"
@@ -188,106 +188,113 @@ export default function JobApplicantsList() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-  {filteredAndSortedJobs
-    .sort((a, b) => {
-      // Define custom sorting order for statuses
-      const statusOrder = ["selected", "on hold", "applied", "rejected"];
-      return statusOrder.indexOf(a[1]?.status) - statusOrder.indexOf(b[1]?.status);
-    })
-    .map(([id, applicant], index) => {
-      // Define isClickable based on jobStatus and applicant's status
-      const isClickable = jobStatus !== "inactive" || applicant?.status === "selected";
+                      {filteredAndSortedJobs
+                        .sort((a, b) => {
+                          // Define custom sorting order for statuses
+                          const statusOrder = ["selected", "on hold", "applied", "rejected"];
+                          return statusOrder.indexOf(a[1]?.status) - statusOrder.indexOf(b[1]?.status);
+                        })
+                        .map(([id, applicant], index) => {
+                          // Define isClickable based on jobStatus and applicant's status
+                          const isClickable = jobStatus !== "inactive" || applicant?.status === "selected";
 
-      return (
-        <tr
-          key={applicant?._id}
-          onClick={isClickable ? () => handleViewApplicantDetails(applicant?.userId?._id) : undefined}
-          className={`${
-            isClickable ? "cursor-pointer hover:bg-gray-100 transition duration-200" : "cursor-not-allowed opacity-50"
-          } ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
-        >
-          <td className="whitespace-nowrap px-6 py-4">
-            <img
-              className="h-12 w-12 rounded-full object-cover border border-gray-300"
-              src={applicant?.userId?.profilePhoto || person}
-              alt="Profile"
-            />
-          </td>
-          <td className="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900">
-            {applicant?.userId?.firstName} {applicant?.userId?.lastName}
-          </td>
-          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">{applicant?.userId?.email}</td>
-          <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">
-            {new Date(applicant?.appliedAt).toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            })}
-          </td>
-          <td className="whitespace-nowrap px-4 py-4 text-sm">
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-medium ${
-                applicant?.status === "Accepted"
-                  ? "bg-green-200 text-green-800"
-                  : applicant?.status === "Pending"
-                  ? "bg-yellow-200 text-yellow-800"
-                  : "bg-red-200 text-red-800"
-              }`}
-            >
-              {applicant?.status}
-            </span>
-          </td>
-        </tr>
-      );
-    })}
-</tbody>
+                          return (
+                            <tr
+                              key={applicant?._id}
+                              onClick={isClickable ? () => handleViewApplicantDetails(applicant?.userId?._id) : undefined}
+                              className={`${isClickable ? "cursor-pointer hover:bg-gray-100 transition duration-200" : "cursor-not-allowed opacity-50"
+                                } ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
+                            >
+                              <td className="whitespace-nowrap px-6 py-4">
+                                <img
+                                  className="h-12 w-12 rounded-full object-cover border border-gray-300"
+                                  src={applicant?.userId?.profilePhoto || person}
+                                  alt="Profile"
+                                />
+                              </td>
+                              <td className="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900">
+                                {applicant?.userId?.firstName} {applicant?.userId?.lastName}
+                              </td>
+                              <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">{applicant?.userId?.email}</td>
+                              <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600">
+                                {new Date(applicant?.appliedAt).toLocaleDateString("en-GB", {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                })}
+                              </td>
+                              <td className="whitespace-nowrap px-4 py-4 text-sm">
+                                <span
+                                  className={`px-3 py-1 rounded-full text-xs font-medium ${applicant?.status === "Accepted"
+                                    ? "bg-green-200 text-green-800"
+                                    : applicant?.status === "Pending"
+                                      ? "bg-yellow-200 text-yellow-800"
+                                      : "bg-red-200 text-red-800"
+                                    }`}
+                                >
+                                  {applicant?.status}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
 
                   </table>
                 </div>
 
 
-                <div className="block lg:hidden">
-  {filteredAndSortedJobs
-    .sort((a, b) => {
-      // Define custom sorting order for statuses
-      const statusOrder = ["selected", "on hold", "applied", "rejected"];
-      return statusOrder.indexOf(a[1]?.status) - statusOrder.indexOf(b[1]?.status);
-    })
-    .map(([id, applicant]) => {
-      // Define isClickable based on jobStatus and applicant's status
-      const isClickable = jobStatus !== "Inactive" || applicant?.status === "Selected";
+                <div className="block lg:hidden space-y-4">
+                  {filteredAndSortedJobs
+                    .sort((a, b) => {
+                      const statusOrder = ["selected", "on hold", "applied", "rejected"];
+                      return statusOrder.indexOf(a[1]?.status) - statusOrder.indexOf(b[1]?.status);
+                    })
+                    .map(([id, applicant]) => {
+                      const isClickable = jobStatus !== "Inactive" || applicant?.status === "Selected";
 
-      return (
-        <div
-          key={applicant?._id}
-          className={`mb-4 flex flex-col p-4 bg-white shadow-lg rounded-lg ${
-            isClickable ? "cursor-pointer hover:bg-gray-100 transition duration-200" : "cursor-not-allowed opacity-50"
-          }`}
-          onClick={isClickable ? () => handleViewApplicantDetails(applicant?.userId?._id) : undefined}
-        >
-          <div className="flex items-center space-x-4">
-            <img
-              className="h-12 w-12 sm:h-16 sm:w-16 rounded-full border-2 border-gray-500"
-              src={applicant?.userId?.profilePhoto || person}
-              alt=""
-            />
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {applicant?.userId?.firstName} {applicant?.userId?.lastName}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-500">{applicant?.userId?.email}</p>
-              <p className="text-xs text-gray-400">
-                Applied On: {new Date(applicant?.appliedAt).toLocaleDateString("en-GB")}
-              </p>
-              <p className="text-xs text-gray-500">
-                Status: {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}
-              </p>
-            </div>
-          </div>
-        </div>
-      );
-    })}
-</div>
+                      return (
+                        <div
+                          key={applicant?._id}
+                          className={`flex items-center gap-4 p-4 border-l-4 shadow-md bg-white 
+            ${isClickable ? "cursor-pointer hover:bg-gray-50 transition duration-200" : "cursor-not-allowed opacity-60"}
+            ${applicant?.status === "selected" ? "border-blue-600" : "border-gray-300"}
+          `}
+                          onClick={isClickable ? () => handleViewApplicantDetails(applicant?.userId?._id) : undefined}
+                        >
+                          <img
+                            className="h-14 w-14 sm:h-16 sm:w-16 rounded-full border border-gray-300 object-cover"
+                            src={applicant?.userId?.profilePhoto && applicant?.userId?.profilePhoto !== "" ? applicant?.userId?.profilePhoto : person}
+                            alt="Profile"
+                            onError={(e) => { e.currentTarget.src = person; }}
+                          />
+
+                          <div className="flex flex-col">
+                            <h3 className="text-normal font-bold text-blue-500 mb-1">
+                              {applicant?.userId?.firstName} {applicant?.userId?.lastName}
+                            </h3>
+                            <div className='text-xs'>
+                              <div className='flex gap-2 items-center'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                </svg>
+                                <p className=" text-gray-600">{applicant?.userId?.email}</p>
+
+                              </div>
+                              <p className=" text-gray-500">
+                                <span className="font-medium text-gray-800">Applied On:</span> {new Date(applicant?.appliedAt).toLocaleDateString("en-GB")}
+                              </p>
+                              <p className={`font-semibold ${applicant?.status === "selected" ? "text-blue-600" : "text-gray-700"}`}>
+                                Status: <span className="capitalize">{applicant.status}</span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+
+
 
 
 

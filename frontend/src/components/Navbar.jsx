@@ -278,15 +278,18 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
             <div className="relative flex h-16 justify-between">
               <div className="relative z-10 flex items-center lg:hidden">
-                <Disclosure.Button className="relative flex items-center justify-end w-full rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
+                <Disclosure.Button className="relative flex items-center justify-end w-full cursor-default rounded-md p-2 text-gray-400 focus:outline-none">
                   <span className="sr-only">Open menu</span>
                   {open ? (
                     <XMarkIcon
-                      className="bg-blue-700 text-white rounded-full p-1 h-6 w-6"
+                      className="bg-blue-700 text-white rounded-full p-1 h-6 w-6 mb-4 cursor-pointer absolute left-52"
                       aria-hidden="true"
                     />
                   ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon
+                      className="block h-6 w-6 cursor-pointer"
+                      aria-hidden="true"
+                    />
                   )}
                 </Disclosure.Button>
               </div>
@@ -303,34 +306,70 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 </div>
               </div>
               <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
-      <div className="w-full sm:max-w-sm">
+                <div className="w-full sm:max-w-sm">
                   <label htmlFor="search" className="sr-only">
                     Search
                   </label>
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <MagnifyingGlassIcon
-              className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
-              aria-hidden="true"
-            />
-          </div>
-          <input
-            id="search"
-            name="search"
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                      <MagnifyingGlassIcon
+                        className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <input
+                      id="search"
+                      name="search"
                       className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
                       placeholder="Search Jobs and People.."
-            type="search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearch();
-              }
-            }}
+                      type="search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearch();
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* 
+If search button needed use this -
+<div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
+  <div className="w-full sm:max-w-sm">
+    <label htmlFor="search" className="sr-only">
+      Search
+    </label>
+    <div className="relative flex items-center gap-2">
+      <div className="relative flex-1">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <MagnifyingGlassIcon
+            className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
+            aria-hidden="true"
           />
         </div>
+        <input
+          id="search"
+          name="search"
+          className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
+          placeholder="Search Jobs and People.."
+          type="search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </div>
+      <button
+        onClick={handleSearch}
+        className="px-4 py-1 text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      >
+        Search
+      </button>
     </div>
+  </div>
+</div> */}
+
               <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
                 <div className="flex-shrink-0 mr-2">
                   <button
@@ -445,54 +484,53 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
             <div className="flex h-full flex-col gap-y-5 overflow-y-auto px-4 pb-2">
               {/* Overview Section */}
               <nav className="flex-1 mt-9">
-              {loggedIn && (
-  <>
-    <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">
-      Overview
-    </div>
-    <ul role="list" className="space-y-1">
-      {sidenavigation.map((item) => (
-        <li key={item.name}>
-          <Disclosure.Button
-            as={Link}
-            to={item.href}
-            className={classNames(
-              item.current
-                ? "bg-gray-50 text-indigo-600"
-                : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-              "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
-            )}
-          >
-            {item.icon && (
-              <item.icon
-                className={classNames(
-                  item.current
-                    ? "text-indigo-600"
-                    : "text-gray-400 group-hover:text-indigo-600",
-                  "h-6 w-6"
+                {loggedIn && (
+                  <>
+                    <div className="text-xs font-semibold leading-6 text-gray-400 ml-2">
+                      Overview
+                    </div>
+                    <ul role="list" className="space-y-1">
+                      {sidenavigation.map((item) => (
+                        <li key={item.name}>
+                          <Disclosure.Button
+                            as={Link}
+                            to={item.href}
+                            className={classNames(
+                              item.current
+                                ? "bg-gray-50 text-indigo-600"
+                                : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                              "group flex gap-x-3 rounded-md p-2 text-sm font-semibold"
+                            )}
+                          >
+                            {item.icon && (
+                              <item.icon
+                                className={classNames(
+                                  item.current
+                                    ? "text-indigo-600"
+                                    : "text-gray-400 group-hover:text-indigo-600",
+                                  "h-6 w-6"
+                                )}
+                                aria-hidden="true"
+                              />
+                            )}
+                            {item.name}
+                          </Disclosure.Button>
+                        </li>
+                      ))}
+                      {/* Notifications */}
+                      <li>
+                        <Disclosure.Button
+                          as={Link}
+                          to="/notifications"
+                          className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                        >
+                          <BellIcon className="h-6 w-6 text-gray-400 group-hover:text-indigo-600" />
+                          Notifications
+                        </Disclosure.Button>
+                      </li>
+                    </ul>
+                  </>
                 )}
-                aria-hidden="true"
-              />
-            )}
-            {item.name}
-          </Disclosure.Button>
-        </li>
-      ))}
-      {/* Notifications */}
-      <li>
-        <Disclosure.Button
-          as={Link}
-          to="/notifications"
-          className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
-        >
-          <BellIcon className="h-6 w-6 text-gray-400 group-hover:text-indigo-600" />
-          Notifications
-        </Disclosure.Button>
-      </li>
-    </ul>
-  </>
-)}
-
 
                 {/* Posts Section (Only if logged in) */}
                 {loggedIn && teams.length > 0 && (
