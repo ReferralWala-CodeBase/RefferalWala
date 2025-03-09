@@ -301,9 +301,9 @@ export default function ViewApplicantProfile() {
         </div>
         <div className="w-full md:w-4/4 px-0 sm:px-6 mx-auto">
           <div className={`col-span-2 flex justify-end items-center py-4 gap-1 ${isFollowing ? "flex-row gap-2 flex-wrap" : ""}`}>
-            <label htmlFor="status" className="font-medium text-gray-700">
+            {/*<label htmlFor="status" className="font-medium text-gray-700">
               Update Status
-            </label>
+            </label>*/}
             <select
               id="status"
               value={status}
@@ -430,12 +430,12 @@ export default function ViewApplicantProfile() {
                     View Job Posted
                   </button>
                 )}
-                <button
+                {/* <button
                   onClick={handleFollowUnfollow}
                   className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-xs sm:text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
                   {isFollowing ? "Unfollow" : "Follow"}
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
