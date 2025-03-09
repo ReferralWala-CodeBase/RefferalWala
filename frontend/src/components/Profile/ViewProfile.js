@@ -17,6 +17,7 @@ import ExperienceCarousel from './ExperienceCarousel';
 import ProjectCarousel from './ProjectCarousel';
 import Preferences from './Preferences';
 import AboutMeSection from './AboutMe';
+import ProfileWithProgress from './ProfileWithProgress';
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ export default function ViewProfile() {
       <Loader />
     );
   }
-  
+
 
   return (
     <>
@@ -147,6 +148,12 @@ export default function ViewProfile() {
                   </div>
 
                 </div>
+
+                {/* <ProfileWithProgress
+                  profileData={profileData}
+                  profileCompletion={profileCompletion}
+                /> */}
+
                 <div className="flex flex-col items-center space-y-2">
                   {/* Name */}
                   <h2 className="text-xl font-semibold text-gray-800 text-center flex items-center justify-center space-x-1">

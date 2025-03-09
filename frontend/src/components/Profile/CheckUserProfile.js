@@ -162,8 +162,6 @@ export default function CheckUserProfile() {
           <SidebarNavigation />
         </div>
 
-
-
         <div className="w-full md:w-4/4 px-0 sm:px-6 m-auto">
           <div className="p-3 sm:mr-0 font-sans rounded-md">
             <div className="flex flex-col lg:flex-row">
@@ -180,7 +178,7 @@ export default function CheckUserProfile() {
                       alt="Profile"
                       className="w-36 h-36 rounded-full border-2 p-1 shadow-lg hover:shadow-xl transition-shadow duration-300"
                     />
-                   
+
                   </div>
 
                 </div>
