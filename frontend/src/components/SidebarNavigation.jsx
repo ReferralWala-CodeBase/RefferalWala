@@ -64,7 +64,7 @@ const teams = [
 const sidenavigationlogout = [
   // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
   { name: "About Us", icon: InformationCircleIcon, href: "/about-us" },
-  { name: "Conatct Us", icon: PhoneIcon, href: "/contact-us" },
+  { name: "Contact Us", icon: PhoneIcon, href: "/contact-us" },
   { name: "Privacy Policy", icon: ShieldCheckIcon, href: "/privacy-policy" },
   {
     name: "Terms & Conditions",
