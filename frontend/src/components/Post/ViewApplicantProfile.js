@@ -122,7 +122,7 @@ export default function ViewApplicantProfile() {
     if (jobId && applicantId) fetchCurrentStatus();
   }, [Fronted_API_URL, applicantId, jobId]);
 
-  
+
 
   // Handle status change selection
   const handleStatusChange = (newStatus) => {
@@ -296,14 +296,14 @@ export default function ViewApplicantProfile() {
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className="flex mt-[navbar-height] bg-[#edede7]">
-        <div className="w-2/12 md:w-1/4 fixed lg:relative">
+        <div className="w-full md:w-1/4 fixed lg:relative">
           <SidebarNavigation />
         </div>
         <div className="w-full md:w-4/4 px-0 sm:px-6 mx-auto">
-          <div className={`col-span-2 flex justify-end items-center py-4 gap-1 ${isFollowing ? "flex-row gap-2 flex-wrap" : ""}`}>
-            <label htmlFor="status" className="font-medium text-gray-700">
+          <div className={`col-span-2 flex justify-end items-center py-2 gap-1 ${isFollowing ? "flex-row gap-2 flex-wrap" : ""}`}>
+            {/*<label htmlFor="status" className="font-medium text-gray-700">
               Update Status
-            </label>
+            </label>*/}
             <select
               id="status"
               value={status}
@@ -430,12 +430,12 @@ export default function ViewApplicantProfile() {
                     View Job Posted
                   </button>
                 )}
-                <button
+                {/* <button
                   onClick={handleFollowUnfollow}
                   className="inline-flex gap-2 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-xs sm:text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   {isFollowing ? <UserX size={17} /> : <UserPlus size={17} />}
                   {isFollowing ? "Unfollow" : "Follow"}
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -476,7 +476,7 @@ export default function ViewApplicantProfile() {
                       setIsModalOpen(false);
                       setJobs([]);
                     }}
-                    className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
+                    className="absolute top-3 right-5 text-gray-500 hover:text-gray-700"
                   >
                     <FaTimes className='w-6 h-6' />
                   </button>
@@ -529,7 +529,7 @@ export default function ViewApplicantProfile() {
             </div>
           )}
 
-<div className="p-3 sm:mr-0 font-sans rounded-md">
+          <div className="p-2 sm:mr-0 font-sans rounded-md">
             <div className="flex flex-col lg:flex-row">
               <div className="relative w-full max-w-sm space-y-4 text-center lg:pr-4 mb-2 lg:mb-0 py-2 md:py-6 rounded-lg px-4 md:px-4 bg-white overflow-hidden">
                 {/* Background for top half */}
@@ -544,7 +544,7 @@ export default function ViewApplicantProfile() {
                       alt="Profile"
                       className="w-36 h-36 rounded-full border-2 p-1 shadow-lg hover:shadow-xl transition-shadow duration-300"
                     />
-               
+
                   </div>
 
                 </div>
@@ -581,7 +581,7 @@ export default function ViewApplicantProfile() {
 
 
                     {/* Company Name & Role */}
-                    <div className="text-center">
+                    <div className="text-start">
                       <p className="text-md font-medium text-gray-800">{profileData?.presentCompany?.companyName || <>&nbsp;</>}</p>
                       <p className="text-sm text-gray-600">{profileData?.presentCompany?.role || <>&nbsp;</>}</p>
                     </div>
@@ -662,20 +662,20 @@ export default function ViewApplicantProfile() {
                 {/* Follow/Unfollow Button (Top-Right) */}
                 <button
                   onClick={handleFollowUnfollow}
-                  className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow-md transition hover:bg-gray-100 z-20"
+                  className="absolute top-3 right-3 text-white bg-blue-700 p-2 rounded-full shadow-md transition hover:bg-gray-100 z-20"
                 >
-                  {isFollowing ? <UserX size={20} /> : <UserPlus size={20} />}
+                  {isFollowing ? <UserX size={18} /> : <UserPlus size={18} />}
                 </button>
 
                 {/* View Job Posted Button (Right next to Follow/Unfollow) */}
-                {isFollowing && (
+                {/* {isFollowing && (
                   <button
                     onClick={handleShowJob}
                     className="absolute top-3 right-14 text-sm items-center px-4 py-1 rounded-full bg-blue-500 text-white "
                   >
                     Posted Jobs
                   </button>
-                )}
+                )} */}
 
                 {/* Conditionally Show Modal */}
                 {isFollowing && isModalOpen && (
@@ -760,8 +760,6 @@ export default function ViewApplicantProfile() {
 
                 {/* Achievements */}
                 <Achievements achievements={profileData?.achievements || []} />
-
-
 
                 <div className="mt-3">
                   {profileData?.resume ? (
