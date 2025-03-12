@@ -22,7 +22,7 @@ export default function ViewProfile() {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const Fronted_API_URL = process.env.REACT_APP_API_URL; // Frontend API
+  const Fronted_API_URL = process.env.REACT_APP_API_URL;
   const [open, setOpen] = useState(false);
   const cancelButtonRef = React.useRef(null);
   const [profileCompletion, setProfileCompletion] = useState(null);
@@ -109,7 +109,7 @@ export default function ViewProfile() {
       <Loader />
     );
   }
-  
+
 
   return (
     <>
