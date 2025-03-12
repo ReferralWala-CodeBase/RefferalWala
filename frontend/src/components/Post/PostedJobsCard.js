@@ -993,8 +993,8 @@ export default function PostedJobsCard() {
               <button
                 onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                 disabled={page === 1}
-                className="p-2 rounded-full bg-yellow-500 text-white shadow-md transition-all duration-300
-               hover:bg-yellow-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
+                className="p-2 rounded-full bg-blue-400 text-white shadow-md transition-all duration-300
+               hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -1024,8 +1024,8 @@ export default function PostedJobsCard() {
               <button
                 onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={page === totalPages}
-                className="p-2 rounded-full bg-yellow-500 text-white shadow-md transition-all duration-300
-               hover:bg-yellow-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
+                className="p-2 rounded-full bg-blue-400 text-white shadow-md transition-all duration-300
+               hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />

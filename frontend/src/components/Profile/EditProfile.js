@@ -629,6 +629,7 @@ export default function EditProfile() {
     }));
 
     setCompanySuggestions([]); // Clear suggestions
+    if(originalCompany !== null && originalCompany !== '')
     setShowCompanyChangeModal(true);
 
   };
@@ -1177,24 +1178,7 @@ export default function EditProfile() {
             {/* Present Company */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Present Company</h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Role</label>
-                <input
-                  type="text"
-                  name="role"
-                  value={profileData?.presentCompany?.role || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      presentCompany: {
-                        ...profileData?.presentCompany,
-                        role: e.target.value,
-                      },
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
-              </div>
+              
               {/* 
               <div className="flex items-center space-x-4">
                 
@@ -1277,6 +1261,25 @@ export default function EditProfile() {
                   </div>
                 </div>
               )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Role</label>
+                <input
+                  type="text"
+                  name="role"
+                  value={profileData?.presentCompany?.role || ''}
+                  onChange={(e) =>
+                    setProfileData({
+                      ...profileData,
+                      presentCompany: {
+                        ...profileData?.presentCompany,
+                        role: e.target.value,
+                      },
+                    })
+                  }
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                />
+              </div>
 
 
               <div>
