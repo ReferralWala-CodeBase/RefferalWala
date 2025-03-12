@@ -27,7 +27,7 @@ export default function EditProfile() {
     education: [{ level: '', schoolName: '', yearOfPassing: '' }],
     // experience: [{ companyName: '', position: '', yearsOfExperience: '' }],
     experience: [{ companyName: '', position: '', dateOfJoining: '', dateOfLeaving: '' }],
-    presentCompany: [{ role: '', companyName: '', companyLogoUrl:'', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', dateOfJoining: '' }],
+    presentCompany: [{ role: '', companyName: '', companyLogoUrl: '', location: '', currentCTC: '', CompanyEmailVerified: false, companyEmail: '', dateOfJoining: '' }],
     preferences: [{ preferredCompanyName: '', preferredCompanyURL: '', preferredPosition: '', expectedCTCRange: '' }],
     project: [{ name: "", repoLink: "", liveLink: "", description: "" }],
     links: {
@@ -77,6 +77,31 @@ export default function EditProfile() {
 
   const [openResume, setResumeOpen] = useState(false);
   // const cancelButtonRef = useRef(null);
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [showUploadMessage, setShowUploadMessage] = useState(false);
+
+  const handleResumeChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setIsUploading(true); // Show loading indicator
+      setShowUploadMessage(true); // Show upload message
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileData({
+          ...profileData,
+          resume: reader.result.split(",")[1], // Store only the base64 part
+        });
+
+        setTimeout(() => {
+          setIsUploading(false); // Hide loading indicator after 5 seconds
+          setShowUploadMessage(false); // Hide message after 5 seconds
+        }, 5000);
+      };
+      reader.readAsDataURL(file); // Read the file as a base64 string
+    }
+  };
 
   const openModal = () => {
     setResumeOpen(true);
@@ -804,19 +829,19 @@ export default function EditProfile() {
     // }
   };
 
-  const handleResumeChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileData({
-          ...profileData,
-          resume: reader.result.split(',')[1], // Store only the base64 part
-        });
-      };
-      reader.readAsDataURL(file); // Read the file as a base64 string
-    }
-  };
+  // const handleResumeChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setProfileData({
+  //         ...profileData,
+  //         resume: reader.result.split(',')[1], // Store only the base64 part
+  //       });
+  //     };
+  //     reader.readAsDataURL(file); // Read the file as a base64 string
+  //   }
+  // };
 
 
   //sending sms to verify phone number
@@ -2064,28 +2089,39 @@ export default function EditProfile() {
 
 
             {/* Resume Link */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Upload Resume(.pdf) <span className="text-red-500">*</span></h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">
+              Upload Resume (.pdf) <span className="text-red-500">*</span>
+            </h3>
             <div className="mt-3">
               <input
                 type="file"
                 name="resume"
-                accept=".pdf" // You can specify which file types to allow
+                accept=".pdf"
                 onChange={handleResumeChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
               />
+
+              {/* Loading Message and Spinner */}
+              {showUploadMessage && (
+                <div className="flex flex-col items-center justify-center mt-3">
+                  <div className="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500"></div>
+                  <span className="mt-2 text-sm font-medium text-gray-700">
+                    Uploading... Please wait before clicking somewhere.
+                  </span>
+                </div>
+              )}
+
               <div className="mt-3">
                 {profileData?.resume ? (
                   <div className="flex items-center gap-2">
-                    {/* Button to open the modal and view resume */}
                     <button
                       type="button"
                       onClick={openModal}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 mt-4 p-2 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semiboldshadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 "
+                      className="inline-flex items-center gap-2 px-5 py-2.5 mt-4 text-white rounded-lg border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
                     >
                       <EyeIcon className="h-5 w-5" aria-hidden="true" />
                       View Uploaded Resume
                     </button>
-                    {/* Trash Icon to Delete Resume */}
                     <FaTrash
                       onClick={() => setOpenConfirmModal(true)}
                       className="ml-2 text-xl cursor-pointer text-red-500 hover:text-red-700"
@@ -2227,7 +2263,7 @@ export default function EditProfile() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}`}
+                className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700 mb-6'}`}
               >
                 {loading ? 'Updating...' : 'Update Profile'}
               </button>
