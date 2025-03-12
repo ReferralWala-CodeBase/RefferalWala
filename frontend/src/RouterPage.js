@@ -6,6 +6,7 @@ import SignupPage from "./pages/SignupPage";
 import TermsConditionsPage from "./pages/TermsConditionsPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import HomePage from "./pages/HomePage";
+import Dashboard from "./components/Profile/Dashboard";
 import ViewProfile from "./components/Profile/ViewProfile";
 import EditProfile from "./components/Profile/EditProfile";
 import ForgotPage from "./pages/ForgotPage";
@@ -43,6 +44,7 @@ export default function RouterPage() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/user-login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/viewprofile" element={<ViewProfile />} />
         <Route path="/viewapplicantprofile/:applicantId" element={<ViewApplicantProfile />} />
         <Route path="/checkuserprofile/:applicantId" element={<CheckUserProfile />} />

@@ -215,7 +215,7 @@ exports.getJobPostsByUser = async (req, res) => {
 
     // Find job posts associated with the given userId
     const jobPosts = await JobPost.find({ user: userId })
-      .populate('user', 'firstName lastName email') // Populate user details
+      .populate('user', 'firstName lastName email profilePhoto getreferral givereferral appliedJobs') // Populate user details
       .exec();
 
     if (jobPosts.length === 0) {

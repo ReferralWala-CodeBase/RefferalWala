@@ -71,7 +71,6 @@ export default function EditProfile() {
   const [showCompanyChangeModal, setShowCompanyChangeModal] = useState(false);
   const [showloader, setShowLoader] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [checkCompany, setCheckCompany] = useState(false);
   // const [originalMobileno, setOriginalMobileno] = useState(''); // for phone verification
   // const [isPhoneVerified, setIsPhoneVerified] = useState(null); // for phone verification
   // const [showPhoneOtpModal, setPhoneShowOtpModal] = useState(false); // for phone verification

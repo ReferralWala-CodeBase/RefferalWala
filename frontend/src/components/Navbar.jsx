@@ -16,6 +16,7 @@ import {
   UserIcon,
   UserGroupIcon,
   InformationCircleIcon,
+  HomeIcon
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -58,7 +59,7 @@ const userNavigation = [
 
 const sidenavigation = [
   // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
-  // { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
   { name: "Profile", href: "/viewprofile", icon: UserIcon, current: false },
   {
     name: "Followers",

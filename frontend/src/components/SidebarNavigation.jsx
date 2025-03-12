@@ -11,11 +11,12 @@ import {
   ShieldCheckIcon,
   DocumentTextIcon,
   PhoneIcon,
+  HomeIcon
 } from "@heroicons/react/24/outline";
 
 const navigation = [
   // { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
   { name: "Profile", href: "/viewprofile", icon: UserIcon, current: false },
   // { name: "Projects", href: "#", icon: FolderIcon, current: false },
   {
