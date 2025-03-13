@@ -77,14 +77,16 @@ export default function ViewPostedJob() {
     navigate(`/jobapplicantslist/${jobId}`, { state: { status: "selected" } });
   };
 
-  const inactivate = async () => {
+  const inactivate = async (currentStatus) => {
     const bearerToken = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
     const updatedJobData = {
       userId,
-      status: 'inactive'
+      // status: 'inactive'
+      status: currentStatus
     };
+
 
     try {
       const response = await fetch(`${Fronted_API_URL}/job/update/${jobId}`, {
@@ -103,9 +105,12 @@ export default function ViewPostedJob() {
       }
 
       const responseData = await response.json();
-      toast.success("Job status updated to inactive successfully!", {
+
+      const message = currentStatus === "inactive" ? "Job Closed successfully!" : "Job Active successfully!";
+
+      toast.success(message,{
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -144,30 +149,30 @@ export default function ViewPostedJob() {
                 <button
                   type="button"
                   onClick={() => navigate(`/editpostedjob/${jobId}`)}
-                  className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
+                  className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-5 sm:px-7 text-[14px] sm:text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2 "
                 >
-                  <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+                  <PencilIcon className="sm:-ml-0.5 mr-1 sm:mr-1.5 h-5 w-5" aria-hidden="true" />
                   Edit
                 </button>
 
                 <button
                   onClick={() => setOpen(true)}
-                  className="inline-flex justify-center rounded-full border border-transparent bg-red-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 items-center focus:ring-offset-2"
+                  className="inline-flex justify-center rounded-full border border-transparent bg-red-600 py-1 px-5 sm:px-7 text-[14px] sm:text-md font-light text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 items-center focus:ring-offset-2"
                 >
                   Close Job
                 </button>
               </>
             ) : (
               <button
-                onClick={() => navigate(`/editpostedjob/${jobId}`)}
-                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
+                onClick={() => inactivate("active")}
+                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-5 sm:px-7 text-[14px] sm:text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
               >
                 Active
               </button>
             )}
             <button
                 onClick={() => {handleViewApplicants(jobId)}}
-                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-7 text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
+                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-5 sm:px-7 text-[14px] sm:text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
               >
                 View Applicants
               </button>
@@ -219,7 +224,8 @@ export default function ViewPostedJob() {
                         <button
                           type="button"
                           className="inline-flex w-full justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                          onClick={inactivate}
+                          // onClick={inactivate}
+                          onClick={() => inactivate("inactive")}
                         >
                           Confirm
                         </button>

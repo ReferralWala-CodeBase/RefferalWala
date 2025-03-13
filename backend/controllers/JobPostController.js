@@ -412,10 +412,10 @@ exports.updateJobPost = async (req, res) => {
     // Update the job post with new data
     Object.assign(jobPost, updates);
 
-    if (jobPost.status === "inactive") {
+    if ( updates.status === "active") {
       jobPost.status = "active";
     }
-
+    
     await jobPost.save();
 
     // Fetch the user who created the job post and populate their followers
