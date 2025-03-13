@@ -1199,7 +1199,6 @@ export default function EditProfile() {
             {/* Present Company */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Present Company</h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-<<<<<<< HEAD
 
 
               <div className='relative'>
@@ -1280,9 +1279,6 @@ export default function EditProfile() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 />
               </div>
-=======
-              
->>>>>>> c3257445fb9a7107a091a3db41842937cbd166cc
               {/* 
               <div className="flex items-center space-x-4">
                 
@@ -1310,84 +1306,6 @@ export default function EditProfile() {
                 />)}
               </div> */}
 
-<<<<<<< HEAD
-=======
-              <div className='relative'>
-                <label className="block text-sm font-medium text-gray-700">Company Name</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={profileData?.presentCompany?.companyName || ''}
-                  onChange={handlePresentChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
-
-                {companySuggestions.length > 0 && (
-                  <ul className="absolute w-full mt-32 space-y-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto" style={{ top: '-100%' }}>
-                    {companySuggestions.map((company, index) => (
-                      <li
-                        key={index}
-                        className="cursor-pointer p-2 hover:bg-gray-200"
-                        onClick={() => handleSuggestionClick(company)}
-                      >
-                        <div className="flex items-center">
-                          <img
-                            src={company.logo_url}
-                            alt={company.name}
-                            className="h-6 w-6 object-contain mr-2"
-                          />
-                          <span>{company.name}</span>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              {showCompanyChangeModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600 bg-opacity-50">
-                  <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">
-                      Change Company Name?
-                    </h3>
-                    <p className="text-gray-700">Changing the company name will erase all existing company details. Do you still want to proceed?</p>
-                    <div className="mt-4 flex justify-end space-x-4">
-                      <button
-                        onClick={() => confirmCompanyChange(false)}
-                        className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-                      >
-                        No
-                      </button>
-                      <button
-                        onClick={() => confirmCompanyChange(true)}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                      >
-                        Yes, Change
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Role</label>
-                <input
-                  type="text"
-                  name="role"
-                  value={profileData?.presentCompany?.role || ''}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      presentCompany: {
-                        ...profileData?.presentCompany,
-                        role: e.target.value,
-                      },
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-                />
-              </div>
-
->>>>>>> c3257445fb9a7107a091a3db41842937cbd166cc
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">Company Email</label>
