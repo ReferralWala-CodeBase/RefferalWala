@@ -367,6 +367,7 @@ exports.withdrawApplication = async (req, res) => {
 };
 
 
+
 // @route   GET /job/applicants/:id
 // @desc    Get all applicants for a job post
 exports.getApplicantsForJobPost = async (req, res) => {

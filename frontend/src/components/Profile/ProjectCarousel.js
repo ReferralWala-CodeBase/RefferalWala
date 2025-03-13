@@ -43,7 +43,7 @@ const ProjectCarousel = ({ projects = [] }) => {
                                     </div>
                                     <div>
                                         <h4 className="text-lg font-semibold text-gray-800">{project.projectName || "Project Name"}</h4>
-                                        <p className="text-gray-500 text-sm">
+                                        <p className="text-gray-500 text-sm" style={{ whiteSpace: "pre-wrap" }}>
                                             {project.details.length > 20 ? (
                                                 <>
                                                     {project.details.slice(0, 20)}...
@@ -104,7 +104,11 @@ const ProjectCarousel = ({ projects = [] }) => {
             <Dialog open={modalOpen} onClose={() => setModalOpen(false)} className="fixed bg-black/30 inset-0 flex items-center justify-center z-50">
                 <div className="bg-white p-4 rounded-lg shadow-lg w-11/12 max-w-md">
                     <h4 className="text-lg font-semibold text-gray-800">{selectedProject?.projectName}</h4>
-                    <p className="text-gray-600 text-xs md:text-sm mt-2">{selectedProject?.details}</p>
+                    <p className="text-gray-600 text-xs md:text-sm mt-2"
+                        style={{ whiteSpace: "pre-wrap" }}
+                    >
+                        {selectedProject?.details}
+                    </p>
                     <button
                         onClick={() => setModalOpen(false)}
                         className="mt-3 bg-gray-800 text-white px-4 py-1 text-sm rounded-full"

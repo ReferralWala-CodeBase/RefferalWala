@@ -100,7 +100,6 @@ export default function ViewPostedJob() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        alert("not ok")
         throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
       }
 
@@ -108,7 +107,7 @@ export default function ViewPostedJob() {
 
       const message = currentStatus === "inactive" ? "Job Closed successfully!" : "Job Active successfully!";
 
-      toast.success(message,{
+      toast.success(message, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -171,11 +170,11 @@ export default function ViewPostedJob() {
               </button>
             )}
             <button
-                onClick={() => {handleViewApplicants(jobId)}}
-                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-5 sm:px-7 text-[14px] sm:text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
-              >
-                View Applicants
-              </button>
+              onClick={() => { handleViewApplicants(jobId) }}
+              className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-5 sm:px-7 text-[14px] sm:text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
+            >
+              View Applicants
+            </button>
           </div>
 
           {/* Modal for Closing Job */}
@@ -250,9 +249,12 @@ export default function ViewPostedJob() {
               <h2 className="text-2xl font-bold leading-7 text-blue-700 sm:truncate sm:text-2xl sm:tracking-tight">
                 {jobData?.jobRole}
               </h2>
-              <h3 className="text-xl leading-7 text-gray-700 sm:truncate sm:text-xl sm:tracking-tight">
-                @{jobData?.companyName}
-              </h3>
+              <div className="flex items-center mt-2">
+                <img class="h-14 w-14 border-2 border-blue-700 rounded-full" src={jobData?.companyLogoUrl} alt="" />
+                <h3 className="ml-2 text-xl leading-7 text-gray-700 sm:truncate sm:text-xl sm:tracking-tight">
+                  @{jobData?.companyName}
+                </h3>
+              </div>
               <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6 mb-4">
                 <div className="mt-2 flex items-center text-xs text-gray-600 bg-gray-200/70 px-2 md:px-4 rounded-full py-1">
                   <BriefcaseIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />

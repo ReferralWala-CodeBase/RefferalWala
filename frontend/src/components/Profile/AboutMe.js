@@ -7,6 +7,7 @@ const AboutMeSection = ({ profileData }) => {
     return (
         <div>
             <h3 className="text-lg font-medium text-gray-800 mb-3">About Me</h3>
+            
 
             <p className="text-sm text-gray-700 mb-2" style={{ whiteSpace: "pre-wrap" }}>
                 {aboutMeText.length > 150 ? `${aboutMeText.substring(0, 150)}...` : aboutMeText}{" "}

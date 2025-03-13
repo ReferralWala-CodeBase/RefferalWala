@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SidebarNavigation from '../SidebarNavigation';
 import { FaSpinner } from "react-icons/fa";
@@ -9,7 +9,8 @@ import company from "../../assets/company.png";
 import Loader from '../Loader';
 import { FaTimes } from "react-icons/fa";
 import { UserPlus, UserX } from "lucide-react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { Dialog, Transition } from '@headlessui/react';
+import { ExclamationTriangleIcon, DocumentArrowDownIcon } from "@heroicons/react/24/solid";
 import ReportJob from './ReportJob';
 
 export default function AppliedJobDetails() {
@@ -34,6 +35,8 @@ export default function AppliedJobDetails() {
   const [profileIncomplete, setProfileIncomplete] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState(null);
+  const [showWithdrawDialog, setShowWithdrawDialog] = useState(false);
+    const cancelButtonRef = useRef(null);
 
   const closeReportDialog = () => {
     toast.success("Job Reported Successfully.", {
@@ -41,9 +44,6 @@ export default function AppliedJobDetails() {
       onClose: () => setShowReportDialog(false) // Close dialog after toast disappears
     });
   };
-  
-
-
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -85,6 +85,8 @@ export default function AppliedJobDetails() {
         });
 
         const statusData = await statusResponse.json();
+
+        console.log("applicationStatus ----", statusData.status);
         setApplicationStatus(statusData.status);
         setVerified(!!statusData.employee_doc);
         setEmployeeDoc(statusData.employee_doc);
@@ -311,10 +313,43 @@ export default function AppliedJobDetails() {
     setShowReportDialog(true);
   };
 
-  const handleReportSuccess = () => {
-    toast.success("Job Reported Successfully.");
-    setShowReportDialog(false);
-    setSelectedJobId(null);
+  const handleWithdrawClick = async(jobId) => {
+    const bearerToken = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    try {
+      const response = await fetch(`${Fronted_API_URL}/job/withdraw/${jobId}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      } else {
+        toast.success(`Withdraw Successfully!!`, {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                onClose: () => {
+                  navigate(`/appliedjobs`);
+                }
+              });
+              setShowWithdrawDialog(false)
+      }
+    } catch (error) {
+      console.error('Error updating follow status:', error);
+      toast.error(error.message);
+    }
   };
 
 
@@ -380,7 +415,83 @@ export default function AppliedJobDetails() {
                 <ExclamationTriangleIcon className="w-5 h-5 text-gray-700" />
                 <span className="font-medium text-gray-800">Report</span>
               </div>
+
+              {applicationStatus && (
+              <div
+                className="flex gap-2 cursor-pointer px-4 py-1 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300 md:text-sm text-xs"
+                onClick={() => setShowWithdrawDialog(true)}
+              >
+                <DocumentArrowDownIcon className="w-5 h-5 text-gray-700" />
+                <span className="font-medium text-gray-800">Withdraw</span>
+              </div>
+              )}
             </div>
+
+            {/* Modal for Closing Job */}
+            <Transition.Root show={showWithdrawDialog} as={Fragment}>
+              <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={() => setShowWithdrawDialog(false)}>
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </Transition.Child>
+
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                  <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                      enterTo="opacity-100 translate-y-0 sm:scale-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                      leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    >
+                      <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                        <div className="sm:flex sm:items-start">
+                          <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                          </div>
+                          <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                            <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                              Close Job
+                            </Dialog.Title>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">
+                                Are you sure to withdraw your application from this job? This action cannot be undone.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                          <button
+                            type="button"
+                            className="inline-flex w-full justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                            onClick={() => handleWithdrawClick(jobData._id)}
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            type="button"
+                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                            onClick={() => setShowWithdrawDialog(false)}
+                            ref={cancelButtonRef}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </Dialog>
+            </Transition.Root>
 
             {/* Application Status & Buttons */}
             {applicationStatus === "applied" ? (
