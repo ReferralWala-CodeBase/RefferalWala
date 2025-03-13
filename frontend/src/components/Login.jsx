@@ -114,7 +114,7 @@ function Login() {
           // Store token in localStorage and navigate to profile
           localStorage.setItem("token", token);
           localStorage.setItem("userId", userId);
-          toast.success("Login successfully");
+          toast.success("Login successful");
           navigate("/viewprofile");
         }
       } catch (error) {
@@ -122,7 +122,7 @@ function Login() {
       }
     },
     onError: () =>
-      toast.error("Google Sign In was unsuccessful. Try again later."),
+      toast.error("Google Sign-In was unsuccessful. Try again later."),
     flow: "auth-code",
   });
 

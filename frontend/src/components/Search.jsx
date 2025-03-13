@@ -200,7 +200,7 @@ export default function Search() {
     const handleShare = async (jobId) => {
         if (!jobId || typeof jobId !== 'string') {
             console.error('Invalid Job ID:', jobId);
-            toast.error('Job ID is invalid. Please try again.');
+            toast.error('Invalid Job ID. Please try again.');
 
             return;
         }
@@ -223,7 +223,7 @@ export default function Search() {
                 toast.success("Link Copied.");
             } catch (error) {
                 console.error('Error copying to clipboard:', error);
-                toast.error('Error copying to clipboard:', error);
+                toast.error('Error while copying to clipboard:', error);
 
             }
         }
