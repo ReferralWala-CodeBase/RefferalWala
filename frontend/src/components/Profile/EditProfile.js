@@ -1190,8 +1190,6 @@ export default function EditProfile() {
                   <option value="Other">Other</option>
                 </select>
               </div>
-
-
             </div>
 
             <hr className='mt-2 mb-2' />
