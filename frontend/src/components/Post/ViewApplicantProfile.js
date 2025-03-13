@@ -237,7 +237,7 @@ export default function ViewApplicantProfile() {
       if (!response.ok) {
         throw new Error('Failed to update follow status');
       } else {
-        toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successfully`);
+        toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)}ed successfully`);
       }
 
       // Update state and fetch updated profile data

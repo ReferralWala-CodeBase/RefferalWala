@@ -131,7 +131,7 @@ export default function CheckUserProfile() {
       if (!response.ok) {
         throw new Error(data.message);
       } else {
-        toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successfully`);
+        toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)}ed successfully`);
       }
 
       // Update state and fetch updated profile data

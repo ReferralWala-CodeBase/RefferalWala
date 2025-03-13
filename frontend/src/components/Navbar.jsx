@@ -59,7 +59,7 @@ const userNavigation = [
 
 const sidenavigation = [
   // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
-  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
+  //{ name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
   { name: "Profile", href: "/viewprofile", icon: UserIcon, current: false },
   {
     name: "Followers",

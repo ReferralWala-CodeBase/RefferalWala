@@ -96,7 +96,7 @@ export default function AppliedJobs() {
       console.log("Response data:", data);
 
       if (response.ok) {
-        toast.success("Withdraw  successfully!", {
+        toast.success("Withdraw successful!", {
           position: "top-right",
           autoClose: 3000, // 3 seconds
           hideProgressBar: false,
