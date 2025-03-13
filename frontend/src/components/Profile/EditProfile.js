@@ -1304,7 +1304,6 @@ export default function EditProfile() {
                 />)}
               </div> */}
 
-
               <div>
                 <label className="block text-sm font-medium text-gray-700">Company Email</label>
                 <div className="flex items-center">
