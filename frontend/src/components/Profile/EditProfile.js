@@ -337,12 +337,25 @@ export default function EditProfile() {
   };
 
   const addProject = () => {
+    if (newProject.projectName.trim() === "") {
+      toast.error("Please enter a project name.");
+      setShowProjectForm(false);
+      return;
+    }
+    if(!newProject.details.trim()){
+      toast.error("Please enter the project description.");
+      setShowProjectForm(false);
+      return;
+    }
+    
     setProfileData((prevData) => ({
       ...prevData,
       project: [...prevData.project, newProject], // Add newProject to project array
     }));
-    setNewProject({ name: "", repoLink: "", liveLink: "", description: "" }); // Reset form
+    setNewProject({ name: "", repoLink: "", liveLink: "", description: "" }); // Reset form 
     setShowProjectForm(false);
+    
+    
   };
 
   const removeProject = (index) => {
@@ -669,17 +682,45 @@ export default function EditProfile() {
 
   // Add new Education entry
   const addEducation = () => {
-    setProfileData((prev) => ({
-      ...prev,
-      education: [...prev.education, newEducation],
-    }));
-    setShowEducationForm(false);
-    setNewEducation({ level: '', schoolName: '', yearOfPassing: '' });
-
+    if(!newEducation.level.trim()){
+      toast.error("Please enter your education degree.");
+      setShowEducationForm(false);
+    }
+    else if(!newEducation.schoolName.trim()){
+      toast.error("Please enter your school name.");
+      setShowEducationForm(false);
+    }
+    else if(!newEducation.yearOfPassing.trim()){
+      toast.error("Please enter your year of passing.");
+      setShowEducationForm(false);
+    }
+    else{
+      setProfileData((prev) => ({
+        ...prev,
+        education: [...prev.education, newEducation],
+      }));
+      setShowEducationForm(false);
+      setNewEducation({ level: '', schoolName: '', yearOfPassing: '' });
+    }
   };
 
   // Add new Experience entry
   const addExperience = () => {
+    if(!newExperience.companyName.trim()){
+      toast.error("Please enter your company name.");
+      setShowExperienceForm(false);
+      return;
+    }
+    if(!newExperience.position.trim()){
+      toast.error("Please enter your position.");
+      setShowExperienceForm(false);
+      return;
+    }
+    if(!newExperience.dateOfJoining.trim()){
+      toast.error("Please enter your date of joining.");
+      setShowExperienceForm(false);
+      return;
+    }
     setProfileData((prev) => ({
       ...prev,
       experience: [...prev.experience, newExperience],
@@ -1329,7 +1370,7 @@ export default function EditProfile() {
                       })
                     }
                     onBlur={handleCompanyEmail}
-                    disabled={!isEditing}
+                    disabled={!isEditing && originalCompanyEmail}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                   {isCompanyEmailVerified && (
@@ -1571,7 +1612,7 @@ export default function EditProfile() {
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Year of Passing</label>
                     <input
-                      type="text"
+                      type="number"
                       name="yearOfPassing"
                       value={newEducation.yearOfPassing}
                       onChange={handleEducationChange}
