@@ -337,12 +337,12 @@ export default function EditProfile() {
   };
 
   const addProject = () => {
-    if (newProject.projectName.trim() === "") {
+    if (!newProject.projectName || newProject.projectName.trim() === "") {
       toast.error("Please enter a project name.");
       setShowProjectForm(false);
       return;
     }
-    if(!newProject.details.trim()){
+    if(!newProject.details || newProject.details.trim() === ""){
       toast.error("Please enter the project description.");
       setShowProjectForm(false);
       return;
@@ -682,15 +682,15 @@ export default function EditProfile() {
 
   // Add new Education entry
   const addEducation = () => {
-    if(!newEducation.level.trim()){
+    if(!newEducation.level || newEducation.level.trim() === ''){
       toast.error("Please enter your education degree.");
       setShowEducationForm(false);
     }
-    else if(!newEducation.schoolName.trim()){
+    else if(!newEducation.schoolName || newEducation.schoolName.trim() === ''){
       toast.error("Please enter your school name.");
       setShowEducationForm(false);
     }
-    else if(!newEducation.yearOfPassing.trim()){
+    else if(!newEducation.yearOfPassing || newEducation.yearOfPassing.trim() === ''){
       toast.error("Please enter your year of passing.");
       setShowEducationForm(false);
     }
@@ -706,17 +706,17 @@ export default function EditProfile() {
 
   // Add new Experience entry
   const addExperience = () => {
-    if(!newExperience.companyName.trim()){
+    if(!newExperience.companyName || newExperience.companyName.trim() === ''){
       toast.error("Please enter your company name.");
       setShowExperienceForm(false);
       return;
     }
-    if(!newExperience.position.trim()){
+    if(!newExperience.position || newExperience.position.trim() === ''){
       toast.error("Please enter your position.");
       setShowExperienceForm(false);
       return;
     }
-    if(!newExperience.dateOfJoining.trim()){
+    if(!newExperience.dateOfJoining || newExperience.dateOfJoining.trim() === ''){
       toast.error("Please enter your date of joining.");
       setShowExperienceForm(false);
       return;
