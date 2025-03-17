@@ -91,6 +91,10 @@ exports.createJobPost = async (req, res) => {
     // Save the job post
     await newJobPost.save();
 
+    //To increatment the total job count 
+    user.totalJobCount += 1;
+    await user.save();
+
     // Populate followers of the user who created the job post
     const populatedUser = await User.findById(userId).populate('followers');
 
@@ -117,6 +121,8 @@ exports.createJobPost = async (req, res) => {
 // @desc    Get all job referral posts
 exports.getAllJobPosts = async (req, res) => {
   try {
+    const userId = req.headers['userid'];
+
     const currentDate = new Date();
     const page = parseInt(req.query.page) || 1; // Default to page 1
     const limit = parseInt(req.query.limit) || 10; // Default limit per page
@@ -142,6 +148,12 @@ exports.getAllJobPosts = async (req, res) => {
 
     // Build filter conditions based on query parameters
     let filterConditions = { status: 'active' };
+
+    // Apply userId-based filtering if defined
+    if (userId) {
+      filterConditions["reportUser.userId"] = { $ne: userId };
+    }
+
 
     if (decodedLocations.length > 0) {
       // Ensure that the filter uses full location names (city, state)
@@ -190,7 +202,7 @@ exports.getAllJobPosts = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
- // Get total active job count after applying filters (for frontend pagination)
+    // Get total active job count after applying filters (for frontend pagination)
     const totalJobs = await JobPost.countDocuments(filterConditions);
 
     res.status(200).json({
@@ -413,10 +425,10 @@ exports.updateJobPost = async (req, res) => {
     // Update the job post with new data
     Object.assign(jobPost, updates);
 
-    if ( updates.status === "active") {
+    if (updates.status === "active") {
       jobPost.status = "active";
     }
-    
+
     await jobPost.save();
 
     // Fetch the user who created the job post and populate their followers

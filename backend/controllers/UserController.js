@@ -376,7 +376,7 @@ exports.sendOTP = async (req, res) => {
     }
 
     // Check if the company email has already been verified
-    if(user.presentCompany.CompanyEmailVerified){
+    if (user.presentCompany.CompanyEmailVerified) {
       if (user.presentCompany.companyEmail === email) {
         return res.status(400).json({ message: 'Company email already verified' });
       }
@@ -410,6 +410,13 @@ exports.getProfileById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+
+    // Remove these code Here after directly +1 totalJobCount when user post job
+    const jobCount = await JobPost.countDocuments({ user: req.params.id });
+    user.totalJobCount = jobCount;    
+    await user.save();
+
+    // console.log(user);
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });

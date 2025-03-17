@@ -207,6 +207,7 @@ export default function PostedJobsCard() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
+        const userId = localStorage.getItem('userId');
         setLoading(true);
 
         const formattedSelectedLocations = selectedLocations.map(loc => {
@@ -232,8 +233,10 @@ export default function PostedJobsCard() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            userId: userId,
           },
         });
+
 
         if (!response.ok) {
           throw new Error('Failed to fetch jobs');
