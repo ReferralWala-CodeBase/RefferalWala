@@ -392,7 +392,7 @@ export default function ViewProfile() {
             </div>
 
             { /* Dashboard */}
-            <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
+            {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
               <h3 className="text-small font-semibold text-gray-900 mb-4">Dashboard</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
@@ -448,7 +448,7 @@ export default function ViewProfile() {
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
 
             {/* Present Company Section */}
             {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2'>

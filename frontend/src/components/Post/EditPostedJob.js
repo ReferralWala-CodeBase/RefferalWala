@@ -83,7 +83,7 @@ export default function EditJob() {
     const jobEndDate = new Date(updatedFormData.endDate).toISOString().split('T')[0];
 
     if (jobEndDate === today) {
-      toast.error("Please change the end date from today's date!", {
+      toast.error("End date cannot be a an older date or the present date", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
