@@ -27,6 +27,7 @@ export default function EditJob() {
     ctc: '',
     endDate: '',
     jobDescription: '',
+    status: ''
   });
 
   useEffect(() => {
@@ -76,7 +77,23 @@ export default function EditJob() {
     // Add userId from local storage to formData
     const bearerToken = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
-    const updatedFormData = { ...formData, userId };
+    const updatedFormData = { ...formData, userId, status: 'active' };
+
+    const today = new Date().toISOString().split('T')[0];
+    const jobEndDate = new Date(updatedFormData.endDate).toISOString().split('T')[0];
+
+    if (jobEndDate === today) {
+      toast.error("End date cannot be a an older date or the present date", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return; // Stop execution
+    }
 
     try {
       const response = await fetch(`${Fronted_API_URL}/job/update/${jobId}`, {
@@ -273,6 +290,7 @@ export default function EditJob() {
                   value={formData?.companyName}
                   onChange={handleChange}
                   required
+                  disabled
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
               </div>
@@ -405,6 +423,8 @@ export default function EditJob() {
             </div>
           </form>
         </div>
+
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       </div>
     </>
   );

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { PencilIcon, EyeIcon } from '@heroicons/react/20/solid';
 import { FaGithub, FaLinkedin, FaGlobe, FaInstagram, FaFacebook, FaEnvelope, FaPhone, FaCheckCircle } from "react-icons/fa";
 import { FaUniversity, FaBuilding, FaLocationArrow, FaLaptopCode } from 'react-icons/fa';
+import { UsersIcon, PaperAirplaneIcon, BriefcaseIcon, ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import { IoShieldCheckmark } from "react-icons/io5";
 import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
@@ -64,6 +65,8 @@ export default function ViewProfile() {
 
 
         const data = await response.json();
+
+        console.log(data)
         setProfileData(data);
       } catch (error) {
         console.error('Error fetching profile data:', error);
@@ -73,6 +76,7 @@ export default function ViewProfile() {
 
     fetchProfileData();
   }, []);
+
   useEffect(() => {
     const fetchProfileCompletion = async () => {
       try {
@@ -348,6 +352,8 @@ export default function ViewProfile() {
               </div>
             </div>
 
+
+
             { /* Education */}
             <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
               <h3 className="text-small font-semibold text-gray-900 mb-4">Education</h3>
@@ -384,6 +390,65 @@ export default function ViewProfile() {
                 </div>
               )}
             </div>
+
+            { /* Dashboard */}
+            {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
+              <h3 className="text-small font-semibold text-gray-900 mb-4">Dashboard</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                {profileData?.getreferral && (
+                  <div className="flex items-center p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl mr-5">
+                      <UsersIcon />
+                    </div>
+
+                    <div className="">
+                      <h3 className="text-lg font-semibold text-gray-800">Total Referrals Received</h3>
+                      <p className="text-gray-600">{profileData?.getreferral || 0}</p>
+                    </div>
+                  </div>
+                )}
+
+                {profileData?.givereferral === 0 && (
+                  <div className="flex items-center p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl mr-5">
+                      <PaperAirplaneIcon />
+                    </div>
+
+                    <div className="">
+                      <h3 className="text-lg font-semibold text-gray-800">People You Have Referred</h3>
+                      <p className="text-gray-600">{profileData?.givereferral || 0}</p>
+                    </div>
+                  </div>
+                )}
+
+                {profileData?.totalJobCount && (
+                  <div className="flex items-center p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl mr-5">
+                      <BriefcaseIcon />
+                    </div>
+
+                    <div className="">
+                      <h3 className="text-lg font-semibold text-gray-800">Total Jobs Posted</h3>
+                      <p className="text-gray-600">{profileData?.totalJobCount}</p>
+                    </div>
+                  </div>
+                )}
+
+                {profileData?.appliedJobs && (
+                  <div className="flex items-center p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl mr-5">
+                      <ClipboardDocumentCheckIcon />
+                    </div>
+
+                    <div className="">
+                      <h3 className="text-lg font-semibold text-gray-800">Total Jobs Applied For</h3>
+                      <p className="text-gray-600">{profileData?.appliedJobs?.length || 0}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div> */}
 
             {/* Present Company Section */}
             {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2'>

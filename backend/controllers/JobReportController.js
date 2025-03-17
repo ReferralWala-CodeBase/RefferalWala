@@ -19,6 +19,14 @@ exports.reportJob = async (req, res) => {
     // Save the report to the database
     await newReport.save();
 
+    const job = await JobPost.findById(jobId);
+
+    // Push the report details into reportUser array
+    job.reportUser.push({ userId });
+
+    // Save the updated job document
+    await job.save();
+
     res.status(201).json({ message: 'Job reported successfully' });
   } catch (error) {
     console.error(error);

@@ -214,6 +214,10 @@ const userSchema = new mongoose.Schema({
     type: Number,  // user hire another 
     default: 0
   },  
+  totalJobCount:{
+    type: Number,
+    default: 0
+  },
   preferredSectors: [
     {
       type: String, 

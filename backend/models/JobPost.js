@@ -80,6 +80,14 @@ const JobPostSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  reportUser: [
+    {
+      userId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User' 
+      },
+    }
+  ],
 });
 
 module.exports = mongoose.model('JobPost', JobPostSchema);
