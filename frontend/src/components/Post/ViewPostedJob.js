@@ -105,24 +105,27 @@ export default function ViewPostedJob() {
         throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
       }
 
-      const responseData = await response.json();
+      else
+      {
+        const responseData = await response.json();
 
-      const message = currentStatus === "inactive" ? "Job Closed successfully!" : "Job Activated successfully!";
+        const message = currentStatus === "inactive" ? "Job Closed successfully!" : "Job Activated successfully!";
 
-      toast.success(message, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        onClose: () => {
-          navigate(`/postedjobslist`);
-        }
-      });
-      setOpen(false);
-      console.log('Response:', responseData);
+        toast.success(message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          onClose: () => {
+            navigate(`/postedjobslist`);
+          }
+        });
+        setOpen(false);
+        console.log('Response:', responseData);
+      }
     } catch (error) {
       console.error('Error fetching job data:', error);
       toast.error(error.message);
