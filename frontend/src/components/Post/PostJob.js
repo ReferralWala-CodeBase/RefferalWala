@@ -71,8 +71,8 @@ export default function PostJob() {
       if (
         !mobileNumber ||
         !presentCompany?.role ||
-        !presentCompany?.companyName ||
-        !presentCompany?.CompanyEmailVerified
+        !presentCompany?.companyName
+        // || !presentCompany?.CompanyEmailVerified
       ) {
         setProfileIncomplete(true);
       } else {

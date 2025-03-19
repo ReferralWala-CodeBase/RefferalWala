@@ -1353,7 +1353,7 @@ export default function EditProfile() {
                 />)}
               </div> */}
 
-              <div>
+              {/*<div>
                 <label className="block text-sm font-medium text-gray-700">Company Email</label>
                 <div className="flex items-center">
                   <input
@@ -1396,7 +1396,7 @@ export default function EditProfile() {
                     {!!originalCompany ? (isEditing ? "Change" : "Edit") : "Verify"}
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {/* OTP Modal */}
               {showOtpModal && (

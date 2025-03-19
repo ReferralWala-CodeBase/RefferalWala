@@ -166,16 +166,17 @@ export default function ViewProfile() {
                     </span>
 
                     {/* Verified Badge with Tooltip */}
-                    {profileData?.presentCompany?.CompanyEmailVerified && (
+
+                    {/* {profileData?.presentCompany?.CompanyEmailVerified && (
                       <div className="relative group">
                         <IoShieldCheckmark className="text-blue-500 w-7 h-7 cursor-pointer" />
 
-                        {/* Tooltip */}
+                        
                         <span className="absolute -top-7 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                           Verified
                         </span>
                       </div>
-                    )}
+                    )} */}
                   </h2>
 
                   {/* Company Logo & Details */}
