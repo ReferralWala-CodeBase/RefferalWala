@@ -150,7 +150,7 @@ exports.getAllJobPosts = async (req, res) => {
     let filterConditions = { status: 'active' };
 
     // Apply userId-based filtering if defined
-    if (userId) {
+    if (userId && userId !== 'null' && userId.trim() !== '') {
       filterConditions["reportUser.userId"] = { $ne: userId };
     }
 
