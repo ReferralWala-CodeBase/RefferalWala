@@ -397,7 +397,7 @@ export default function ViewProfile() {
               <h3 className="text-small font-semibold text-gray-900 mb-4">Dashboard</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-                {profileData?.getreferral && (
+                {profileData?.getreferral === 0 && (
                   <div className="flex items-center p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl mr-5">
                       <UsersIcon />
@@ -423,7 +423,7 @@ export default function ViewProfile() {
                   </div>
                 )}
 
-                {profileData?.totalJobCount && (
+                {profileData?.totalJobCount === 0 && (
                   <div className="flex items-center p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl mr-5">
                       <BriefcaseIcon />
@@ -436,7 +436,7 @@ export default function ViewProfile() {
                   </div>
                 )}
 
-                {profileData?.appliedJobs && (
+                {profileData?.appliedJobs === 0 && (
                   <div className="flex items-center p-4 border rounded-lg border-gray-300 hover:shadow-xl transition-shadow duration-300">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-xl mr-5">
                       <ClipboardDocumentCheckIcon />

@@ -146,11 +146,13 @@ exports.getAllJobPosts = async (req, res) => {
       { $set: { status: 'inactive' } }
     );
 
+    
+
     // Build filter conditions based on query parameters
     let filterConditions = { status: 'active' };
 
     // Apply userId-based filtering if defined
-    if (userId) {
+    if (userId && userId !== 'null' && userId.trim() !== '') {
       filterConditions["reportUser.userId"] = { $ne: userId };
     }
 
