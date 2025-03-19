@@ -166,16 +166,17 @@ export default function ViewProfile() {
                     </span>
 
                     {/* Verified Badge with Tooltip */}
-                    {profileData?.presentCompany?.CompanyEmailVerified && (
+
+                    {/* {profileData?.presentCompany?.CompanyEmailVerified && (
                       <div className="relative group">
                         <IoShieldCheckmark className="text-blue-500 w-7 h-7 cursor-pointer" />
 
-                        {/* Tooltip */}
+                        
                         <span className="absolute -top-7 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                           Verified
                         </span>
                       </div>
-                    )}
+                    )} */}
                   </h2>
 
                   {/* Company Logo & Details */}
@@ -392,7 +393,7 @@ export default function ViewProfile() {
             </div>
 
             { /* Dashboard */}
-            <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
+            {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-3 md:px-4 md:mr-2'>
               <h3 className="text-small font-semibold text-gray-900 mb-4">Dashboard</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
@@ -448,7 +449,7 @@ export default function ViewProfile() {
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
 
             {/* Present Company Section */}
             {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2'>

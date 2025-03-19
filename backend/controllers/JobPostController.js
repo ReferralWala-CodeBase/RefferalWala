@@ -428,7 +428,9 @@ exports.updateJobPost = async (req, res) => {
     if (updates.status === "active") {
       jobPost.status = "active";
     }
-
+    else {
+      jobPost.status = "inactive";
+    }
     await jobPost.save();
 
     // Fetch the user who created the job post and populate their followers

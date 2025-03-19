@@ -168,9 +168,9 @@ export default function EditProfile() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success("Resend OTP sent successfully!!!.");
+        toast.success("OTP resent successfully!");
       } else {
-        toast.error(data.message || "OTP send failed. Please try again.");
+        toast.error(data.message || "Couldn't send OTP. Please try again.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -219,7 +219,7 @@ export default function EditProfile() {
         setOriginalCompanyEmail(profileData?.presentCompany?.companyEmail);
         setShowOtpModal(false);
       } else {
-        toast.error(data.message || "Company Email verification failed. Try again.");
+        toast.error(data.message || "Company email verification failed. Try again.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -281,7 +281,7 @@ export default function EditProfile() {
         if (response.status === 400) {
           toast.error(data.message || "Email is already verified.");
         } else {
-          toast.error(data.message || "OTP send failed. Try again.");
+          toast.error(data.message || "Couldn't send OTP. Try again.");
         }
       }
     } catch (error) {
@@ -337,12 +337,25 @@ export default function EditProfile() {
   };
 
   const addProject = () => {
+    if (!newProject.projectName || newProject.projectName.trim() === "") {
+      toast.error("Please enter a project name.");
+      setShowProjectForm(false);
+      return;
+    }
+    if(!newProject.details || newProject.details.trim() === ""){
+      toast.error("Please enter the project description.");
+      setShowProjectForm(false);
+      return;
+    }
+    
     setProfileData((prevData) => ({
       ...prevData,
       project: [...prevData.project, newProject], // Add newProject to project array
     }));
-    setNewProject({ name: "", repoLink: "", liveLink: "", description: "" }); // Reset form
+    setNewProject({ name: "", repoLink: "", liveLink: "", description: "" }); // Reset form 
     setShowProjectForm(false);
+    
+    
   };
 
   const removeProject = (index) => {
@@ -669,17 +682,45 @@ export default function EditProfile() {
 
   // Add new Education entry
   const addEducation = () => {
-    setProfileData((prev) => ({
-      ...prev,
-      education: [...prev.education, newEducation],
-    }));
-    setShowEducationForm(false);
-    setNewEducation({ level: '', schoolName: '', yearOfPassing: '' });
-
+    if(!newEducation.level || newEducation.level.trim() === ''){
+      toast.error("Please enter your education degree.");
+      setShowEducationForm(false);
+    }
+    else if(!newEducation.schoolName || newEducation.schoolName.trim() === ''){
+      toast.error("Please enter your school name.");
+      setShowEducationForm(false);
+    }
+    else if(!newEducation.yearOfPassing || newEducation.yearOfPassing.trim() === ''){
+      toast.error("Please enter your year of passing.");
+      setShowEducationForm(false);
+    }
+    else{
+      setProfileData((prev) => ({
+        ...prev,
+        education: [...prev.education, newEducation],
+      }));
+      setShowEducationForm(false);
+      setNewEducation({ level: '', schoolName: '', yearOfPassing: '' });
+    }
   };
 
   // Add new Experience entry
   const addExperience = () => {
+    if(!newExperience.companyName || newExperience.companyName.trim() === ''){
+      toast.error("Please enter your company name.");
+      setShowExperienceForm(false);
+      return;
+    }
+    if(!newExperience.position || newExperience.position.trim() === ''){
+      toast.error("Please enter your position.");
+      setShowExperienceForm(false);
+      return;
+    }
+    if(!newExperience.dateOfJoining || newExperience.dateOfJoining.trim() === ''){
+      toast.error("Please enter your date of joining.");
+      setShowExperienceForm(false);
+      return;
+    }
     setProfileData((prev) => ({
       ...prev,
       experience: [...prev.experience, newExperience],
@@ -728,6 +769,14 @@ export default function EditProfile() {
 
     if (!profileData.presentCompany.companyName) {
       profileData.presentCompany.companyLogoUrl = '';
+      profileData.presentCompany.location = '';
+      profileData.presentCompany.currentCTC = '';
+      profileData.presentCompany.dateOfJoining = '';
+      profileData.presentCompany.CompanyEmailVerified = false;
+      profileData.presentCompany.companyEmail = '';  
+    }
+    if(!profileData.presentCompany.companyEmail){
+      profileData.presentCompany.CompanyEmailVerified = false;
     }
 
     try {
@@ -821,7 +870,7 @@ export default function EditProfile() {
 
     // **Mobile Number Validation**
     if (profileData?.mobileNumber && !mobilePattern.test(profileData?.mobileNumber)) {
-      return toast.error("Please enter a valid 10-digit mobile number.");
+      return toast.error("Please enter a valid 10 digit mobile number.");
     }
 
     // **Year of Passing Validation**
@@ -1024,7 +1073,7 @@ export default function EditProfile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Last Name <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700">Last Name</label>
                 <input
                   type="text"
                   name="lastName"
@@ -1177,7 +1226,7 @@ export default function EditProfile() {
 
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Gender <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700">Gender</label>
                 <select
                   name="gender"
                   value={profileData?.gender}
@@ -1304,7 +1353,7 @@ export default function EditProfile() {
                 />)}
               </div> */}
 
-              <div>
+              {/*<div>
                 <label className="block text-sm font-medium text-gray-700">Company Email</label>
                 <div className="flex items-center">
                   <input
@@ -1321,7 +1370,7 @@ export default function EditProfile() {
                       })
                     }
                     onBlur={handleCompanyEmail}
-                    disabled={!isEditing}
+                    disabled={!isEditing && originalCompanyEmail}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                   />
                   {isCompanyEmailVerified && (
@@ -1347,7 +1396,7 @@ export default function EditProfile() {
                     {!!originalCompany ? (isEditing ? "Change" : "Edit") : "Verify"}
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {/* OTP Modal */}
               {showOtpModal && (
@@ -1475,7 +1524,7 @@ export default function EditProfile() {
 
 
             {/* Education Section */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education <span className="text-red-500">*</span></h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Education</h3>
             {profileData?.education.map((edu, index) => (
               <div key={index} className="mt-3 flex items-center gap-6 flex-col sm:flex-row">
                 <div className="w-full sm:flex-1">
@@ -1541,7 +1590,7 @@ export default function EditProfile() {
                 <h4 className="text-lg font-medium text-gray-900">Add New Education</h4>
                 <div className="flex gap-6 mt-3 flex-col sm:flex-row">
                   <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700">Level</label>
+                    <label className="block text-sm font-medium text-gray-700">Degree</label>
                     <input
                       type="text"
                       name="level"
@@ -1563,7 +1612,7 @@ export default function EditProfile() {
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700">Year of Passing</label>
                     <input
-                      type="text"
+                      type="number"
                       name="yearOfPassing"
                       value={newEducation.yearOfPassing}
                       onChange={handleEducationChange}
@@ -2073,7 +2122,7 @@ export default function EditProfile() {
             </div>
 
             {/* Skills */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Skills <span className="text-red-500">*</span></h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">Skills</h3>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="col-span-2 flex flex-wrap gap-4">
                 {profileData?.skills.map((skill, index) => (
@@ -2110,7 +2159,7 @@ export default function EditProfile() {
 
             {/* Resume Link */}
             <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">
-              Upload Resume (.pdf) <span className="text-red-500">*</span>
+              Upload Resume (.pdf)
             </h3>
             <div className="mt-3">
               <input
@@ -2266,7 +2315,7 @@ export default function EditProfile() {
             )}
 
             {/* About Me */}
-            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">About Me <span className="text-red-500">*</span></h3>
+            <h3 className="mt-6 text-lg font-medium leading-7 text-gray-900">About Me </h3>
             <div className="mt-3">
               <textarea
                 name="aboutMe"
@@ -2274,7 +2323,6 @@ export default function EditProfile() {
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
                 rows="4"
-                required
               ></textarea>
             </div>
 

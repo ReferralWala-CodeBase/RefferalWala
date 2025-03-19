@@ -61,7 +61,7 @@ function Signup() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success("Resend OTP sent successfully!!!.");
+        toast.success("OTP resent successfully");
       } else {
         toast.error(data.message || "OTP send failed. Please try again.");
       }
@@ -110,7 +110,7 @@ function Signup() {
           // Store token in localStorage and navigate to profile
           localStorage.setItem("token", token);
           localStorage.setItem("userId", userId);
-          toast.success("Register successfully");
+          toast.success("Register successful");
           // navigate("/viewprofile");
           setShowSectorModal(true);
         }
@@ -119,7 +119,7 @@ function Signup() {
       }
     },
     onError: () =>
-      toast.error("Google Sign up was unsuccessful. Try again later."),
+      toast.error("Google Sign-up was unsuccessful. Try again later."),
     flow: "auth-code",
   });
 

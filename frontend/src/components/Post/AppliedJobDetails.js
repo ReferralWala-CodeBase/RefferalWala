@@ -39,10 +39,11 @@ export default function AppliedJobDetails() {
     const cancelButtonRef = useRef(null);
 
   const closeReportDialog = () => {
-    toast.success("Job Reported Successfully.", {
-      autoClose: 40, // Toast disappears after 2 seconds
+    toast.success("Post Reported", {
+      autoClose: 100, // Toast disappears after 2 seconds
       onClose: () => setShowReportDialog(false) // Close dialog after toast disappears
     });
+    navigate('/');
   };
 
   useEffect(() => {
@@ -169,7 +170,7 @@ export default function AppliedJobDetails() {
         }
       }
 
-      toast.success("Successfully applied for the job!", {
+      toast.success("Application Submitted", {
         onClose: () => navigate('/appliedjobs') // Navigates only after the toast is closed
       });
     } catch (error) {
@@ -197,7 +198,7 @@ export default function AppliedJobDetails() {
       if (!response.ok) {
         throw new Error(data.message);
       } else {
-        toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successfully`);
+        toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)}ed successfully`);
 
         // Update state and fetch updated profile data
         setIsFollowing(!isFollowing);
@@ -332,7 +333,7 @@ export default function AppliedJobDetails() {
       if (!response.ok) {
         throw new Error(data.message);
       } else {
-        toast.success(`Withdraw Successfully!!`, {
+        toast.success(`Withdraw Successful!`, {
                 position: "top-right",
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -460,11 +461,11 @@ export default function AppliedJobDetails() {
                           </div>
                           <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                             <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                              Close Job
+                              Withdraw Application
                             </Dialog.Title>
                             <div className="mt-2">
                               <p className="text-sm text-gray-500">
-                                Are you sure to withdraw your application from this job? This action cannot be undone.
+                                Are you sure you want to withdraw your application from this job? This action cannot be undone.
                               </p>
                             </div>
                           </div>
@@ -495,16 +496,16 @@ export default function AppliedJobDetails() {
 
             {/* Application Status & Buttons */}
             {applicationStatus === "applied" ? (
-              <p className="text-blue-600 font-medium">You have applied for this job.</p>
+              <p className="text-blue-600 font-medium">Already Applied.</p>
             ) : applicationStatus === "selected" ? (
               <div>
-                <p className="text-green-600 font-medium text-center">Congratulations! You have been selected for this job!</p>
+                <p className="text-green-600 font-medium text-center">Congratulations! You have been selected for this job.</p>
                 <button
                   onClick={() => {
                     if (verifyFile) {
                       window.open(verifyFile, "_blank"); // Open the employer's document in a new tab
                     } else {
-                      toast.error("No document available to view.");
+                      toast.error("No document available");
                     }
                   }}
                   className="mt-2 mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -733,7 +734,7 @@ export default function AppliedJobDetails() {
             <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
               <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
               <p className="mt-2 text-sm text-gray-600">
-                Please fill in your profile details, including your mobile number,skills, description and other information, before applying for a job.
+                Please fill in your name, mobile number, about-me and upload your resume before applying for a job.
               </p>
               <div className="mt-4 flex justify-end">
                 <button

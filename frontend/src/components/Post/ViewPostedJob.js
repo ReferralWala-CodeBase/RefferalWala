@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Loader from '../Loader';
+import { TruckIcon } from 'lucide-react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -104,24 +105,27 @@ export default function ViewPostedJob() {
         throw new Error(`Error: ${response.status} - ${errorData.message || response.statusText}`);
       }
 
-      const responseData = await response.json();
+      else
+      {
+        const responseData = await response.json();
 
-      const message = currentStatus === "inactive" ? "Job Closed successfully!" : "Job Active successfully!";
+        const message = currentStatus === "inactive" ? "Job Closed successfully!" : "Job Activated successfully!";
 
-      toast.success(message, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        onClose: () => {
-          navigate(`/postedjobslist`);
-        }
-      });
-      setOpen(false);
-      console.log('Response:', responseData);
+        toast.success(message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          onClose: () => {
+            navigate(`/postedjobslist`);
+          }
+        });
+        setOpen(false);
+        console.log('Response:', responseData);
+      }
     } catch (error) {
       console.error('Error fetching job data:', error);
       toast.error(error.message);
@@ -167,7 +171,7 @@ export default function ViewPostedJob() {
                 onClick={() => setOpenJob(true)}
                 className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-5 sm:px-7 text-[14px] sm:text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
               >
-                Active
+                Activate
               </button>
             )}
             <button
@@ -283,7 +287,7 @@ export default function ViewPostedJob() {
                           </Dialog.Title>
                           <div className="mt-2">
                             <p className="text-sm text-gray-500">
-                              Are you sure you want to close this job? This action cannot be undone.
+                              Are you sure you want to close this job?
                             </p>
                           </div>
                         </div>
@@ -327,7 +331,7 @@ export default function ViewPostedJob() {
               <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6 mb-4">
                 <div className="mt-2 flex items-center text-xs text-gray-600 bg-gray-200/70 px-2 md:px-4 rounded-full py-1">
                   <BriefcaseIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
-                  {jobData?.workMode}
+                  {jobData?.employmentType}
                 </div>
                 <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
                   <MapPinIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
@@ -342,9 +346,8 @@ export default function ViewPostedJob() {
                   Closing on {getDate(jobData?.endDate)}
                 </div>
                 <div className="mt-2 flex items-center text-xs text-gray-600 px-2 md:px-4 rounded-full bg-gray-200/70 py-1">
-                  <svg class="hidden h-5 w-5 shrink-0 text-gray-700  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                  </svg>                  {jobData?.workMode}
+                  <TruckIcon className="mr-1.5 h-5 w-5 text-gray-500" aria-hidden="true" />
+                  {jobData?.workMode}
                 </div>
               </div>
 

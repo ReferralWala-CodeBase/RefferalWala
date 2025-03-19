@@ -71,8 +71,8 @@ export default function PostJob() {
       if (
         !mobileNumber ||
         !presentCompany?.role ||
-        !presentCompany?.companyName ||
-        !presentCompany?.CompanyEmailVerified
+        !presentCompany?.companyName
+        // || !presentCompany?.CompanyEmailVerified
       ) {
         setProfileIncomplete(true);
       } else {
@@ -256,7 +256,7 @@ export default function PostJob() {
     const numericPattern = /^\d+$/;
 
     if (!urlPattern.test(formData.jobLink)) {
-      toast.error("Please enter a valid URL for the job link.");
+      toast.error("Please enter a valid url for the job link.");
       return false;
     }
 
@@ -647,8 +647,7 @@ export default function PostJob() {
               Complete Your Profile
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              Please fill in your profile details, including your mobile number
-              and company information, before posting a job.
+              Please fill in your name, mobile number, present company details and verify your company's email-id before posting a job.
 
             </p>
 
