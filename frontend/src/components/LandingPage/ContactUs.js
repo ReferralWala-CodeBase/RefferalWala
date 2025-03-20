@@ -47,7 +47,6 @@ export default function ContactUs() {
       });
 
       const data = await response.json();
-      console.log("Response data:", data);
 
       if (response.ok) {
         toast.success("Thank you! Our Team will connect shortly.");

@@ -93,7 +93,6 @@ export default function AppliedJobs() {
       });
 
       const data = await response.json();
-      console.log("Response data:", data);
 
       if (response.ok) {
         toast.success("Withdraw successful!", {
