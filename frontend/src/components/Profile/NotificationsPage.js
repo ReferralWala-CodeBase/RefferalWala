@@ -41,7 +41,6 @@ const NotificationsPage = () => {
           }
         }
         const data = await response.json();
-        console.log("Fetched notifications:", data); // Log data to check the response
         setNotifications(data || []); // Ensure we set the notifications array correctly
       } catch (err) {
         setError(err.message);
@@ -54,7 +53,6 @@ const NotificationsPage = () => {
   }, []);
 
   const handleNotificationClick = (postId) => {
-    console.log("Navigating to post ID:", postId); // Log the postId for debugging
     // Navigate to the job details page based on the postId
     navigate(`/appliedjobdetails/${postId}`);
   };

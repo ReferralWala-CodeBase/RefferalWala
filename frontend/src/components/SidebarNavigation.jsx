@@ -127,7 +127,7 @@ export default function SidebarNa() {
         await Promise.all(
           cacheNames.map((cacheName) => caches.delete(cacheName))
         );
-        console.log("Cache cleared successfully.");
+        // console.log("Cache cleared successfully.");
       } catch (error) {
         console.error("Error clearing cache:", error);
       }
