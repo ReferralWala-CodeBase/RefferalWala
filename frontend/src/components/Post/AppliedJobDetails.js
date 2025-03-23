@@ -70,6 +70,8 @@ export default function AppliedJobDetails() {
 
         // setIsFollowing(jobData.user.followers?.includes(userId) || false);
 
+        // console.log(jobData.user);
+
         // if (jobData?.user?._id) {
         //   setUsertofollow(jobData.user._id); // Ensure _id exists before setting state
         // }
@@ -85,6 +87,7 @@ export default function AppliedJobDetails() {
 
         const statusData = await statusResponse.json();
 
+        console.log("applicationStatus ----", statusData.status);
         setApplicationStatus(statusData.status);
         setVerified(!!statusData.employee_doc);
         setEmployeeDoc(statusData.employee_doc);
