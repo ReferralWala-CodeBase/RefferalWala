@@ -105,6 +105,7 @@ function Signup() {
           }
 
           const { token, userId } = data;
+          console.log(token);
 
           // Store token in localStorage and navigate to profile
           localStorage.setItem("token", token);
