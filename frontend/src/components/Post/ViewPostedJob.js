@@ -124,7 +124,6 @@ export default function ViewPostedJob() {
           }
         });
         setOpen(false);
-        console.log('Response:', responseData);
       }
     } catch (error) {
       console.error('Error fetching job data:', error);

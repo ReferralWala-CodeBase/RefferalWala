@@ -754,7 +754,7 @@ export default function EditProfile() {
         companyLogoUrl: '', // Set to empty string or null
       },
     }));
-    console.log(profileData.presentCompany)
+    
   }
 
 
