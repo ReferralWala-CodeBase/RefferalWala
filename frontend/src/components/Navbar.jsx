@@ -206,7 +206,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
         throw new Error("Failed to fetch notifications");
       }
       const data = await response.json();
-      console.log("Fetched notifications:", data); // Log data to check the response
+      // console.log("Fetched notifications:", data); // Log data to check the response
       setNotifications(data || []); // Ensure we set the notifications array correctly
     } catch (err) {
       setError(err.message);
@@ -215,7 +215,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     }
   };
   const handleNotificationClick = (postId) => {
-    console.log("Navigating to post ID:", postId); // Log the postId for debugging
+    // console.log("Navigating to post ID:", postId); // Log the postId for debugging
     // Navigate to the job details page based on the postId
     navigate(`/appliedjobdetails/${postId}`);
   };
@@ -250,6 +250,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
           navigate("/search", { state: { userData: userResults } });
         }
       }
+
+      console.log("Here--->",searchResults)
 
       setSearchResults([...jobResults, ...userResults]); // Optional: Store results if needed
     } catch (error) {
@@ -741,7 +743,7 @@ If search button needed use this -
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    handleSearch();
+                    handleSearch("job");
                   }
                 }}
               />
@@ -765,12 +767,11 @@ If search button needed use this -
                 onChange={(e) => setPersonQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    handleSearch();
+                    handleSearch("person");
                   }
                 }}
               />
             </div>
-
           </div>
         </div>
       </div>

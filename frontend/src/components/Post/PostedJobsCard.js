@@ -87,6 +87,7 @@ export default function PostedJobsCard() {
     if (location.state?.searchQuery) {
       setSearchQuery(location.state.searchQuery);
     }
+    console.log("here result is ------->", searchQuery)
   }, [location.state?.searchQuery]);
 
   const handleCtcFilterChange = (value) => {
