@@ -220,7 +220,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     navigate(`/appliedjobdetails/${postId}`);
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (type) => {
     try {
       const response = await fetch(`${Fronted_API_URL}/user/search`, {
         method: "POST",
@@ -242,9 +242,13 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
 
       // Navigate based on available results
       if (jobResults.length > 0) {
-        navigate("/", { state: { jobData: jobResults, searchQuery } });
+        if (type === "job") {
+          navigate("/", { state: { jobData: jobResults, searchQuery } });
+        }
       } else if (userResults.length > 0) {
-        navigate("/search", { state: { userData: userResults } });
+        if (type === "person") {
+          navigate("/search", { state: { userData: userResults } });
+        }
       }
 
       setSearchResults([...jobResults, ...userResults]); // Optional: Store results if needed
@@ -327,7 +331,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                           onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                              handleSearch();
+                              handleSearch("job");
                             }
                           }}
                         />
@@ -351,7 +355,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                           onChange={(e) => setPersonQuery(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                              handleSearch();
+                              handleSearch("person");
                             }
                           }}
                         />
