@@ -87,6 +87,7 @@ export default function PostedJobsCard() {
     if (location.state?.searchQuery) {
       setSearchQuery(location.state.searchQuery);
     }
+    console.log("here result is ------->", searchQuery)
   }, [location.state?.searchQuery]);
 
   const handleCtcFilterChange = (value) => {
@@ -564,6 +565,28 @@ export default function PostedJobsCard() {
       );
     })
   );
+
+  // prajwal for not filtering but not 
+  // const filteredJobs = jobs && Object.fromEntries(
+  //   Object.entries(jobs).filter(([id, job]) => {
+
+  //     const searchCondition = (
+  //       job?.companyName?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.jobRole?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.location?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job?.workMode?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+  //     );
+      
+  //     return (
+  //       !job.hidden &&
+  //       (searchQuery.length > 2 ? searchCondition : true) &&
+  //       handleLocationFilter(job.location, selectedLocations) &&
+  //       handleFilter(job.companyName.toString().toLowerCase(), selectedCompanies) &&
+  //       handleCtcFilter(job.ctc, selectedCtc) &&
+  //       handleExperienceFilter(job.experienceRequired, selectedExperience)
+  //     );
+  //   })
+  // );
 
 
   const [isTableView, setIsTableView] = useState(false);
