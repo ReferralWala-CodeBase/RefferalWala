@@ -19,6 +19,7 @@ import ProjectCarousel from './ProjectCarousel';
 import Preferences from './Preferences';
 import AboutMeSection from './AboutMe';
 import ProfileWithProgress from './ProfileWithProgress';
+import DashboardStats from './DashboardStats';
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -449,6 +450,9 @@ export default function ViewProfile() {
                 )}
               </div>
             </div> */}
+
+            <DashboardStats profileData={profileData} />
+
 
             {/* Present Company Section */}
             {/* <div className='bg-white rounded-lg mt-2 lg:w-2/2 px-2 py-4 md:px-4 md:mr-2'>
