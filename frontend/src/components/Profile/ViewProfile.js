@@ -67,6 +67,7 @@ export default function ViewProfile() {
 
         const data = await response.json();
 
+        console.log(data)
         setProfileData(data);
       } catch (error) {
         console.error('Error fetching profile data:', error);
