@@ -767,17 +767,17 @@ export default function EditProfile() {
     e.preventDefault();
     setLoading(true);
 
-    if (!profileData.presentCompany.companyName) {
-      profileData.presentCompany.companyLogoUrl = '';
-      profileData.presentCompany.location = '';
-      profileData.presentCompany.currentCTC = '';
-      profileData.presentCompany.dateOfJoining = '';
-      profileData.presentCompany.CompanyEmailVerified = false;
-      profileData.presentCompany.companyEmail = '';  
-    }
-    if(!profileData.presentCompany.companyEmail){
-      profileData.presentCompany.CompanyEmailVerified = false;
-    }
+    // if (!profileData.presentCompany.companyName) {
+    //   profileData.presentCompany.companyLogoUrl = '';
+    //   profileData.presentCompany.location = '';
+    //   profileData.presentCompany.currentCTC = '';
+    //   profileData.presentCompany.dateOfJoining = '';
+    //   profileData.presentCompany.CompanyEmailVerified = false;
+    //   profileData.presentCompany.companyEmail = '';  
+    // }
+    // if(!profileData.presentCompany.companyEmail){
+    //   profileData.presentCompany.CompanyEmailVerified = false;
+    // }
 
     try {
       const bearerToken = localStorage.getItem('token');

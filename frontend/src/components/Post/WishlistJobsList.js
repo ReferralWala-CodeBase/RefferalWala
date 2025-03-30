@@ -95,7 +95,7 @@ export default function WishlistJobsList() {
         }
       );
       const data = await response.json();
-      console.log("Response data:", data);
+
       if (response.ok) {
         toast.warning("Removed from wishlist!");
       }

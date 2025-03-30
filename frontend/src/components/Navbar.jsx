@@ -220,14 +220,54 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
     navigate(`/appliedjobdetails/${postId}`);
   };
 
-  const handleSearch = async (type) => {
+  // const handleSearch = async (type) => {
+  //   try {
+  //     const response = await fetch(`${Fronted_API_URL}/user/search`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ query: searchQuery || personQuery }), // Trim space from front and end
+  //     });
+
+  //     const data = await response.json(); // Parse the JSON response
+  //     const jobResults = data?.jobResults || [];
+  //     const userResults = data?.userResults || [];
+
+  //     // Handle cases where both are empty
+  //     if (jobResults.length === 0 && userResults.length === 0) {
+  //       toast.error("No results found!");
+  //       return;
+  //     }
+
+  //     // Navigate based on available results
+  //     if (jobResults.length > 0) {
+  //       if (type === "job") {
+  //         navigate("/", { state: { jobData: jobResults, searchQuery } });
+  //       }
+  //     } else if (userResults.length > 0) {
+  //       if (type === "person") {
+  //         navigate("/search", { state: { userData: userResults } });
+  //       }
+  //     }
+
+
+
+  //     setSearchResults([...jobResults, ...userResults]); // Optional: Store results if needed
+  //   } catch (error) {
+  //     console.error("Error searching:", error);
+  //     toast.error("Something went wrong. Please try again.");
+  //   }
+  // };
+
+  const handleSearch = async () => {
     try {
       const response = await fetch(`${Fronted_API_URL}/user/search`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query: searchQuery || personQuery }), // Trim space from front and end
+        body: JSON.stringify({ query: searchQuery }), // Trim space from front and end
       });
 
       const data = await response.json(); // Parse the JSON response
@@ -242,16 +282,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
 
       // Navigate based on available results
       if (jobResults.length > 0) {
-        if (type === "job") {
-          navigate("/", { state: { jobData: jobResults, searchQuery } });
-        }
+        navigate("/", { state: { jobData: jobResults, searchQuery } });
       } else if (userResults.length > 0) {
-        if (type === "person") {
-          navigate("/search", { state: { userData: userResults } });
-        }
+        navigate("/search", { state: { userData: userResults } });
       }
-
-      console.log("Here--->",searchResults)
 
       setSearchResults([...jobResults, ...userResults]); // Optional: Store results if needed
     } catch (error) {
@@ -269,7 +303,6 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
         await Promise.all(
           cacheNames.map((cacheName) => caches.delete(cacheName))
         );
-        console.log("Cache cleared successfully.");
       } catch (error) {
         console.error("Error clearing cache:", error);
       }
@@ -314,11 +347,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                     </Link>
                   </div>
                 </div>
-                <div className="hidden md:block">
+                {/* <div className="hidden md:block">
                   <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
                     <div className="w-full sm:max-w-lg flex items-center bg-gradient-to-r from-indigo-50 to-white shadow-md ring-1 ring-gray-300 rounded-full overflow-hidden">
 
-                      {/* Search Jobs */}
                       <div className="relative flex-1">
                         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                           <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 transition duration-300" aria-hidden="true" />
@@ -339,10 +371,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                         />
                       </div>
 
-                      {/* Divider */}
+                 
                       <div className="h-6 w-px bg-gray-300"></div>
 
-                      {/* Search People */}
+                    
                       <div className="relative flex-1">
                         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                           <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 transition duration-300" aria-hidden="true" />
@@ -364,42 +396,37 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
-                {/* 
-If search button needed use this -
-<div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
-  <div className="w-full sm:max-w-sm">
-    <label htmlFor="search" className="sr-only">
-      Search
-    </label>
-    <div className="relative flex items-center gap-2">
-      <div className="relative flex-1">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <MagnifyingGlassIcon
-            className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
-            aria-hidden="true"
-          />
-        </div>
-        <input
-          id="search"
-          name="search"
-          className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
-          placeholder="Search Jobs and People.."
-          type="search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
-      <button
-        onClick={handleSearch}
-        className="px-4 py-1 text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-      >
-        Search
-      </button>
-    </div>
-  </div>
-</div> */}
+   <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
+                <div className="w-full sm:max-w-sm">
+                  <label htmlFor="search" className="sr-only">
+                    Search
+                  </label>
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                      <MagnifyingGlassIcon
+                        className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <input
+                      id="search"
+                      name="search"
+                      className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
+                      placeholder="Search Jobs and People.."
+                      type="search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearch();
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
 
                 <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
                   <div className="flex-shrink-0 mr-2">
@@ -724,11 +751,11 @@ If search button needed use this -
         )}
       </Disclosure>
 
-      <div className="block md:hidden mt-2 mb-2 bg-transparent">
+      {/* <div className="block md:hidden mt-2 mb-2 bg-transparent">
         <div className="relative z-0 flex flex-col sm:flex-row items-center justify-center px-2 sm:absolute sm:inset-0">
           <div className="w-full sm:max-w-lg flex items-center bg-gradient-to-r from-indigo-50 to-white shadow-md ring-1 ring-gray-300 rounded-full overflow-hidden">
 
-            {/* Search Jobs */}
+        
             <div className="relative flex-1">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 transition duration-300" aria-hidden="true" />
@@ -749,10 +776,10 @@ If search button needed use this -
               />
             </div>
 
-            {/* Divider */}
+       
             <div className="h-6 w-px bg-gray-300"></div>
 
-            {/* Search People */}
+         
             <div className="relative flex-1">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 transition duration-300" aria-hidden="true" />
@@ -774,7 +801,7 @@ If search button needed use this -
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

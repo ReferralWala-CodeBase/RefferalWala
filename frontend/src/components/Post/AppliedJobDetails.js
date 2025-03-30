@@ -87,7 +87,7 @@ export default function AppliedJobDetails() {
 
         const statusData = await statusResponse.json();
 
-        console.log("applicationStatus ----", statusData.status);
+        // console.log("applicationStatus ----", statusData.status);
         setApplicationStatus(statusData.status);
         setVerified(!!statusData.employee_doc);
         setEmployeeDoc(statusData.employee_doc);

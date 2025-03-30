@@ -35,7 +35,7 @@ export default function Search() {
 
 
     useEffect(() => {
-        console.log("userId" + userId);
+        // console.log("userId" + userId);
         if (location.state?.jobData) {
             setData(location.state.jobData);
             setShowJobData(true);
@@ -45,7 +45,7 @@ export default function Search() {
         }
     }, [location.state, data]);
 
-    console.log(data);
+    // console.log(data);
 
     function getDate(endDate_param) {
         var tempDate = endDate_param + "";

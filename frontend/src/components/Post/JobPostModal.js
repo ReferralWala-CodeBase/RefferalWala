@@ -116,7 +116,7 @@ const JobPostModal = ({ isOpen, onClose }) => {
             const responseData = await response.json();
             toast.success("Job posted successfully!");
             navigate("/postedjobslist");
-            console.log("Response:", responseData);
+            // console.log("Response:", responseData);
             onClose(); // Close the modal after success
         } catch (error) {
             console.error("Error posting job:", error.message);

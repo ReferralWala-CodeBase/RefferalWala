@@ -647,7 +647,7 @@ export default function PostJob() {
               Complete Your Profile
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              Please fill in your name, mobile number, present company details and verify your company's email-id before posting a job.
+              Please fill in your name, mobile number and present company details before posting a job.
 
             </p>
 
