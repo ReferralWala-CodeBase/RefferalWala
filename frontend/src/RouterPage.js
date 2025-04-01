@@ -31,6 +31,7 @@ import Faq from "./components/LandingPage/Faq";
 import About from "./components/LandingPage/About";
 import Stats from "./components/LandingPage/Stats";
 import ContactUs from "./components/LandingPage/ContactUs";
+import Jobs from "./components/Post/Jobs";
 
 export default function RouterPage() {
   return (
@@ -62,11 +63,13 @@ export default function RouterPage() {
         <Route path="/followerlist" element={<FollowerList />} />
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/whyDifferent" element={<WhyDifferent/>}/>
-        <Route path="/faq" element={<Faq/>}/>
-        <Route path="/about" element={<About/>}/>
-        <Route path="/stats" element={<Stats/>}/>
-        
+        <Route path="/whyDifferent" element={<WhyDifferent />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/stats" element={<Stats />} />
+
+        <Route path="/jobs" element={<Jobs />} />
+
       </Routes>
     </>
   )
