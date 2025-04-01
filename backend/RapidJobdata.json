@@ -1,0 +1,3765 @@
+{
+    "success": true,
+    "message": "All jobs fetched successfully",
+    "data": [
+        {
+            "company": {
+                "name": "SUMEET Wholesale Raipur",
+                "logo": "N/A",
+                "url": "N/A"
+            },
+            "_id": "67ec611ca127161b48ede512",
+            "jobId": "4190932720",
+            "title": "Customer Relations Manager",
+            "url": "https://www.linkedin.com/jobs/view/4190932720",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "240849086",
+            "location": "India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.710Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "BigCity Promotions",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEtgI0DgGPq7g/company-logo_200_200/company-logo_200_200/0/1630604177812/bigcity_promotions_logo?e=1749081600&v=beta&t=eVG-_CxgGvbmZF_px_HhZ4Vl50-Y00kFJy9NdyLTiKI",
+                "url": "https://www.linkedin.com/company/bigcitypromotions/life"
+            },
+            "_id": "67ec611ca127161b48ede513",
+            "jobId": "4190929238",
+            "title": "Marketing Manager",
+            "url": "https://www.linkedin.com/jobs/view/4190929238",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "482796423",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.711Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Yanolja Cloud Solution",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHsI294uemJZQ/company-logo_200_200/company-logo_200_200/0/1735789660957/yanoljacloudsolution_logo?e=1749081600&v=beta&t=tznuF1drGtGceIfEzh6k3tzoHuDpNorBJcjskE5f2Ks",
+                "url": "https://www.linkedin.com/company/yanoljacloudsolution/life"
+            },
+            "_id": "67ec611ca127161b48ede514",
+            "jobId": "4196522348",
+            "title": "Customer Onboarding & Support Executive",
+            "url": "https://www.linkedin.com/jobs/view/4196522348",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Surat, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.713Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Teamware Solutions",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGTmsLAkTTGww/company-logo_200_200/company-logo_200_200/0/1722576449607/teamware_solutions_logo?e=1749081600&v=beta&t=Q-O85523LM3p3Y8kpA33vWsi9A5rKIS3ZKZOp3IobEw",
+                "url": "https://www.linkedin.com/company/teamware-solutions/life"
+            },
+            "_id": "67ec611ca127161b48ede515",
+            "jobId": "4197890759",
+            "title": "Frontend Developer",
+            "url": "https://www.linkedin.com/jobs/view/4197890759",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "942886582",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.720Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Varahe Analytics Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHxlx31iRVpcQ/company-logo_200_200/company-logo_200_200/0/1654155578017?e=1749081600&v=beta&t=NDcT99OGTeM3E8m5GM88xG7lLbKdNFNQbxmwqTJUAfg",
+                "url": "https://www.linkedin.com/company/varahe-analytics-pvt-limited/life"
+            },
+            "_id": "67ec611ca127161b48ede516",
+            "jobId": "4191575882",
+            "title": "Political Analyst",
+            "url": "https://www.linkedin.com/jobs/view/4191575882",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "1106887893",
+            "location": "Trivandrum, Kerala, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.721Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "think insurancethinkvineetsumansaini",
+                "logo": "N/A",
+                "url": "N/A"
+            },
+            "_id": "67ec611ca127161b48ede517",
+            "jobId": "4191639179",
+            "title": "sevay executive",
+            "url": "https://www.linkedin.com/jobs/view/4191639179",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "997521319",
+            "location": "Ambala, Haryana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.721Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "ACI Worldwide",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQF-RFXMrIE5VQ/company-logo_200_200/company-logo_200_200/0/1714485932662/aci_worldwide_logo?e=1749081600&v=beta&t=yKGxxAVVCEbIhwAX3uPUHsFotvFDLGbY_f5uLisymGw",
+                "url": "https://www.linkedin.com/company/aci-worldwide/life"
+            },
+            "_id": "67ec611ca127161b48ede518",
+            "jobId": "4177501576",
+            "title": "Software Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4177501576",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "53201813",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.723Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "CultFit",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEzOY1wIMbUxA/company-logo_200_200/company-logo_200_200/0/1631313678795?e=1749081600&v=beta&t=qWjJM9ieq4KnxjfpA7FXwt_GY2kWma4lv96zOyNlJYE",
+                "url": "https://www.linkedin.com/company/cultfit/life"
+            },
+            "_id": "67ec611ca127161b48ede519",
+            "jobId": "4193008565",
+            "title": "Inside Sales Executive",
+            "url": "https://www.linkedin.com/jobs/view/4193008565",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.723Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Hyosung T&D India Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGi5wQdtxEODg/company-logo_200_200/company-logo_200_200/0/1727245003208/hyosung_t__d_india_private_limited_logo?e=1749081600&v=beta&t=kHt1UNZJzgb_hz0E9eMy1hLyST4TtbJ8P2nywcuerPs",
+                "url": "https://www.linkedin.com/company/hyosung-t-&-d-india-private-limited/life"
+            },
+            "_id": "67ec611ca127161b48ede51a",
+            "jobId": "4196145140",
+            "title": "Jr. Engineer - Transformer & Engineering Team",
+            "url": "https://www.linkedin.com/jobs/view/4196145140",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.724Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "C3iHub, IIT Kanpur",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGnHMtynU19jQ/company-logo_200_200/company-logo_200_200/0/1630557127661/c3i_hub_logo?e=1749081600&v=beta&t=itZBvIpuhJOETm_FAT7Gpy2Uk-jISfbIK3qAxak2gm0",
+                "url": "https://www.linkedin.com/company/c3i-hub/life"
+            },
+            "_id": "67ec611ca127161b48ede51b",
+            "jobId": "4193711880",
+            "title": "Lead Software Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4193711880",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "646360424",
+            "location": "Kanpur, Uttar Pradesh, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.725Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Santronix",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEZJ_Zixv_JrQ/company-logo_200_200/company-logo_200_200/0/1630641872447/santronix_computers_logo?e=1749081600&v=beta&t=w8w3vhcgvLdqTGiHpzBZOcZCB7VUk-tYzFGAH11tzM0",
+                "url": "https://www.linkedin.com/company/santronix-computers/life"
+            },
+            "_id": "67ec611ca127161b48ede51c",
+            "jobId": "4193617965",
+            "title": "Software Sales Executive Internship in Jalgaon",
+            "url": "https://www.linkedin.com/jobs/view/4193617965",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Jalgaon, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.725Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Advin Softwares Pvt. Ltd.",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEOE2TLGI9Ovw/company-logo_100_100/B4DZWEBNf3GkAU-/0/1741676665631/advin_softwares_pvt_ltd_logo?e=1749081600&v=beta&t=JtT040rh_8xAGbomQnu6TyO9_8Q9SF-bCbAOqM-dlu0",
+                "url": "https://www.linkedin.com/company/advin-softwares-pvt-ltd/life"
+            },
+            "_id": "67ec611ca127161b48ede51d",
+            "jobId": "4196529736",
+            "title": "Lead Generation Executive",
+            "url": "https://www.linkedin.com/jobs/view/4196529736",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "1240166745",
+            "location": "Belāpur, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.726Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Cyncly",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQG0QRC19yBAjQ/company-logo_200_200/company-logo_200_200/0/1663308836916/cyncly_logo?e=1749081600&v=beta&t=F0yRZ6ByoRatjvz1q77-qjMJPp0YSgRHZPcswAvFglA",
+                "url": "https://www.linkedin.com/company/cyncly/life"
+            },
+            "_id": "67ec611ca127161b48ede51e",
+            "jobId": "4193433070",
+            "title": "Software Quality Assurance Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4193433070",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "425365819",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.727Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Avantor",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGgc5UER0s_Iw/company-logo_200_200/company-logo_200_200/0/1735846588717/avantorinc_logo?e=1749081600&v=beta&t=ZpykSpCzH9X_9P9LqHwCfKd-IN3RO9pi0qNIVzbfZJE",
+                "url": "https://www.linkedin.com/company/avantorinc/life"
+            },
+            "_id": "67ec611ca127161b48ede51f",
+            "jobId": "4198255780",
+            "title": "Spanish Specialist - Customer Support Sr. Associate",
+            "url": "https://www.linkedin.com/jobs/view/4198255780",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "46529014",
+            "location": "Coimbatore, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.727Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Sedani Digital Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQE2ukosm8g1Hg/company-logo_200_200/company-logo_200_200/0/1630630692156/sedani_digital_private_limited_logo?e=1749081600&v=beta&t=XaTb12ZmyzAA9x7LzNerWnuODnWpsKO_DPV8mr8xSyE",
+                "url": "https://www.linkedin.com/company/sedani-digital-private-limited/life"
+            },
+            "_id": "67ec611ca127161b48ede520",
+            "jobId": "4193991058",
+            "title": "Media & Public Relations (PR) Internship in Ahmedabad",
+            "url": "https://www.linkedin.com/jobs/view/4193991058",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Ahmedabad, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.728Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Virtusa",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGEPXDEIb7QDA/company-logo_200_200/company-logo_200_200/0/1682334528377/virtusa_logo?e=1749081600&v=beta&t=UTJ8E2hQEyepINoL7HOH9aZ2wvy1_oTKYaeYqe_144U",
+                "url": "https://www.linkedin.com/company/virtusa/life"
+            },
+            "_id": "67ec611ca127161b48ede521",
+            "jobId": "4192708781",
+            "title": "Full stack Java",
+            "url": "https://www.linkedin.com/jobs/view/4192708781",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "96556365",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.728Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "SSAM SOFTWARES",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEF4X6GA3eZYg/company-logo_200_200/company-logo_200_200/0/1631321612789?e=1749081600&v=beta&t=cmhKW-SLt2ZKQ6JeqUdKFM220Fw59BA4rrdCvfSQ014",
+                "url": "https://www.linkedin.com/company/ssam-softwares-india/life"
+            },
+            "_id": "67ec611ca127161b48ede522",
+            "jobId": "4193624210",
+            "title": "PHP Development Internship in Indore",
+            "url": "https://www.linkedin.com/jobs/view/4193624210",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Indore, Madhya Pradesh, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.729Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "V3Cube",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQErmBmvspxmaw/company-logo_200_200/company-logo_200_200/0/1688031829258/v3cube_logo?e=1749081600&v=beta&t=IEpsn3WacqDaYgS9uBqZ717cjoPDosmoHVU1rtWPcoY",
+                "url": "https://www.linkedin.com/company/v3cube/life"
+            },
+            "_id": "67ec611ca127161b48ede523",
+            "jobId": "4195072150",
+            "title": "Quality Analyst - Ahmedabad",
+            "url": "https://www.linkedin.com/jobs/view/4195072150",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Ahmedabad, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "₹200K/yr - ₹400K/yr",
+            "dateFetched": "2025-04-01T21:56:44.729Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Checkmarx",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQHPKrjk6ut1qQ/company-logo_200_200/company-logo_200_200/0/1719909608907/checkmarx_logo?e=1749081600&v=beta&t=hd-Qc7iYBm9IgOgWjv4ACDvZ27BstxyoV2d481QXR2g",
+                "url": "https://www.linkedin.com/company/checkmarx/life"
+            },
+            "_id": "67ec611ca127161b48ede524",
+            "jobId": "4195864823",
+            "title": "Information Technology Help Desk",
+            "url": "https://www.linkedin.com/jobs/view/4195864823",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "644710230",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.730Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pratiti",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQF3wF0-AZK06A/company-logo_200_200/company-logo_200_200/0/1725545409190/pratiti_centre_for_mental_health_logo?e=1749081600&v=beta&t=mIpjjZyNBdEMN0SmEtSH5YmKH-vyoISDaUh2Di7gsX4",
+                "url": "https://www.linkedin.com/company/pratiti-centre-for-mental-health/life"
+            },
+            "_id": "67ec611ca127161b48ede525",
+            "jobId": "4196158642",
+            "title": "Java Developer - Spring Frameworks",
+            "url": "https://www.linkedin.com/jobs/view/4196158642",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.730Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Integrated Resources, Inc ( IRI )",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQF_WNrLwIqPOA/company-logo_100_100/B4DZViHwP1HIAQ-/0/1741107956936/integrated_resources_inc_logo?e=1749081600&v=beta&t=U_U1T70G0db0o4AfTtu1qfs93dlik2GBeoGIuBIFxtw",
+                "url": "https://www.linkedin.com/company/integrated-resources-inc/life"
+            },
+            "_id": "67ec611ca127161b48ede526",
+            "jobId": "4193117980",
+            "title": "IT Admin Associate (Fresher local)",
+            "url": "https://www.linkedin.com/jobs/view/4193117980",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "472487371",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.730Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "NIRU Group",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEU6p1QwMFzBg/company-logo_200_200/company-logo_200_200/0/1707206624121/niru_logo?e=1749081600&v=beta&t=uI43FXhCQ3hQEnagWY_YWM-WlI5M2WftVEMWLxAxKOI",
+                "url": "https://www.linkedin.com/company/niru/life"
+            },
+            "_id": "67ec611ca127161b48ede527",
+            "jobId": "4198080648",
+            "title": "Responsable de bureau d’étude",
+            "url": "https://www.linkedin.com/jobs/view/4198080648",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "669529046",
+            "location": "Mumbai Metropolitan Region (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.733Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Appfire",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFyCwh95727oA/company-logo_200_200/company-logo_200_200/0/1630662508076/appfire_logo?e=1749081600&v=beta&t=7pz1NYIizi19t_QtWQMWolkISME8Z5KXtLB531KGa5o",
+                "url": "https://www.linkedin.com/company/appfire/life"
+            },
+            "_id": "67ec611ca127161b48ede528",
+            "jobId": "4198284571",
+            "title": "Senior Product Support Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4198284571",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "225320614",
+            "location": "India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.735Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Accelya",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQF0IvLOjQjblw/company-logo_200_200/company-logo_200_200/0/1630422222125/accelya_logo?e=1749081600&v=beta&t=nKHWXBFJkp8sDQ0HQuBpkPwjXWNZXeWaG_PYgwZ6_Lo",
+                "url": "https://www.linkedin.com/company/accelya/life"
+            },
+            "_id": "67ec611ca127161b48ede529",
+            "jobId": "4195801655",
+            "title": "Specialist- Software Development- DXC",
+            "url": "https://www.linkedin.com/jobs/view/4195801655",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "403060355",
+            "location": "Pune/Pimpri-Chinchwad Area (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.735Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Amazon",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHTvZwCx4p2Qg/company-logo_200_200/company-logo_200_200/0/1630640869849/amazon_logo?e=1749081600&v=beta&t=KiBaYW2war43K_4DL4Xx9ApbA5EVULdKl7PDNtFUpLY",
+                "url": "https://www.linkedin.com/company/amazon/life"
+            },
+            "_id": "67ec611ca127161b48ede52a",
+            "jobId": "4198091269",
+            "title": "Recruitment Coordinator - 12 Month Contract",
+            "url": "https://www.linkedin.com/jobs/view/4198091269",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "355872060",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.735Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Appstean",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHhcatLWJQP_A/company-logo_200_200/company-logo_200_200/0/1707127014107/appsteaninfotech_logo?e=1749081600&v=beta&t=q5StM4PamtrIxLCK8G-bIW62kVUAm8vRfSf2svCb4I0",
+                "url": "https://www.linkedin.com/company/appsteaninfotech/life"
+            },
+            "_id": "67ec611ca127161b48ede52b",
+            "jobId": "4193464522",
+            "title": "ERP Implementation Executive",
+            "url": "https://www.linkedin.com/jobs/view/4193464522",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Indore, Madhya Pradesh, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "₹200K/yr - ₹400K/yr",
+            "dateFetched": "2025-04-01T21:56:44.736Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "IBM",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGiz5ecgpCtkA/company-logo_200_200/company-logo_200_200/0/1688684715866/ibm_logo?e=1749081600&v=beta&t=B5eYafbwJNb4tYdrMvUgolm9lpS_oqyIfZQo8hV615k",
+                "url": "https://www.linkedin.com/company/ibm/life"
+            },
+            "_id": "67ec611ca127161b48ede52c",
+            "jobId": "4177500626",
+            "title": "Software developer",
+            "url": "https://www.linkedin.com/jobs/view/4177500626",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "177799803",
+            "location": "Ahmedabad, Gujarat, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.736Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Northern Trust",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEhKPm5QIrRAQ/company-logo_200_200/company-logo_200_200/0/1663663012961/northern_trust_logo?e=1749081600&v=beta&t=icFULwiruYszm1E9WNnGd0OKBarzxDGQt5iK7yWOJaw",
+                "url": "https://www.linkedin.com/company/northern-trust/life"
+            },
+            "_id": "67ec611ca127161b48ede52d",
+            "jobId": "4192360537",
+            "title": "Accountant",
+            "url": "https://www.linkedin.com/jobs/view/4192360537",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "6581850",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.736Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Ammann Group",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFfkkpAktKcUQ/company-logo_200_200/company-logo_200_200/0/1630578534407/ammann_group_logo?e=1749081600&v=beta&t=WfK2oV5C9he6HWPgL34Y3as6YBjMrxg7GwGXragtKBw",
+                "url": "https://www.linkedin.com/company/ammann-group/life"
+            },
+            "_id": "67ec611ca127161b48ede52e",
+            "jobId": "4191420985",
+            "title": "DET Apprentice - Stores",
+            "url": "https://www.linkedin.com/jobs/view/4191420985",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "147600395",
+            "location": "Mehsana, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.737Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Architect Hafeez Contractor",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFrlKdE6JGoIQ/company-logo_200_200/company-logo_200_200/0/1706175632675/architect_hafeez_contractor_logo?e=1749081600&v=beta&t=vnZFqkan6k-sUw0ND4u8aFp3A_k68ScPgSZuyy6yBFM",
+                "url": "https://www.linkedin.com/company/architect-hafeez-contractor/life"
+            },
+            "_id": "67ec611ca127161b48ede52f",
+            "jobId": "4191422840",
+            "title": "Junior Architect",
+            "url": "https://www.linkedin.com/jobs/view/4191422840",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "695902195",
+            "location": "Mumbai, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.737Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Rrootshell Technologiiss Pvt Ltd",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHR6QRVPV-KrQ/company-logo_200_200/company-logo_200_200/0/1637069799954/rrootshell_technologiiss_pvt_ltd_logo?e=1749081600&v=beta&t=zuP-h8nvPQoCrbBI5yV2I5hVdm-7TVXe_-icsOnxzHU",
+                "url": "https://www.linkedin.com/company/rrootshellindia/life"
+            },
+            "_id": "67ec611ca127161b48ede530",
+            "jobId": "4195821773",
+            "title": "Senior Human Resources Manager",
+            "url": "https://www.linkedin.com/jobs/view/4195821773",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "318428036",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.737Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Viraaj HR Solutions Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHXDEsRESQoCw/company-logo_200_200/company-logo_200_200/0/1685433794380/viraajsoftware_logo?e=1749081600&v=beta&t=KUYNFoCCZ27Q0b_VWC3ML8FCDhSqxVS7gsO35gs__7o",
+                "url": "https://www.linkedin.com/company/viraajhrsolutions/life"
+            },
+            "_id": "67ec611ca127161b48ede531",
+            "jobId": "4192575648",
+            "title": "Senior Test Automation Engineer_VIS",
+            "url": "https://www.linkedin.com/jobs/view/4192575648",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.738Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "SparrowGenie",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGl9uKHMFyMtQ/company-logo_200_200/company-logo_200_200/0/1737695452986/sparrowgenie_logo?e=1749081600&v=beta&t=XH12nFzkm8z3SE_ooCKk2BVnhnOtimja08OudtOssuw",
+                "url": "https://www.linkedin.com/company/sparrowgenie/life"
+            },
+            "_id": "67ec611ca127161b48ede532",
+            "jobId": "4195426013",
+            "title": "Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4195426013",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "507281076",
+            "location": "Kochi, Kerala, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.738Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Eclick Softwares and Solutions Pvt Ltd",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQGY5aogGQV_xQ/company-logo_200_200/company-logo_200_200/0/1630588535683/eclick_softwares_and_solutions_pvt_ltd_logo?e=1749081600&v=beta&t=ODP6KPlcCWyBkUx8w57wLo8FpM4zJcEXWzjlksM5UTE",
+                "url": "https://www.linkedin.com/company/eclick-softwares-and-solutions-pvt-ltd/life"
+            },
+            "_id": "67ec611ca127161b48ede533",
+            "jobId": "4193868999",
+            "title": "Fresher required for International Outbound Process(Morning shift)",
+            "url": "https://www.linkedin.com/jobs/view/4193868999",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Kolkata, West Bengal, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.738Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "WayMore",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQF9pjdTxYZJMQ/company-logo_200_200/company-logo_200_200/0/1630516721465/waymore_io_logo?e=1749081600&v=beta&t=bovtaGOa1bwowBV7NfUL7kF3Cpwq8imKwe0XfuL9_YQ",
+                "url": "https://www.linkedin.com/company/waymore-io/life"
+            },
+            "_id": "67ec611ca127161b48ede534",
+            "jobId": "4196353436",
+            "title": "Technical Support Manager",
+            "url": "https://www.linkedin.com/jobs/view/4196353436",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "42444745",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.739Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Avathon",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFrWIj741Iwog/company-logo_200_200/company-logo_200_200/0/1733243261984/avathonai_logo?e=1749081600&v=beta&t=GUryH2S_wQFG5JUlFR5v9MIjenOqmZExhFJmJsRMK_k",
+                "url": "https://www.linkedin.com/company/avathonai/life"
+            },
+            "_id": "67ec611ca127161b48ede535",
+            "jobId": "4132290509",
+            "title": "Product Manager (Supply Chain & Logistics Planning)",
+            "url": "https://www.linkedin.com/jobs/view/4132290509",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "750957289",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.739Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Insurity",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFZPSk3Wlwvuw/company-logo_200_200/company-logo_200_200/0/1715183674596/insurity_logo?e=1749081600&v=beta&t=wqBkd3kzRXeTXZvWNiQ1UW6Ljo5D4thdKfCMSPSmYBg",
+                "url": "https://www.linkedin.com/company/insurity/life"
+            },
+            "_id": "67ec611ca127161b48ede536",
+            "jobId": "4125940604",
+            "title": "Product Support Analyst",
+            "url": "https://www.linkedin.com/jobs/view/4125940604",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "11290848",
+            "location": "Noida, Uttar Pradesh, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.739Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Sanofi",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG2k72bd4oaIg/company-logo_200_200/company-logo_200_200/0/1721896905900/sanofi_logo?e=1749081600&v=beta&t=xIxFGNGNzyeAZBUFr_IwiTFb08OI2wDsvlWgueOEn8I",
+                "url": "https://www.linkedin.com/company/sanofi/life"
+            },
+            "_id": "67ec611ca127161b48ede537",
+            "jobId": "4149400637",
+            "title": "R&D Clinical eDS",
+            "url": "https://www.linkedin.com/jobs/view/4149400637",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "169161132",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.739Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Elevate",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQFuL_HaMt3UYg/company-logo_200_200/company-logo_200_200/0/1727785211273/elevate_services_logo?e=1749081600&v=beta&t=Jiv947Ead8Updf3aCWD4HbwWhilRhR7R5i_-4V07KX4",
+                "url": "https://www.linkedin.com/company/elevate-services/life"
+            },
+            "_id": "67ec611ca127161b48ede538",
+            "jobId": "4195545690",
+            "title": "Marketing Editorial Coordinator (India)",
+            "url": "https://www.linkedin.com/jobs/view/4195545690",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "11695788",
+            "location": "Gurugram, Haryana, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.740Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Lowe's India",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQHoNPNGRZYG-w/company-logo_200_200/company-logo_200_200/0/1630617454317/lowes_india_logo?e=1749081600&v=beta&t=ntwiKKVYJ9eQ_iFwekC0Hx90bv7cLTIkHryS4esF0kU",
+                "url": "https://www.linkedin.com/company/lowe-s-india/life"
+            },
+            "_id": "67ec611ca127161b48ede539",
+            "jobId": "4179637388",
+            "title": "Creative Designer",
+            "url": "https://www.linkedin.com/jobs/view/4179637388",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "14262607",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.740Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Comcast",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG182hGpVK6UQ/company-logo_200_200/company-logo_200_200/0/1735837322548/comcast_logo?e=1749081600&v=beta&t=TRZkSj2IDL8AK_hA6v-DzPZaXwY0kYkxKG9Ev9ctBe0",
+                "url": "https://www.linkedin.com/company/comcast/life"
+            },
+            "_id": "67ec611ca127161b48ede53a",
+            "jobId": "4151199843",
+            "title": "Manager 1, Software Development & Engineering",
+            "url": "https://www.linkedin.com/jobs/view/4151199843",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "439547615",
+            "location": "Chennai, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.740Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "WSP in India",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGoB2G2duJxRw/company-logo_200_200/company-logo_200_200/0/1719896424151/wsp_consultants_india_ltd_logo?e=1749081600&v=beta&t=tRLXtx9mTrKfQDzb9V_Zzz6TbqPHwEPJ-P7Sn1Zh-eM",
+                "url": "https://www.linkedin.com/company/wsp-consultants-india-ltd/life"
+            },
+            "_id": "67ec611ca127161b48ede53b",
+            "jobId": "4195469272",
+            "title": "Engineer - Public Health",
+            "url": "https://www.linkedin.com/jobs/view/4195469272",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "737765621",
+            "location": "Bengaluru, Karnataka, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.740Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pratiti Technologies",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGQZTs1rHrZgQ/company-logo_200_200/company-logo_200_200/0/1630627048610/pratiti_technologies_logo?e=1749081600&v=beta&t=EvKzT1i-4cuDattY7JzCBCgQGhOXpoInRGnsJDqDJEM",
+                "url": "https://www.linkedin.com/company/pratiti-technologies/life"
+            },
+            "_id": "67ec611ca127161b48ede53c",
+            "jobId": "4190935004",
+            "title": "Sr. Java Developer",
+            "url": "https://www.linkedin.com/jobs/view/4190935004",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.741Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HomeLane",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEWmgfdA0i2eQ/company-logo_200_200/company-logo_200_200/0/1660794305126/homelane_logo?e=1749081600&v=beta&t=VF-dy0JcVyokVd2druo_HLqj-Kt_H9_bGXJgyINHFpU",
+                "url": "https://www.linkedin.com/company/homelane/life"
+            },
+            "_id": "67ec611ca127161b48ede53d",
+            "jobId": "4191888244",
+            "title": "Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4191888244",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "519017823",
+            "location": "Noida, Uttar Pradesh, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.741Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Ivalua",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFtTckgwiWK0g/company-logo_200_200/company-logo_200_200/0/1630645370156/ivalua_logo?e=1749081600&v=beta&t=p9edggaEnWgnS53ObWEgIAXrEcyGGqL8SAaAORxJwIw",
+                "url": "https://www.linkedin.com/company/ivalua/life"
+            },
+            "_id": "67ec611ca127161b48ede53e",
+            "jobId": "4198252819",
+            "title": "Customer Application Engineer (Asp.net, C# and SQL)",
+            "url": "https://www.linkedin.com/jobs/view/4198252819",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "440836383",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.741Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "PhonePe",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHLOrShxWW33g/company-logo_200_200/company-logo_200_200/0/1732870614932/phonepe_internet_logo?e=1749081600&v=beta&t=8T_0Je0i9UhOUuOdXAwcB5BIJeWF3WgCk5uqw9-aUc4",
+                "url": "https://www.linkedin.com/company/phonepe-internet/life"
+            },
+            "_id": "67ec611ca127161b48ede53f",
+            "jobId": "4181119356",
+            "title": "UI Visual Designer",
+            "url": "https://www.linkedin.com/jobs/view/4181119356",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "276498860",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.741Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Allvue Systems",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEiGfH19Y894g/company-logo_200_200/company-logo_200_200/0/1646336969868/allvuesystems_logo?e=1749081600&v=beta&t=D5-EdqClvFHtGoUPN3d1UQyGVVMNUH-bqwP3p7LCep0",
+                "url": "https://www.linkedin.com/company/allvuesystems/life"
+            },
+            "_id": "67ec611ca127161b48ede540",
+            "jobId": "4175535679",
+            "title": "Associate Business Analyst",
+            "url": "https://www.linkedin.com/jobs/view/4175535679",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "18210204",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.742Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Jacobs",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG6QUOyudSTRQ/company-logo_200_200/company-logo_200_200/0/1733492991983/jacobs_logo?e=1749081600&v=beta&t=Ouhy2NEdw9H8EZZYbnjFcYqaW7FCd16_Cc_N4JFnItc",
+                "url": "https://www.linkedin.com/company/jacobs/life"
+            },
+            "_id": "67ec611ca127161b48ede541",
+            "jobId": "4198213096",
+            "title": "Designer",
+            "url": "https://www.linkedin.com/jobs/view/4198213096",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "31897932",
+            "location": "Gurgaon, Haryana, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.742Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Ribbon Communications",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEMLBWwMb6fAQ/company-logo_200_200/company-logo_200_200/0/1631318299701?e=1749081600&v=beta&t=28uOIZNIouUAxcL14gOIhXD8_DOdwJdJplRDDH4LrFo",
+                "url": "https://www.linkedin.com/company/ribbon-communications/life"
+            },
+            "_id": "67ec611ca127161b48ede542",
+            "jobId": "4191539470",
+            "title": "Software Engineering Technical Specialist",
+            "url": "https://www.linkedin.com/jobs/view/4191539470",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "62270337",
+            "location": "Bengaluru South, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.742Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HireGenie | Finance Recruitment Expert",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHYt_uLS-JosA/company-logo_200_200/company-logo_200_200/0/1664644872679/hiregenie_logo?e=1749081600&v=beta&t=7GZLAI5AZoISBbJrfswUc4mGES1ZNRRYwg9cvWX4S8Y",
+                "url": "https://www.linkedin.com/company/hiregenie/life"
+            },
+            "_id": "67ec611ca127161b48ede543",
+            "jobId": "4179406362",
+            "title": "Lead Generation Specialist",
+            "url": "https://www.linkedin.com/jobs/view/4179406362",
+            "referenceId": "7L1IeCzOxPG34/LcscmfcA==",
+            "posterId": "678999818",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.743Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "IBM",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGiz5ecgpCtkA/company-logo_200_200/company-logo_200_200/0/1688684715866/ibm_logo?e=1749081600&v=beta&t=B5eYafbwJNb4tYdrMvUgolm9lpS_oqyIfZQo8hV615k",
+                "url": "https://www.linkedin.com/company/ibm/life"
+            },
+            "_id": "67ec611ca127161b48ede544",
+            "jobId": "4177500626",
+            "title": "Software developer",
+            "url": "https://www.linkedin.com/jobs/view/4177500626",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "177799803",
+            "location": "Ahmedabad, Gujarat, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.744Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Ivalua",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFtTckgwiWK0g/company-logo_200_200/company-logo_200_200/0/1630645370156/ivalua_logo?e=1749081600&v=beta&t=p9edggaEnWgnS53ObWEgIAXrEcyGGqL8SAaAORxJwIw",
+                "url": "https://www.linkedin.com/company/ivalua/life"
+            },
+            "_id": "67ec611ca127161b48ede545",
+            "jobId": "4198260175",
+            "title": "Customer Application Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4198260175",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "440836383",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.744Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Jacobs",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG6QUOyudSTRQ/company-logo_200_200/company-logo_200_200/0/1733492991983/jacobs_logo?e=1749081600&v=beta&t=Ouhy2NEdw9H8EZZYbnjFcYqaW7FCd16_Cc_N4JFnItc",
+                "url": "https://www.linkedin.com/company/jacobs/life"
+            },
+            "_id": "67ec611ca127161b48ede546",
+            "jobId": "4198213096",
+            "title": "Designer",
+            "url": "https://www.linkedin.com/jobs/view/4198213096",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "31897932",
+            "location": "Gurgaon, Haryana, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.744Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Lowe's India",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQHoNPNGRZYG-w/company-logo_200_200/company-logo_200_200/0/1630617454317/lowes_india_logo?e=1749081600&v=beta&t=ntwiKKVYJ9eQ_iFwekC0Hx90bv7cLTIkHryS4esF0kU",
+                "url": "https://www.linkedin.com/company/lowe-s-india/life"
+            },
+            "_id": "67ec611ca127161b48ede547",
+            "jobId": "4179637388",
+            "title": "Creative Designer",
+            "url": "https://www.linkedin.com/jobs/view/4179637388",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "14262607",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.744Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "CAE",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGyxpIB-rWe4Q/company-logo_200_200/company-logo_200_200/0/1719806773713/cae_logo?e=1749081600&v=beta&t=eeBWpEipwEfDw_qE2Q3t9gw2WWscsqXi92z0euoGI4U",
+                "url": "https://www.linkedin.com/company/cae/life"
+            },
+            "_id": "67ec611ca127161b48ede548",
+            "jobId": "4195473178",
+            "title": "Electrical Designer-EN",
+            "url": "https://www.linkedin.com/jobs/view/4195473178",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "198688569",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.745Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Ivalua",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFtTckgwiWK0g/company-logo_200_200/company-logo_200_200/0/1630645370156/ivalua_logo?e=1749081600&v=beta&t=p9edggaEnWgnS53ObWEgIAXrEcyGGqL8SAaAORxJwIw",
+                "url": "https://www.linkedin.com/company/ivalua/life"
+            },
+            "_id": "67ec611ca127161b48ede549",
+            "jobId": "4198252822",
+            "title": "Customer Application Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4198252822",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "261495973",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.745Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Jacobs",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG6QUOyudSTRQ/company-logo_200_200/company-logo_200_200/0/1733492991983/jacobs_logo?e=1749081600&v=beta&t=Ouhy2NEdw9H8EZZYbnjFcYqaW7FCd16_Cc_N4JFnItc",
+                "url": "https://www.linkedin.com/company/jacobs/life"
+            },
+            "_id": "67ec611ca127161b48ede54a",
+            "jobId": "4195809064",
+            "title": "Designer",
+            "url": "https://www.linkedin.com/jobs/view/4195809064",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "31897932",
+            "location": "Gurgaon, Haryana, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.745Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Siemens",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFK_4wGnzwPTQ/company-logo_200_200/company-logo_200_200/0/1719931174735/siemens_logo?e=1749081600&v=beta&t=wXw0zz-tWv7Hk5moGlC5ngaVXCntUdSH0Wftw36KeKs",
+                "url": "https://www.linkedin.com/company/siemens/life"
+            },
+            "_id": "67ec611ca127161b48ede54b",
+            "jobId": "4191433846",
+            "title": "Snowflake Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4191433846",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.745Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Merck Group",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQE2ZjeYdi2Zsw/company-logo_200_200/company-logo_200_200/0/1631300666032?e=1749081600&v=beta&t=EBZ3_lCj2DiiHA9s-AGrJcwpn9WBSlY1nFqaJeZxLxM",
+                "url": "https://www.linkedin.com/company/merck-group/life"
+            },
+            "_id": "67ec611ca127161b48ede54c",
+            "jobId": "4193021772",
+            "title": "Analyst_Technical Writer",
+            "url": "https://www.linkedin.com/jobs/view/4193021772",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "33801147",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.746Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HomeLane",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEWmgfdA0i2eQ/company-logo_200_200/company-logo_200_200/0/1660794305126/homelane_logo?e=1749081600&v=beta&t=VF-dy0JcVyokVd2druo_HLqj-Kt_H9_bGXJgyINHFpU",
+                "url": "https://www.linkedin.com/company/homelane/life"
+            },
+            "_id": "67ec611ca127161b48ede54d",
+            "jobId": "4191538821",
+            "title": "Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4191538821",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "636043748",
+            "location": "Tiruchirappalli, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.746Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Amazon",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHTvZwCx4p2Qg/company-logo_200_200/company-logo_200_200/0/1630640869849/amazon_logo?e=1749081600&v=beta&t=KiBaYW2war43K_4DL4Xx9ApbA5EVULdKl7PDNtFUpLY",
+                "url": "https://www.linkedin.com/company/amazon/life"
+            },
+            "_id": "67ec611ca127161b48ede54e",
+            "jobId": "4132351774",
+            "title": "Area Manager",
+            "url": "https://www.linkedin.com/jobs/view/4132351774",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "355872060",
+            "location": "Ahmedabad, Gujarat, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.746Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Comcast",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG182hGpVK6UQ/company-logo_200_200/company-logo_200_200/0/1735837322548/comcast_logo?e=1749081600&v=beta&t=TRZkSj2IDL8AK_hA6v-DzPZaXwY0kYkxKG9Ev9ctBe0",
+                "url": "https://www.linkedin.com/company/comcast/life"
+            },
+            "_id": "67ec611ca127161b48ede54f",
+            "jobId": "4151199843",
+            "title": "Manager 1, Software Development & Engineering",
+            "url": "https://www.linkedin.com/jobs/view/4151199843",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "439547615",
+            "location": "Chennai, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.746Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Noora Health",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGvXrfof0EV4Q/company-logo_200_200/company-logo_200_200/0/1689700165587/noora_health_logo?e=1749081600&v=beta&t=LxJaMk1KCBEJ9xO2oFffMGFjZkip00o1bfVT-qa3XMk",
+                "url": "https://www.linkedin.com/company/noora-health/life"
+            },
+            "_id": "67ec611ca127161b48ede550",
+            "jobId": "4192316751",
+            "title": "Visual Designer",
+            "url": "https://www.linkedin.com/jobs/view/4192316751",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "1318486896",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.747Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec611ca127161b48ede551",
+            "jobId": "4197606189",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197606189",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.747Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec611ca127161b48ede552",
+            "jobId": "4197606190",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197606190",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.747Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec611ca127161b48ede553",
+            "jobId": "4197604636",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197604636",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.752Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec611ca127161b48ede554",
+            "jobId": "4197605259",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197605259",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.752Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "WRI India Careers",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHfJd8Vh_2OKQ/company-logo_200_200/company-logo_200_200/0/1690445936957/wri_india_careers_logo?e=1749081600&v=beta&t=MBET47DLbqgpgXlWsysn1x0WvKVfusQ5CN5uRiu1myM",
+                "url": "https://www.linkedin.com/company/wri-india-careers/life"
+            },
+            "_id": "67ec611ca127161b48ede555",
+            "jobId": "4191882997",
+            "title": "Director - Products Technology",
+            "url": "https://www.linkedin.com/jobs/view/4191882997",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "928224493",
+            "location": "New Delhi, Delhi, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.753Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Recro",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQH7GYOGBCj8Qg/company-logo_200_200/company-logo_200_200/0/1728907260215/recro_io_logo?e=1749081600&v=beta&t=p-U1XNhQ5aHwMVUHSGMMZZFliPIh4xEPXQW-W-ZAnV4",
+                "url": "https://www.linkedin.com/company/recro-io/life"
+            },
+            "_id": "67ec611ca127161b48ede556",
+            "jobId": "4193730964",
+            "title": "Software Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4193730964",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "193630213",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.753Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "PhonePe",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHLOrShxWW33g/company-logo_200_200/company-logo_200_200/0/1732870614932/phonepe_internet_logo?e=1749081600&v=beta&t=8T_0Je0i9UhOUuOdXAwcB5BIJeWF3WgCk5uqw9-aUc4",
+                "url": "https://www.linkedin.com/company/phonepe-internet/life"
+            },
+            "_id": "67ec611ca127161b48ede557",
+            "jobId": "4181119356",
+            "title": "UI Visual Designer",
+            "url": "https://www.linkedin.com/jobs/view/4181119356",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "276498860",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.755Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Avathon",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFrWIj741Iwog/company-logo_200_200/company-logo_200_200/0/1733243261984/avathonai_logo?e=1749081600&v=beta&t=GUryH2S_wQFG5JUlFR5v9MIjenOqmZExhFJmJsRMK_k",
+                "url": "https://www.linkedin.com/company/avathonai/life"
+            },
+            "_id": "67ec611ca127161b48ede558",
+            "jobId": "4132290509",
+            "title": "Product Manager (Supply Chain & Logistics Planning)",
+            "url": "https://www.linkedin.com/jobs/view/4132290509",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "750957289",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.755Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Toppan Merrill",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQFRZAOxowBNxQ/company-logo_200_200/company-logo_200_200/0/1690336238146/toppan_merrill_logo?e=1749081600&v=beta&t=g5g698JTIbE-mPfWTGqgbvfnM7XnRGx97lN_Zz-dbLs",
+                "url": "https://www.linkedin.com/company/toppan-merrill/life"
+            },
+            "_id": "67ec611ca127161b48ede559",
+            "jobId": "3673697189",
+            "title": "Quality Analyst - Manual",
+            "url": "https://www.linkedin.com/jobs/view/3673697189",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "281197853",
+            "location": "Greater Chennai Area (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.756Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Larsen & Toubro",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFnEYpR8MlYsA/company-logo_200_200/company-logo_200_200/0/1631300737623?e=1749081600&v=beta&t=Qjk7-8FQ8A2RWmziB79N7l9PdZSvkMtqpCq0EFy-qcY",
+                "url": "https://www.linkedin.com/company/larsen-&-toubro-limited/life"
+            },
+            "_id": "67ec611ca127161b48ede55a",
+            "jobId": "4156244343",
+            "title": "Instrumentation & Control Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4156244343",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "39587729",
+            "location": "Vadodara, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.756Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "ThinkWise Consulting LLP",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQF3kNkfZ8NDYg/company-logo_200_200/company-logo_200_200/0/1676374417976/thinkwise_consulting_llp_logo?e=1749081600&v=beta&t=e1rXC78C-BTjSqnN2v3ge9Jv5oO8OBSl1JOiPd64Sdc",
+                "url": "https://www.linkedin.com/company/thinkwise-consulting-llp/life"
+            },
+            "_id": "67ec611ca127161b48ede55b",
+            "jobId": "4196516813",
+            "title": "Delivery Manager",
+            "url": "https://www.linkedin.com/jobs/view/4196516813",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "825238154",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.757Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pratiti Technologies",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGQZTs1rHrZgQ/company-logo_200_200/company-logo_200_200/0/1630627048610/pratiti_technologies_logo?e=1749081600&v=beta&t=EvKzT1i-4cuDattY7JzCBCgQGhOXpoInRGnsJDqDJEM",
+                "url": "https://www.linkedin.com/company/pratiti-technologies/life"
+            },
+            "_id": "67ec611ca127161b48ede55c",
+            "jobId": "4190935004",
+            "title": "Sr. Java Developer",
+            "url": "https://www.linkedin.com/jobs/view/4190935004",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.759Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "PTC",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEpBSyxBzIEhw/company-logo_200_200/company-logo_200_200/0/1719854960782/ptcinc_logo?e=1749081600&v=beta&t=Dj7TqTJGmAhKHX-XNCz9qnp8gJt0lEDSp9THK8M-0iI",
+                "url": "https://www.linkedin.com/company/ptcinc/life"
+            },
+            "_id": "67ec611ca127161b48ede55d",
+            "jobId": "4175868588",
+            "title": "Software Consultant - Golang Developer",
+            "url": "https://www.linkedin.com/jobs/view/4175868588",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "70232186",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.760Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Elastic",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQFcGg7KRaS8Uw/company-logo_200_200/company-logo_200_200/0/1690905620356/elastic_co_logo?e=1749081600&v=beta&t=sW91jVmgUtdQlKsalJ6G262dkvZ-KExcOfQyL3kjv1A",
+                "url": "https://www.linkedin.com/company/elastic-co/life"
+            },
+            "_id": "67ec611ca127161b48ede55e",
+            "jobId": "4171837409",
+            "title": "Technical Support Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4171837409",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "326988065",
+            "location": "Bengaluru, Karnataka, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.761Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Allvue Systems",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEiGfH19Y894g/company-logo_200_200/company-logo_200_200/0/1646336969868/allvuesystems_logo?e=1749081600&v=beta&t=D5-EdqClvFHtGoUPN3d1UQyGVVMNUH-bqwP3p7LCep0",
+                "url": "https://www.linkedin.com/company/allvuesystems/life"
+            },
+            "_id": "67ec611ca127161b48ede55f",
+            "jobId": "4175535679",
+            "title": "Associate Business Analyst",
+            "url": "https://www.linkedin.com/jobs/view/4175535679",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "18210204",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.762Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "ideaForge",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGil_L8OpHZ0g/company-logo_200_200/company-logo_200_200/0/1646815315957/ideaforge_logo?e=1749081600&v=beta&t=CKjI0Vk6jEMCNLDV9Z2Cmp9BWQ1zUU_G3ujpFbyuI1w",
+                "url": "https://www.linkedin.com/company/ideaforge/life"
+            },
+            "_id": "67ec611ca127161b48ede560",
+            "jobId": "4196535447",
+            "title": "Mechanical Technical Program Manager",
+            "url": "https://www.linkedin.com/jobs/view/4196535447",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "location": "Navi Mumbai, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.763Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Schneider Electric",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGNfeTPCu6Z-w/company-logo_200_200/company-logo_200_200/0/1631312208065?e=1749081600&v=beta&t=5GYpejJ8IkesIbwGrGsdJSXwS1BGBQT-CcjH_PSQme8",
+                "url": "https://www.linkedin.com/company/schneider-electric/life"
+            },
+            "_id": "67ec611ca127161b48ede561",
+            "jobId": "4193454390",
+            "title": "Software, Design Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4193454390",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "27704496",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.763Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Troopr Labs",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQGyzzIlSiu6Pg/company-logo_200_200/company-logo_200_200/0/1668065930880/troopr_logo?e=1749081600&v=beta&t=rwhp0RvjqQBUdzeUIPSAarfuDfYcSVjuzy7xHODfkCI",
+                "url": "https://www.linkedin.com/company/troopr/life"
+            },
+            "_id": "67ec611ca127161b48ede562",
+            "jobId": "4194885689",
+            "title": "Product Designer- B2B",
+            "url": "https://www.linkedin.com/jobs/view/4194885689",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "location": "Bangalore Urban, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.767Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "AiSensy",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGXB4heHvSYsg/company-logo_200_200/company-logo_200_200/0/1630628525833/aisensyofficial_logo?e=1749081600&v=beta&t=x_oY1FLV8yUt-X0WG2PpdzNAj0yIuH-3TMNImz7wXc8",
+                "url": "https://www.linkedin.com/company/aisensyofficial/life"
+            },
+            "_id": "67ec611ca127161b48ede563",
+            "jobId": "4192392062",
+            "title": "Senior Software Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4192392062",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "789360789",
+            "location": "Gurugram, Haryana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.768Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "NICE",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFF50nIM3iIOA/company-logo_200_200/company-logo_200_200/0/1688279748841/nice_systems_logo?e=1749081600&v=beta&t=EYLmO2LcJ20hrzPbNY14yEpAGSQKeMtNGH1rTDHLLhc",
+                "url": "https://www.linkedin.com/company/nice-systems/life"
+            },
+            "_id": "67ec611ca127161b48ede564",
+            "jobId": "4129881053",
+            "title": "Specialist Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4129881053",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "21304767",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.769Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Google",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHiNSL4Or29cg/company-logo_200_200/company-logo_200_200/0/1631311446380?e=1749081600&v=beta&t=NGmpIs-BhwHCIoXtxbK5hH_oKvx39ivWIbvhMlxr8hg",
+                "url": "https://www.linkedin.com/company/google/life"
+            },
+            "_id": "67ec611ca127161b48ede565",
+            "jobId": "4190990303",
+            "title": "Staff Software Engineer, Corporate Engineering",
+            "url": "https://www.linkedin.com/jobs/view/4190990303",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "29326500",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.769Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Birlasoft",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFJ26tVfkJeKg/company-logo_200_200/company-logo_200_200/0/1630606173796/birlasoft_logo?e=1749081600&v=beta&t=g2-C5RtwZRyYXmUa1kATFPKM-VKVqnW5cbls6Gt9hT8",
+                "url": "https://www.linkedin.com/company/birlasoft/life"
+            },
+            "_id": "67ec611ca127161b48ede566",
+            "jobId": "4192129219",
+            "title": "Technical Lead-Application Engg Services",
+            "url": "https://www.linkedin.com/jobs/view/4192129219",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "744972744",
+            "location": "Mulshi, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.771Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Google",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHiNSL4Or29cg/company-logo_200_200/company-logo_200_200/0/1631311446380?e=1749081600&v=beta&t=NGmpIs-BhwHCIoXtxbK5hH_oKvx39ivWIbvhMlxr8hg",
+                "url": "https://www.linkedin.com/company/google/life"
+            },
+            "_id": "67ec611ca127161b48ede567",
+            "jobId": "4176411964",
+            "title": "Staff Software Engineer, Google Cloud",
+            "url": "https://www.linkedin.com/jobs/view/4176411964",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "29326500",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.773Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "OpenGov Inc.",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGmHhbJOXCFPQ/company-logo_100_100/B4DZXI0doSHwAQ-/0/1742830951197/opengov_inc_logo?e=1749081600&v=beta&t=894X5RCr5wGfB914ukIEtV3hPSNzhXv29Bl6xqewW24",
+                "url": "https://www.linkedin.com/company/opengov-inc/life"
+            },
+            "_id": "67ec611ca127161b48ede568",
+            "jobId": "4193233815",
+            "title": "Sr. Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4193233815",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "68152358",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.773Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "AMD",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEkjpiqeCK9Ag/company-logo_200_200/company-logo_200_200/0/1654804896089/amd_logo?e=1749081600&v=beta&t=jvsQ6-TIYhEX3j7TvWwtOVfwJ1Yg7PXd9dmCeZ2f6Kw",
+                "url": "https://www.linkedin.com/company/amd/life"
+            },
+            "_id": "67ec611ca127161b48ede569",
+            "jobId": "4113189788",
+            "title": "Manager Product Management",
+            "url": "https://www.linkedin.com/jobs/view/4113189788",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "49814954",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.775Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Lummus Technology",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQE_EmdYjK8JFw/company-logo_200_200/company-logo_200_200/0/1630634349153/lummustechnology_logo?e=1749081600&v=beta&t=_7DsL5rntiKphd3ZV8DM5X50oTt06q6YanDWckf_PmE",
+                "url": "https://www.linkedin.com/company/lummustechnology/life"
+            },
+            "_id": "67ec611ca127161b48ede56a",
+            "jobId": "4103358376",
+            "title": "Process Engineer III",
+            "url": "https://www.linkedin.com/jobs/view/4103358376",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "17057295",
+            "location": "Gurgaon, Haryana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.776Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Freshworks",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQE91pHKG3yvnw/company-logo_200_200/company-logo_200_200/0/1666790263596/freshworks_inc_logo?e=1749081600&v=beta&t=cqQpp0nlT15bWrajMTcGHqFOiHrhV6muyTo3j9rxPJg",
+                "url": "https://www.linkedin.com/company/freshworks-inc/life"
+            },
+            "_id": "67ec611ca127161b48ede56b",
+            "jobId": "4197825124",
+            "title": "Staff Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4197825124",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "106220769",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.776Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "ABB",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHPGAMgqJMBZQ/company-logo_200_200/company-logo_200_200/0/1630579606103/abb_logo?e=1749081600&v=beta&t=O43B2nc4LVAAijctY0crVyla_w8pVNMiu6cMDn8mla8",
+                "url": "https://www.linkedin.com/company/abb/life"
+            },
+            "_id": "67ec611ca127161b48ede56c",
+            "jobId": "4194052482",
+            "title": "R&D Software Project Manager",
+            "url": "https://www.linkedin.com/jobs/view/4194052482",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "93267151",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.779Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "F5",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGE0q_3qosevg/company-logo_200_200/company-logo_200_200/0/1685483819848/f5_logo?e=1749081600&v=beta&t=4NHiojk9AjyEDYDG-UQNH2AUNYLR0R86UEDQod-Jm-k",
+                "url": "https://www.linkedin.com/company/f5/life"
+            },
+            "_id": "67ec611ca127161b48ede56d",
+            "jobId": "4194923334",
+            "title": "Sr Manager, Engineering",
+            "url": "https://www.linkedin.com/jobs/view/4194923334",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "47720478",
+            "location": "Hyderabad, Telangana, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.791Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Cornerstone OnDemand",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQEMulbwpZJbWQ/company-logo_200_200/company-logo_200_200/0/1719809848778?e=1749081600&v=beta&t=B91GQ5VE4vUVCzpE2jPjCs5X00IunugrCon8dqqLZM0",
+                "url": "https://www.linkedin.com/company/cornerstoneondemand/life"
+            },
+            "_id": "67ec611ca127161b48ede56e",
+            "jobId": "4128036963",
+            "title": "Manager, Product Management",
+            "url": "https://www.linkedin.com/jobs/view/4128036963",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "113007134",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.792Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Freshworks",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQE91pHKG3yvnw/company-logo_200_200/company-logo_200_200/0/1666790263596/freshworks_inc_logo?e=1749081600&v=beta&t=cqQpp0nlT15bWrajMTcGHqFOiHrhV6muyTo3j9rxPJg",
+                "url": "https://www.linkedin.com/company/freshworks-inc/life"
+            },
+            "_id": "67ec611ca127161b48ede56f",
+            "jobId": "4197825125",
+            "title": "Staff Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4197825125",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "304071397",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.792Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Google",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHiNSL4Or29cg/company-logo_200_200/company-logo_200_200/0/1631311446380?e=1749081600&v=beta&t=NGmpIs-BhwHCIoXtxbK5hH_oKvx39ivWIbvhMlxr8hg",
+                "url": "https://www.linkedin.com/company/google/life"
+            },
+            "_id": "67ec611ca127161b48ede570",
+            "jobId": "3747427544",
+            "title": "Senior Staff Software Engineer, Google Cloud",
+            "url": "https://www.linkedin.com/jobs/view/3747427544",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "29326500",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.793Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Google",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHiNSL4Or29cg/company-logo_200_200/company-logo_200_200/0/1631311446380?e=1749081600&v=beta&t=NGmpIs-BhwHCIoXtxbK5hH_oKvx39ivWIbvhMlxr8hg",
+                "url": "https://www.linkedin.com/company/google/life"
+            },
+            "_id": "67ec611ca127161b48ede571",
+            "jobId": "4175185769",
+            "title": "Staff Software Engineer, Technical Infrastructure",
+            "url": "https://www.linkedin.com/jobs/view/4175185769",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "29326500",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.793Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Instabase",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGmZTYH2wCL6w/company-logo_200_200/company-logo_200_200/0/1686241641465/instabase_logo?e=1749081600&v=beta&t=9eqhpTOiRGR9BQy31vwj0xA6NK8FDGD4ExWNycKHHRA",
+                "url": "https://www.linkedin.com/company/instabase/life"
+            },
+            "_id": "67ec611ca127161b48ede572",
+            "jobId": "4197401445",
+            "title": "Product Manager - AI Hub Chatbots and Search (Senior Level)",
+            "url": "https://www.linkedin.com/jobs/view/4197401445",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "684014499",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.793Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Side",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQEBslBrPsESTw/company-logo_200_200/B56ZVcta7LGsAU-/0/1741017166743/sideglobal_logo?e=1749081600&v=beta&t=6mxtcxQ8iaB4eyC66qtZZ6Fo-Klc96yugQ9iO4Ou2-g",
+                "url": "https://www.linkedin.com/company/sideglobal/life"
+            },
+            "_id": "67ec611ca127161b48ede573",
+            "jobId": "4192129113",
+            "title": "Technical Manager",
+            "url": "https://www.linkedin.com/jobs/view/4192129113",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "39752180",
+            "location": "Bengaluru, Karnataka, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.795Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Google",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHiNSL4Or29cg/company-logo_200_200/company-logo_200_200/0/1631311446380?e=1749081600&v=beta&t=NGmpIs-BhwHCIoXtxbK5hH_oKvx39ivWIbvhMlxr8hg",
+                "url": "https://www.linkedin.com/company/google/life"
+            },
+            "_id": "67ec611ca127161b48ede574",
+            "jobId": "4175757903",
+            "title": "Staff Software Engineer, Infrastructure, Google Cloud",
+            "url": "https://www.linkedin.com/jobs/view/4175757903",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "29326500",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.795Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "CrossTab IT Consulting",
+                "logo": "https://media.licdn.com/dms/image/v2/C510BAQEHwLSGCMJW4A/company-logo_200_200/company-logo_200_200/0/1631427811560/crosstabindia_logo?e=1749081600&v=beta&t=3VXo91L-fB3-aLxhvYLn5uNn9HleSK3Lzha4d4thJag",
+                "url": "https://www.linkedin.com/company/crosstabindia/life"
+            },
+            "_id": "67ec611ca127161b48ede575",
+            "jobId": "4195478807",
+            "title": "Senior Product Manager (Core Banking)",
+            "url": "https://www.linkedin.com/jobs/view/4195478807",
+            "referenceId": "BZDUvrMVbRO7ET6UzkopXw==",
+            "posterId": "507387450",
+            "location": "Navi Mumbai, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T21:56:44.796Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Edureka",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHIXUJjedkclA/company-logo_200_200/company-logo_200_200/0/1645442188611/edureka_logo?e=1749081600&v=beta&t=OFd6Bh8rStbk0XQ8FnWKSuMeCbPzJduVxyLIgnj5qnM",
+                "url": "https://www.linkedin.com/company/edureka/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9dd",
+            "jobId": "4194123293",
+            "title": "Inside Sales Specialist",
+            "url": "https://www.linkedin.com/jobs/view/4194123293",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "814077955",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.795Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Avathon",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFrWIj741Iwog/company-logo_200_200/company-logo_200_200/0/1733243261984/avathonai_logo?e=1749081600&v=beta&t=GUryH2S_wQFG5JUlFR5v9MIjenOqmZExhFJmJsRMK_k",
+                "url": "https://www.linkedin.com/company/avathonai/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9de",
+            "jobId": "4132290509",
+            "title": "Product Manager (Supply Chain & Logistics Planning)",
+            "url": "https://www.linkedin.com/jobs/view/4132290509",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "750957289",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.797Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "A3 Architects",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQH2N-IyKIxlzQ/company-logo_200_200/company-logo_200_200/0/1724998030212/a3_architects_logo?e=1749081600&v=beta&t=gyzAZ2YRZGLXzhFW9FJdZ4ltzrKD7eD79by5p8BYhMY",
+                "url": "https://www.linkedin.com/company/a3-architects/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9df",
+            "jobId": "4195439107",
+            "title": "Junior Architect",
+            "url": "https://www.linkedin.com/jobs/view/4195439107",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "444468415",
+            "location": "Mohali district, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.798Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Lowe's India",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQHoNPNGRZYG-w/company-logo_200_200/company-logo_200_200/0/1630617454317/lowes_india_logo?e=1749081600&v=beta&t=ntwiKKVYJ9eQ_iFwekC0Hx90bv7cLTIkHryS4esF0kU",
+                "url": "https://www.linkedin.com/company/lowe-s-india/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e0",
+            "jobId": "4179637388",
+            "title": "Creative Designer",
+            "url": "https://www.linkedin.com/jobs/view/4179637388",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "14262607",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.802Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pratiti",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQF3wF0-AZK06A/company-logo_200_200/company-logo_200_200/0/1725545409190/pratiti_centre_for_mental_health_logo?e=1749081600&v=beta&t=mIpjjZyNBdEMN0SmEtSH5YmKH-vyoISDaUh2Di7gsX4",
+                "url": "https://www.linkedin.com/company/pratiti-centre-for-mental-health/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e1",
+            "jobId": "4196158642",
+            "title": "Java Developer - Spring Frameworks",
+            "url": "https://www.linkedin.com/jobs/view/4196158642",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.804Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Cotiviti",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQHbHlLwL6DNEA/company-logo_200_200/company-logo_200_200/0/1630578498647/cotiviti_logo?e=1749081600&v=beta&t=Ko4KqYGosziDAP0mcpmAtUlTBTsZZaNPNstHoSmNRaE",
+                "url": "https://www.linkedin.com/company/cotiviti/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e2",
+            "jobId": "4164028821",
+            "title": "Associate Technical Architect",
+            "url": "https://www.linkedin.com/jobs/view/4164028821",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "4845438",
+            "location": "Greater Hyderabad Area (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.805Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Celebrity Cruises",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQHly2-OcgRLsQ/company-logo_200_200/company-logo_200_200/0/1666014326176/celebrity_cruises_logo?e=1749081600&v=beta&t=c8PiV6pSTYd68DhvkSDeQBdAzj0Fpz6po86h71t62a0",
+                "url": "https://www.linkedin.com/company/celebrity-cruises/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e3",
+            "jobId": "4190364988",
+            "title": "Chef De Partie",
+            "url": "https://www.linkedin.com/jobs/view/4190364988",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "738556739",
+            "location": "Maharashtra, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.806Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Meine Kuche (I) Pvt. Ltd.",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHrfLu7uDhsww/company-logo_200_200/company-logo_200_200/0/1631334928789?e=1749081600&v=beta&t=NLwQYbgV6ykyq3fqfHMoLhuRYZA7l9AOyOawAmPETa0",
+                "url": "https://www.linkedin.com/company/meine-kuche/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e4",
+            "jobId": "4195451558",
+            "title": "Associate Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4195451558",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "442482957",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.806Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Abhyantar Designs Pvt Ltd",
+                "logo": "N/A",
+                "url": "N/A"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e5",
+            "jobId": "4192955834",
+            "title": "CNC Programmer- Modular Furniture",
+            "url": "https://www.linkedin.com/jobs/view/4192955834",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "8285224",
+            "location": "Noida, Uttar Pradesh, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.807Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "SSAM SOFTWARES",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEF4X6GA3eZYg/company-logo_200_200/company-logo_200_200/0/1631321612789?e=1749081600&v=beta&t=cmhKW-SLt2ZKQ6JeqUdKFM220Fw59BA4rrdCvfSQ014",
+                "url": "https://www.linkedin.com/company/ssam-softwares-india/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e6",
+            "jobId": "4193624210",
+            "title": "PHP Development Internship in Indore",
+            "url": "https://www.linkedin.com/jobs/view/4193624210",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "location": "Indore, Madhya Pradesh, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.808Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "CAE",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGyxpIB-rWe4Q/company-logo_200_200/company-logo_200_200/0/1719806773713/cae_logo?e=1749081600&v=beta&t=eeBWpEipwEfDw_qE2Q3t9gw2WWscsqXi92z0euoGI4U",
+                "url": "https://www.linkedin.com/company/cae/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e7",
+            "jobId": "4195473178",
+            "title": "Electrical Designer-EN",
+            "url": "https://www.linkedin.com/jobs/view/4195473178",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "198688569",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.808Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Jacobs",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG6QUOyudSTRQ/company-logo_200_200/company-logo_200_200/0/1733492991983/jacobs_logo?e=1749081600&v=beta&t=Ouhy2NEdw9H8EZZYbnjFcYqaW7FCd16_Cc_N4JFnItc",
+                "url": "https://www.linkedin.com/company/jacobs/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e8",
+            "jobId": "4198213096",
+            "title": "Designer",
+            "url": "https://www.linkedin.com/jobs/view/4198213096",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "31897932",
+            "location": "Gurgaon, Haryana, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.809Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "PTC",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEpBSyxBzIEhw/company-logo_200_200/company-logo_200_200/0/1719854960782/ptcinc_logo?e=1749081600&v=beta&t=Dj7TqTJGmAhKHX-XNCz9qnp8gJt0lEDSp9THK8M-0iI",
+                "url": "https://www.linkedin.com/company/ptcinc/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9e9",
+            "jobId": "4175868588",
+            "title": "Software Consultant - Golang Developer",
+            "url": "https://www.linkedin.com/jobs/view/4175868588",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "70232186",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.809Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Google",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHiNSL4Or29cg/company-logo_200_200/company-logo_200_200/0/1631311446380?e=1749081600&v=beta&t=NGmpIs-BhwHCIoXtxbK5hH_oKvx39ivWIbvhMlxr8hg",
+                "url": "https://www.linkedin.com/company/google/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9ea",
+            "jobId": "4190990303",
+            "title": "Staff Software Engineer, Corporate Engineering",
+            "url": "https://www.linkedin.com/jobs/view/4190990303",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "29326500",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.810Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Sedani Digital Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQE2ukosm8g1Hg/company-logo_200_200/company-logo_200_200/0/1630630692156/sedani_digital_private_limited_logo?e=1749081600&v=beta&t=XaTb12ZmyzAA9x7LzNerWnuODnWpsKO_DPV8mr8xSyE",
+                "url": "https://www.linkedin.com/company/sedani-digital-private-limited/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9eb",
+            "jobId": "4193618920",
+            "title": "Business Development (Sales) Internship in Ahmedabad",
+            "url": "https://www.linkedin.com/jobs/view/4193618920",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "location": "Ahmedabad, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.810Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Sedani Digital Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQE2ukosm8g1Hg/company-logo_200_200/company-logo_200_200/0/1630630692156/sedani_digital_private_limited_logo?e=1749081600&v=beta&t=XaTb12ZmyzAA9x7LzNerWnuODnWpsKO_DPV8mr8xSyE",
+                "url": "https://www.linkedin.com/company/sedani-digital-private-limited/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9ec",
+            "jobId": "4193991061",
+            "title": "Human Resources (HR) Internship in Ahmedabad",
+            "url": "https://www.linkedin.com/jobs/view/4193991061",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "location": "Ahmedabad, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.810Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Cactus Design Lab",
+                "logo": "N/A",
+                "url": "N/A"
+            },
+            "_id": "67ec6258e5b3f7255e50c9ed",
+            "jobId": "4194713087",
+            "title": "Junior Architect",
+            "url": "https://www.linkedin.com/jobs/view/4194713087",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "1156841965",
+            "location": "Thrissur, Kerala, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.811Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "WSP in India",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGoB2G2duJxRw/company-logo_200_200/company-logo_200_200/0/1719896424151/wsp_consultants_india_ltd_logo?e=1749081600&v=beta&t=tRLXtx9mTrKfQDzb9V_Zzz6TbqPHwEPJ-P7Sn1Zh-eM",
+                "url": "https://www.linkedin.com/company/wsp-consultants-india-ltd/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9ee",
+            "jobId": "4195469272",
+            "title": "Engineer - Public Health",
+            "url": "https://www.linkedin.com/jobs/view/4195469272",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "737765621",
+            "location": "Bengaluru, Karnataka, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.811Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Flex",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQFwOFir_jDfeQ/company-logo_200_200/company-logo_200_200/0/1688251504137/flexintl_logo?e=1749081600&v=beta&t=xbtZ8sT4yxn5QEhhv6E1tgewAiZegNJ2dDnjppi26aI",
+                "url": "https://www.linkedin.com/company/flexintl/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9ef",
+            "jobId": "4192123178",
+            "title": "Senior Analyst - Procurement",
+            "url": "https://www.linkedin.com/jobs/view/4192123178",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "203117491",
+            "location": "Coimbatore, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.812Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Architect Hafeez Contractor",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFrlKdE6JGoIQ/company-logo_200_200/company-logo_200_200/0/1706175632675/architect_hafeez_contractor_logo?e=1749081600&v=beta&t=vnZFqkan6k-sUw0ND4u8aFp3A_k68ScPgSZuyy6yBFM",
+                "url": "https://www.linkedin.com/company/architect-hafeez-contractor/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f0",
+            "jobId": "4191422840",
+            "title": "Junior Architect",
+            "url": "https://www.linkedin.com/jobs/view/4191422840",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "695902195",
+            "location": "Mumbai, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.812Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Google",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHiNSL4Or29cg/company-logo_200_200/company-logo_200_200/0/1631311446380?e=1749081600&v=beta&t=NGmpIs-BhwHCIoXtxbK5hH_oKvx39ivWIbvhMlxr8hg",
+                "url": "https://www.linkedin.com/company/google/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f1",
+            "jobId": "4175185769",
+            "title": "Staff Software Engineer, Technical Infrastructure",
+            "url": "https://www.linkedin.com/jobs/view/4175185769",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "29326500",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.812Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Amazon",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHTvZwCx4p2Qg/company-logo_200_200/company-logo_200_200/0/1630640869849/amazon_logo?e=1749081600&v=beta&t=KiBaYW2war43K_4DL4Xx9ApbA5EVULdKl7PDNtFUpLY",
+                "url": "https://www.linkedin.com/company/amazon/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f2",
+            "jobId": "4198091269",
+            "title": "Recruitment Coordinator - 12 Month Contract",
+            "url": "https://www.linkedin.com/jobs/view/4198091269",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "355872060",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.813Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "CultFit",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEzOY1wIMbUxA/company-logo_200_200/company-logo_200_200/0/1631313678795?e=1749081600&v=beta&t=qWjJM9ieq4KnxjfpA7FXwt_GY2kWma4lv96zOyNlJYE",
+                "url": "https://www.linkedin.com/company/cultfit/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f3",
+            "jobId": "4193008565",
+            "title": "Inside Sales Executive",
+            "url": "https://www.linkedin.com/jobs/view/4193008565",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.813Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HomeLane",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEWmgfdA0i2eQ/company-logo_200_200/company-logo_200_200/0/1660794305126/homelane_logo?e=1749081600&v=beta&t=VF-dy0JcVyokVd2druo_HLqj-Kt_H9_bGXJgyINHFpU",
+                "url": "https://www.linkedin.com/company/homelane/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f4",
+            "jobId": "4191538821",
+            "title": "Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4191538821",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "636043748",
+            "location": "Tiruchirappalli, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.813Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "FK'D Workshop",
+                "logo": "N/A",
+                "url": "N/A"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f5",
+            "jobId": "4195084466",
+            "title": "Architect",
+            "url": "https://www.linkedin.com/jobs/view/4195084466",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "923313621",
+            "location": "Mumbai, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.814Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Fives Intralogistics",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEqMZ214WvlzA/company-logo_200_200/company-logo_200_200/0/1630520194224/fives_intralogistics_spa_italy_logo?e=1749081600&v=beta&t=Rhy6QQYlsYPbwMBxIWe63zXmsuLoJ032sepGHp_9oxk",
+                "url": "https://www.linkedin.com/company/fives-intralogistics/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f6",
+            "jobId": "4196256508",
+            "title": "Engineering Lead",
+            "url": "https://www.linkedin.com/jobs/view/4196256508",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "location": "Chennai, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.814Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Informatica",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEV9kECiZwXrg/company-logo_200_200/company-logo_200_200/0/1656645409373/informatica_logo?e=1749081600&v=beta&t=gtM3JHk5-aKZQV5OZfN8hkv_vGUlDO0ALkwwmEVgkPE",
+                "url": "https://www.linkedin.com/company/informatica/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f7",
+            "jobId": "4130520396",
+            "title": "Principal Software Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4130520396",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "43906230",
+            "location": "Bengaluru, Karnataka, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.814Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "NM Corp",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGPss6A5Ap8kA/company-logo_200_200/company-logo_200_200/0/1726659489926/nmcorp_logo?e=1749081600&v=beta&t=P71MiaR4MDX8jWeLBjh9PS-GXWo9FeJ-YStKU7C_ECU",
+                "url": "https://www.linkedin.com/company/nmcorp/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f8",
+            "jobId": "4196242332",
+            "title": "Senior Architect",
+            "url": "https://www.linkedin.com/jobs/view/4196242332",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "214972896",
+            "location": "Gurugram, Haryana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.815Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Allvue Systems",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEiGfH19Y894g/company-logo_200_200/company-logo_200_200/0/1646336969868/allvuesystems_logo?e=1749081600&v=beta&t=D5-EdqClvFHtGoUPN3d1UQyGVVMNUH-bqwP3p7LCep0",
+                "url": "https://www.linkedin.com/company/allvuesystems/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9f9",
+            "jobId": "4175535679",
+            "title": "Associate Business Analyst",
+            "url": "https://www.linkedin.com/jobs/view/4175535679",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "18210204",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.815Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HomeLane",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEWmgfdA0i2eQ/company-logo_200_200/company-logo_200_200/0/1660794305126/homelane_logo?e=1749081600&v=beta&t=VF-dy0JcVyokVd2druo_HLqj-Kt_H9_bGXJgyINHFpU",
+                "url": "https://www.linkedin.com/company/homelane/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9fa",
+            "jobId": "4191888244",
+            "title": "Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4191888244",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "519017823",
+            "location": "Noida, Uttar Pradesh, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.815Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Edureka",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHIXUJjedkclA/company-logo_200_200/company-logo_200_200/0/1645442188611/edureka_logo?e=1749081600&v=beta&t=OFd6Bh8rStbk0XQ8FnWKSuMeCbPzJduVxyLIgnj5qnM",
+                "url": "https://www.linkedin.com/company/edureka/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9fb",
+            "jobId": "4194799019",
+            "title": "Inside Sales Manager",
+            "url": "https://www.linkedin.com/jobs/view/4194799019",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.815Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Northern Trust",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEhKPm5QIrRAQ/company-logo_200_200/company-logo_200_200/0/1663663012961/northern_trust_logo?e=1749081600&v=beta&t=icFULwiruYszm1E9WNnGd0OKBarzxDGQt5iK7yWOJaw",
+                "url": "https://www.linkedin.com/company/northern-trust/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9fc",
+            "jobId": "4192360537",
+            "title": "Accountant",
+            "url": "https://www.linkedin.com/jobs/view/4192360537",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "6581850",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.819Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Lummus Technology",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQE_EmdYjK8JFw/company-logo_200_200/company-logo_200_200/0/1630634349153/lummustechnology_logo?e=1749081600&v=beta&t=_7DsL5rntiKphd3ZV8DM5X50oTt06q6YanDWckf_PmE",
+                "url": "https://www.linkedin.com/company/lummustechnology/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9fd",
+            "jobId": "4103358376",
+            "title": "Process Engineer III",
+            "url": "https://www.linkedin.com/jobs/view/4103358376",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "17057295",
+            "location": "Gurgaon, Haryana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.819Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HomeLane",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEWmgfdA0i2eQ/company-logo_200_200/company-logo_200_200/0/1660794305126/homelane_logo?e=1749081600&v=beta&t=VF-dy0JcVyokVd2druo_HLqj-Kt_H9_bGXJgyINHFpU",
+                "url": "https://www.linkedin.com/company/homelane/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9fe",
+            "jobId": "4191541425",
+            "title": "Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4191541425",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "636043748",
+            "location": "Madurai, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.820Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec6258e5b3f7255e50c9ff",
+            "jobId": "4197606189",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197606189",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.820Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca00",
+            "jobId": "4197606190",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197606190",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.821Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca01",
+            "jobId": "4197605259",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197605259",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.821Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca02",
+            "jobId": "4197604636",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197604636",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.822Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "VSPB Associates",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGueh6VCzbZbQ/company-logo_200_200/company-logo_200_200/0/1630557225406/vspb_associates_logo?e=1749081600&v=beta&t=k9zPKFkVJx-oYcZ72UkgOvbShdTwDUbJFtrTbMDLo2Y",
+                "url": "https://www.linkedin.com/company/vspb-associates/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca03",
+            "jobId": "4194878306",
+            "title": "Architects, Interns",
+            "url": "https://www.linkedin.com/jobs/view/4194878306",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "238006121",
+            "location": "New Delhi, Delhi, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.822Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Eclick Softwares and Solutions Pvt Ltd",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQGY5aogGQV_xQ/company-logo_200_200/company-logo_200_200/0/1630588535683/eclick_softwares_and_solutions_pvt_ltd_logo?e=1749081600&v=beta&t=ODP6KPlcCWyBkUx8w57wLo8FpM4zJcEXWzjlksM5UTE",
+                "url": "https://www.linkedin.com/company/eclick-softwares-and-solutions-pvt-ltd/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca04",
+            "jobId": "4193868999",
+            "title": "Fresher required for International Outbound Process(Morning shift)",
+            "url": "https://www.linkedin.com/jobs/view/4193868999",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "location": "Kolkata, West Bengal, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.822Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Birla Opus",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHqMSi8_iI5Mw/company-logo_200_200/company-logo_200_200/0/1724140680775/birlaopus_logo?e=1749081600&v=beta&t=eB2yN9cv7yMcHnxSZN0mMrZeaTAQpzdM9CnvTDXIC6I",
+                "url": "https://www.linkedin.com/company/birlaopus/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca05",
+            "jobId": "4194782451",
+            "title": "Regional Service Executive-Tinting Machine Bangalore",
+            "url": "https://www.linkedin.com/jobs/view/4194782451",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "11463693",
+            "location": "Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.823Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Basil Decor",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHHkaB22RxVgw/company-logo_200_200/company-logo_200_200/0/1631685764072/basilhomes_logo?e=1749081600&v=beta&t=5dtS50rdpVwXuowkgMTdBTps4dPWmCQkPu9hGObU5pg",
+                "url": "https://www.linkedin.com/company/basil-decor/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca06",
+            "jobId": "4196257886",
+            "title": "Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4196257886",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "985102731",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.823Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HomeLane",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEWmgfdA0i2eQ/company-logo_200_200/company-logo_200_200/0/1660794305126/homelane_logo?e=1749081600&v=beta&t=VF-dy0JcVyokVd2druo_HLqj-Kt_H9_bGXJgyINHFpU",
+                "url": "https://www.linkedin.com/company/homelane/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca07",
+            "jobId": "4191539174",
+            "title": "Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4191539174",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "519017823",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.824Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Cornerstone OnDemand",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQEMulbwpZJbWQ/company-logo_200_200/company-logo_200_200/0/1719809848778?e=1749081600&v=beta&t=B91GQ5VE4vUVCzpE2jPjCs5X00IunugrCon8dqqLZM0",
+                "url": "https://www.linkedin.com/company/cornerstoneondemand/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca08",
+            "jobId": "4172857363",
+            "title": "Manager, Product Management",
+            "url": "https://www.linkedin.com/jobs/view/4172857363",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "113007134",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.824Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HomeLane",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEWmgfdA0i2eQ/company-logo_200_200/company-logo_200_200/0/1660794305126/homelane_logo?e=1749081600&v=beta&t=VF-dy0JcVyokVd2druo_HLqj-Kt_H9_bGXJgyINHFpU",
+                "url": "https://www.linkedin.com/company/homelane/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca09",
+            "jobId": "4190392442",
+            "title": "Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4190392442",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "636043748",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.825Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pinakiin Designs",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFZQ_oYjeDaEg/company-logo_200_200/company-logo_200_200/0/1656581560838?e=1749081600&v=beta&t=DWOaQTibWSGdSP-AeK0UglXrRRpzTRZCH7rsx1ws06w",
+                "url": "https://www.linkedin.com/company/pinakiin-designs/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca0a",
+            "jobId": "4193865369",
+            "title": "Senior Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4193865369",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "212957479",
+            "location": "Mumbai, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.825Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Hill International, Inc.",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEWRQ4b5FnxwA/company-logo_200_200/company-logo_200_200/0/1654108199833/hill_international_logo?e=1749081600&v=beta&t=dcbt25blMDe3NQi3tSRnby1qzhDxa4s8XAzDaPeU5IY",
+                "url": "https://www.linkedin.com/company/hill-international/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca0b",
+            "jobId": "4180576355",
+            "title": "Planning & Scheduling Lead",
+            "url": "https://www.linkedin.com/jobs/view/4180576355",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "177815463",
+            "location": "Gurugram, Haryana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.825Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Dearc",
+                "logo": "https://media.licdn.com/dms/image/v2/C510BAQEuxA4493CXdQ/company-logo_200_200/company-logo_200_200/0/1630613622078?e=1749081600&v=beta&t=4VhCt0gIMC6d_AlrxINlvGZofvZqDhvoUr9-FEE7nZc",
+                "url": "https://www.linkedin.com/company/dearcinc/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca0c",
+            "jobId": "4183313109",
+            "title": "Architect",
+            "url": "https://www.linkedin.com/jobs/view/4183313109",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "57629586",
+            "location": "New Delhi, Delhi, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.826Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pinakiin Designs",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFZQ_oYjeDaEg/company-logo_200_200/company-logo_200_200/0/1656581560838?e=1749081600&v=beta&t=DWOaQTibWSGdSP-AeK0UglXrRRpzTRZCH7rsx1ws06w",
+                "url": "https://www.linkedin.com/company/pinakiin-designs/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca0d",
+            "jobId": "4193857171",
+            "title": "Senior Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4193857171",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "212957479",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.827Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Light & Wonder",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQE_b5uJ7F58GQ/company-logo_200_200/company-logo_200_200/0/1719861106621/lightnwonder_logo?e=1749081600&v=beta&t=PqQZDgAVsUnSCw5dmbDlKkWEVvSylWRvfAcgo62W66M",
+                "url": "https://www.linkedin.com/company/lightnwonder/life"
+            },
+            "_id": "67ec6258e5b3f7255e50ca0e",
+            "jobId": "4030856817",
+            "title": "Senior Game Artist",
+            "url": "https://www.linkedin.com/jobs/view/4030856817",
+            "referenceId": "NTgOb3nFVeGYVAkLQ4xYvw==",
+            "posterId": "30508148",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:02:00.827Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Braintrust",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQElwT1kpc6sWw/company-logo_200_200/company-logo_200_200/0/1714395474106/usebraintrust_logo?e=1749081600&v=beta&t=lcftiUSKB-xeYM1cDYWHqpPj8AjgxCmODewCam6zqso",
+                "url": "https://www.linkedin.com/company/usebraintrust/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c8c",
+            "jobId": "4195723900",
+            "title": "Coders - AI Training [Remote]",
+            "url": "https://www.linkedin.com/jobs/view/4195723900",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "364648347",
+            "location": "APJ (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.296Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "SparrowGenie",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGl9uKHMFyMtQ/company-logo_200_200/company-logo_200_200/0/1737695452986/sparrowgenie_logo?e=1749081600&v=beta&t=XH12nFzkm8z3SE_ooCKk2BVnhnOtimja08OudtOssuw",
+                "url": "https://www.linkedin.com/company/sparrowgenie/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c8d",
+            "jobId": "4195426013",
+            "title": "Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4195426013",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "507281076",
+            "location": "Kochi, Kerala, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.298Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "BigCity Promotions",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEtgI0DgGPq7g/company-logo_200_200/company-logo_200_200/0/1630604177812/bigcity_promotions_logo?e=1749081600&v=beta&t=eVG-_CxgGvbmZF_px_HhZ4Vl50-Y00kFJy9NdyLTiKI",
+                "url": "https://www.linkedin.com/company/bigcitypromotions/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c8e",
+            "jobId": "4190929238",
+            "title": "Marketing Manager",
+            "url": "https://www.linkedin.com/jobs/view/4190929238",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "482796423",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.299Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Varahe Analytics Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHxlx31iRVpcQ/company-logo_200_200/company-logo_200_200/0/1654155578017?e=1749081600&v=beta&t=NDcT99OGTeM3E8m5GM88xG7lLbKdNFNQbxmwqTJUAfg",
+                "url": "https://www.linkedin.com/company/varahe-analytics-pvt-limited/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c8f",
+            "jobId": "4191575882",
+            "title": "Political Analyst",
+            "url": "https://www.linkedin.com/jobs/view/4191575882",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "1106887893",
+            "location": "Trivandrum, Kerala, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.301Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "CultFit",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEzOY1wIMbUxA/company-logo_200_200/company-logo_200_200/0/1631313678795?e=1749081600&v=beta&t=qWjJM9ieq4KnxjfpA7FXwt_GY2kWma4lv96zOyNlJYE",
+                "url": "https://www.linkedin.com/company/cultfit/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c90",
+            "jobId": "4193008565",
+            "title": "Inside Sales Executive",
+            "url": "https://www.linkedin.com/jobs/view/4193008565",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.305Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Yanolja Cloud Solution",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHsI294uemJZQ/company-logo_200_200/company-logo_200_200/0/1735789660957/yanoljacloudsolution_logo?e=1749081600&v=beta&t=tznuF1drGtGceIfEzh6k3tzoHuDpNorBJcjskE5f2Ks",
+                "url": "https://www.linkedin.com/company/yanoljacloudsolution/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c91",
+            "jobId": "4196522348",
+            "title": "Customer Onboarding & Support Executive",
+            "url": "https://www.linkedin.com/jobs/view/4196522348",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Surat, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.306Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Hyosung T&D India Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGi5wQdtxEODg/company-logo_200_200/company-logo_200_200/0/1727245003208/hyosung_t__d_india_private_limited_logo?e=1749081600&v=beta&t=kHt1UNZJzgb_hz0E9eMy1hLyST4TtbJ8P2nywcuerPs",
+                "url": "https://www.linkedin.com/company/hyosung-t-&-d-india-private-limited/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c92",
+            "jobId": "4196145140",
+            "title": "Jr. Engineer - Transformer & Engineering Team",
+            "url": "https://www.linkedin.com/jobs/view/4196145140",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.309Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Flex",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQFwOFir_jDfeQ/company-logo_200_200/company-logo_200_200/0/1688251504137/flexintl_logo?e=1749081600&v=beta&t=xbtZ8sT4yxn5QEhhv6E1tgewAiZegNJ2dDnjppi26aI",
+                "url": "https://www.linkedin.com/company/flexintl/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c93",
+            "jobId": "4192123178",
+            "title": "Senior Analyst - Procurement",
+            "url": "https://www.linkedin.com/jobs/view/4192123178",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "203117491",
+            "location": "Coimbatore, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.310Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Integrated Resources, Inc ( IRI )",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQF_WNrLwIqPOA/company-logo_100_100/B4DZViHwP1HIAQ-/0/1741107956936/integrated_resources_inc_logo?e=1749081600&v=beta&t=U_U1T70G0db0o4AfTtu1qfs93dlik2GBeoGIuBIFxtw",
+                "url": "https://www.linkedin.com/company/integrated-resources-inc/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c94",
+            "jobId": "4193117980",
+            "title": "IT Admin Associate (Fresher local)",
+            "url": "https://www.linkedin.com/jobs/view/4193117980",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "472487371",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.311Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "HireGenie | Finance Recruitment Expert",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHYt_uLS-JosA/company-logo_200_200/company-logo_200_200/0/1664644872679/hiregenie_logo?e=1749081600&v=beta&t=7GZLAI5AZoISBbJrfswUc4mGES1ZNRRYwg9cvWX4S8Y",
+                "url": "https://www.linkedin.com/company/hiregenie/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c95",
+            "jobId": "4179406362",
+            "title": "Lead Generation Specialist",
+            "url": "https://www.linkedin.com/jobs/view/4179406362",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "678999818",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.311Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Halliburton",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFtpbHFAokMwQ/company-logo_200_200/company-logo_200_200/0/1654719813092/halliburton_logo?e=1749081600&v=beta&t=i8Trs6VuHatLX-ZGv0sReSus9u0bbyhkVM-4EuiT9Ac",
+                "url": "https://www.linkedin.com/company/halliburton/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c96",
+            "jobId": "4193060310",
+            "title": "Software QA, Assoc",
+            "url": "https://www.linkedin.com/jobs/view/4193060310",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.312Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pratiti Technologies",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGQZTs1rHrZgQ/company-logo_200_200/company-logo_200_200/0/1630627048610/pratiti_technologies_logo?e=1749081600&v=beta&t=EvKzT1i-4cuDattY7JzCBCgQGhOXpoInRGnsJDqDJEM",
+                "url": "https://www.linkedin.com/company/pratiti-technologies/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c97",
+            "jobId": "4190935004",
+            "title": "Sr. Java Developer",
+            "url": "https://www.linkedin.com/jobs/view/4190935004",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.312Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Amazon",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHTvZwCx4p2Qg/company-logo_200_200/company-logo_200_200/0/1630640869849/amazon_logo?e=1749081600&v=beta&t=KiBaYW2war43K_4DL4Xx9ApbA5EVULdKl7PDNtFUpLY",
+                "url": "https://www.linkedin.com/company/amazon/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c98",
+            "jobId": "4198091269",
+            "title": "Recruitment Coordinator - 12 Month Contract",
+            "url": "https://www.linkedin.com/jobs/view/4198091269",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "355872060",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.312Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "think insurancethinkvineetsumansaini",
+                "logo": "N/A",
+                "url": "N/A"
+            },
+            "_id": "67ec64a78fef48589ffc2c99",
+            "jobId": "4191639179",
+            "title": "sevay executive",
+            "url": "https://www.linkedin.com/jobs/view/4191639179",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "997521319",
+            "location": "Ambala, Haryana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.313Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Troopr Labs",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQGyzzIlSiu6Pg/company-logo_200_200/company-logo_200_200/0/1668065930880/troopr_logo?e=1749081600&v=beta&t=rwhp0RvjqQBUdzeUIPSAarfuDfYcSVjuzy7xHODfkCI",
+                "url": "https://www.linkedin.com/company/troopr/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c9a",
+            "jobId": "4194885689",
+            "title": "Product Designer- B2B",
+            "url": "https://www.linkedin.com/jobs/view/4194885689",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Bangalore Urban, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.313Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Northern Trust",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEhKPm5QIrRAQ/company-logo_200_200/company-logo_200_200/0/1663663012961/northern_trust_logo?e=1749081600&v=beta&t=icFULwiruYszm1E9WNnGd0OKBarzxDGQt5iK7yWOJaw",
+                "url": "https://www.linkedin.com/company/northern-trust/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c9b",
+            "jobId": "4192360537",
+            "title": "Accountant",
+            "url": "https://www.linkedin.com/jobs/view/4192360537",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "6581850",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.313Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Atlassian",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGeyLL6crkJKg/company-logo_200_200/company-logo_200_200/0/1735593604612/atlassian_logo?e=1749081600&v=beta&t=Kb3YgiRR4rVzxD4QecVJwj1dvTZk6dlW5m57cD3CJDA",
+                "url": "https://www.linkedin.com/company/atlassian/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c9c",
+            "jobId": "4197606189",
+            "title": "Senior Sourcer",
+            "url": "https://www.linkedin.com/jobs/view/4197606189",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "441060807",
+            "location": "Bengaluru, Karnataka, India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.314Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "bloomfieldx",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQHevApkhaom8g/company-logo_200_200/company-logo_200_200/0/1738215739122/bloomfieldx_logo?e=1749081600&v=beta&t=jhbIS7R-s4JAK58qrluDxD0p57yYHpBjQPt6zAGkptM",
+                "url": "https://www.linkedin.com/company/bloomfieldx/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c9d",
+            "jobId": "4191539179",
+            "title": "Software Product Lead  | Exp:4 to 5 yrs",
+            "url": "https://www.linkedin.com/jobs/view/4191539179",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Thanjavur, Tamil Nadu, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "₹700K/yr - ₹1M/yr",
+            "dateFetched": "2025-04-01T22:11:51.314Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Freshworks",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQE91pHKG3yvnw/company-logo_200_200/company-logo_200_200/0/1666790263596/freshworks_inc_logo?e=1749081600&v=beta&t=cqQpp0nlT15bWrajMTcGHqFOiHrhV6muyTo3j9rxPJg",
+                "url": "https://www.linkedin.com/company/freshworks-inc/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c9e",
+            "jobId": "4197825125",
+            "title": "Staff Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4197825125",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "304071397",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.315Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Sedani Digital Private Limited",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQE2ukosm8g1Hg/company-logo_200_200/company-logo_200_200/0/1630630692156/sedani_digital_private_limited_logo?e=1749081600&v=beta&t=XaTb12ZmyzAA9x7LzNerWnuODnWpsKO_DPV8mr8xSyE",
+                "url": "https://www.linkedin.com/company/sedani-digital-private-limited/life"
+            },
+            "_id": "67ec64a78fef48589ffc2c9f",
+            "jobId": "4193991061",
+            "title": "Human Resources (HR) Internship in Ahmedabad",
+            "url": "https://www.linkedin.com/jobs/view/4193991061",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Ahmedabad, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.315Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Podar Education Network",
+                "logo": "https://media.licdn.com/dms/image/v2/C510BAQHKCRiTpocUFw/company-logo_200_200/company-logo_200_200/0/1630585302043/podar_education_network_pvt_ltd_logo?e=1749081600&v=beta&t=btSUKeCHIu_fZcuk7ys-xbYjuo9TBgjnT2dFBJFMGew",
+                "url": "https://www.linkedin.com/company/podar-education-network-pvt-ltd/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca0",
+            "jobId": "4193220964",
+            "title": "Administrative Officer",
+            "url": "https://www.linkedin.com/jobs/view/4193220964",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Shimoga, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "₹20K/month - ₹35K/month",
+            "dateFetched": "2025-04-01T22:11:51.315Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Schneider Electric",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGNfeTPCu6Z-w/company-logo_200_200/company-logo_200_200/0/1631312208065?e=1749081600&v=beta&t=5GYpejJ8IkesIbwGrGsdJSXwS1BGBQT-CcjH_PSQme8",
+                "url": "https://www.linkedin.com/company/schneider-electric/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca1",
+            "jobId": "4196932221",
+            "title": "Manager - Inside Sales",
+            "url": "https://www.linkedin.com/jobs/view/4196932221",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "27704496",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.315Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "PhonePe",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHLOrShxWW33g/company-logo_200_200/company-logo_200_200/0/1732870614932/phonepe_internet_logo?e=1749081600&v=beta&t=8T_0Je0i9UhOUuOdXAwcB5BIJeWF3WgCk5uqw9-aUc4",
+                "url": "https://www.linkedin.com/company/phonepe-internet/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca2",
+            "jobId": "4181119356",
+            "title": "UI Visual Designer",
+            "url": "https://www.linkedin.com/jobs/view/4181119356",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "276498860",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.317Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "CAE",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGyxpIB-rWe4Q/company-logo_200_200/company-logo_200_200/0/1719806773713/cae_logo?e=1749081600&v=beta&t=eeBWpEipwEfDw_qE2Q3t9gw2WWscsqXi92z0euoGI4U",
+                "url": "https://www.linkedin.com/company/cae/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca3",
+            "jobId": "4195468941",
+            "title": "Senior Technical Business Analyst-EN",
+            "url": "https://www.linkedin.com/jobs/view/4195468941",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "198688569",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.317Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pinakiin Designs",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFZQ_oYjeDaEg/company-logo_200_200/company-logo_200_200/0/1656581560838?e=1749081600&v=beta&t=DWOaQTibWSGdSP-AeK0UglXrRRpzTRZCH7rsx1ws06w",
+                "url": "https://www.linkedin.com/company/pinakiin-designs/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca4",
+            "jobId": "4193857171",
+            "title": "Senior Interior Designer",
+            "url": "https://www.linkedin.com/jobs/view/4193857171",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "212957479",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.317Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Elastic",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQFcGg7KRaS8Uw/company-logo_200_200/company-logo_200_200/0/1690905620356/elastic_co_logo?e=1749081600&v=beta&t=sW91jVmgUtdQlKsalJ6G262dkvZ-KExcOfQyL3kjv1A",
+                "url": "https://www.linkedin.com/company/elastic-co/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca5",
+            "jobId": "4171837409",
+            "title": "Technical Support Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4171837409",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "326988065",
+            "location": "Bengaluru, Karnataka, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.317Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Mentorpal.ai Tech Hiring",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQEd6n0cMaM0cw/company-logo_200_200/company-logo_200_200/0/1738819647132/mentorpal_logo?e=1749081600&v=beta&t=ztbd-pbrMxLo8AXCjuSm4MSMqfYxqmifp8FTkPK4lZA",
+                "url": "https://www.linkedin.com/company/mentorpal/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca6",
+            "jobId": "4191859380",
+            "title": "Interesting Job Opportunity: Senior Full Stack Engineer - Python/Javascript",
+            "url": "https://www.linkedin.com/jobs/view/4191859380",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Mumbai Metropolitan Region (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.321Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "IBM",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGiz5ecgpCtkA/company-logo_200_200/company-logo_200_200/0/1688684715866/ibm_logo?e=1749081600&v=beta&t=B5eYafbwJNb4tYdrMvUgolm9lpS_oqyIfZQo8hV615k",
+                "url": "https://www.linkedin.com/company/ibm/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca7",
+            "jobId": "4161986468",
+            "title": "SDE1 (Software Developer )",
+            "url": "https://www.linkedin.com/jobs/view/4161986468",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "177799803",
+            "location": "Bengaluru, Karnataka, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.321Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Accelya",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQF0IvLOjQjblw/company-logo_200_200/company-logo_200_200/0/1630422222125/accelya_logo?e=1749081600&v=beta&t=nKHWXBFJkp8sDQ0HQuBpkPwjXWNZXeWaG_PYgwZ6_Lo",
+                "url": "https://www.linkedin.com/company/accelya/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca8",
+            "jobId": "4195801655",
+            "title": "Specialist- Software Development- DXC",
+            "url": "https://www.linkedin.com/jobs/view/4195801655",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "403060355",
+            "location": "Pune/Pimpri-Chinchwad Area (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.322Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Instabase",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGmZTYH2wCL6w/company-logo_200_200/company-logo_200_200/0/1686241641465/instabase_logo?e=1749081600&v=beta&t=9eqhpTOiRGR9BQy31vwj0xA6NK8FDGD4ExWNycKHHRA",
+                "url": "https://www.linkedin.com/company/instabase/life"
+            },
+            "_id": "67ec64a78fef48589ffc2ca9",
+            "jobId": "4197401445",
+            "title": "Product Manager - AI Hub Chatbots and Search (Senior Level)",
+            "url": "https://www.linkedin.com/jobs/view/4197401445",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "684014499",
+            "location": "Bengaluru, Karnataka, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.323Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Vraj Softwares",
+                "logo": "https://media.licdn.com/dms/image/v2/C510BAQHpkkYs91bHFQ/company-logo_200_200/company-logo_200_200/0/1631338114606?e=1749081600&v=beta&t=IE0ep2UO8fgvzfmh1jvFFD4AHbG52SGUTkJcqBeQkZ4",
+                "url": "https://www.linkedin.com/company/vraj-webs/life"
+            },
+            "_id": "67ec64a78fef48589ffc2caa",
+            "jobId": "4194521158",
+            "title": "Telecaller in Vadodara",
+            "url": "https://www.linkedin.com/jobs/view/4194521158",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Vadodara, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.323Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Pratiti",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQF3wF0-AZK06A/company-logo_200_200/company-logo_200_200/0/1725545409190/pratiti_centre_for_mental_health_logo?e=1749081600&v=beta&t=mIpjjZyNBdEMN0SmEtSH5YmKH-vyoISDaUh2Di7gsX4",
+                "url": "https://www.linkedin.com/company/pratiti-centre-for-mental-health/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cab",
+            "jobId": "4196158642",
+            "title": "Java Developer - Spring Frameworks",
+            "url": "https://www.linkedin.com/jobs/view/4196158642",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.324Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "SSAM SOFTWARES",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEF4X6GA3eZYg/company-logo_200_200/company-logo_200_200/0/1631321612789?e=1749081600&v=beta&t=cmhKW-SLt2ZKQ6JeqUdKFM220Fw59BA4rrdCvfSQ014",
+                "url": "https://www.linkedin.com/company/ssam-softwares-india/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cac",
+            "jobId": "4193624210",
+            "title": "PHP Development Internship in Indore",
+            "url": "https://www.linkedin.com/jobs/view/4193624210",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Indore, Madhya Pradesh, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.325Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Lowe's India",
+                "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQHoNPNGRZYG-w/company-logo_200_200/company-logo_200_200/0/1630617454317/lowes_india_logo?e=1749081600&v=beta&t=ntwiKKVYJ9eQ_iFwekC0Hx90bv7cLTIkHryS4esF0kU",
+                "url": "https://www.linkedin.com/company/lowe-s-india/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cad",
+            "jobId": "4179637388",
+            "title": "Creative Designer",
+            "url": "https://www.linkedin.com/jobs/view/4179637388",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "14262607",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.325Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Santronix",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEZJ_Zixv_JrQ/company-logo_200_200/company-logo_200_200/0/1630641872447/santronix_computers_logo?e=1749081600&v=beta&t=w8w3vhcgvLdqTGiHpzBZOcZCB7VUk-tYzFGAH11tzM0",
+                "url": "https://www.linkedin.com/company/santronix-computers/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cae",
+            "jobId": "4193617965",
+            "title": "Software Sales Executive Internship in Jalgaon",
+            "url": "https://www.linkedin.com/jobs/view/4193617965",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Jalgaon, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.325Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Google",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHiNSL4Or29cg/company-logo_200_200/company-logo_200_200/0/1631311446380?e=1749081600&v=beta&t=NGmpIs-BhwHCIoXtxbK5hH_oKvx39ivWIbvhMlxr8hg",
+                "url": "https://www.linkedin.com/company/google/life"
+            },
+            "_id": "67ec64a78fef48589ffc2caf",
+            "jobId": "4176411964",
+            "title": "Staff Software Engineer, Google Cloud",
+            "url": "https://www.linkedin.com/jobs/view/4176411964",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "29326500",
+            "location": "Hyderabad, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.326Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Virtusa",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQGEPXDEIb7QDA/company-logo_200_200/company-logo_200_200/0/1682334528377/virtusa_logo?e=1749081600&v=beta&t=UTJ8E2hQEyepINoL7HOH9aZ2wvy1_oTKYaeYqe_144U",
+                "url": "https://www.linkedin.com/company/virtusa/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb0",
+            "jobId": "4192708781",
+            "title": "Full stack Java",
+            "url": "https://www.linkedin.com/jobs/view/4192708781",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "96556365",
+            "location": "Pune, Maharashtra, India (Hybrid)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.326Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "ACCA Careers",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQE65WisudvQSg/company-logo_200_200/company-logo_200_200/0/1630532074357/acca_careers_logo?e=1749081600&v=beta&t=Z5b_OCsZ6tUQnGy2X3wiuguBReFxCPevI2KMoBT8m34",
+                "url": "https://www.linkedin.com/company/acca-careers/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb1",
+            "jobId": "4196327671",
+            "title": "Accountant",
+            "url": "https://www.linkedin.com/jobs/view/4196327671",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.326Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "eClerx",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHP_PMrtSdNEw/company-logo_200_200/B56ZVG7bNhGsAM-/0/1740651738522/eclerx_logo?e=1749081600&v=beta&t=sg-NfhzE8BijrmxSezJpZE2P2I_aaiS8C2CH5_O8S9o",
+                "url": "https://www.linkedin.com/company/eclerx/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb2",
+            "jobId": "3684182203",
+            "title": "Senior Analyst",
+            "url": "https://www.linkedin.com/jobs/view/3684182203",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "13086610",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.326Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "ACI Worldwide",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQF-RFXMrIE5VQ/company-logo_200_200/company-logo_200_200/0/1714485932662/aci_worldwide_logo?e=1749081600&v=beta&t=yKGxxAVVCEbIhwAX3uPUHsFotvFDLGbY_f5uLisymGw",
+                "url": "https://www.linkedin.com/company/aci-worldwide/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb3",
+            "jobId": "4177501576",
+            "title": "Software Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4177501576",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "53201813",
+            "location": "Pune, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.327Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Kohler Energy - Engines",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHhe_zMSAz38A/company-logo_200_200/company-logo_200_200/0/1726577480882/kohlerenergyengines_logo?e=1749081600&v=beta&t=yBa4tZHEvPzFJCIV0Mky_ivDyzTZ8Dbkn3IjRto0Dz4",
+                "url": "https://www.linkedin.com/company/kohlerenergyengines/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb4",
+            "jobId": "4192761464",
+            "title": "Sr. Engineer - Software Development",
+            "url": "https://www.linkedin.com/jobs/view/4192761464",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Malkajgiri, Telangana, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.327Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "PTC",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEpBSyxBzIEhw/company-logo_200_200/company-logo_200_200/0/1719854960782/ptcinc_logo?e=1749081600&v=beta&t=Dj7TqTJGmAhKHX-XNCz9qnp8gJt0lEDSp9THK8M-0iI",
+                "url": "https://www.linkedin.com/company/ptcinc/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb5",
+            "jobId": "4175868588",
+            "title": "Software Consultant - Golang Developer",
+            "url": "https://www.linkedin.com/jobs/view/4175868588",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "70232186",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.327Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Larsen & Toubro",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFnEYpR8MlYsA/company-logo_200_200/company-logo_200_200/0/1631300737623?e=1749081600&v=beta&t=Qjk7-8FQ8A2RWmziB79N7l9PdZSvkMtqpCq0EFy-qcY",
+                "url": "https://www.linkedin.com/company/larsen-&-toubro-limited/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb6",
+            "jobId": "4149390493",
+            "title": "Procurement Inspection Engineer E&I",
+            "url": "https://www.linkedin.com/jobs/view/4149390493",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "39587729",
+            "location": "Mumbai, Maharashtra, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.327Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Esko",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEx5sSYo-xfug/company-logo_200_200/company-logo_200_200/0/1711126702508/esko_logo?e=1749081600&v=beta&t=Wzov6j3uL8tuzpbj8qkjkShdfeWckee5azCss9IltRs",
+                "url": "https://www.linkedin.com/company/esko/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb7",
+            "jobId": "4133635122",
+            "title": "Software Support Config Validators",
+            "url": "https://www.linkedin.com/jobs/view/4133635122",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "7982598",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.328Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "WayMore",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQF9pjdTxYZJMQ/company-logo_200_200/company-logo_200_200/0/1630516721465/waymore_io_logo?e=1749081600&v=beta&t=bovtaGOa1bwowBV7NfUL7kF3Cpwq8imKwe0XfuL9_YQ",
+                "url": "https://www.linkedin.com/company/waymore-io/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb8",
+            "jobId": "4196353436",
+            "title": "Technical Support Manager",
+            "url": "https://www.linkedin.com/jobs/view/4196353436",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "42444745",
+            "location": "Bengaluru, Karnataka, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.328Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "V3Cube",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQErmBmvspxmaw/company-logo_200_200/company-logo_200_200/0/1688031829258/v3cube_logo?e=1749081600&v=beta&t=IEpsn3WacqDaYgS9uBqZ717cjoPDosmoHVU1rtWPcoY",
+                "url": "https://www.linkedin.com/company/v3cube/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cb9",
+            "jobId": "4195072150",
+            "title": "Quality Analyst - Ahmedabad",
+            "url": "https://www.linkedin.com/jobs/view/4195072150",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "location": "Ahmedabad, Gujarat, India (On-site)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "₹200K/yr - ₹400K/yr",
+            "dateFetched": "2025-04-01T22:11:51.328Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "OpenGov Inc.",
+                "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGmHhbJOXCFPQ/company-logo_100_100/B4DZXI0doSHwAQ-/0/1742830951197/opengov_inc_logo?e=1749081600&v=beta&t=894X5RCr5wGfB914ukIEtV3hPSNzhXv29Bl6xqewW24",
+                "url": "https://www.linkedin.com/company/opengov-inc/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cba",
+            "jobId": "4193233815",
+            "title": "Sr. Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4193233815",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "68152358",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.328Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Allvue Systems",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQEiGfH19Y894g/company-logo_200_200/company-logo_200_200/0/1646336969868/allvuesystems_logo?e=1749081600&v=beta&t=D5-EdqClvFHtGoUPN3d1UQyGVVMNUH-bqwP3p7LCep0",
+                "url": "https://www.linkedin.com/company/allvuesystems/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cbb",
+            "jobId": "4175535679",
+            "title": "Associate Business Analyst",
+            "url": "https://www.linkedin.com/jobs/view/4175535679",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "18210204",
+            "location": "Pune, Maharashtra, India",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.329Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Appfire",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFyCwh95727oA/company-logo_200_200/company-logo_200_200/0/1630662508076/appfire_logo?e=1749081600&v=beta&t=7pz1NYIizi19t_QtWQMWolkISME8Z5KXtLB531KGa5o",
+                "url": "https://www.linkedin.com/company/appfire/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cbc",
+            "jobId": "4198284571",
+            "title": "Senior Product Support Engineer",
+            "url": "https://www.linkedin.com/jobs/view/4198284571",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "225320614",
+            "location": "India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.329Z",
+            "__v": 0
+        },
+        {
+            "company": {
+                "name": "Elevation Capital",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQHhzxaAXW1Rgw/company-logo_200_200/company-logo_200_200/0/1730884345501/elevationcap_logo?e=1749081600&v=beta&t=V_FpT4HJaDD16MfSiwxB0tWK9Wsw-KSaQ37oM9g2L9o",
+                "url": "https://www.linkedin.com/company/elevationcap/life"
+            },
+            "_id": "67ec64a78fef48589ffc2cbd",
+            "jobId": "4149202430",
+            "title": "Software Product Manager",
+            "url": "https://www.linkedin.com/jobs/view/4149202430",
+            "referenceId": "msPTc0ImWsKaonjPMpHV1g==",
+            "posterId": "180852689",
+            "location": "India (Remote)",
+            "type": "N/A",
+            "postDate": "N/A",
+            "benefits": "N/A",
+            "dateFetched": "2025-04-01T22:11:51.329Z",
+            "__v": 0
+        }
+    ]
+}
