@@ -32,6 +32,7 @@ import About from "./components/LandingPage/About";
 import Stats from "./components/LandingPage/Stats";
 import ContactUs from "./components/LandingPage/ContactUs";
 import Jobs from "./components/Post/Jobs";
+import JobDetails from "./components/Post/JobDetails";
 
 export default function RouterPage() {
   return (
@@ -69,6 +70,7 @@ export default function RouterPage() {
         <Route path="/stats" element={<Stats />} />
 
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/job/:id" element={<JobDetails />} />
 
       </Routes>
     </>
