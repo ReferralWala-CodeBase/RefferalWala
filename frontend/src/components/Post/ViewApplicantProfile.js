@@ -466,10 +466,11 @@ export default function ViewApplicantProfile() {
 
 
           {isModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            // z index changed from z-50 to pixels 
+            <div className="fixed inset-0 flex items-center justify-center z-20 bg-black bg-opacity-50">
               <div className="mx-4 relative bg-white rounded-lg shadow-lg w-100 max-h-[80vh] overflow-hidden">
                 {/* Sticky Header */}
-                <div className="sticky top-0 bg-white z-10 border-b rounded-t-lg">
+                <div className="sticky top-0 bg-white z-40 border-b rounded-t-lg">
                   {/* Close Icon */}
                   <button
                     onClick={() => {
