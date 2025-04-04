@@ -31,8 +31,8 @@ import Faq from "./components/LandingPage/Faq";
 import About from "./components/LandingPage/About";
 import Stats from "./components/LandingPage/Stats";
 import ContactUs from "./components/LandingPage/ContactUs";
-import Jobs from "./components/Post/Jobs";
-import JobDetails from "./components/Post/JobDetails";
+import Jobs from "./components/OpenJobs/Jobs";
+import JobDetails from "./components/OpenJobs/JobDetails";
 
 export default function RouterPage() {
   return (
