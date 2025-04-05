@@ -12,7 +12,8 @@ const cron = require('node-cron');
 const Notification = require('./models/Notification');
 const jobReportRoutes = require('./routes/jobReport');
 const locationRoutes = require('./routes/locationRoutes');
-const rapidRoutes = require('./routes/rapidJobRoutes');
+const rapidJobRoutes = require('./routes/rapidJobRoutes');
+const rapidInternshipRoutes = require('./routes/rapidInternshipRoutes');
 dotenv.config();
 require('./config/passport');
 
@@ -48,7 +49,8 @@ app.use('/contact', contactRoutes);
 app.use('/googleauth',authRoutes);
 app.use('/job-reports', jobReportRoutes);
 app.use('/locationlist',locationRoutes)
-app.use('/rapid', rapidRoutes);
+app.use('/rapidjob', rapidJobRoutes);
+app.use('/rapidinternship',rapidInternshipRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -6,7 +6,7 @@ async function fetchData(start) {
     method: 'GET',
     url: 'https://linkedin-api8.p.rapidapi.com/search-jobs-v2',
     params: {
-      keywords: 'Software',
+      keywords: 'Software Developers',
       locationId: '102713980',
       datePosted: 'pastWeek',
       start: start.toString(),
@@ -30,7 +30,7 @@ async function fetchData(start) {
 
 async function getRapidJobs(req, res) {
   let start = 0; 
-  const limit = 2; 
+  const limit = 4; 
   let allRapidJobs = []; 
 
   try {
@@ -64,7 +64,7 @@ async function getRapidJobs(req, res) {
           },
           location: job.location || 'N/A', 
           type: job.type || 'N/A',
-          postDate: job.postDate || 'N/A', 
+          postDate: job.postAt || 'N/A', 
           benefits: job.benefits || 'N/A', 
         }))
       );
