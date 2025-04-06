@@ -178,7 +178,7 @@ export default function ViewPostedJob() {
               onClick={() => { handleViewApplicants(jobId) }}
               className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-1 px-5 sm:px-7 text-[14px] sm:text-md font-light text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 items-center focus:ring-offset-2"
             >
-              View Applicants
+               View Applicants ({jobData.applicants?.length || 0})
             </button>
           </div>
 

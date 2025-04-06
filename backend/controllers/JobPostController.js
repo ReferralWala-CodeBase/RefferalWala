@@ -466,8 +466,6 @@ exports.deleteJobPost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log('Deleting job post with ID:', id);
-
     // Find the job post
     const jobPost = await JobPost.findById(id);
     if (!jobPost) {
@@ -683,7 +681,6 @@ exports.updateApplicantStatus = async (req, res) => {
           status: status,
         }  // Replace placeholders with actual values
       );
-      console.log(`Status update email sent to ${user.email}`);
     } catch (err) {
       console.error(`Failed to send status update email:`, err);
       return res.status(500).json({ error: 'Failed to send status update email.' });
@@ -740,7 +737,6 @@ exports.updateEmployeeDocument = async (req, res) => {
 exports.removeFromJobApplicants = async (req, res) => {
   try {
     const { userId } = req.body; // The ID of the user to be removed from applicants list
-    console.log(userId);
 
     // Find all JobPosts where the user is an applicant
     const jobPostsWithApplicant = await JobPost.find();

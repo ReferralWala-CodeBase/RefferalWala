@@ -37,6 +37,7 @@ export default function AppliedJobDetails() {
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [showWithdrawDialog, setShowWithdrawDialog] = useState(false);
     const cancelButtonRef = useRef(null);
+    const [missingFields, setMissingFields] = useState([]);
 
   const closeReportDialog = () => {
     toast.success("Post Reported", {
@@ -138,16 +139,18 @@ export default function AppliedJobDetails() {
       // Fetch the user profile
       const profile = await fetchProfileData();
 
-      // Check for profile completeness
-      if (
-        !profile.firstName ||
-        !profile.mobileNumber ||
-        !profile.aboutMe ||
-        !profile.resume
-      ) {
-        setProfileIncomplete(true); // Show dialog box for profile completion
-        return;
-      }
+      // Determine which fields are missing
+    const missingFields = [];
+    if (!profile.firstName) missingFields.push("Name");
+    if (!profile.mobileNumber) missingFields.push("Mobile Number");
+    if (!profile.aboutMe) missingFields.push("About Me");
+    if (!profile.resume) missingFields.push("Resume");
+
+    if (missingFields.length > 0) {
+      setMissingFields(missingFields); // Save state to show in modal
+      setProfileIncomplete(true);
+      return;
+    }
 
       // If profile is complete, proceed with job application
       const response = await fetch(`${Fronted_API_URL}/job/apply/${jobId}`, {
@@ -730,23 +733,29 @@ export default function AppliedJobDetails() {
         </div>
 
         {profileIncomplete && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
-              <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
-              <p className="mt-2 text-sm text-gray-600">
-                Please fill in your name, mobile number, about-me and upload your resume before applying for a job.
-              </p>
-              <div className="mt-4 flex justify-end">
-                <button
-                  onClick={() => navigate("/editprofile")}
-                  className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  Go to Profile
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+    <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
+      <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
+      <p className="mt-2 text-sm text-gray-600">
+        To increase your chances of getting selected, please complete your profile.
+      </p>
+      <ul className="mt-3 list-disc list-inside text-sm text-red-600">
+        {missingFields.map((field, index) => (
+          <li key={index}>{field} is missing</li>
+        ))}
+      </ul>
+      <div className="mt-4 flex justify-end">
+        <button
+          onClick={() => navigate("/editprofile")}
+          className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          Go to Profile
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       </div>
 

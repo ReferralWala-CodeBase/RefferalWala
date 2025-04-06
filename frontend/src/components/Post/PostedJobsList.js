@@ -191,7 +191,7 @@ export default function PostedJobsList() {
                               }}
                               className="text-indigo-600 hover:text-indigo-900 font-medium transition"
                             >
-                              View Applicants
+                              Applicants ({job.applicants?.length || 0})
                             </button>
                           </td>
                         </tr>
@@ -221,7 +221,7 @@ export default function PostedJobsList() {
 
                           <button onClick={() => handleViewApplicants(job)}
                             className="inline-flex cursor-pointer items-center gap-1 bg-blue-600 text-gray-100 text-[9px] font-normal px-3 py-1 rounded-full mb-2">
-                            View Applicants
+                             Applicants ({job.applicants?.length || 0})
                           </button>
 
                         </div>

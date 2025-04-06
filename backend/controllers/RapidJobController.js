@@ -20,7 +20,7 @@ async function fetchData(start) {
 
   try {
     const response = await axios.request(options);
-    console.log('API Response:', response.data); 
+  
     return response.data.data ? response.data.data : []; 
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -36,9 +36,8 @@ async function getRapidJobs(req, res) {
   try {
     // Fetch multiple pages by incrementing the 'start' value
     for (let i = 0; i < limit; i++) {
-      console.log('Fetching jobs with start value:', start); // Log the start value
+  
       const rapidJobs = await fetchData(start); 
-      console.log('Fetched jobs:', rapidJobs); 
 
       if (rapidJobs && rapidJobs.length > 0) {
         allRapidJobs = allRapidJobs.concat(rapidJobs); // Append jobs to the list
@@ -69,7 +68,6 @@ async function getRapidJobs(req, res) {
         }))
       );
 
-      console.log('Rapid Jobs successfully inserted into MongoDB');
     }
 
     res.json({
@@ -95,7 +93,7 @@ async function replaceLast100RapidJobs(req, res) {
       const deletedJobs = await RapidJob.find().sort({ _id: -1 }).limit(100); 
       if (deletedJobs.length > 0) {
         await RapidJob.deleteMany({ _id: { $in: deletedJobs.map(job => job._id) } }); 
-        console.log('Deleted last 100 jobs from MongoDB');
+     
       }
   
       // Fetch new job data
@@ -104,7 +102,7 @@ async function replaceLast100RapidJobs(req, res) {
       let newRapidJobs = [];
   
       for (let i = 0; i < limit; i++) {
-        console.log('Fetching new jobs with start value:', start); // Log the start value
+    // Log the start value
         const rapidJobs = await fetchData(start); // Fetch data for the current 'start' value
         if (rapidJobs && rapidJobs.length > 0) {
           newRapidJobs = newRapidJobs.concat(rapidJobs); // Append new jobs to the list
@@ -132,7 +130,7 @@ async function replaceLast100RapidJobs(req, res) {
             benefits: job.benefits || 'N/A',
           }))
         );
-        console.log('New Rapid Jobs successfully inserted into MongoDB');
+       
       }
   
       // Return success message

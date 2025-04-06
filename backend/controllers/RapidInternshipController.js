@@ -20,7 +20,6 @@ async function fetchData(start) {
 
   try {
     const response = await axios.request(options);
-    console.log('API Response:', response.data); 
     return response.data.data ? response.data.data : []; 
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -36,9 +35,9 @@ async function getRapidInternships(req, res) {
   try {
     // Fetch multiple pages by incrementing the 'start' value
     for (let i = 0; i < limit; i++) {
-      console.log('Fetching internships with start value:', start); // Log the start value
+     
       const rapidInternships = await fetchData(start); 
-      console.log('Fetched internships:', rapidInternships); 
+   
 
       if (rapidInternships && rapidInternships.length > 0) {
         allRapidInternships = allRapidInternships.concat(rapidInternships); // Append internships to the list
@@ -69,7 +68,7 @@ async function getRapidInternships(req, res) {
         }))
       );
 
-      console.log('Rapid Internships successfully inserted into MongoDB');
+   
     }
 
     res.json({
@@ -95,7 +94,7 @@ async function replaceLast100RapidInternships(req, res) {
       const deletedInternships = await RapidInternship.find().sort({ _id: -1 }).limit(100); 
       if (deletedInternships.length > 0) {
         await RapidInternship.deleteMany({ _id: { $in: deletedInternships.map(internship => internship._id) } }); 
-        console.log('Deleted last 100 internships from MongoDB');
+        
       }
   
       // Fetch new internship data
@@ -104,7 +103,7 @@ async function replaceLast100RapidInternships(req, res) {
       let newRapidInternships = [];
   
       for (let i = 0; i < limit; i++) {
-        console.log('Fetching new internships with start value:', start); // Log the start value
+      
         const rapidInternships = await fetchData(start); // Fetch data for the current 'start' value
         if (rapidInternships && rapidInternships.length > 0) {
           newRapidInternships = newRapidInternships.concat(rapidInternships); // Append new internships to the list
@@ -132,7 +131,7 @@ async function replaceLast100RapidInternships(req, res) {
             benefits: internship.benefits || 'N/A',
           }))
         );
-        console.log('New Rapid Internships successfully inserted into MongoDB');
+     
       }
   
       // Return success message

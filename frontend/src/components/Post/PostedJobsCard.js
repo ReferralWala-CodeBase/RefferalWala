@@ -52,6 +52,7 @@ export default function PostedJobsCard() {
   const Logo_Dev_Secret_key = process.env.REACT_APP_LOGO_DEV_SECRET_KEY; // Logo dev secret key
   const navigate = useNavigate();
   const [companySuggestions, setCompanySuggestions] = useState([]);
+  const hasFetched = useRef(false);
 
   const [isNavOpen, setIsNavOpen] = useState(false);
 
@@ -290,8 +291,11 @@ export default function PostedJobsCard() {
         console.error("Error fetching wishlist jobs:", error);
       }
     };
-    if (userId && bearerToken) fetchWishlistJobs(); // Ensure they exist before calling
-  }, [userId, bearerToken]);
+    if (!hasFetched.current && userId && bearerToken) {
+      hasFetched.current = true;
+      fetchWishlistJobs();
+    } // Ensure they exist before calling
+  }, []);
 
 
   const handleAddToWishlist = async (jobId) => {

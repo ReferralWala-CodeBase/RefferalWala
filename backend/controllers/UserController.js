@@ -121,7 +121,7 @@ exports.registerUser = async (req, res) => {
         'otp_template.html', // Replace with your OTP email template filename
         { otp } // Replace {{otp}} in the template with the generated OTP
       );
-      console.log(`OTP email sent to ${email}`);
+    
     } catch (err) {
       console.error(`Failed to send OTP email to ${email}:`, err);
       return res.status(500).json({ error: 'Failed to send OTP email.' });
@@ -137,14 +137,13 @@ exports.registerUser = async (req, res) => {
 
 exports.verifyOTP = async (req, res) => {
   try {
-    console.log('Received request body:', req.body);
+   
     const { email, otp } = req.body;
-    console.log('Email:', email);
-    console.log('OTP:', otp);
+ 
 
     const user = await User.findOne({ email });
     if (!user) {
-      console.log('User not found:', email);
+    
       return res.status(404).json({ error: 'User not found' });
     }
 
