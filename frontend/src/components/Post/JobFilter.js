@@ -4,7 +4,6 @@ const JobLocationFilter = ({ locations, onFilterChange }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedLocations, setSelectedLocations] = useState([]);
 
-  // Filter locations based on the search term
   const filteredLocations = locations.filter(location =>
     location.toLowerCase().includes(searchTerm.toLowerCase())
   );

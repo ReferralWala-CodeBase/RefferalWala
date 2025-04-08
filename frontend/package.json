@@ -35,6 +35,7 @@
     "slate-history": "^0.110.3",
     "slate-hyperscript": "^0.100.0",
     "slate-react": "^0.112.1",
+    "swiper": "^11.2.6",
     "tailwind-scrollbar": "^4.0.1",
     "web-vitals": "^2.1.4"
   },

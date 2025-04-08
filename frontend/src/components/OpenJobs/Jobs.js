@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
+import JobCardCarousel from "./JobReferralsCard";
 
 const Jobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -8,29 +9,31 @@ const Jobs = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
     const [showFull, setShowFull] = useState(false);
+    const [active, setActive] = useState("left");
+
     const Fronted_API_URL = process.env.REACT_APP_API_URL;
-    
+
     useEffect(() => {
         const fetchJobs = async () => {
             try {
                 const response = await fetch(`${Fronted_API_URL}/rapidjob/all-rapid-jobs`);
                 const data = await response.json();
-                setJobs(data.data); 
+                setJobs(data.data);
                 setSelectedJob(data.data[0]);
             } catch (error) {
                 console.error("Error fetching jobs:", error);
             }
         };
-    
+
         fetchJobs();
     }, []);
-    
+
     const filteredJobs = jobs.filter(
         (job) =>
             job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             job.company?.name?.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    
+
 
     return (
         <section>
@@ -54,6 +57,26 @@ const Jobs = () => {
                         </button>
                     </div>
 
+                    <div className="flex items-center justify-center py-2 mb-2">
+                        <div className="flex relative rounded-full overflow-hidden shadow-lg">
+                            <button
+                                onClick={() => setActive("left")}
+                                className={`px-6 py-1 text-white font-normal transition-all duration-300 ${active === "left" ? "bg-[#0f172a]" : "bg-[#1e293b]"
+                                    }`}
+                            >
+                                Jobs (FTE)
+                            </button>
+
+                            <button
+                                onClick={() => setActive("right")}
+                                className={`px-6 py-1 text-white font-normal transition-all duration-300 ${active === "right" ? "bg-[#2563eb]" : "bg-[#3b82f6]"
+                                    }`}
+                            >
+                                Internships
+                            </button>
+                        </div>
+                    </div>
+
                     <div className="space-y-1">
                         {filteredJobs.length > 0 ? (
                             filteredJobs?.map((job) => (
@@ -70,21 +93,15 @@ const Jobs = () => {
                                     className={`p-2 border-2 transition ease-in-out rounded-md hover:border-blue-500 cursor-pointer ${selectedJob?.id === job.id ? "bg-white" : "bg-white"
                                         }`}
                                 >
-
-
                                     <div className="flex justify-between items-center">
                                         <div className="flex items-center gap-3 p-2 bg-white">
-                                        <img
-  src={job.company?.logo || "https://via.placeholder.com/50"}
-  alt={job.company?.name}
-  className="w-8 h-8 object-cover rounded-full border border-gray-300"
-/>
-<h2 className="text-lg font-semibold text-gray-800">{job.title}</h2>
-   </div>
-
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="size-5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-                                        </svg>
+                                            <img
+                                                src={job.company?.logo || "https://via.placeholder.com/50"}
+                                                alt={job.company?.name}
+                                                className="w-8 h-8 object-cover rounded-full border border-gray-300"
+                                            />
+                                            <h2 className="text-lg font-semibold text-gray-800">{job.title}</h2>
+                                        </div>
 
                                     </div>
 
@@ -130,18 +147,16 @@ const Jobs = () => {
                             <header className="border-b pb-4">
                                 <div className="flex justify-between items-center">
                                     <div className="flex gap-2 items-center">
-                                    <img
-  src={selectedJob?.company?.logo || "https://via.placeholder.com/50"}
-  alt={selectedJob?.title}
-  className="w-16 h-16 object-cover rounded-full border border-gray-300"
-/>
+                                        <img
+                                            src={selectedJob?.company?.logo || "https://via.placeholder.com/50"}
+                                            alt={selectedJob?.title}
+                                            className="w-16 h-16 object-cover rounded-full border border-gray-300"
+                                        />
 
                                         <h1 className="text-4xl font-bold text-gray-900">{selectedJob?.title}</h1>
                                     </div>
                                     <div className="flex gap-2 items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="size-8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-                                        </svg>
+
                                         <a
                                             href={selectedJob?.url}
                                             target="_blank"
@@ -155,19 +170,27 @@ const Jobs = () => {
 
                                 </div>
 
-                                <p className="text-lg text-gray-600 mt-1">
-                                    <span className="font-semibold">  {selectedJob?.company?.name}</span> · {selectedJob?.location}
+                                <p className="text-lg text-gray-600 mt-3">
+                                    <span className="font-semibold"> 💻 {selectedJob?.company?.name}</span>
                                 </p>
+                                <p className="text-lg text-gray-600 mt-1"> 📍 {selectedJob?.location}</p>
                                 <div className="flex gap-2 items-center mt-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="size-4">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                                     </svg>
 
-                                    <p className="text-sm text-gray-500">Last updated: {selectedJob?.postDate}</p>
+                                    <p className="text-sm text-gray-500">
+                                        Last updated: {selectedJob?.postDate && new Date(selectedJob.postDate).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric'
+                                        })}
+                                    </p>
+
                                 </div>
                             </header>
 
-                            <section className="mt-6 grid grid-cols-2 gap-4">
+                            {/* <section className="mt-6 grid grid-cols-2 gap-4">
                                 <div>
                                     <p className="text-gray-500 text-sm">Employment Type</p>
                                     <p className="text-gray-900 font-medium">{selectedJob?.employmentType}</p>
@@ -184,22 +207,7 @@ const Jobs = () => {
                                     <p className="text-gray-500 text-sm">Application Deadline</p>
                                     <p className="text-gray-900 font-medium">{selectedJob?.applicationDeadline}</p>
                                 </div>
-                            </section>
-
-                            <section className="mt-6">
-                                <h3 className="text-xl font-semibold text-gray-800">Job Overview</h3>
-                                <p className={`mt-2 text-gray-700 leading-relaxed ${showFull ? "" : "line-clamp-2"}`}>
-                                    {selectedJob?.snippet}
-                                </p>
-                                {!showFull && (
-                                    <button
-                                        className="text-indigo-600 hover:underline mt-2"
-                                        onClick={() => setShowFull(true)}
-                                    >
-                                        Show More
-                                    </button>
-                                )}
-                            </section>
+                            </section> */}
 
                             {/* <section className="mt-6">
                                 <h3 className="text-xl font-semibold text-gray-800">Required Skills</h3>
@@ -211,7 +219,7 @@ const Jobs = () => {
                                     ))}
                                 </div>
                             </section> */}
-{/* 
+                            {/* 
                             <section className="mt-6">
                                 <h3 className="text-xl font-semibold text-gray-800">Responsibilities</h3>
                                 <ul className="mt-3 space-y-2 text-gray-700">
@@ -236,22 +244,18 @@ const Jobs = () => {
                                 </ul>
                             </section> */}
 
-                            <footer className="mt-4 flex items-center gap-6 border-t pt-2 pb-2">
-                                <a
-                                    href={selectedJob?.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-blue-600 text-white px-6 py-2 rounded-md text-lg font-medium transition hover:bg-blue-700"
-                                >
-                                    Apply Now
-                                </a>
+                            <footer className="mt-2 flex items-center gap-6 pt-2 pb-2">
+
                                 <a
                                     href={`mailto:${selectedJob?.contactEmail}`}
                                     className="text-blue-600 text-lg font-medium underline hover:text-blue-800"
                                 >
-                                    Contact Recruiter
+                                    Get Reffered
                                 </a>
                             </footer>
+
+                            <JobCardCarousel />
+
                         </div>
                     )}
                 </main>
