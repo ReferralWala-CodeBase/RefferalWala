@@ -10,7 +10,7 @@ import Loader from '../Loader';
 import { FaTimes } from "react-icons/fa";
 import { UserPlus, UserX } from "lucide-react";
 import { Dialog, Transition } from '@headlessui/react';
-import { ExclamationTriangleIcon, DocumentArrowDownIcon } from "@heroicons/react/24/solid";
+import { ExclamationTriangleIcon, DocumentArrowDownIcon ,BuildingOfficeIcon} from "@heroicons/react/24/solid";
 import ReportJob from './ReportJob';
 
 export default function AppliedJobDetails() {
@@ -38,6 +38,7 @@ export default function AppliedJobDetails() {
   const [showWithdrawDialog, setShowWithdrawDialog] = useState(false);
     const cancelButtonRef = useRef(null);
     const [missingFields, setMissingFields] = useState([]);
+    const [imgError, setImgError] = useState(false);
 
   const closeReportDialog = () => {
     toast.success("Post Reported", {
@@ -644,7 +645,18 @@ export default function AppliedJobDetails() {
                 <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
                   <div class="space-y-4">
                     <div class="flex space-x-4 gap-[20%]">
-                      <img class="h-24 w-24 border-4 border-blue-700 rounded-full" src={jobData?.companyLogoUrl} alt="Company" />
+                    <div className="w-24 h-24 rounded-full border-4 border-blue-700 flex items-center justify-center bg-blue-100">
+  {!imgError && jobData?.companyLogoUrl ? (
+    <img
+      className="w-full h-full rounded-full object-cover"
+      src={jobData.companyLogoUrl}
+      alt="Company"
+      onError={() => setImgError(true)}
+    />
+  ) : (
+    <BuildingOfficeIcon className="w-10 h-10 text-blue-600" />
+  )}
+</div>
                       <div className="flex flex-col">
                         <dl class="block sm:hidden">
                           <dt class="mb-1 text-gray-700 font-normal">Job ID</dt>
