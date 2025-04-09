@@ -93,7 +93,7 @@ const Jobs = () => {
                                     onClick={() => setActive("left")}
                                     className={`px-6 py-2 font-medium transition-all duration-300 
           ${active === "left"
-                                            ? "bg-[#0f172a] text-white"
+                                            ? "bg-[#2563eb] text-white"
                                             : "bg-transparent text-gray-700 hover:bg-gray-300"
                                         }`}
                                 >
