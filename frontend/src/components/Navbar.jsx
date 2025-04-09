@@ -16,8 +16,9 @@ import {
   UserIcon,
   UserGroupIcon,
   InformationCircleIcon,
-  HomeIcon
+  HomeIcon,
 } from "@heroicons/react/24/outline";
+import { BriefcaseIcon } from "lucide-react";
 
 const navigation = [
   { name: "Login", href: "/user-login", current: true },
@@ -142,8 +143,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   const userId = localStorage.getItem("userId");
   const filteredSidenavigationLogout = loggedIn
     ? sidenavigationlogout.filter(
-      (item) => item.name !== "Login" && item.name !== "Sign up"
-    )
+        (item) => item.name !== "Login" && item.name !== "Sign up"
+      )
     : sidenavigationlogout;
 
   useEffect(() => {
@@ -250,8 +251,6 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   //         navigate("/search", { state: { userData: userResults } });
   //       }
   //     }
-
-
 
   //     setSearchResults([...jobResults, ...userResults]); // Optional: Store results if needed
   //   } catch (error) {
@@ -398,37 +397,44 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                   </div>
                 </div> */}
 
-   <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
-                <div className="w-full sm:max-w-sm">
-                  <label htmlFor="search" className="sr-only">
-                    Search
-                  </label>
-                  <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <MagnifyingGlassIcon
-                        className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
-                        aria-hidden="true"
+                <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
+                  <div className="w-full sm:max-w-sm">
+                    <label htmlFor="search" className="sr-only">
+                      Search
+                    </label>
+                    <div className="relative">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <MagnifyingGlassIcon
+                          className="h-5 w-5 text-gray-500 group-hover:text-indigo-500 transition duration-300"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <input
+                        id="search"
+                        name="search"
+                        className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
+                        placeholder="Search Jobs and People.."
+                        type="search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleSearch();
+                          }
+                        }}
                       />
                     </div>
-                    <input
-                      id="search"
-                      name="search"
-                      className="block w-full rounded-full border-0 bg-gradient-to-r from-indigo-50 to-white py-1 pl-10 pr-3 text-gray-900 shadow-md ring-1 ring-gray-300 focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-300 hover:ring-indigo-400 focus:shadow-lg"
-                      placeholder="Search Jobs and People.."
-                      type="search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleSearch();
-                        }
-                      }}
-                    />
                   </div>
                 </div>
-              </div>
 
                 <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
+                  <Link to={"/jobs"}>
+                    <button className="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-semibold rounded-full shadow hover:scale-105 hover:shadow-md transition-all duration-300 mr-2">
+                      <BriefcaseIcon className="w-4 h-4" />
+                      Jobs
+                    </button>
+                  </Link>
+
                   <div className="flex-shrink-0 mr-2">
                     <button
                       onClick={() => {
@@ -454,7 +460,10 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                       type="button"
                       className="relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
                     >
-                      <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                      <PlusIcon
+                        className="-ml-0.5 h-5 w-5"
+                        aria-hidden="true"
+                      />
                       Post Job
                     </button>
                   </div>
@@ -728,7 +737,8 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                                         )
                                       }
                                     >
-                                      {notification.message || "New Notification"}
+                                      {notification.message ||
+                                        "New Notification"}
                                     </li>
                                   ))}
                                 </ul>
@@ -746,7 +756,6 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 </div>
               </Dialog>
             </Transition.Root>
-
           </>
         )}
       </Disclosure>
