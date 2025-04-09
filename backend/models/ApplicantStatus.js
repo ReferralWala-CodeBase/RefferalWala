@@ -26,6 +26,12 @@ const ApplicantStatus = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  autoConfirmed: {
+    type: Boolean,
+    default: false,
+  }
+}, {
+  timestamps: true
 });
 
 module.exports = mongoose.model('ApplicantStatus', ApplicantStatus);

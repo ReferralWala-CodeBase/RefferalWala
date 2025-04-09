@@ -14,6 +14,8 @@ const jobReportRoutes = require('./routes/jobReport');
 const locationRoutes = require('./routes/locationRoutes');
 const rapidJobRoutes = require('./routes/rapidJobRoutes');
 const rapidInternshipRoutes = require('./routes/rapidInternshipRoutes');
+const autoConfirmReferrals = require('./cron/autoConfirm');
+
 dotenv.config();
 require('./config/passport');
 
@@ -39,6 +41,21 @@ cron.schedule('0 0 * * *', async () => {
       console.error('Error deleting old notifications:', err.message);
     }
   });
+
+  // Runs daily at midnight to auto-confirm applicants
+cron.schedule('0 0 * * *', async () => {
+  try {
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    await Notification.deleteMany({ createdAt: { $lt: sevenDaysAgo } });
+    console.log('Old notifications deleted successfully.');
+  } catch (err) {
+    console.error('Error deleting old notifications:', err.message);
+  }
+});
+
+// Auto-confirm referrals after 3 days if only one side uploaded a document
+cron.schedule('0 0 * * *', autoConfirmReferrals);
+
 
 app.get('/', (req, res) => {
     res.send('Server Running Successfully');

@@ -347,8 +347,8 @@ export default function ViewApplicantProfile() {
                     >
                       <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                         <div className="sm:flex sm:items-start">
-                          <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <ExclamationTriangleIcon className="h-6 w-6 text-yellow-600" aria-hidden="true" />
+                          <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <ExclamationTriangleIcon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
                           </div>
                           <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                             <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
@@ -357,7 +357,10 @@ export default function ViewApplicantProfile() {
                             <div className="mt-2">
                               <p className="text-sm text-gray-500">
                                 Are you sure you want to change the status to{" "}
-                                <strong className="text-gray-900">{tempStatus}</strong>?
+                                <strong className="text-indigo-900">
+  {tempStatus.charAt(0).toUpperCase() + tempStatus.slice(1)}
+</strong>
+
                               </p>
                               {tempStatus === "selected" && (
                                 <p className="mt-2 text-sm font-bold text-red-600">
@@ -370,7 +373,7 @@ export default function ViewApplicantProfile() {
                         <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                           <button
                             type="button"
-                            className="inline-flex w-full justify-center rounded-md bg-yellow-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 sm:ml-3 sm:w-auto"
+                            className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto"
                             onClick={confirmChange}
                             disabled={updatingStatus}
                           >
@@ -393,9 +396,9 @@ export default function ViewApplicantProfile() {
 
             {/* File Uploading */}
             {isDialogOpen && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                  <h2 className="text-lg font-semibold mb-4">Uploading Select Document</h2>
+                  <h2 className="text-lg font-semibold mb-4"> Select Document</h2>
                   <input
                     type="file"
                     accept="image/*,application/pdf"
@@ -427,7 +430,7 @@ export default function ViewApplicantProfile() {
               <div className='flex'>
                 {isFollowing && (
                   <button onClick={handleShowJob} className="mr-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-xs sm:text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    View Job Posted
+                    User's Posted Jobs
                   </button>
                 )}
                 {/* <button
@@ -662,21 +665,13 @@ export default function ViewApplicantProfile() {
               <div className="w-full max-w-5xl lg:mx-2 px-3 md:px-6 py-4 md:py-8 rounded-lg bg-white relative">
                 {/* Follow/Unfollow Button (Top-Right) */}
                 <button
-                  onClick={handleFollowUnfollow}
-                  className="absolute top-3 right-3 text-white bg-blue-700 p-2 rounded-full shadow-md transition hover:bg-gray-100 z-20"
-                >
-                  {isFollowing ? <UserX size={18} /> : <UserPlus size={18} />}
-                </button>
+  onClick={handleFollowUnfollow}
+  className="absolute top-3 right-3 text-white bg-blue-700 p-2 rounded-full shadow-md transition hover:bg-blue-800 z-20"
+>
+  {isFollowing ? <UserX size={18} /> : <UserPlus size={18} />}
+</button>
 
-                {/* View Job Posted Button (Right next to Follow/Unfollow) */}
-                {/* {isFollowing && (
-                  <button
-                    onClick={handleShowJob}
-                    className="absolute top-3 right-14 text-sm items-center px-4 py-1 rounded-full bg-blue-500 text-white "
-                  >
-                    Posted Jobs
-                  </button>
-                )} */}
+
 
                 {/* Conditionally Show Modal */}
                 {isFollowing && isModalOpen && (

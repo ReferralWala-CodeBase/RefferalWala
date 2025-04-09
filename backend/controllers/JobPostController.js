@@ -647,16 +647,22 @@ exports.updateApplicantStatus = async (req, res) => {
     }
 
     // Update the status
-    applicantStatus.status = status;
-    applicantStatus.employer_doc = uploadedFileUrl;
-    await applicantStatus.save();
+ // Update the status and employer document
+applicantStatus.status = status;
+if (uploadedFileUrl) {
+  applicantStatus.employer_doc = uploadedFileUrl;
+}
+await applicantStatus.save();
 
-    if (uploadedFileUrl) {
-      // Find the user and increment the hiresCount by 1
-      await User.findByIdAndUpdate(applicantId, {
-        $inc: { getreferral: 1 } // Increment the hiresCount field by 1
-      });
-    }
+// Check if both docs exist, and autoConfirm is false
+if (applicantStatus.employer_doc && applicantStatus.employee_doc && !applicantStatus.autoConfirmed) {
+  await User.findByIdAndUpdate(applicantId, { $inc: { getreferral: 1 } });
+  await User.findByIdAndUpdate(jobPost.user, { $inc: { givereferral: 1 } });
+
+  applicantStatus.autoConfirmed = true;
+  await applicantStatus.save();
+}
+
 
     // Optionally, create a notification about the status change
     const user = await User.findById(applicantId);
@@ -722,10 +728,13 @@ exports.updateEmployeeDocument = async (req, res) => {
     const jobPosterUserId = job.user; // Assuming the job model has a field 'userId' referring to the poster's user jobPostId
 
     // Increment the referralsCount of the job poster by 1
-    await User.findByIdAndUpdate(jobPosterUserId, {
-      $inc: { givereferral: 1 } // Increment the givereferral by 1
-    }, { new: true }); // The 'new' option returns the updated document
-
+    if (applicantStatus.employer_doc && applicantStatus.employee_doc && !applicantStatus.autoConfirmed) {
+      await User.findByIdAndUpdate(userId, { $inc: { getreferral: 1 } });
+      await User.findByIdAndUpdate(job.user, { $inc: { givereferral: 1 } });
+    
+      applicantStatus.autoConfirmed = true;
+      await applicantStatus.save();
+    }
     res.status(200).json({ message: "Document updated successfully", documentUrl });
   } catch (error) {
     console.error("Error updating document:", error);

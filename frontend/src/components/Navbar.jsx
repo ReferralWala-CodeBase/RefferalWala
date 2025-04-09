@@ -106,7 +106,7 @@ const teams = [
   },
   {
     id: 5,
-    name: "View Jobs",
+    name: "View External Jobs",
     href: "/jobs",
     initial: "J",
     current: false,
@@ -117,7 +117,7 @@ const sidenavigationlogout = [
   // { name: "Homepage", href: "/", icon: HomeIcon, current: false },
   { name: "Login", icon: KeyIcon, href: "/user-login" },
   { name: "Sign up", icon: IdentificationIcon, href: "/signup" },
-  { name: "View Jobs", icon: IdentificationIcon, href: "/jobs" },
+  { name: "View External Jobs", icon: IdentificationIcon, href: "/jobs" },
   { name: "About Us", icon: InformationCircleIcon, href: "/about-us" },
   { name: "Contact Us", icon: PhoneIcon, href: "/contact-us" },
   { name: "Privacy Policy", icon: ShieldCheckIcon, href: "/privacy-policy" },
