@@ -346,7 +346,7 @@ export default function PostJob() {
           <SidebarNavigation />
         </div>
         <div className="m-auto w-full md:w-4/4 px-2 sm:px-6 mx-auto">
-          <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Post a New Job</h3>
+          <h3 className="mt-3 text-base font-semibold leading-7 text-gray-900">Refer a Job</h3>
           <form
             onSubmit={handleJobPostSubmit}
           >
@@ -628,7 +628,7 @@ export default function PostJob() {
                 className={`inline-flex justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 
     ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'}`}
               >
-                {loading ? "Checking Profile..." : "Post Job"}
+                {loading ? "Refer In Process..." : "Refer"}
               </button>
 
             </div>

@@ -35,14 +35,14 @@ const navigation = [
 const teams = [
   {
     id: 1,
-    name: "Post New Job",
+    name: "Refer",
     href: "/postjob",
-    initial: "P",
+    initial: "R",
     current: false,
   },
   {
     id: 2,
-    name: "View Posted Jobs",
+    name: "View Referred jobs",
     href: "/postedjobslist",
     initial: "V",
     current: false,

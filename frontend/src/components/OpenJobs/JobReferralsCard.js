@@ -58,8 +58,8 @@ const JobCardCarousel = () => {
 
             <div className="flex justify-end">
                 <Link to={`/`}>
-                    <button className="bg-blue-700 rounded-full px-4 py-1 text-xs text-white">
-                        View All Referrals
+                    <button className="bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-light transition hover:bg-blue-700">
+                        View all Referrals
                     </button>
                 </Link>
             </div>

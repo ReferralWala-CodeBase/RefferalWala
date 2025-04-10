@@ -2,6 +2,7 @@ const JobPost = require('../models/JobPost');
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 const ApplicantStatus = require('../models/ApplicantStatus');
+const UniqueJob = require('../models/UniqueJob');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
@@ -66,7 +67,7 @@ exports.createJobPost = async (req, res) => {
     });
 
     if (duplicateJob) {
-      return res.status(400).json({ message: 'You have already posted this job.' });
+      return res.status(400).json({ message: 'You have already posted this job with same Job ID.' });
     }
 
     // Create a new job post
@@ -94,6 +95,56 @@ exports.createJobPost = async (req, res) => {
     //To increatment the total job count 
     user.totalJobCount += 1;
     await user.save();
+
+    // Check if a UniqueJob already exists
+    const existingUniqueJob = await UniqueJob.findOne({
+      jobUniqueId,
+      companyName
+    });
+    
+
+if (!existingUniqueJob) {
+  // Create a new UniqueJob if not exists
+  const uniqueJob = new UniqueJob({
+    jobUniqueId,
+    latestJobPost: newJobPost._id,
+    jobRole,
+    companyName,
+    companyLogoUrl,
+    jobDescription,
+    experienceRequired,
+    location,
+    workMode,
+    employmentType,
+    ctc,
+    jobLink,
+    endDate,
+  });
+
+  await uniqueJob.save();
+} else {
+  // Compare endDate — update only if the new post has a later endDate
+  const isNewer =
+    !existingUniqueJob.endDate || !endDate || new Date(endDate) > existingUniqueJob.endDate;
+
+  if (isNewer) {
+    existingUniqueJob.latestJobPost = newJobPost._id;
+    existingUniqueJob.jobRole = jobRole;
+    existingUniqueJob.companyName = companyName;
+    existingUniqueJob.companyLogoUrl = companyLogoUrl;
+    existingUniqueJob.jobDescription = jobDescription;
+    existingUniqueJob.experienceRequired = experienceRequired;
+    existingUniqueJob.location = location;
+    existingUniqueJob.workMode = workMode;
+    existingUniqueJob.employmentType = employmentType;
+    existingUniqueJob.ctc = ctc;
+    existingUniqueJob.jobLink = jobLink;
+    existingUniqueJob.endDate = endDate;
+
+    await existingUniqueJob.save();
+  }
+}
+
 
     // Populate followers of the user who created the job post
     const populatedUser = await User.findById(userId).populate('followers');

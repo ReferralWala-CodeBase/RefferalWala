@@ -65,7 +65,7 @@ const Jobs = () => {
     return (
         <section>
             <Navbar />
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row h-screen bg-gray-50 md:p-4 p-1 gap-2 overflow-hidden">
+            <div className="max-w-8xl mx-auto flex flex-col lg:flex-row h-screen bg-gray-50 md:p-4 p-1 gap-2 overflow-hidden">
 
                 <aside className="w-full lg:w-1/3 bg-white p-2 h-full flex flex-col">
 
@@ -173,30 +173,29 @@ const Jobs = () => {
                     {selectedItem && (
                         <div className="max-w-4xl w-full">
                             <header className="border-b pb-4">
-                                <div className="flex justify-between items-center">
-                                    <div className="flex gap-2 items-center">
-                                        <img
-                                            src={selectedItem.company?.logo || "https://via.placeholder.com/50"}
-                                            alt={selectedItem?.title}
-                                            className="w-16 h-16 object-cover rounded-full border border-gray-300"
-                                        />
+                            <div className="flex justify-between items-start gap-4">
+    <div className="flex gap-2 flex-1 min-w-0">
+        <img
+            src={selectedItem.company?.logo || "https://via.placeholder.com/50"}
+            alt={selectedItem?.title}
+            className="w-16 h-16 object-cover rounded-full border border-gray-300 shrink-0 mt-1"
+        />
+        <h1 className="text-4xl font-bold text-gray-900 break-words leading-tight">
+            {selectedItem?.title}
+        </h1>
+    </div>
+    <div className="shrink-0 pt-3">
+        <a
+            href={selectedItem.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-light transition hover:bg-blue-700"
+        >
+            Apply Now
+        </a>
+    </div>
+</div>
 
-                                        <h1 className="text-4xl font-bold text-gray-900">{selectedItem?.title}</h1>
-                                    </div>
-                                    <div className="flex gap-2 items-center">
-
-                                        <a
-                                            href={selectedItem.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-light transition hover:bg-blue-700"
-                                        >
-                                            Apply Now
-                                        </a>
-
-                                    </div>
-
-                                </div>
 
                                 <p className="text-lg text-gray-600 mt-3">
                                     <span className="font-semibold"> 💻 {selectedItem?.company?.name}</span>

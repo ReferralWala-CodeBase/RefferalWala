@@ -46,7 +46,7 @@ const userNavigation = [
   //   current: false,
   // },
   {
-    name: "Post Job",
+    name: "Refer",
     href: "/postjob",
     icon: ChartPieIcon,
     current: false,
@@ -78,14 +78,14 @@ const sidenavigation = [
 const teams = [
   {
     id: 1,
-    name: "Post New Job",
+    name: "Refer",
     href: "/postjob",
     initial: "P",
     current: false,
   },
   {
     id: 2,
-    name: "View Posted Jobs",
+    name: "View Referred Jobs",
     href: "/postedjobslist",
     initial: "V",
     current: false,
@@ -466,13 +466,13 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                         navigate("/postjob");
                       }}
                       type="button"
-                      className="relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
+                      className="relative inline-flex items-center gap-x-2 rounded-full border border-blue-700 bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 text-sm font-bold text-white shadow-lg transition duration-300 hover:shadow-lg hover:shadow-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 mr-2"
                     >
-                      <PlusIcon
+                      {/* <PlusIcon
                         className="-ml-0.5 h-5 w-5"
                         aria-hidden="true"
-                      />
-                      Post Job
+                      /> */}
+                      Refer
                     </button>
                   </div>
                   {loggedIn ? (
