@@ -10,8 +10,11 @@ import Loader from '../Loader';
 import { FaTimes } from "react-icons/fa";
 import { UserPlus, UserX } from "lucide-react";
 import { Dialog, Transition } from '@headlessui/react';
-import { ExclamationTriangleIcon, DocumentArrowDownIcon ,BuildingOfficeIcon} from "@heroicons/react/24/solid";
+import { ExclamationTriangleIcon, DocumentArrowDownIcon, BuildingOfficeIcon } from "@heroicons/react/24/solid";
 import ReportJob from './ReportJob';
+import InfoCardGrid, { InfoCard } from './InfoCard';
+import JobHeaderCard from './JobHeaderCard';
+import JobDescriptionSection from './JobDescriptionSection';
 
 export default function AppliedJobDetails() {
   const { jobId } = useParams(); // Extract jobId from URL
@@ -36,9 +39,9 @@ export default function AppliedJobDetails() {
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [showWithdrawDialog, setShowWithdrawDialog] = useState(false);
-    const cancelButtonRef = useRef(null);
-    const [missingFields, setMissingFields] = useState([]);
-    const [imgError, setImgError] = useState(false);
+  const cancelButtonRef = useRef(null);
+  const [missingFields, setMissingFields] = useState([]);
+  const [imgError, setImgError] = useState(false);
 
   const closeReportDialog = () => {
     toast.success("Post Reported", {
@@ -141,17 +144,17 @@ export default function AppliedJobDetails() {
       const profile = await fetchProfileData();
 
       // Determine which fields are missing
-    const missingFields = [];
-    if (!profile.firstName) missingFields.push("Name");
-    if (!profile.mobileNumber) missingFields.push("Mobile Number");
-    if (!profile.aboutMe) missingFields.push("About Me");
-    if (!profile.resume) missingFields.push("Resume");
+      const missingFields = [];
+      if (!profile.firstName) missingFields.push("Name");
+      if (!profile.mobileNumber) missingFields.push("Mobile Number");
+      if (!profile.aboutMe) missingFields.push("About Me");
+      if (!profile.resume) missingFields.push("Resume");
 
-    if (missingFields.length > 0) {
-      setMissingFields(missingFields); // Save state to show in modal
-      setProfileIncomplete(true);
-      return;
-    }
+      if (missingFields.length > 0) {
+        setMissingFields(missingFields); // Save state to show in modal
+        setProfileIncomplete(true);
+        return;
+      }
 
       // If profile is complete, proceed with job application
       const response = await fetch(`${Fronted_API_URL}/job/apply/${jobId}`, {
@@ -318,7 +321,7 @@ export default function AppliedJobDetails() {
     setShowReportDialog(true);
   };
 
-  const handleWithdrawClick = async(jobId) => {
+  const handleWithdrawClick = async (jobId) => {
     const bearerToken = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
@@ -338,18 +341,18 @@ export default function AppliedJobDetails() {
         throw new Error(data.message);
       } else {
         toast.success(`Withdraw Successful!`, {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                onClose: () => {
-                  navigate(`/appliedjobs`);
-                }
-              });
-              setShowWithdrawDialog(false)
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          onClose: () => {
+            navigate(`/appliedjobs`);
+          }
+        });
+        setShowWithdrawDialog(false)
       }
     } catch (error) {
       console.error('Error updating follow status:', error);
@@ -380,7 +383,7 @@ export default function AppliedJobDetails() {
         <div className="w-2/12 md:w-1/5 fixed lg:relative">
           <SidebarNavigation />
         </div>
-        <div className="w-10/12 md:w-3/4 m-auto">
+        <div className="w-full md:w-3/4 m-auto border-2 mt-2 md:px-2 px-2 mb-4">
           <div className="col-span-2 flex md:justify-between justify-center px-1 py-3 items-center flex-wrap gap-2">
             {/* Posted By Section (Always Visible) */}
             <div className="flex gap-1">
@@ -422,13 +425,13 @@ export default function AppliedJobDetails() {
               </div>
 
               {applicationStatus && (
-              <div
-                className="flex gap-2 cursor-pointer px-4 py-1 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300 md:text-sm text-xs"
-                onClick={() => setShowWithdrawDialog(true)}
-              >
-                <DocumentArrowDownIcon className="w-5 h-5 text-gray-700" />
-                <span className="font-medium text-gray-800">Withdraw</span>
-              </div>
+                <div
+                  className="flex gap-2 cursor-pointer px-4 py-1 bg-gray-200 items-center rounded-full text-gray-700 hover:bg-gray-300 transition border border-gray-300 md:text-sm text-xs"
+                  onClick={() => setShowWithdrawDialog(true)}
+                >
+                  <DocumentArrowDownIcon className="w-5 h-5 text-gray-700" />
+                  <span className="font-medium text-gray-800">Withdraw</span>
+                </div>
               )}
             </div>
 
@@ -541,7 +544,7 @@ export default function AppliedJobDetails() {
             ) : (
               <button
                 onClick={handleApply}
-                disabled={jobData?.status === "inactive"}  // Disable the button if job status is inactive
+                disabled={jobData?.status === "inactive"}
                 className={`w-full md:w-auto text-center rounded-full border border-transparent ${jobData?.status === "inactive" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"} py-2 px-7 text-md font-light text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
               >
                 Apply
@@ -549,7 +552,6 @@ export default function AppliedJobDetails() {
             )}
           </div>
 
-          {/* File Uploading */}
           {isDialogOpen && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
               <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -593,180 +595,55 @@ export default function AppliedJobDetails() {
           )}
 
 
-          <section class="bg-white py-4 antialiased md:py-6">
-            <div class="mx-auto px-1 2xl:px-0">
-              <div class="grid grid-cols-2 gap-4 border-b-2 border-t border-gray-300/80 py-3 md:py-4 lg:grid-cols-4 xl:gap-6">
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
-                  </svg>
+          <section className="bg-white p-3 md:p-5 mb-2 w-full transition-all duration-300 ease-in-out">
+            <JobHeaderCard jobData={jobData} />
 
-                  <h3 class="mb-1 text-blue-700 font-bold">Job Role</h3>
-                  <span class="flex items-center font-medium text-sm text-gray-900"
-                  >{jobData?.jobRole}
-                  </span>
-                </div>
-
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z" />
-                  </svg>
-
-                  <h3 class="mb-1 text-blue-700 font-bold">Employement Type</h3>
-                  <span class="flex items-center font-medium text-sm text-gray-900"
-                  >{jobData?.employmentType}
-                  </span>
-                </div>
-
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-                  </svg>
-
-                  <h3 class="mb-1 text-blue-700 font-bold">Company</h3>
-                  <span class="flex items-center font-medium text-sm text-gray-900"
-                  >{jobData?.companyName}
-                  </span>
-                </div>
-
-
-                <div>
-                  <svg class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
-                  </svg>
-                  <h3 class="mb-1 text-blue-700 font-bold">Location</h3>
-                  <span class="flex items-center font-medium text-sm text-gray-900"
-                  >{jobData?.location}
-                  </span>
-                </div>
-
-              </div>
-              <div class="py-4 md:py-8">
-                <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
-                  <div class="space-y-4">
-                    <div class="flex space-x-4 gap-[20%]">
-                    <div className="w-24 h-24 rounded-full border-4 border-blue-700 flex items-center justify-center bg-blue-100">
-  {!imgError && jobData?.companyLogoUrl ? (
-    <img
-      className="w-full h-full rounded-full object-cover"
-      src={jobData.companyLogoUrl}
-      alt="Company"
-      onError={() => setImgError(true)}
-    />
-  ) : (
-    <BuildingOfficeIcon className="w-10 h-10 text-blue-600" />
-  )}
-</div>
-                      <div className="flex flex-col">
-                        <dl class="block sm:hidden">
-                          <dt class="mb-1 text-gray-700 font-normal">Job ID</dt>
-                          <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
-                        </dl>
-                        <dl class="block sm:hidden">
-                          <dt class="mb-1 text-gray-700 font-normal">CTC</dt>
-                          <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
-                        </dl>
-                      </div>
-                    </div>
-                    <dl class="hidden sm:block">
-                      <dt class="mb-1 text-gray-700 font-normal">Job ID</dt>
-                      <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
-                    </dl>
-                    <dl class="hidden sm:block">
-                      <dt class="mb-1 text-gray-700 font-normal">CTC</dt>
-                      <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
-                    </dl>
-
-
-                    <dl>
-                      <a href={jobData?.jobLink} target="_blank" rel="noopener noreferrer">
-                        <p className="text-blue-500 gap-1 hover:underline hover:underline-offset-2 hover:text-blue-700 text-sm flex items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-                          </svg>
-
-                          <span className="font-medium">Job Link</span>{" "}
-                        </p>
-                      </a>
-                    </dl>
-
-                  </div>
-                  <div class="space-y-4">
-                    <dl class="">
-                      <dt class="mb-1 text-gray-700 font-normal">Experience Required (Years)</dt>
-                      <dd class="font-medium text-sm text-gray-900">{jobData?.experienceRequired}</dd>
-                    </dl>
-                    <dl>
-                      <dt class="mb-1 text-gray-700 font-normal">Number of Referrals</dt>
-                      <dd class="font-medium text-sm text-gray-900">{jobData?.noOfReferrals}</dd>
-                    </dl>
-                    <dl>
-                      <dt class="mb-1 mb-1 text-gray-700 font-normal">End Date</dt>
-                      <dd class="flex items-center space-x-4 font-medium text-sm text-gray-900">
-                        <div>
-                          <div class="text-sm">
-                            <p class="mb-0.5 font-medium text-gray-900">{getDate(jobData?.endDate)}</p>
-                          </div>
-                        </div>
-                      </dd>
-                    </dl>
-                    <dl>
-                      <dt class="mb-1 text-gray-700 font-normal">Work Mode</dt>
-                      <dd class="flex items-center gap-1 font-medium text-sm text-gray-900">
-                        <svg class="hidden h-5 w-5 shrink-0 text-gray-400  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                        </svg>
-                        {jobData?.workMode}
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-
-                <hr className='mt-3 mb-3 text-gray-700' />
-
-                <div className="col-span-2 pb-4">
-                  <label className="block text-sm font-bold text-blue-700">Job Description</label>
-                  <div
-                    className="mt-1 text-sm text-justify block w-full rounded-none"
-                    dangerouslySetInnerHTML={{ __html: jobData?.jobDescription }}
-                  />
-                </div>
-
-                {/* <button type="button" data-modal-target="accountInformationModal2" data-modal-toggle="accountInformationModal2" class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto">
-                  <svg class="-ms-0.5 me-1.5 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"></path>
-                  </svg>
-                  Apply
-                </button> */}
-              </div>
-
+            <div className="flex mt-4 flex-col sm:flex-row sm:items-center gap-2 sm:gap-2 mb-3">
+              <p className="text-md md:text-xl font-bold text-gray-900">
+                {jobData?.companyName || "Role not specified"}
+              </p>
+              <span className="text-sm md:text-md font-normal text-blue-700 bg-blue-100 px-4 py-1 rounded-full shadow-sm">
+                {jobData?.location || "N/A"}
+              </span>
             </div>
+
+            <hr />
+
+            <InfoCardGrid jobData={jobData} getDate={getDate} />
+
+            {/* Description */}
+            <JobDescriptionSection jobData={jobData} />
+
+
+            {/* Divider */}
+            {/* <div className="my-8 border-t border-gray-200" /> */}
           </section>
+
         </div>
 
         {profileIncomplete && (
-  <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-    <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
-      <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
-      <p className="mt-2 text-sm text-gray-600">
-        To increase your chances of getting selected, please complete your profile.
-      </p>
-      <ul className="mt-3 list-disc list-inside text-sm text-red-600">
-        {missingFields.map((field, index) => (
-          <li key={index}>{field} is missing</li>
-        ))}
-      </ul>
-      <div className="mt-4 flex justify-end">
-        <button
-          onClick={() => navigate("/editprofile")}
-          className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          Go to Profile
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-md shadow-lg z-50 max-w-xl w-full">
+              <h2 className="text-lg font-semibold text-gray-900">Complete Your Profile</h2>
+              <p className="mt-2 text-sm text-gray-600">
+                To increase your chances of getting selected, please complete your profile.
+              </p>
+              <ul className="mt-3 list-disc list-inside text-sm text-red-600">
+                {missingFields.map((field, index) => (
+                  <li key={index}>{field} is missing</li>
+                ))}
+              </ul>
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => navigate("/editprofile")}
+                  className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Go to Profile
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       </div>
@@ -776,3 +653,145 @@ export default function AppliedJobDetails() {
 }
 
 
+{/* <section class="bg-white py-4 antialiased md:py-6">
+  <div class="mx-auto px-1 2xl:px-0">
+
+    <div class="py-4 md:py-8">
+      <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
+        <div class="space-y-4">
+          <div class="flex space-x-4 gap-[20%]">
+            <div className="w-24 h-24 rounded-full border-4 border-blue-700 flex items-center justify-center bg-blue-100">
+              {!imgError && jobData?.companyLogoUrl ? (
+                <img
+                  className="w-full h-full rounded-full object-cover"
+                  src={jobData.companyLogoUrl}
+                  alt="Company"
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <BuildingOfficeIcon className="w-10 h-10 text-blue-600" />
+              )}
+            </div>
+            <div className="flex flex-col">
+              <dl class="block sm:hidden">
+                <dt class="mb-1 text-gray-700 font-normal">Job ID</dt>
+                <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
+              </dl>
+              <dl class="block sm:hidden">
+                <dt class="mb-1 text-gray-700 font-normal">CTC</dt>
+                <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
+              </dl>
+            </div>
+          </div>
+          <dl class="hidden sm:block">
+            <dt class="mb-1 text-gray-700 font-normal">Job ID</dt>
+            <dd class="font-medium text-sm text-gray-900">{jobData?.jobUniqueId}</dd>
+          </dl>
+          <dl class="hidden sm:block">
+            <dt class="mb-1 text-gray-700 font-normal">CTC</dt>
+            <dd class="font-medium text-sm text-gray-900">{jobData?.ctc}</dd>
+          </dl>
+
+
+          <dl>
+            <a href={jobData?.jobLink} target="_blank" rel="noopener noreferrer">
+              <p className="text-blue-500 gap-1 hover:underline hover:underline-offset-2 hover:text-blue-700 text-sm flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                </svg>
+
+                <span className="font-medium">Job Link</span>{" "}
+              </p>
+            </a>
+          </dl>
+
+        </div>
+        <div class="space-y-4">
+          <dl class="">
+            <dt class="mb-1 text-gray-700 font-normal">Experience Required (Years)</dt>
+            <dd class="font-medium text-sm text-gray-900">{jobData?.experienceRequired}</dd>
+          </dl>
+          <dl>
+            <dt class="mb-1 text-gray-700 font-normal">Number of Referrals</dt>
+            <dd class="font-medium text-sm text-gray-900">{jobData?.noOfReferrals}</dd>
+          </dl>
+          <dl>
+            <dt class="mb-1 mb-1 text-gray-700 font-normal">End Date</dt>
+            <dd class="flex items-center space-x-4 font-medium text-sm text-gray-900">
+              <div>
+                <div class="text-sm">
+                  <p class="mb-0.5 font-medium text-gray-900">{getDate(jobData?.endDate)}</p>
+                </div>
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="mb-1 text-gray-700 font-normal">Work Mode</dt>
+            <dd class="flex items-center gap-1 font-medium text-sm text-gray-900">
+              <svg class="hidden h-5 w-5 shrink-0 text-gray-400  lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+              </svg>
+              {jobData?.workMode}
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 border-b-2 border-t border-gray-300/80 py-3 md:py-4 lg:grid-cols-4 xl:gap-6">
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
+        </svg>
+
+        <h3 class="mb-1 text-blue-700 font-bold">Job Role</h3>
+        <span class="flex items-center font-medium text-sm text-gray-900"
+        >{jobData?.jobRole}
+        </span>
+      </div>
+
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z" />
+        </svg>
+
+        <h3 class="mb-1 text-blue-700 font-bold">Employement Type</h3>
+        <span class="flex items-center font-medium text-sm text-gray-900"
+        >{jobData?.employmentType}
+        </span>
+      </div>
+
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+        </svg>
+
+        <h3 class="mb-1 text-blue-700 font-bold">Company</h3>
+        <span class="flex items-center font-medium text-sm text-gray-900"
+        >{jobData?.companyName}
+        </span>
+      </div>
+
+
+      <div>
+        <svg class="hidden bg-gray-200 rounded-full p-1 h-7 w-7 shrink-0 text-gray-600 lg:inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
+        </svg>
+        <h3 class="mb-1 text-blue-700 font-bold">Location</h3>
+        <span class="flex items-center font-medium text-sm text-gray-900"
+        >{jobData?.location}
+        </span>
+      </div>
+
+    </div>
+
+    <div className="col-span-2 pb-4">
+      <label className="block text-sm font-bold text-blue-700">Job Description</label>
+      <div
+        className="mt-1 text-sm text-justify block w-full rounded-none"
+        dangerouslySetInnerHTML={{ __html: jobData?.jobDescription }}
+      />
+    </div>
+
+  </div>
+</section> */}
